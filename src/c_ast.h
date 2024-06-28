@@ -739,18 +739,6 @@ PJL_DISCARD
 c_ast_t const* c_ast_visit( c_ast_t const *ast, c_ast_visit_dir_t dir,
                             c_ast_visit_fn_t visit_fn, user_data_t user_data );
 
-/// @cond DOXYGEN_IGNORE
-PJL_DISCARD C_AST_H_INLINE
-c_ast_t* nonconst_c_ast_visit( c_ast_t *ast, c_ast_visit_dir_t dir,
-                               c_ast_visit_fn_t visit_fn,
-                               user_data_t user_data ) {
-  return CONST_CAST( c_ast_t*, c_ast_visit( ast, dir, visit_fn, user_data ) );
-}
-
-#define c_ast_visit(AST,DIR,VISIT_FN,USER_DATA) \
-  NONCONST_OVERLOAD( c_ast_visit, (AST), (DIR), (VISIT_FN), (USER_DATA) )
-/// @endcond
-
 /**
  * Convenience function to get the AST given a \ref c_capture_t.
  *

@@ -601,10 +601,8 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   }
 }
 
-// See comment for NONCONST_OVERLOAD regarding ().
-c_ast_t const* (c_ast_visit)( c_ast_t const *ast, c_ast_visit_dir_t dir,
-                              c_ast_visit_fn_t visit_fn,
-                              user_data_t user_data ) {
+c_ast_t const* c_ast_visit( c_ast_t const *ast, c_ast_visit_dir_t dir,
+                            c_ast_visit_fn_t visit_fn, user_data_t user_data ) {
   assert( visit_fn != NULL );
 
   switch ( dir ) {
