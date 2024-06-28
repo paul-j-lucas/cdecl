@@ -377,23 +377,6 @@ int C::* f();
 c++decl> declare f as function returning pointer to member of class C pointer to int
 int* C::* f();
 c++decl> 
-c++decl> set trailing-return
-c++decl> declare f as function returning int
-auto f() -> int;
-c++decl> declare f as function returning pointer to int
-auto f() -> int*;
-c++decl> declare f as function returning pointer to const int
-auto f() -> const int*;
-c++decl> set east-const
-c++decl> declare f as function returning pointer to const int
-auto f() -> int const*;
-c++decl> set noeast-const
-c++decl> declare f as function returning pointer to function (int) returning pointer to const char
-auto f() -> auto (*)(int) -> const char*;
-c++decl> declare ! as operator (reference to const S) returning bool
-auto operator!(const S&) -> bool;
-c++decl> set notrailing-return
-c++decl> 
 c++decl> declare f as deprecated function returning void
 [[deprecated]] void f();
 c++decl> 
@@ -496,7 +479,7 @@ void f() final;
 c++decl> 
 c++decl> declare final as int
                        ^
-263,15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
+252,15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
 c++decl> 
 c++decl> declare x as constexpr int
 constexpr int x;
@@ -726,5 +709,5 @@ c++decl>
 c++decl> set c++14
 c++decl> declare f as throw function
                  ^
-387,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+376,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 void f() noexcept;

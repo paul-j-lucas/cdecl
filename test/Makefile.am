@@ -149,6 +149,7 @@ TESTS+=	tests/__declspec.test \
 	tests/semicolon.test \
 	tests/set.test \
 	tests/set-error.test \
+	tests/trailing-return.test \
 	tests/trigraphs.test \
 	tests/using.test \
 	tests/west-decl.test

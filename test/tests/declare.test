@@ -193,17 +193,6 @@ declare f as function returning auto
 declare f as function returning pointer to member of class C int
 declare f as function returning pointer to member of class C pointer to int
 
-set trailing-return
-declare f as function returning int
-declare f as function returning pointer to int
-declare f as function returning pointer to const int
-set east-const
-declare f as function returning pointer to const int
-set noeast-const
-declare f as function returning pointer to function (int) returning pointer to const char
-declare ! as operator (reference to const S) returning bool
-set notrailing-return
-
 declare f as deprecated function returning void
 
 declare x as parameter pack

@@ -1,0 +1,16 @@
+EXPECTED_EXIT=0
+cdecl -bEL$LINENO -xc++ <<END
+set trailing-return
+declare f as function returning int
+declare f as function returning pointer to int
+declare f as function returning pointer to const int
+set east-const
+declare f as function returning pointer to const int
+set noeast-const
+declare f as function returning pointer to function (int) returning pointer to const char
+declare ! as operator (reference to const S) returning bool
+set notrailing-return
+
+set c++03
+set trailing-return
+END
