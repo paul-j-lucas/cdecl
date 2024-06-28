@@ -100,6 +100,21 @@
  * @{
  */
 
+/**
+ * Prints that \a VALUE is an invalid value for \a OPT and what it must be
+ * instead to standard error and exits.
+ *
+ * @param OPT The option _without_ the `OPT_` prefix.
+ * @param VALUE The invalid value for \a OPT.
+ * @param FORMAT The `printf()` format string literal to use.
+ * @param ... The `printf()` arguments.
+ */
+#define OPT_INVALID_VALUE(OPT,VALUE,FORMAT,...)                 \
+  fatal_error( EX_USAGE,                                        \
+    "\"%s\": invalid value for %s; must be " FORMAT "\n",       \
+    (VALUE), opt_format( COPT(OPT) ) VA_OPT( (,), __VA_ARGS__ ) \
+  )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -364,23 +379,6 @@ static char const* opt_help( int opt ) {
 }
 
 /**
- * Prints that \a value is an invalid value for \a opt to standard error and
- * exits.
- *
- * @param opt The option that has the invalid \a value.
- * @param value The invalid value for \a opt.
- * @param must_be What \a opt must be instead.
- */
-_Noreturn
-static void opt_invalid_value( char opt, char const *value,
-                               char const *must_be ) {
-  fatal_error( EX_USAGE,
-    "\"%s\": invalid value for %s; must be %s\n",
-    value, opt_format( opt ), must_be
-  );
-}
-
-/**
  * Parses a color "when" value.
  *
  * @param when The null-terminated "when" string to parse.
@@ -418,7 +416,7 @@ static color_when_t parse_color_when( char const *when ) {
   bool comma = false;
   FOREACH_ARRAY_ELEMENT( colorize_map_t, m, COLORIZE_MAP )
     strbuf_sepsn_puts( &when_sbuf, ", ", 2, &comma, m->map_when );
-  opt_invalid_value( COPT(COLOR), when, when_sbuf.str );
+  OPT_INVALID_VALUE( COLOR, when, "%s", when_sbuf.str );
 }
 
 /**
@@ -442,7 +440,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
     if ( !lang->is_alias )
       strbuf_sepsn_puts( &langs_sbuf, ", ", 2, &comma, lang->name );
   } // for
-  opt_invalid_value( COPT(LANGUAGE), lang_name, langs_sbuf.str );
+  OPT_INVALID_VALUE( LANGUAGE, lang_name, "%s", langs_sbuf.str );
 }
 
 /**
@@ -480,8 +478,11 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
 #endif /* ENABLE_BISON_DEBUG */
       case COPT(CDECL_DEBUG):
-        if ( !parse_cdecl_debug( empty_if_null( optarg ) ) )
-          opt_invalid_value( COPT(CDECL_DEBUG), optarg, "*, -, or u" );
+        if ( !parse_cdecl_debug( empty_if_null( optarg ) ) ) {
+          OPT_INVALID_VALUE(
+            CDECL_DEBUG, optarg, "[%s]+|*|-", OPT_CDECL_DEBUG_ALL
+          );
+        }
         break;
       case COPT(COLOR):
         opt_color_when = parse_color_when( optarg );
@@ -504,16 +505,13 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         opt_echo_commands = true;
         break;
       case COPT(EXPLICIT_ECSU):
-        if ( !parse_explicit_ecsu( optarg ) ) {
-          opt_invalid_value(
-            COPT(EXPLICIT_ECSU), optarg, "*, -, or {e|c|s|u}+"
-          );
-        }
+        if ( !parse_explicit_ecsu( optarg ) )
+          OPT_INVALID_VALUE( EXPLICIT_ECSU, optarg, "[%s]+|*|-", OPT_ECSU_ALL );
         break;
       case COPT(EXPLICIT_INT):
         if ( !parse_explicit_int( optarg ) ) {
-          opt_invalid_value(
-            COPT(EXPLICIT_INT), optarg, "*, -, i, u, or {[u]{i|s|l[l]}[,]}+"
+          OPT_INVALID_VALUE(
+            EXPLICIT_INT, optarg, "i|u|{[u]{i|s|l[l]}[,]}+|*|-"
           );
         }
         break;
@@ -587,8 +585,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
       case COPT(WEST_DECL):
         if ( !parse_west_decl( optarg ) ) {
-          opt_invalid_value(
-            COPT(WEST_DECL), optarg, "*, -, or {b|f|l|o|r|s|t}+"
+          OPT_INVALID_VALUE(
+            WEST_DECL, optarg, "[%s]+|*|-", OPT_WEST_DECL_ALL
           );
         }
         break;
