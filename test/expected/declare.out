@@ -711,3 +711,9 @@ c++decl>
 c++decl> set c++03
 c++decl> declare C as non-throwing destructor
 ~C() throw();
+c++decl> 
+c++decl> set c++14
+c++decl> declare f as throw function
+                 ^
+380,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+void f() noexcept;
