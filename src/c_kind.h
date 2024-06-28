@@ -339,9 +339,8 @@ typedef enum c_ast_kind c_ast_kind_t;
 
 /**
  * Shorthand for any kind of parent: #K_APPLE_BLOCK, #K_ARRAY, #K_CAST,
- * #K_CONSTRUCTOR, #K_DESTRUCTOR, #K_ENUM, #K_FUNCTION, #K_OPERATOR,
- * #K_POINTER, #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE,
- * #K_UDEF_CONV, or #K_UDEF_LIT.
+ * #K_ENUM, #K_FUNCTION, #K_OPERATOR, #K_POINTER, #K_POINTER_TO_MEMBER,
+ * #K_REFERENCE, #K_RVALUE_REFERENCE, #K_UDEF_CONV, or #K_UDEF_LIT.
  *
  * @note #K_TYPEDEF is intentionally _not_ included.
  *
@@ -367,7 +366,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  * @sa #K_ANY_REFERENCE
  */
 #define K_ANY_POINTER_OR_REFERENCE \
-                                  ( K_ANY_POINTER | K_ANY_REFERENCE)
+                                  ( K_ANY_POINTER | K_ANY_REFERENCE )
 
 /**
  * Shorthand for any kind of reference: #K_REFERENCE or #K_RVALUE_REFERENCE.
