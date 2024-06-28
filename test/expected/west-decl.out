@@ -144,3 +144,21 @@ c++decl> declare _x as user-defined literal( char ) returning pointer to int
 int *operator"" _x(char);
 c++decl> declare _x as user-defined literal( char ) returning pointer to pointer to int
 int **operator"" _x(char);
+c++decl> 
+c++decl> set nowest-decl
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+  noinfer-command
+    lang=C++23
+    prompt
+    semicolon
+  notrailing-return
+    using
+  nowest-decl
