@@ -1,0 +1,6 @@
+cdecl> declare x as int
+int x;
+cdecl> set noecho-commands
+int y;
+cdecl> declare z as int
+int z;

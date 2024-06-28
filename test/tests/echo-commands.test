@@ -1,0 +1,8 @@
+EXPECTED_EXIT=0
+cdecl -bEL$LINENO <<END
+declare x as int
+set noecho-commands
+declare y as int
+set echo-commands
+declare z as int
+END

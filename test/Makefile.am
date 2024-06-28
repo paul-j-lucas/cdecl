@@ -133,6 +133,7 @@ TESTS+=	tests/__declspec.test \
 	tests/alt-tokens.test \
 	tests/debug.test \
 	tests/declare_synonyms.test \
+	tests/echo-commands.test \
 	tests/digraphs.test \
 	tests/east-const.test \
 	tests/english-types.test \
