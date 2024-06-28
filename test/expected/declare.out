@@ -699,6 +699,10 @@ c++decl> declare lambda [reference by default, i]
 [&, i]
 c++decl> declare lambda [reference by default] (x as int)
 [&](int x)
+c++decl> declare lambda [this]
+[this]
+c++decl> declare lambda [*this]
+[*this]
 c++decl> declare lambda [&]
 [&]
 c++decl> declare noexcept lambda
@@ -715,5 +719,5 @@ c++decl>
 c++decl> set c++14
 c++decl> declare f as throw function
                  ^
-380,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+382,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 void f() noexcept;

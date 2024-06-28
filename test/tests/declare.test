@@ -368,6 +368,8 @@ declare lambda [reference default]
 declare lambda [reference by default]
 declare lambda [reference by default, i]
 declare lambda [reference by default] (x as int)
+declare lambda [this]
+declare lambda [*this]
 declare lambda [&]
 declare noexcept lambda
 declare noexcept lambda (x as int)
