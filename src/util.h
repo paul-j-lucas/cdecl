@@ -1331,7 +1331,6 @@ void free_now( void );
  * @param n The number to check.
  * @return Returns `true` only if \a n has either 0 or 1 bits set.
  *
- * @sa is_01_bit_only_in_set()
  * @sa is_0n_bit_only_in_set()
  * @sa is_1_bit()
  * @sa is_1_bit_in_set()
@@ -1353,7 +1352,6 @@ bool is_01_bit( uint64_t n ) {
  * only among the bits set in \a set.
  *
  * @sa is_01_bit()
- * @sa is_01_bit_only_in_set()
  * @sa is_1_bit()
  * @sa is_1_bit_in_set()
  * @sa is_1_bit_only_in_set()
@@ -1371,7 +1369,6 @@ bool is_0n_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @return Returns `true` only if \a n has exactly 1 bit set.
  *
  * @sa is_01_bit()
- * @sa is_01_bit_only_in_set()
  * @sa is_0n_bit_only_in_set()
  * @sa is_1_bit_in_set()
  * @sa is_1_bit_only_in_set()
@@ -1392,7 +1389,6 @@ bool is_1_bit( uint64_t n ) {
  * @note There may be other bits set in \a n that are not in \a set.
  *
  * @sa is_01_bit()
- * @sa is_01_bit_only_in_set()
  * @sa is_0n_bit_only_in_set()
  * @sa is_1_bit()
  * @sa is_1_bit_only_in_set()
@@ -1411,7 +1407,6 @@ bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
  * @return Returns `true` only if \a n has exactly 1 bit set only in \a set.
  *
  * @sa is_01_bit()
- * @sa is_01_bit_only_in_set()
  * @sa is_0n_bit_only_in_set()
  * @sa is_1_bit()
  * @sa is_1_bit_in_set()
@@ -1420,26 +1415,6 @@ bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
 NODISCARD C_UTIL_H_INLINE
 bool is_1_bit_only_in_set( uint64_t n, uint64_t set ) {
   return is_1_bit( n ) && is_1_bit_in_set( n, set );
-}
-
-/**
- * Checks whether \a n is zero or has exactly 1 bit set only in \a set.
- *
- * @param n The bits to check.
- * @param set The bits to check against.
- * @return Returns `true` only if either \a n is zero or has exactly 1 bit set
- * only in \a set.
- *
- * @sa is_01_bit()
- * @sa is_0n_bit_only_in_set()
- * @sa is_1_bit()
- * @sa is_1_bit_in_set()
- * @sa is_1_bit_only_in_set()
- * @sa is_1n_bit_only_in_set()
- */
-NODISCARD C_UTIL_H_INLINE
-bool is_01_bit_only_in_set( uint64_t n, uint64_t set ) {
-  return n == 0 || is_1_bit_only_in_set( n, set );
 }
 
 /**
@@ -1452,7 +1427,6 @@ bool is_01_bit_only_in_set( uint64_t n, uint64_t set ) {
  * among the bits set in \a set.
  *
  * @sa is_01_bit()
- * @sa is_01_bit_only_in_set()
  * @sa is_0n_bit_only_in_set()
  * @sa is_1_bit()
  * @sa is_1_bit_in_set()
