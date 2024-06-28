@@ -59,6 +59,13 @@ declare x as reference to constant concept C parameter pack
 c++decl> explain C auto const &...x
 declare x as reference to constant concept C parameter pack
 c++decl> 
+c++decl> explain C auto *...x
+declare x as pointer to concept C parameter pack
+c++decl> explain const C auto *...x
+declare x as pointer to constant concept C parameter pack
+c++decl> explain C auto const *...x
+declare x as pointer to constant concept C parameter pack
+c++decl> 
 c++decl> explain std::integral auto x
 declare x as concept integral of namespace std
 c++decl> 
