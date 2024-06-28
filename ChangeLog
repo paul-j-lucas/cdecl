@@ -1,5 +1,7 @@
 2024-06-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * read_line.c: readline_line is no longer static.
+   * read_line.c: Fixed heap-overflow bug.
    * c_sname.h: Converted c_scope_data() into an inline function.
    * c_sname.c: Added assert().
    * read_line.c: Now using getline()'s return value; calling str_chomp() only
