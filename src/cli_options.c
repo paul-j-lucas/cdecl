@@ -504,16 +504,18 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         opt_echo_commands = true;
         break;
       case COPT(EXPLICIT_ECSU):
-        if ( !parse_explicit_ecsu( optarg ) )
+        if ( !parse_explicit_ecsu( optarg ) ) {
           opt_invalid_value(
             COPT(EXPLICIT_ECSU), optarg, "*, -, or {e|c|s|u}+"
           );
+        }
         break;
       case COPT(EXPLICIT_INT):
-        if ( !parse_explicit_int( optarg ) )
+        if ( !parse_explicit_int( optarg ) ) {
           opt_invalid_value(
             COPT(EXPLICIT_INT), optarg, "*, -, i, u, or {[u]{i|s|l[l]}[,]}+"
           );
+        }
         break;
       case COPT(FILE):
         if ( *SKIP_WS( optarg ) == '\0' )
@@ -584,10 +586,11 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         ++opt_version;
         break;
       case COPT(WEST_DECL):
-        if ( !parse_west_decl( optarg ) )
+        if ( !parse_west_decl( optarg ) ) {
           opt_invalid_value(
             COPT(WEST_DECL), optarg, "*, -, or {b|f|l|o|r|s|t}+"
           );
+        }
         break;
 
       case ':':
