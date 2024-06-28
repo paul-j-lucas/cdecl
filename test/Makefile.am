@@ -26,7 +26,7 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 ###############################################################################
 
 # Command-line tests
-TESTS=	tests/cl.test \
+TESTS=	tests/command_line.test \
 	tests/cl-exit.test \
 	tests/cl-quit.test
 
