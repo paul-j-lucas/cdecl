@@ -20,6 +20,7 @@ cdecl -bEL$LINENO <<END
 #undef __TIME__
 #undef __VA_ARGS__
 #undef __VA_OPT__
+#undef NOT_DEFINED
 
 #elif
 #else
