@@ -618,6 +618,13 @@ static const auto &[x, y];
 c++decl> declare x, y as static const reference to structured binding
 static const auto &[x, y];
 c++decl> 
+c++decl> set alt-tokens
+c++decl> declare x, y as reference to structured binding
+auto bitand [x, y];
+c++decl> declare x, y as rvalue reference to structured binding
+auto and [x, y];
+c++decl> set noalt-tokens
+c++decl> 
 c++decl> set east-const
 c++decl> declare x, y as reference to const structured binding
 auto const &[x, y];
@@ -719,5 +726,5 @@ c++decl>
 c++decl> set c++14
 c++decl> declare f as throw function
                  ^
-382,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+387,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 void f() noexcept;

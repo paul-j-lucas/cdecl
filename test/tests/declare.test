@@ -324,6 +324,11 @@ declare x, y as static reference to const structured binding
 declare x, y as const static reference to structured binding
 declare x, y as static const reference to structured binding
 
+set alt-tokens
+declare x, y as reference to structured binding
+declare x, y as rvalue reference to structured binding
+set noalt-tokens
+
 set east-const
 declare x, y as reference to const structured binding
 declare x, y as reference to const static structured binding
