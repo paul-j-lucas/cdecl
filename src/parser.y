@@ -2515,7 +2515,9 @@ storage_class_subset_english_type
    * since only special members can be deleted anyway.
    */
 storage_class_subset_english_stid
-  : Y_constant eval_expr_init_stid[stid]
+  : Y_auto_TYPE                   { $$ = TS_auto; }
+  | Y_Apple___block
+  | Y_constant eval_expr_init_stid[stid]
     {
       $$ = $stid;
     }
@@ -2524,15 +2526,26 @@ storage_class_subset_english_stid
   | Y_constinit
   | Y_explicit
   | Y_export
+  | Y_extern
+  | Y_extern linkage_stid[stid] linkage_opt
+    {
+      $$ = $stid;
+    }
   | Y_final
   | Y_friend
   | Y_inline
   | Y_mutable
   | Y_no Y_except                 { $$ = TS_noexcept; }
   | Y_noexcept
+  | Y_non_empty                   { $$ = TS_NON_EMPTY_ARRAY; }
   | Y_override
   | Y_static
+  | Y_this
+  | Y_thread local_exp            { $$ = TS_thread_local; }
+  | Y__Thread_local
+  | Y_thread_local
   | Y_throw
+  | Y_typedef
   | Y_virtual
   | Y_pure virtual_stid_exp       { $$ = TS_PURE_virtual | $2; }
   ;

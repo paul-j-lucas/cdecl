@@ -169,6 +169,7 @@ explain void f( ... )
 set c++
 typedef int &RI
 
+explain [] extern
 explain [&,&]
 explain [&,=]
 explain [=,&]
