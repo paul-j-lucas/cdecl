@@ -111,9 +111,11 @@ NODISCARD
 static unsigned check_tigetnum( char const *capname ) {
   int const num = tigetnum( CONST_CAST( char*, capname ) );
   if ( unlikely( num < 0 ) ) {
+    // LCOV_EXCL_START
     fatal_error( EX_UNAVAILABLE,
       "tigetnum(\"%s\") returned error code %d", capname, num
     );
+    // LCOV_EXCL_STOP
   }
   return STATIC_CAST( unsigned, num );
 }
@@ -241,10 +243,12 @@ error:
   if ( likely( cterm_fd != -1 ) )
     close( cterm_fd );
   if ( unlikely( reason != NULL ) ) {
+    // LCOV_EXCL_START
     fatal_error( EX_UNAVAILABLE,
       "failed to determine number of columns in terminal: %s\n",
       reason
     );
+    // LCOV_EXCL_STOP
   }
 #endif /* ENABLE_TERM_SIZE */
 
