@@ -37,6 +37,20 @@ struct S1 { typedef int I; };
 typedef S1::I S1_T;
 typedef Int T;
 typedef void Void;
+c++decl> show as using
+using A2 = int[2];
+using F_I = int(double);
+using F_PI = int*();
+using I = int;
+using Int = int;
+using PF_I = int(*)();
+using PF_I_2 = F_I*;
+using PI = int*;
+struct S1;
+struct S1 { using I = int; };
+using S1_T = S1::I;
+using T = Int;
+using Void = void;
 c++decl> 
 c++decl> define I1 of inline namespace B1 of namespace A1 as int
 c++decl> show **::I1 typedef
