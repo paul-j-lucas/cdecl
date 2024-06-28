@@ -1,2 +1,3 @@
 EXPECTED_EXIT=64
+cdecl exit
 cdecl quit
