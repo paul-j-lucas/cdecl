@@ -743,8 +743,7 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
   return c_ast_is_tid_any_qual_impl( ast, tids, *rv_qual_stids );
 }
 
-// See comment for NONCONST_OVERLOAD regarding ().
-c_ast_t const* (c_ast_leaf)( c_ast_t const *ast ) {
+c_ast_t const* c_ast_leaf( c_ast_t const *ast ) {
   while ( c_ast_is_referrer( ast ) ) {
     c_ast_t const *const child_ast = ast->parent.of_ast;
     if ( child_ast == NULL )            // can be NULL for K_ENUM

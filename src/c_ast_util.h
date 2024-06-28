@@ -415,15 +415,6 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
  */
 c_ast_t const* c_ast_leaf( c_ast_t const *ast );
 
-/// @cond DOXYGEN_IGNORE
-NODISCARD C_AST_UTIL_H_INLINE
-c_ast_t* nonconst_c_ast_leaf( c_ast_t *ast ) {
-  return CONST_CAST( c_ast_t*, c_ast_leaf( ast ) );
-}
-
-#define c_ast_leaf(AST)           NONCONST_OVERLOAD( c_ast_leaf, (AST) )
-/// @endcond
-
 /**
  * Takes the name, if any, away from \a ast
  * (with the intent of giving it to another AST).
