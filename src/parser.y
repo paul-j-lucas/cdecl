@@ -1858,7 +1858,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>    reference_decl_c_astp
 %type   <ast>         reference_type_c_ast
 %type   <tid>         restrict_qualifier_c_stid
-%type   <tid>         rparen_func_qualifier_list_c_stid_opt
+%type   <tid>         param_list_rparen_func_qualifier_list_c_stid_opt
 %type   <sname>       sname_c sname_c_exp sname_c_opt
 %type   <ast>         sname_c_ast
 %type   <type>        storage_class_c_type
@@ -4853,7 +4853,7 @@ destructor_declaration_c
      */
   : virtual_stid_opt[virtual_stid] '~' any_name_exp[name]
     lparen_exp no_destructor_params
-    rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    param_list_rparen_func_qualifier_list_c_stid_opt[qual_stids]
     noexcept_c_stid_opt[noexcept_stid] gnu_attribute_specifier_list_c_opt
     func_equals_c_stid_opt[equals_stid]
     {
@@ -4931,7 +4931,7 @@ no_destructor_params
 file_scope_constructor_declaration_c
   : inline_stid_opt[inline_stid] Y_CONSTRUCTOR_SNAME[sname]
     lparen_exp param_c_ast_list_opt[param_ast_list]
-    rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    param_list_rparen_func_qualifier_list_c_stid_opt[qual_stids]
     noexcept_c_stid_opt[noexcept_stid] gnu_attribute_specifier_list_c_opt
     {
       DUMP_START( "file_scope_constructor_declaration_c",
@@ -4968,7 +4968,7 @@ file_scope_constructor_declaration_c
 file_scope_destructor_declaration_c
   : inline_stid_opt[inline_stid] destructor_sname[sname]
     lparen_exp no_destructor_params
-    rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    param_list_rparen_func_qualifier_list_c_stid_opt[qual_stids]
     noexcept_c_stid_opt[noexcept_stid] gnu_attribute_specifier_list_c_opt
     {
       DUMP_START( "file_scope_destructor_declaration_c",
@@ -5010,7 +5010,7 @@ func_decl_c_astp
   : // in_attr: type_c_ast
     decl2_c_astp[decl_astp]
     param_list_c_lparen param_c_ast_list_opt[param_ast_list]
-    rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    param_list_rparen_func_qualifier_list_c_stid_opt[qual_stids]
     ref_qualifier_c_stid_opt[ref_qual_stid]
     noexcept_c_stid_opt[noexcept_stid]
     trailing_return_type_c_ast_opt[trailing_ret_ast]
@@ -5167,7 +5167,7 @@ pc99_func_or_constructor_declaration_c
         assert( csu_tdef->ast == csu_ast );
       }
     }
-    param_c_ast_list_opt[param_ast_list] param_list_c_rparen
+    param_c_ast_list_opt[param_ast_list] param_list_rparen
     noexcept_c_stid_opt[noexcept_stid] func_equals_c_stid_opt[equals_stid]
     {
       DUMP_START( "pc99_func_or_constructor_declaration_c",
@@ -5251,8 +5251,8 @@ pc99_func_or_constructor_declaration_c
     }
   ;
 
-rparen_func_qualifier_list_c_stid_opt
-  : param_list_c_rparen
+param_list_rparen_func_qualifier_list_c_stid_opt
+  : param_list_rparen
     {
       if ( OPT_LANG_IS( MEMBER_FUNCTIONS ) ) {
         //
@@ -5527,7 +5527,7 @@ param_c_ast_exp
 
 paren_param_c_ast_list_opt
   : /* empty */                   { slist_init( &$$ ); }
-  | param_list_c_lparen param_c_ast_list_opt param_list_c_rparen
+  | param_list_c_lparen param_c_ast_list_opt param_list_rparen
     {
       $$ = $2;
     }
@@ -5537,7 +5537,7 @@ param_list_c_lparen
   : '('                           { lexer_is_param_list_decl = true; }
   ;
 
-param_list_c_rparen
+param_list_rparen
   : ')'                           { lexer_is_param_list_decl = false; }
   ;
 
@@ -5571,7 +5571,7 @@ oper_decl_c_astp
   : // in_attr: type_c_ast
     oper_sname_c_opt[sname] Y_operator c_operator[op_id] param_list_c_lparen
     param_c_ast_list_opt[param_ast_list]
-    rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    param_list_rparen_func_qualifier_list_c_stid_opt[qual_stids]
     ref_qualifier_c_stid_opt[ref_qual_stid]
     noexcept_c_stid_opt[noexcept_stid]
     trailing_return_type_c_ast_opt[trailing_ret_ast]
@@ -5947,7 +5947,7 @@ user_defined_conversion_decl_c_astp
       ia_type_ast_push( $to_ast );
     }
     udc_decl_c_ast_opt[decl_ast] lparen_exp
-    rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    param_list_rparen_func_qualifier_list_c_stid_opt[qual_stids]
     noexcept_c_stid_opt[noexcept_stid] func_equals_c_stid_opt[equals_stid]
     {
       ia_type_ast_pop();
@@ -6135,7 +6135,7 @@ block_cast_c_astp                       // Apple extension
     }
     type_qualifier_list_c_stid_opt[qual_stids] cast_c_astp_opt[cast_astp]
     rparen_exp
-    param_list_c_lparen param_c_ast_list_opt[param_ast_list] param_list_c_rparen
+    param_list_c_lparen param_c_ast_list_opt[param_ast_list] param_list_rparen
     {
       c_ast_t *const block_ast = ia_type_ast_pop();
       c_ast_t *const type_ast = ia_type_ast_peek();
@@ -6179,7 +6179,7 @@ func_cast_c_astp
   : // in_attr: type_c_ast
     cast2_c_astp[cast_astp]
     param_list_c_lparen param_c_ast_list_opt[param_ast_list]
-    rparen_func_qualifier_list_c_stid_opt[ref_qual_stids]
+    param_list_rparen_func_qualifier_list_c_stid_opt[ref_qual_stids]
     noexcept_c_stid_opt[noexcept_stid]
     trailing_return_type_c_ast_opt[trailing_ret_ast]
     {
