@@ -1,5 +1,23 @@
+2024-06-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_kind.h: Eliminated K_ANY_MULTI_DECL & K_ANY_NAMEABLE.
+   * c_ast.h, c_ast_check.c, c_kind.h, explain_operator.out,
+     explain_operator.test: Added K_ANY_NAMEABLE.
+   * c_ast.c, c_ast.h, c_ast_check.c, types.h: Added c_named_ast.
+   * c_ast_check.c: Eliminated apparently redundant c_ast_visitor_type() check
+     of function parameters.
+   * explain-error.out, explain-error.test: Another test.
+   * lexer.l, digraphs.out, trigraphs.out, digraphs.test, trigraphs.test:
+     Digraphs & trigraphs are now correctly supported for structured bindings.
+   * parser.y, show.c, show.h: Now prints an error message if a glob has no
+     matches.
+   * debug.out, debug.test: Fixed test.
+
 2024-06-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * parse.c: Added coverage exlusion.
+   * p_macro.c: Added coverage exlusions.
+   * infer-command.out, infer-command.test: Additional test.
    * gibberish.c, lexer.l, p_macro.c, p_token.c, show.c, expand.out,
      expand.test: Added digraph & trigraph support to the preprocessor.
    * lcovrc: Added EX_UNAVAILABLE; removed fatal_error.
