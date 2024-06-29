@@ -211,7 +211,7 @@ NODISCARD
 static int cdecl_parse_stdin( void ) {
   cdecl_interactive = isatty( STDIN_FILENO );
   if ( cdecl_interactive && opt_prompt )
-    PUTS( "Type \"help\" or \"?\" for help\n" );
+    PUTS( "Type \"help\" or \"?\" for help\n" );  // LCOV_EXCL_LINE
   return cdecl_parse_file_impl( stdin, /*return_on_error=*/false );
 }
 
