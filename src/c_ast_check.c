@@ -3032,14 +3032,6 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
     } // switch
   }
 
-  if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
-    FOREACH_AST_FUNC_PARAM( param, ast ) {
-      c_ast_t const *const param_ast = c_param_ast( param );
-      if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type ) )
-        return VISITOR_ERROR_FOUND;
-    } // for
-  }
-
   return VISITOR_ERROR_NOT_FOUND;
 }
 
