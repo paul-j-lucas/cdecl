@@ -698,7 +698,7 @@ flt_lit       -?({dec_flt}|{hex_flt}){flt_sfx}?
 /*
  * For "include" files.
  */
-%x X_INCL
+%x X_INCLUDE
 
 /*
  * For the C preprocessor.
@@ -816,7 +816,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 //
                 str_lit_loc = yylloc;
                 str_lit_loc.first_column = yylloc.last_column;
-                BEGIN( X_INCL );
+                BEGIN( X_INCLUDE );
               }
 
               /*
@@ -1435,10 +1435,10 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 } /* <INITIAL,X_PRE_TOKENS> */
 
               /*
-               * Common code between X_CHAR, X_INCL, and X_STR.  Multicharacter
-               * literals are legal, but implementation-defined.
+               * Common code between X_CHAR, X_INCLUDE, and X_STR.
+               * Multicharacter literals are legal, but implementation-defined.
                */
-<X_CHAR,X_INCL,X_STR>{
+<X_CHAR,X_INCLUDE,X_STR>{
 
               /* Escaped characters are copied verbatim, not interpreted. */
   \\(.|\n)    { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
@@ -1451,7 +1451,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 return Y_LEXER_ERROR;
               }
 
-} /* <X_CHAR,X_INCL,X_STR> */
+} /* <X_CHAR,X_INCLUDE,X_STR> */
 
 <X_CHAR>{
 
@@ -1467,19 +1467,19 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 } /* <X_CHAR> */
 
               /*
-               * Common code between X_INCL and X_STR:
+               * Common code between X_INCLUDE and X_STR:
                *
-               * 1. X_INCL is the same as X_STR except we need to do different
-               *    things upon the terminating " (which is why X_INCL exists
-               *    rather than just using X_STR).
+               * 1. X_INCLUDE is the same as X_STR except we need to do
+               *    different things upon the terminating " (which is why
+               *    X_INCLUDE exists rather than just using X_STR).
                *
                * 2. X_STR is the same as X_CHAR except " replaces '.
                */
-<X_INCL,X_STR>[^"\\\n]+ {
+<X_INCLUDE,X_STR>[^"\\\n]+ {
                 strbuf_putsn( &str_lit_buf, yytext, yyleng );
               }
 
-<X_INCL>\"    {
+<X_INCLUDE>\" {
                 push_file( str_lit_buf.str, &str_lit_loc );
                 strbuf_reset( &str_lit_buf );
                 BEGIN( INITIAL );
