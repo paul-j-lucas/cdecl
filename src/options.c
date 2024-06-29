@@ -92,7 +92,6 @@ char const          OPT_WEST_DECL_ALL[]   = "bflost";
  * @remarks Due to non-trivial representation and special cases, this option's
  * variable is `static` and accessible only via `*_explicit_int()` functions.
  *
- * @sa any_explicit_int()
  * @sa is_explicit_int()
  * @sa parse_explicit_int()
  */
@@ -124,11 +123,6 @@ static void set_all_or_none( char const **pformat, char const *all_value ) {
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
-
-bool any_explicit_int( void ) {
-  return  opt_explicit_int_btids[0] != TB_NONE ||
-          opt_explicit_int_btids[1] != TB_NONE;
-}
 
 char const* cdecl_debug_str( void ) {
   static char buf[ ARRAY_SIZE( OPT_CDECL_DEBUG_ALL ) ];

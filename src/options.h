@@ -122,18 +122,6 @@ extern int          yydebug;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Checks if any explicit `int` is set.
- *
- * @return Returns `true` if at least one explicit `int` is set.
- *
- * @sa is_explicit_int()
- * @sa parse_explicit_int()
- * @sa explicit_int_str()
- */
-NODISCARD
-bool any_explicit_int( void );
-
-/**
  * Gets the string representation of the **cdecl** debug option.
  *
  * @return Returns said representation.
@@ -171,7 +159,6 @@ char const* explicit_ecsu_str( void );
  * the option via parse_explicit_int() then calling this function again will
  * change the value of the buffer.
  *
- * @sa any_explicit_int()
  * @sa is_explicit_int()
  * @sa parse_explicit_int()
  */
@@ -185,7 +172,6 @@ char const* explicit_int_str( void );
  * @return Returns `true` only if the type given by \a btid shall have `int`
  * printed explicitly.
  *
- * @sa any_explicit_int()
  * @sa parse_explicit_int()
  * @sa explicit_int_str()
  */
@@ -264,7 +250,6 @@ bool parse_explicit_ecsu( char const *ecsu_format );
  * @endparblock
  * @return Returns `true` only if \a ei_format was parsed successfully.
  *
- * @sa any_explicit_int()
  * @sa is_explicit_int()
  * @sa explicit_int_str()
  */
