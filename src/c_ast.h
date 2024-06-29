@@ -406,8 +406,8 @@ struct c_ptr_mbr_ast {
   c_ast_t    *to_ast;                   ///< Member type.
 
   /// @cond DOXYGEN_IGNORE
-  /// So class_sname is at the same offset as in c_concept_ast, c_csu_ast, and
-  /// c_enum_ast.
+  /// So class_sname is at the same offset as in concept_sname, csu_sname, and
+  /// enum_sname.
   DECL_UNUSED(unsigned);
   /// @endcond
 
