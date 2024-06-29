@@ -849,7 +849,7 @@ static bool c_ast_check_for_multi_decl( c_ast_t const *ast ) {
   assert( ast != NULL );
   if ( (ast->kind & K_ANY_MULTI_DECL) == 0 )
     return false;
-  if ( (ast->kind & K_ANY_NAMED_OBJECT) != 0 && c_sname_empty( &ast->sname ) )
+  if ( (ast->kind & K_ANY_NAMEABLE) == 0 || c_sname_empty( &ast->sname ) )
     return false;
   return true;
 }
@@ -3269,8 +3269,9 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
 static void c_ast_warn_name( c_ast_t const *ast ) {
   assert( ast != NULL );
 
-  c_sname_warn( &ast->sname, &ast->loc );
-  if ( (ast->kind & K_ANY_NAMED_OBJECT) != 0 )
+  if ( (ast->kind & K_ANY_NAMEABLE) != 0 )
+    c_sname_warn( &ast->sname, &ast->loc );
+  if ( (ast->kind & K_ANY_NAMED) != 0 )
     c_sname_warn( &ast->named.sname, &ast->loc );
 }
 

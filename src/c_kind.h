@@ -309,25 +309,37 @@ typedef enum c_ast_kind c_ast_kind_t;
                                   | K_OPERATOR | K_UDEF_LIT )
 
 /**
+ * Shorthand for any kind that can or must be named: #K_APPLE_BLOCK, #K_ARRAY,
+ * #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_CONSTRUCTOR, #K_DESTRUCTOR, #K_ENUM,
+ * #K_FUNCTION, #K_POINTER, #K_POINTER_TO_MEMBER, #K_REFERENCE,
+ * #K_RVALUE_REFERENCE, #K_TYPEDEF, or #K_UDEF_LIT.
+ *
+ * @sa #K_ANY_NAMED
+ */
+#define K_ANY_NAMEABLE            ( K_ANY_OBJECT | K_APPLE_BLOCK \
+                                  | K_CONSTRUCTOR | K_DESTRUCTOR | K_FUNCTION \
+                                  | K_UDEF_LIT )
+/**
  * Shorthand for any kind that has a name: #K_CLASS_STRUCT_UNION, #K_CONCEPT,
  * #K_ENUM, or #K_POINTER_TO_MEMBER.
  *
+ * @sa #K_ANY_NAMEABLE
  * @sa #K_ANY_OBJECT
  */
-#define K_ANY_NAMED_OBJECT        ( K_ANY_ECSU | K_CONCEPT \
+#define K_ANY_NAMED               ( K_ANY_ECSU | K_CONCEPT \
                                   | K_POINTER_TO_MEMBER )
 
 /**
  * Shorthand for any kind of "object" that can be the type of a variable or
  * constant, i.e., something to which `sizeof` can be applied _except_ pointers
  * or references: #K_ARRAY, #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_CONCEPT,
- * #K_ENUM, or #K_TYPEDEF.
+ * #K_ENUM, #K_NAME, or #K_TYPEDEF.
  *
- * @sa #K_ANY_NAMED_OBJECT
+ * @sa #K_ANY_NAMED
  * @sa #K_ANY_OBJECT
  */
 #define K_ANY_NON_PTR_REF_OBJECT  ( K_ANY_ECSU | K_ARRAY | K_BUILTIN \
-                                  | K_CONCEPT | K_TYPEDEF )
+                                  | K_CONCEPT | K_NAME | K_TYPEDEF )
 
 /**
  * Shorthand for any kind of "object" that can be the type of a variable or
@@ -335,7 +347,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  * #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_ENUM, #K_POINTER,
  * #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE, or #K_TYPEDEF.
  *
- * @sa #K_ANY_NAMED_OBJECT
+ * @sa #K_ANY_NAMED
  * @sa #K_ANY_NON_PTR_REF_OBJECT
  */
 #define K_ANY_OBJECT              ( K_ANY_NON_PTR_REF_OBJECT | K_ANY_POINTER \

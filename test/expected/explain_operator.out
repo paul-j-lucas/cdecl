@@ -7,6 +7,9 @@ c++decl>
 c++decl> explain bool b, operator!(const S&)
 declare b as boolean
 declare ! as non-member operator (reference to constant structure S) returning boolean
+c++decl> explain bool operator!(), operator~()
+declare ! as member operator returning boolean
+declare ~ as member operator returning boolean
 c++decl> 
 c++decl> explain S operator!(const S&)
 declare ! as non-member operator (reference to constant structure S) returning structure S
@@ -14,11 +17,11 @@ c++decl> explain S operator!(const S2&)
 declare ! as non-member operator (reference to constant structure S2) returning structure S
 c++decl> explain S operator!(const SRE)
                              ^
-13,21: warning: "const" on reference type "SRE" (aka, "reference to structure S") has no effect
+14,21: warning: "const" on reference type "SRE" (aka, "reference to structure S") has no effect
 declare ! as non-member operator (constant SRE) returning structure S
 c++decl> explain S operator!(const SRU)
                              ^
-14,21: warning: "const" on reference type "SRU" (aka, "S&") has no effect
+15,21: warning: "const" on reference type "SRU" (aka, "S&") has no effect
 declare ! as non-member operator (constant SRU) returning structure S
 c++decl> 
 c++decl> explain S operator%(const S&, const S&)

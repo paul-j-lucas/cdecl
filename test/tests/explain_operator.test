@@ -7,6 +7,7 @@ using SRU = S&
 struct T
 
 explain bool b, operator!(const S&)
+explain bool operator!(), operator~()
 
 explain S operator!(const S&)
 explain S operator!(const S2&)
