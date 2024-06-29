@@ -22,13 +22,13 @@ set k&rc
 explain int f(x)
 
 set c++
+explain C auto x
 class C
 explain auto [x, y]
 explain bool operator!() const
 explain int C::*p
 explain operator bool() const
 explain int operator ""_w(char const *arg)
-explain C auto x
 explain ~C()
 explain []
 explain [](char c)

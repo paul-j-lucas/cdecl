@@ -5514,6 +5514,161 @@ cdecl> explain int f(x)
 declare f as function (x) returning integer
 cdecl> 
 cdecl> set c++
+c++decl> explain C auto x
+{
+  rule: {
+    lhs: "concept_type_c_ast",
+    rhs: "Y_CONCEPT_SNAME AUTO"
+  },
+  Y_CONCEPT_SNAME: { string: "C", scopes: "none" },
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x10, string: "concept" },
+    depth: 0,
+    loc: { first_line: 23, first_column: 8 },
+    type: { string: "none" },
+    concept: {
+      concept_sname: { string: "C", scopes: "none" }
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "east_modified_type_c_ast",
+    rhs: "east_modifiable_type_c_ast type_modifier_list_c_type_opt"
+  },
+  east_modifiable_type_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x10, string: "concept" },
+    depth: 0,
+    loc: { first_line: 23, first_column: 8 },
+    type: { string: "none" },
+    concept: {
+      concept_sname: { string: "C", scopes: "none" }
+    }
+  },
+  type_modifier_list_c_type_opt: { string: "none" },
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x10, string: "concept" },
+    depth: 0,
+    loc: { first_line: 23, first_column: 8, last_column: 13 },
+    type: { string: "none" },
+    concept: {
+      concept_sname: { string: "C", scopes: "none" }
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "sname_c",
+    rhs: "NAME"
+  },
+  NAME: "x",
+  $$_sname: { string: "x", scopes: "none" }
+}
+
+{
+  rule: {
+    lhs: "sname_c_ast",
+    rhs: "sname_c"
+  },
+  in_attr__type_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x10, string: "concept" },
+    depth: 0,
+    loc: { first_line: 23, first_column: 8, last_column: 13 },
+    type: { string: "none" },
+    concept: {
+      concept_sname: { string: "C", scopes: "none" }
+    }
+  },
+  sname_c: { string: "x", scopes: "none" },
+  bit_field_c_uint_opt: 0,
+  $$_ast: {
+    sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
+    kind: { value: 0x10, string: "concept" },
+    depth: 0,
+    loc: { first_line: 23, first_column: 8, last_column: 13 },
+    type: { string: "none" },
+    concept: {
+      concept_sname: { string: "C", scopes: "none" }
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "decl_c",
+    rhs: "decl_c_astp"
+  },
+  in_attr__typename_flag_opt: false,
+  in_attr__type_c_ast: {
+    sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
+    kind: { value: 0x10, string: "concept" },
+    depth: 0,
+    loc: { first_line: 23, first_column: 8, last_column: 13 },
+    type: { string: "none" },
+    concept: {
+      concept_sname: { string: "C", scopes: "none" }
+    }
+  },
+  decl_c_astp: {
+    ast: {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x10, string: "concept" },
+      depth: 0,
+      loc: { first_line: 23, first_column: 8, last_column: 13 },
+      type: { string: "none" },
+      concept: {
+        concept_sname: { string: "C", scopes: "none" }
+      }
+    },
+    target_ast: null
+  },
+  $$_ast: {
+    sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
+    kind: { value: 0x10, string: "concept" },
+    depth: 0,
+    loc: { first_line: 23, first_column: 8, last_column: 13 },
+    type: { string: "none" },
+    concept: {
+      concept_sname: { string: "C", scopes: "none" }
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x10, string: "concept" },
+      depth: 0,
+      loc: { first_line: 23, first_column: 8, last_column: 13 },
+      type: { string: "none" },
+      concept: {
+        concept_sname: { string: "C", scopes: "none" }
+      }
+    }
+  ]
+}
+
+declare x as concept C
 c++decl> class C
 {
   rule: {
@@ -5537,7 +5692,7 @@ c++decl> class C
     is_param_pack: false,
     kind: { value: 0x8, string: "class, struct, or union" },
     depth: 0,
-    loc: { first_line: 23, first_column: 6 },
+    loc: { first_line: 24, first_column: 6 },
     type: { btid: 0x0000000004000001, string: "class" },
     csu: {
       csu_sname: { string: "C", scopes: "none" }
@@ -5595,7 +5750,7 @@ c++decl> explain auto [x, y]
     is_param_pack: false,
     kind: { value: 0x8000, string: "structured binding" },
     depth: 0,
-    loc: { first_line: 24, first_column: 8, last_column: 18 },
+    loc: { first_line: 25, first_column: 8, last_column: 18 },
     type: { string: "none" },
     struct_bind: {
       sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
@@ -5613,7 +5768,7 @@ c++decl> explain auto [x, y]
     is_param_pack: false,
     kind: { value: 0x8000, string: "structured binding" },
     depth: 0,
-    loc: { first_line: 24, first_column: 8, last_column: 18 },
+    loc: { first_line: 25, first_column: 8, last_column: 18 },
     type: { string: "none" },
     struct_bind: {
       sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
@@ -5625,7 +5780,7 @@ c++decl> explain auto [x, y]
     is_param_pack: false,
     kind: { value: 0x8000, string: "structured binding" },
     depth: 0,
-    loc: { first_line: 24, first_column: 8, last_column: 18 },
+    loc: { first_line: 25, first_column: 8, last_column: 18 },
     type: { string: "none" },
     struct_bind: {
       sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
@@ -5643,7 +5798,7 @@ c++decl> explain auto [x, y]
     is_param_pack: false,
     kind: { value: 0x8000, string: "structured binding" },
     depth: 0,
-    loc: { first_line: 24, first_column: 8, last_column: 18 },
+    loc: { first_line: 25, first_column: 8, last_column: 18 },
     type: { string: "none" },
     struct_bind: {
       sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
@@ -5654,7 +5809,7 @@ c++decl> explain auto [x, y]
     is_param_pack: false,
     kind: { value: 0x8000, string: "structured binding" },
     depth: 0,
-    loc: { first_line: 24, first_column: 8, last_column: 18 },
+    loc: { first_line: 25, first_column: 8, last_column: 18 },
     type: { string: "none" },
     struct_bind: {
       sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
@@ -5675,7 +5830,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 25, first_column: 8, last_column: 11 },
+    loc: { first_line: 26, first_column: 8, last_column: 11 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -5693,7 +5848,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 25, first_column: 8, last_column: 11 },
+    loc: { first_line: 26, first_column: 8, last_column: 11 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -5705,7 +5860,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 25, first_column: 8, last_column: 11 },
+    loc: { first_line: 26, first_column: 8, last_column: 11 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -5733,7 +5888,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 25, first_column: 8, last_column: 11 },
+    loc: { first_line: 26, first_column: 8, last_column: 11 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -5753,7 +5908,7 @@ c++decl> explain bool operator!() const
       is_param_pack: false,
       kind: { value: 0x200000, string: "operator" },
       depth: 0,
-      loc: { first_line: 25, first_column: 11, last_column: 29 },
+      loc: { first_line: 26, first_column: 11, last_column: 29 },
       type: { stid: 0x0000000200000002, string: "const" },
       oper: {
         op_id: { value: 6, string: "!" },
@@ -5764,7 +5919,7 @@ c++decl> explain bool operator!() const
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 25, first_column: 8, last_column: 11 },
+          loc: { first_line: 26, first_column: 8, last_column: 11 },
           type: { btid: 0x0000000000000081, string: "bool" },
           builtin: {
             bit_width: 0
@@ -5777,7 +5932,7 @@ c++decl> explain bool operator!() const
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 25, first_column: 8, last_column: 11 },
+      loc: { first_line: 26, first_column: 8, last_column: 11 },
       type: { btid: 0x0000000000000081, string: "bool" },
       builtin: {
         bit_width: 0
@@ -5797,7 +5952,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 25, first_column: 8, last_column: 11 },
+    loc: { first_line: 26, first_column: 8, last_column: 11 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -5809,7 +5964,7 @@ c++decl> explain bool operator!() const
       is_param_pack: false,
       kind: { value: 0x200000, string: "operator" },
       depth: 0,
-      loc: { first_line: 25, first_column: 11, last_column: 29 },
+      loc: { first_line: 26, first_column: 11, last_column: 29 },
       type: { stid: 0x0000000200000002, string: "const" },
       oper: {
         op_id: { value: 6, string: "!" },
@@ -5820,7 +5975,7 @@ c++decl> explain bool operator!() const
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 25, first_column: 8, last_column: 11 },
+          loc: { first_line: 26, first_column: 8, last_column: 11 },
           type: { btid: 0x0000000000000081, string: "bool" },
           builtin: {
             bit_width: 0
@@ -5833,7 +5988,7 @@ c++decl> explain bool operator!() const
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 25, first_column: 8, last_column: 11 },
+      loc: { first_line: 26, first_column: 8, last_column: 11 },
       type: { btid: 0x0000000000000081, string: "bool" },
       builtin: {
         bit_width: 0
@@ -5845,7 +6000,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x200000, string: "operator" },
     depth: 0,
-    loc: { first_line: 25, first_column: 11, last_column: 29 },
+    loc: { first_line: 26, first_column: 11, last_column: 29 },
     type: { stid: 0x0000000200000002, string: "const" },
     oper: {
       op_id: { value: 6, string: "!" },
@@ -5856,7 +6011,7 @@ c++decl> explain bool operator!() const
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 25, first_column: 8, last_column: 11 },
+        loc: { first_line: 26, first_column: 8, last_column: 11 },
         type: { btid: 0x0000000000000081, string: "bool" },
         builtin: {
           bit_width: 0
@@ -5877,7 +6032,7 @@ c++decl> explain bool operator!() const
       is_param_pack: false,
       kind: { value: 0x200000, string: "operator" },
       depth: 0,
-      loc: { first_line: 25, first_column: 11, last_column: 29 },
+      loc: { first_line: 26, first_column: 11, last_column: 29 },
       type: { stid: 0x0000000200000002, string: "const" },
       oper: {
         op_id: { value: 6, string: "!" },
@@ -5888,7 +6043,7 @@ c++decl> explain bool operator!() const
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 25, first_column: 8, last_column: 11 },
+          loc: { first_line: 26, first_column: 8, last_column: 11 },
           type: { btid: 0x0000000000000081, string: "bool" },
           builtin: {
             bit_width: 0
@@ -5912,7 +6067,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 26, first_column: 8, last_column: 10 },
+    loc: { first_line: 27, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -5930,7 +6085,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 26, first_column: 8, last_column: 10 },
+    loc: { first_line: 27, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -5942,7 +6097,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 26, first_column: 8, last_column: 10 },
+    loc: { first_line: 27, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -5960,7 +6115,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 26, first_column: 8, last_column: 10 },
+    loc: { first_line: 27, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -5973,7 +6128,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
-    loc: { first_line: 26, first_column: 12, last_column: 15 },
+    loc: { first_line: 27, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
@@ -5982,7 +6137,7 @@ c++decl> explain int C::*p
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 26, first_column: 8, last_column: 10 },
+        loc: { first_line: 27, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -6011,7 +6166,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
-    loc: { first_line: 26, first_column: 12, last_column: 15 },
+    loc: { first_line: 27, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
@@ -6020,7 +6175,7 @@ c++decl> explain int C::*p
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 26, first_column: 8, last_column: 10 },
+        loc: { first_line: 27, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -6035,7 +6190,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
-    loc: { first_line: 26, first_column: 12, last_column: 15 },
+    loc: { first_line: 27, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
@@ -6044,7 +6199,7 @@ c++decl> explain int C::*p
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 26, first_column: 8, last_column: 10 },
+        loc: { first_line: 27, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -6064,7 +6219,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
-    loc: { first_line: 26, first_column: 12, last_column: 15 },
+    loc: { first_line: 27, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
@@ -6073,7 +6228,7 @@ c++decl> explain int C::*p
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 26, first_column: 8, last_column: 10 },
+        loc: { first_line: 27, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -6087,7 +6242,7 @@ c++decl> explain int C::*p
       is_param_pack: false,
       kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
-      loc: { first_line: 26, first_column: 12, last_column: 15 },
+      loc: { first_line: 27, first_column: 12, last_column: 15 },
       type: { btid: 0x0000000004000001, string: "class" },
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
@@ -6096,7 +6251,7 @@ c++decl> explain int C::*p
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 26, first_column: 8, last_column: 10 },
+          loc: { first_line: 27, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6112,7 +6267,7 @@ c++decl> explain int C::*p
       is_param_pack: false,
       kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
-      loc: { first_line: 26, first_column: 12, last_column: 16 },
+      loc: { first_line: 27, first_column: 12, last_column: 16 },
       type: { btid: 0x0000000004000001, string: "class" },
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
@@ -6121,7 +6276,7 @@ c++decl> explain int C::*p
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 26, first_column: 8, last_column: 10 },
+          loc: { first_line: 27, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6144,7 +6299,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 26, first_column: 8, last_column: 10 },
+    loc: { first_line: 27, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6156,7 +6311,7 @@ c++decl> explain int C::*p
       is_param_pack: false,
       kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
-      loc: { first_line: 26, first_column: 12, last_column: 16 },
+      loc: { first_line: 27, first_column: 12, last_column: 16 },
       type: { btid: 0x0000000004000001, string: "class" },
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
@@ -6165,7 +6320,7 @@ c++decl> explain int C::*p
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 26, first_column: 8, last_column: 10 },
+          loc: { first_line: 27, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6180,7 +6335,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
-    loc: { first_line: 26, first_column: 12, last_column: 16 },
+    loc: { first_line: 27, first_column: 12, last_column: 16 },
     type: { btid: 0x0000000004000001, string: "class" },
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
@@ -6189,7 +6344,7 @@ c++decl> explain int C::*p
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 26, first_column: 8, last_column: 10 },
+        loc: { first_line: 27, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -6210,7 +6365,7 @@ c++decl> explain int C::*p
       is_param_pack: false,
       kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
-      loc: { first_line: 26, first_column: 12, last_column: 16 },
+      loc: { first_line: 27, first_column: 12, last_column: 16 },
       type: { btid: 0x0000000004000001, string: "class" },
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
@@ -6219,7 +6374,7 @@ c++decl> explain int C::*p
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 26, first_column: 8, last_column: 10 },
+          loc: { first_line: 27, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6243,7 +6398,7 @@ c++decl> explain operator bool() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 17, last_column: 20 },
+    loc: { first_line: 28, first_column: 17, last_column: 20 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -6261,7 +6416,7 @@ c++decl> explain operator bool() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 17, last_column: 20 },
+    loc: { first_line: 28, first_column: 17, last_column: 20 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -6273,7 +6428,7 @@ c++decl> explain operator bool() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 17, last_column: 20 },
+    loc: { first_line: 28, first_column: 17, last_column: 20 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -6303,7 +6458,7 @@ c++decl> explain operator bool() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 17, last_column: 20 },
+    loc: { first_line: 28, first_column: 17, last_column: 20 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -6319,7 +6474,7 @@ c++decl> explain operator bool() const
       is_param_pack: false,
       kind: { value: 0x400000, string: "user-defined conversion operator" },
       depth: 0,
-      loc: { first_line: 27, first_column: 6, last_column: 28 },
+      loc: { first_line: 28, first_column: 6, last_column: 28 },
       type: { stid: 0x0000000200000002, string: "const" },
       udef_conv: {
         to_ast: {
@@ -6327,7 +6482,7 @@ c++decl> explain operator bool() const
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 27, first_column: 17, last_column: 20 },
+          loc: { first_line: 28, first_column: 17, last_column: 20 },
           type: { btid: 0x0000000000000081, string: "bool" },
           builtin: {
             bit_width: 0
@@ -6340,7 +6495,7 @@ c++decl> explain operator bool() const
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 27, first_column: 17, last_column: 20 },
+      loc: { first_line: 28, first_column: 17, last_column: 20 },
       type: { btid: 0x0000000000000081, string: "bool" },
       builtin: {
         bit_width: 0
@@ -6360,7 +6515,7 @@ c++decl> explain operator bool() const
       is_param_pack: false,
       kind: { value: 0x400000, string: "user-defined conversion operator" },
       depth: 0,
-      loc: { first_line: 27, first_column: 6, last_column: 28 },
+      loc: { first_line: 28, first_column: 6, last_column: 28 },
       type: { stid: 0x0000000200000002, string: "const" },
       udef_conv: {
         to_ast: {
@@ -6368,7 +6523,7 @@ c++decl> explain operator bool() const
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 27, first_column: 17, last_column: 20 },
+          loc: { first_line: 28, first_column: 17, last_column: 20 },
           type: { btid: 0x0000000000000081, string: "bool" },
           builtin: {
             bit_width: 0
@@ -6381,7 +6536,7 @@ c++decl> explain operator bool() const
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 27, first_column: 17, last_column: 20 },
+      loc: { first_line: 28, first_column: 17, last_column: 20 },
       type: { btid: 0x0000000000000081, string: "bool" },
       builtin: {
         bit_width: 0
@@ -6403,7 +6558,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 28, first_column: 8, last_column: 10 },
+    loc: { first_line: 29, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6421,7 +6576,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 28, first_column: 8, last_column: 10 },
+    loc: { first_line: 29, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6433,7 +6588,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 28, first_column: 8, last_column: 10 },
+    loc: { first_line: 29, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6452,7 +6607,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 28, first_column: 26, last_column: 29 },
+    loc: { first_line: 29, first_column: 26, last_column: 29 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -6470,7 +6625,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 28, first_column: 26, last_column: 29 },
+    loc: { first_line: 29, first_column: 26, last_column: 29 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -6482,7 +6637,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 28, first_column: 26, last_column: 35 },
+    loc: { first_line: 29, first_column: 26, last_column: 35 },
     type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
     builtin: {
       bit_width: 0
@@ -6500,7 +6655,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 28, first_column: 26, last_column: 35 },
+    loc: { first_line: 29, first_column: 26, last_column: 35 },
     type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
     builtin: {
       bit_width: 0
@@ -6512,7 +6667,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 28, first_column: 37 },
+    loc: { first_line: 29, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6520,7 +6675,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 28, first_column: 26, last_column: 35 },
+        loc: { first_line: 29, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6549,7 +6704,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 28, first_column: 37 },
+    loc: { first_line: 29, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6557,7 +6712,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 28, first_column: 26, last_column: 35 },
+        loc: { first_line: 29, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6572,7 +6727,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 28, first_column: 37 },
+    loc: { first_line: 29, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6580,7 +6735,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 28, first_column: 26, last_column: 35 },
+        loc: { first_line: 29, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6600,7 +6755,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 28, first_column: 37 },
+    loc: { first_line: 29, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6608,7 +6763,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 28, first_column: 26, last_column: 35 },
+        loc: { first_line: 29, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6622,7 +6777,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800, string: "pointer" },
       depth: 0,
-      loc: { first_line: 28, first_column: 37 },
+      loc: { first_line: 29, first_column: 37 },
       type: { string: "none" },
       ptr_ref: {
         to_ast: {
@@ -6630,7 +6785,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 28, first_column: 26, last_column: 35 },
+          loc: { first_line: 29, first_column: 26, last_column: 35 },
           type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
           builtin: {
             bit_width: 0
@@ -6646,7 +6801,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800, string: "pointer" },
       depth: 0,
-      loc: { first_line: 28, first_column: 37 },
+      loc: { first_line: 29, first_column: 37 },
       type: { string: "none" },
       ptr_ref: {
         to_ast: {
@@ -6654,7 +6809,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 28, first_column: 26, last_column: 35 },
+          loc: { first_line: 29, first_column: 26, last_column: 35 },
           type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
           builtin: {
             bit_width: 0
@@ -6677,7 +6832,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 28, first_column: 26, last_column: 35 },
+    loc: { first_line: 29, first_column: 26, last_column: 35 },
     type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
     builtin: {
       bit_width: 0
@@ -6689,7 +6844,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800, string: "pointer" },
       depth: 0,
-      loc: { first_line: 28, first_column: 37 },
+      loc: { first_line: 29, first_column: 37 },
       type: { string: "none" },
       ptr_ref: {
         to_ast: {
@@ -6697,7 +6852,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 28, first_column: 26, last_column: 35 },
+          loc: { first_line: 29, first_column: 26, last_column: 35 },
           type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
           builtin: {
             bit_width: 0
@@ -6712,7 +6867,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 28, first_column: 37 },
+    loc: { first_line: 29, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6720,7 +6875,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 28, first_column: 26, last_column: 35 },
+        loc: { first_line: 29, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6740,7 +6895,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 28, first_column: 37 },
+    loc: { first_line: 29, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6748,7 +6903,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 28, first_column: 26, last_column: 35 },
+        loc: { first_line: 29, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6762,7 +6917,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800, string: "pointer" },
       depth: 0,
-      loc: { first_line: 28, first_column: 37 },
+      loc: { first_line: 29, first_column: 37 },
       type: { string: "none" },
       ptr_ref: {
         to_ast: {
@@ -6770,7 +6925,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 28, first_column: 26, last_column: 35 },
+          loc: { first_line: 29, first_column: 26, last_column: 35 },
           type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
           builtin: {
             bit_width: 0
@@ -6791,7 +6946,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 28, first_column: 8, last_column: 10 },
+    loc: { first_line: 29, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6805,7 +6960,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800, string: "pointer" },
       depth: 0,
-      loc: { first_line: 28, first_column: 37 },
+      loc: { first_line: 29, first_column: 37 },
       type: { string: "none" },
       ptr_ref: {
         to_ast: {
@@ -6813,7 +6968,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 28, first_column: 26, last_column: 35 },
+          loc: { first_line: 29, first_column: 26, last_column: 35 },
           type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
           builtin: {
             bit_width: 0
@@ -6830,7 +6985,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800000, string: "user-defined literal" },
       depth: 0,
-      loc: { first_line: 28, first_column: 10, last_column: 41 },
+      loc: { first_line: 29, first_column: 10, last_column: 41 },
       type: { string: "none" },
       udef_lit: {
         param_ast_list: [
@@ -6839,7 +6994,7 @@ c++decl> explain int operator ""_w(char const *arg)
             is_param_pack: false,
             kind: { value: 0x800, string: "pointer" },
             depth: 0,
-            loc: { first_line: 28, first_column: 37 },
+            loc: { first_line: 29, first_column: 37 },
             type: { string: "none" },
             ptr_ref: {
               to_ast: {
@@ -6847,7 +7002,7 @@ c++decl> explain int operator ""_w(char const *arg)
                 is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
-                loc: { first_line: 28, first_column: 26, last_column: 35 },
+                loc: { first_line: 29, first_column: 26, last_column: 35 },
                 type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
                 builtin: {
                   bit_width: 0
@@ -6861,7 +7016,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 28, first_column: 8, last_column: 10 },
+          loc: { first_line: 29, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6874,7 +7029,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 28, first_column: 8, last_column: 10 },
+      loc: { first_line: 29, first_column: 8, last_column: 10 },
       type: { btid: 0x0000000000004001, string: "int" },
       builtin: {
         bit_width: 0
@@ -6894,7 +7049,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 28, first_column: 8, last_column: 10 },
+    loc: { first_line: 29, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6906,7 +7061,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800000, string: "user-defined literal" },
       depth: 0,
-      loc: { first_line: 28, first_column: 10, last_column: 41 },
+      loc: { first_line: 29, first_column: 10, last_column: 41 },
       type: { string: "none" },
       udef_lit: {
         param_ast_list: [
@@ -6915,7 +7070,7 @@ c++decl> explain int operator ""_w(char const *arg)
             is_param_pack: false,
             kind: { value: 0x800, string: "pointer" },
             depth: 0,
-            loc: { first_line: 28, first_column: 37 },
+            loc: { first_line: 29, first_column: 37 },
             type: { string: "none" },
             ptr_ref: {
               to_ast: {
@@ -6923,7 +7078,7 @@ c++decl> explain int operator ""_w(char const *arg)
                 is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
-                loc: { first_line: 28, first_column: 26, last_column: 35 },
+                loc: { first_line: 29, first_column: 26, last_column: 35 },
                 type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
                 builtin: {
                   bit_width: 0
@@ -6937,7 +7092,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 28, first_column: 8, last_column: 10 },
+          loc: { first_line: 29, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6950,7 +7105,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 28, first_column: 8, last_column: 10 },
+      loc: { first_line: 29, first_column: 8, last_column: 10 },
       type: { btid: 0x0000000000004001, string: "int" },
       builtin: {
         bit_width: 0
@@ -6962,7 +7117,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800000, string: "user-defined literal" },
     depth: 0,
-    loc: { first_line: 28, first_column: 10, last_column: 41 },
+    loc: { first_line: 29, first_column: 10, last_column: 41 },
     type: { string: "none" },
     udef_lit: {
       param_ast_list: [
@@ -6971,7 +7126,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x800, string: "pointer" },
           depth: 0,
-          loc: { first_line: 28, first_column: 37 },
+          loc: { first_line: 29, first_column: 37 },
           type: { string: "none" },
           ptr_ref: {
             to_ast: {
@@ -6979,7 +7134,7 @@ c++decl> explain int operator ""_w(char const *arg)
               is_param_pack: false,
               kind: { value: 0x2, string: "built-in type" },
               depth: 0,
-              loc: { first_line: 28, first_column: 26, last_column: 35 },
+              loc: { first_line: 29, first_column: 26, last_column: 35 },
               type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
               builtin: {
                 bit_width: 0
@@ -6993,7 +7148,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 28, first_column: 8, last_column: 10 },
+        loc: { first_line: 29, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -7014,7 +7169,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800000, string: "user-defined literal" },
       depth: 0,
-      loc: { first_line: 28, first_column: 10, last_column: 41 },
+      loc: { first_line: 29, first_column: 10, last_column: 41 },
       type: { string: "none" },
       udef_lit: {
         param_ast_list: [
@@ -7023,7 +7178,7 @@ c++decl> explain int operator ""_w(char const *arg)
             is_param_pack: false,
             kind: { value: 0x800, string: "pointer" },
             depth: 0,
-            loc: { first_line: 28, first_column: 37 },
+            loc: { first_line: 29, first_column: 37 },
             type: { string: "none" },
             ptr_ref: {
               to_ast: {
@@ -7031,7 +7186,7 @@ c++decl> explain int operator ""_w(char const *arg)
                 is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
-                loc: { first_line: 28, first_column: 26, last_column: 35 },
+                loc: { first_line: 29, first_column: 26, last_column: 35 },
                 type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
                 builtin: {
                   bit_width: 0
@@ -7045,7 +7200,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 28, first_column: 8, last_column: 10 },
+          loc: { first_line: 29, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -7057,129 +7212,6 @@ c++decl> explain int operator ""_w(char const *arg)
 }
 
 declare _w as user-defined literal (arg as pointer to constant character) returning integer
-c++decl> explain C auto x
-{
-  rule: {
-    lhs: "typedef_type_c_ast",
-    rhs: "any_typedef_tdef sub_scope_sname_c_opt"
-  },
-  in_attr__type_c_ast: null,
-  any_typedef__ast: {
-    sname: { string: "C", scopes: "class" },
-    is_param_pack: false,
-    kind: { value: 0x8, string: "class, struct, or union" },
-    depth: 0,
-    loc: { first_line: 23, first_column: 6 },
-    type: { btid: 0x0000000004000001, string: "class" },
-    csu: {
-      csu_sname: { string: "C", scopes: "none" }
-    }
-  },
-  sub_scope_sname_c_opt: null,
-  $$_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x40, string: "typedef" },
-    depth: 0,
-    loc: { first_line: 29, first_column: 8 },
-    type: { btid: 0x0000000020000001, string: "none" },
-    tdef: {
-      for_ast: {
-        sname: { string: "C", scopes: "class" },
-        is_param_pack: false,
-        kind: { value: 0x8, string: "class, struct, or union" },
-        depth: 0,
-        loc: { first_line: 23, first_column: 6 },
-        type: { btid: 0x0000000004000001, string: "class" },
-        csu: {
-          csu_sname: { string: "C", scopes: "none" }
-        }
-      },
-      bit_width: 0
-    }
-  }
-}
-
-{
-  rule: {
-    lhs: "east_modified_type_c_ast",
-    rhs: "east_modifiable_type_c_ast type_modifier_list_c_type_opt"
-  },
-  east_modifiable_type_c_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x40, string: "typedef" },
-    depth: 0,
-    loc: { first_line: 29, first_column: 8 },
-    type: { btid: 0x0000000020000001, string: "none" },
-    tdef: {
-      for_ast: {
-        sname: { string: "C", scopes: "class" },
-        is_param_pack: false,
-        kind: { value: 0x8, string: "class, struct, or union" },
-        depth: 0,
-        loc: { first_line: 23, first_column: 6 },
-        type: { btid: 0x0000000004000001, string: "class" },
-        csu: {
-          csu_sname: { string: "C", scopes: "none" }
-        }
-      },
-      bit_width: 0
-    }
-  },
-  type_modifier_list_c_type_opt: { string: "none" },
-  $$_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x40, string: "typedef" },
-    depth: 0,
-    loc: { first_line: 29, first_column: 8 },
-    type: { btid: 0x0000000020000001, string: "none" },
-    tdef: {
-      for_ast: {
-        sname: { string: "C", scopes: "class" },
-        is_param_pack: false,
-        kind: { value: 0x8, string: "class, struct, or union" },
-        depth: 0,
-        loc: { first_line: 23, first_column: 6 },
-        type: { btid: 0x0000000004000001, string: "class" },
-        csu: {
-          csu_sname: { string: "C", scopes: "none" }
-        }
-      },
-      bit_width: 0
-    }
-  }
-}
-
-{
-  rule: {
-    lhs: "decl_list_c_opt",
-    rhs: "<empty>"
-  },
-  in_attr__type_c_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x40, string: "typedef" },
-    depth: 0,
-    loc: { first_line: 29, first_column: 8 },
-    type: { btid: 0x0000000020000001, string: "none" },
-    tdef: {
-      for_ast: {
-        sname: { string: "C", scopes: "class" },
-        is_param_pack: false,
-        kind: { value: 0x8, string: "class, struct, or union" },
-        depth: 0,
-        loc: { first_line: 23, first_column: 6 },
-        type: { btid: 0x0000000004000001, string: "class" },
-        csu: {
-          csu_sname: { string: "C", scopes: "none" }
-        }
-      },
-      bit_width: 0
-    }
-  }                   ^
-31,11: error: [parser.y:4529] declaration expected ("auto" is a keyword)
 c++decl> explain ~C()
 {
   rule: {
