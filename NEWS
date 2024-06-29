@@ -24,6 +24,19 @@ insensitive), then **cdecl** will print its process ID and a "waiting for
 debugger to attach" message to standard error and wait indefinitely for a
 debugger to attach.
 
+** Digraph & trigraph preprocessor support
+Digraphs & trigraphs are now supported by the preprocessor:
+
+    %:define  QD(X)  %:X          // same as: #define QD(X) #X
+    ??=define QT(X)  ??=X         // same as: #define QT(X) #X
+
+Additionally when showing macros in either digraph or trigraph mode, the
+correct tokens are used:
+
+    cdecl> set digraphs
+    cdecl> show QD
+    %:define QD(X) %:X
+
 ** File line number
 When reading from a file via `-f`, now includes the file name and error line
 number in error messages.

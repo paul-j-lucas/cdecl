@@ -27,6 +27,7 @@
 #include "c_lang.h"
 #include "c_operator.h"
 #include "color.h"
+#include "gibberish.h"
 #include "lexer.h"
 #include "literals.h"
 #include "p_macro.h"
@@ -690,7 +691,7 @@ char const* p_token_str( p_token_t const *token ) {
       strbuf_puts_quoted( &sbuf, '\'', token->lit.value );
       return sbuf.str;
     case P_CONCAT:
-      return "##";
+      return other_token_c( "##" );
     case P_IDENTIFIER:
       return token->ident.name;
     case P_NUM_LIT:
@@ -705,7 +706,7 @@ char const* p_token_str( p_token_t const *token ) {
     case P_SPACE:
       return " ";
     case P_STRINGIFY:
-      return "#";
+      return other_token_c( "#" );
     case P_STR_LIT:
       strbuf_reset( &sbuf );
       strbuf_puts_quoted( &sbuf, '"', token->lit.value );

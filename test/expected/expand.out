@@ -476,6 +476,42 @@ OLD_QUOTE(a) => #X
 152,17: warning: '#' not supported until C89; treated as text
 OLD_QUOTE(a) => #a
 cdecl> 
+cdecl> set c17
+cdecl> set digraphs
+cdecl> 
+cdecl> %:define PASTE_DIGRAPH(A,B)       A %:%: B
+cdecl> expand PASTE_DIGRAPH(a,b)
+PASTE_DIGRAPH(a, b) => A %:%: B
+PASTE_DIGRAPH(a, b) => a %:%: b
+PASTE_DIGRAPH(a, b) => ab
+cdecl> show PASTE_DIGRAPH
+%:define PASTE_DIGRAPH(A, B) A %:%: B
+cdecl> 
+cdecl> %:define QUOTE_DIGRAPH(X)         %:X
+cdecl> expand QUOTE_DIGRAPH(a)
+QUOTE_DIGRAPH(a) => %:X
+QUOTE_DIGRAPH(a) => "a"
+cdecl> show QUOTE_DIGRAPH
+%:define QUOTE_DIGRAPH(X) %:X
+cdecl> 
+cdecl> set trigraphs
+cdecl> 
+cdecl> ??=define PASTE_TRIGRAPH(A,B)     A ??=??= B
+cdecl> expand PASTE_TRIGRAPH(a,b)
+PASTE_TRIGRAPH(a, b) => A ??=??= B
+PASTE_TRIGRAPH(a, b) => a ??=??= b
+PASTE_TRIGRAPH(a, b) => ab
+cdecl> show PASTE_TRIGRAPH
+??=define PASTE_TRIGRAPH(A, B) A ??=??= B
+cdecl> 
+cdecl> ??=define QUOTE_TRIGRAPH(X)       ??=X
+cdecl> expand QUOTE_TRIGRAPH(a)
+QUOTE_TRIGRAPH(a) => ??=X
+QUOTE_TRIGRAPH(a) => "a"
+cdecl> show QUOTE_TRIGRAPH
+??=define QUOTE_TRIGRAPH(X) ??=X
+cdecl> 
+cdecl> set nographs
 cdecl> set c
 cdecl> 
 cdecl> ////////// NARG() /////////////////////////////////////////////////////////////
@@ -562,7 +598,7 @@ NARG(x) => NARG_HELPER1( HAS_COMMA( __VA_ARGS__ ), HAS_COMMA( NARG_COMMA __VA_AR
 | __VA_ARGS__ => x
 NARG(x) => NARG_HELPER1( HAS_COMMA( x ), HAS_COMMA( NARG_COMMA x () ), NARG_( x, REV_SEQ_N ) )
                                                     ^
-179,53: warning: "NARG_COMMA": function-like macro without arguments will not expand
+201,53: warning: "NARG_COMMA": function-like macro without arguments will not expand
 | NARG_HELPER1(HAS_COMMA( x ), HAS_COMMA( NARG_COMMA x () ), NARG_( x, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
 | | A => HAS_COMMA( x )
 | | | HAS_COMMA(x) => NARG_( __VA_ARGS__, HAS_COMMA_N )
@@ -622,7 +658,7 @@ NARG(x, y) => NARG_HELPER1( HAS_COMMA( __VA_ARGS__ ), HAS_COMMA( NARG_COMMA __VA
 | __VA_ARGS__ => x, y
 NARG(x, y) => NARG_HELPER1( HAS_COMMA( x, y ), HAS_COMMA( NARG_COMMA x, y () ), NARG_( x, y, REV_SEQ_N ) )
                                                           ^
-180,59: warning: "NARG_COMMA": function-like macro without arguments will not expand
+202,59: warning: "NARG_COMMA": function-like macro without arguments will not expand
 | NARG_HELPER1(HAS_COMMA( x, y ), HAS_COMMA( NARG_COMMA x, y () ), NARG_( x, y, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
 | | A => HAS_COMMA( x, y )
 | | | HAS_COMMA(x, y) => NARG_( __VA_ARGS__, HAS_COMMA_N )
@@ -768,10 +804,10 @@ cx_throw() => DEF_ARGS(THROW_, )
 | | | PASTE_HELPER(THROW_, 0) => THROW_ ## 0
 | | | PASTE_HELPER(THROW_, 0) => THROW_0
                                  ^
-194,34: warning: "THROW_0": function-like macro without arguments will not expand
+216,34: warning: "THROW_0": function-like macro without arguments will not expand
 | | PASTE(THROW_, 0) => THROW_0
                         ^
-194,25: warning: "THROW_0": function-like macro without arguments will not expand
+216,25: warning: "THROW_0": function-like macro without arguments will not expand
 | DEF_ARGS(THROW_,) => THROW_0()
 | | THROW_0() => THROW_1( cx_tb.thrown_xid )
 | | | THROW_1(cx_tb.thrown_xid) => THROW_2( (XID), cx_user_data() )
@@ -804,7 +840,7 @@ cx_throw(123) => DEF_ARGS(THROW_, 123)
 | | | | | __VA_ARGS__ => 123
 | | | | NARG(123) => NARG_HELPER1( HAS_COMMA( 123 ), HAS_COMMA( NARG_COMMA 123 () ), NARG_( 123, REV_SEQ_N ) )
                                                                 ^
-195,65: warning: "NARG_COMMA": function-like macro without arguments will not expand
+217,65: warning: "NARG_COMMA": function-like macro without arguments will not expand
 | | | | | NARG_HELPER1(HAS_COMMA( 123 ), HAS_COMMA( NARG_COMMA 123 () ), NARG_( 123, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
 | | | | | | A => HAS_COMMA( 123 )
 | | | | | | | HAS_COMMA(123) => NARG_( __VA_ARGS__, HAS_COMMA_N )
@@ -865,10 +901,10 @@ cx_throw(123) => DEF_ARGS(THROW_, 123)
 | | | PASTE_HELPER(THROW_, 1) => THROW_ ## 1
 | | | PASTE_HELPER(THROW_, 1) => THROW_1
                                  ^
-195,34: warning: "THROW_1": function-like macro without arguments will not expand
+217,34: warning: "THROW_1": function-like macro without arguments will not expand
 | | PASTE(THROW_, 1) => THROW_1
                         ^
-195,25: warning: "THROW_1": function-like macro without arguments will not expand
+217,25: warning: "THROW_1": function-like macro without arguments will not expand
 | DEF_ARGS(THROW_, 123) => THROW_1( 123)
 | | THROW_1(123) => THROW_2( (XID), cx_user_data() )
 | | | XID => 123
@@ -899,7 +935,7 @@ cx_throw(123, ptr) => DEF_ARGS(THROW_, 123, ptr)
 | | | | | __VA_ARGS__ => 123, ptr
 | | | | NARG(123, ptr) => NARG_HELPER1( HAS_COMMA( 123, ptr ), HAS_COMMA( NARG_COMMA 123, ptr () ), NARG_( 123, ptr, REV_SEQ_N ) )
                                                                           ^
-196,75: warning: "NARG_COMMA": function-like macro without arguments will not expand
+218,75: warning: "NARG_COMMA": function-like macro without arguments will not expand
 | | | | | NARG_HELPER1(HAS_COMMA( 123, ptr ), HAS_COMMA( NARG_COMMA 123, ptr () ), NARG_( 123, ptr, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
 | | | | | | A => HAS_COMMA( 123, ptr )
 | | | | | | | HAS_COMMA(123, ptr) => NARG_( __VA_ARGS__, HAS_COMMA_N )
@@ -962,10 +998,10 @@ cx_throw(123, ptr) => DEF_ARGS(THROW_, 123, ptr)
 | | | PASTE_HELPER(THROW_, 2) => THROW_ ## 2
 | | | PASTE_HELPER(THROW_, 2) => THROW_2
                                  ^
-196,34: warning: "THROW_2": function-like macro without arguments will not expand
+218,34: warning: "THROW_2": function-like macro without arguments will not expand
 | | PASTE(THROW_, 2) => THROW_2
                         ^
-196,25: warning: "THROW_2": function-like macro without arguments will not expand
+218,25: warning: "THROW_2": function-like macro without arguments will not expand
 | DEF_ARGS(THROW_, 123, ptr) => THROW_2( 123, ptr)
 | | THROW_2(123, ptr) => cx_impl_throw( __FILE__, __LINE__, (XID), (void*)(DATA) )
 | | | XID => 123
@@ -983,19 +1019,19 @@ cdecl> set knr
 cdecl> 
 cdecl> #define OLD_DATE                  __DATE__
                                          ^
-202,35: warning: "__DATE__" not supported until C89; will not expand
+224,35: warning: "__DATE__" not supported until C89; will not expand
 cdecl> expand OLD_DATE
 OLD_DATE => __DATE__
             ^
-203,13: warning: "__DATE__" not supported until C89; will not expand
+225,13: warning: "__DATE__" not supported until C89; will not expand
 cdecl> 
 cdecl> #define OLD_TIME                  __TIME__
                                          ^
-205,35: warning: "__TIME__" not supported until C89; will not expand
+227,35: warning: "__TIME__" not supported until C89; will not expand
 cdecl> expand OLD_TIME
 OLD_TIME => __TIME__
             ^
-206,13: warning: "__TIME__" not supported until C89; will not expand
+228,13: warning: "__TIME__" not supported until C89; will not expand
 cdecl> 
 cdecl> set c
 cdecl> 

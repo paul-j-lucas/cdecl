@@ -1192,31 +1192,6 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 } /* <INITIAL,X_PRE_TOKENS> */
 
   /***************************************************************************/
-  /*  DIGRAPHS & TRIGRAPHS                                                   */
-  /***************************************************************************/
-
-<*>{
-              /* Digraphs. */
-"<%"          { set_digraph( "{" ); return '{'; }
-"%>"          { set_digraph( "}" ); return '}'; }
-"<:"          { set_digraph( "[" ); return '['; }
-":>"          { set_digraph( "]" ); return ']'; }
-
-              /* Trigraphs. */
-"??'="        { set_trigraph( "^=" ); return Y_CARET_EQUAL; }
-"??!="        { set_trigraph( "|=" ); return Y_PIPE_EQUAL ; }
-"??!??!"      { set_trigraph( "||" ); return Y_PIPE_PIPE  ; }
-"??!"         { set_trigraph( "|"  ); return '|'          ; }
-"??'"         { set_trigraph( "^"  ); return '^'          ; }
-"??("         { set_trigraph( "["  ); return '['          ; }
-"??)"         { set_trigraph( "]"  ); return ']'          ; }
-"??<"         { set_trigraph( "{"  ); return '{'          ; }
-"??>"         { set_trigraph( "}"  ); return '}'          ; }
-"??-"         { set_trigraph( "~"  ); return '~'          ; }
-
-} /* <*> */
-
-  /***************************************************************************/
   /*  OPERATORS & PUNCTUATION                                                */
   /***************************************************************************/
 
@@ -1270,7 +1245,25 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                */
 ^{S}*"#"      {
                 BEGIN( X_PRE_COMMAND );
-                return yytext[0];
+                return '#';
+              }
+
+              /*
+               * Same as above, but for the digraph equivalent of '#'.
+               */
+^{S}*"%:"     {
+                set_digraph( "#" );
+                BEGIN( X_PRE_COMMAND );
+                return '#';
+              }
+
+              /*
+               * Same as above, but for the trigraph equivalent of '#'.
+               */
+^{S}*"??="    {
+                set_trigraph( "#" );
+                BEGIN( X_PRE_COMMAND );
+                return '#';
               }
 
               /* Single-character operators and miscellaneous punctuation. */
@@ -1301,6 +1294,32 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 "~"           { return yytext[0]                ; }
 
 } /* <INITIAL,X_PRE_TOKENS> */
+
+  /***************************************************************************/
+  /*  DIGRAPHS & TRIGRAPHS                                                   */
+  /***************************************************************************/
+
+<*>{
+              /* Digraphs. */
+"%:"          { set_digraph( "#" ); return '#'; }
+"<%"          { set_digraph( "{" ); return '{'; }
+"%>"          { set_digraph( "}" ); return '}'; }
+"<:"          { set_digraph( "[" ); return '['; }
+":>"          { set_digraph( "]" ); return ']'; }
+
+              /* Trigraphs. */
+"??'="        { set_trigraph( "^=" ); return Y_CARET_EQUAL; }
+"??!="        { set_trigraph( "|=" ); return Y_PIPE_EQUAL ; }
+"??!??!"      { set_trigraph( "||" ); return Y_PIPE_PIPE  ; }
+"??'"         { set_trigraph( "^"  ); return '^'          ; }
+"??("         { set_trigraph( "["  ); return '['          ; }
+"??)"         { set_trigraph( "]"  ); return ']'          ; }
+"??<"         { set_trigraph( "{"  ); return '{'          ; }
+"??!"         { set_trigraph( "|"  ); return '|'          ; }
+"??>"         { set_trigraph( "}"  ); return '}'          ; }
+"??-"         { set_trigraph( "~"  ); return '~'          ; }
+
+} /* <*> */
 
   /***************************************************************************/
   /*  RAW STRING LITERALS                                                    */
@@ -1585,6 +1604,12 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 yylval.name = check_strdup( yytext );
                 return Y_NAME;
               }
+
+  "%:%:"      { set_digraph( "##" ); return Y_PRE_CONCAT; }
+  "%:"        { set_digraph( "#"  ); return '#'         ; }
+
+  "??=??="    { set_trigraph( "##" ); return Y_PRE_CONCAT ; }
+  "??="       { set_trigraph( "#"  ); return '#'          ; }
 
   "##"        { return Y_PRE_CONCAT ; }
 

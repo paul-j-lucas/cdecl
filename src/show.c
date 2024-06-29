@@ -32,6 +32,7 @@
 #include "c_sname.h"
 #include "c_typedef.h"
 #include "decl_flags.h"
+#include "gibberish.h"
 #include "options.h"
 #include "p_token.h"
 #include "print.h"
@@ -180,11 +181,14 @@ bool show_macro( p_macro_t const *macro, FILE *fout ) {
     (*macro->dyn_fn)( &token );
     if ( token == NULL )
       return false;
-    FPRINTF( fout, "#define %s %s\n", macro->name, p_token_str( token ) );
+    FPRINTF( fout,
+      "%sdefine %s %s\n",
+      other_token_c( "#" ), macro->name, p_token_str( token )
+    );
     p_token_free( token );
   }
   else {
-    FPRINTF( fout, "#define %s", macro->name );
+    FPRINTF( fout, "%sdefine %s", other_token_c( "#" ), macro->name );
     if ( macro->param_list != NULL )
       print_param_list( macro->param_list, fout );
     if ( !slist_empty( &macro->replace_list ) ) {

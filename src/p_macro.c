@@ -27,6 +27,7 @@
 #include "c_lang.h"
 #include "color.h"
 #include "dump.h"
+#include "gibberish.h"
 #include "literals.h"
 #include "options.h"
 #include "p_token.h"
@@ -818,19 +819,23 @@ static bool mex_check_concat( mex_state_t *mex,
   if ( !OPT_LANG_IS( P_CONCAT ) &&
        false_set( &mex->warned_concat_not_supported ) ) {
     print_warning( &concat_token->loc,
-      "\"##\" not supported%s; treated as text\n",
-      C_LANG_WHICH( P_CONCAT )
+      "\"%s\" not supported%s; treated as text\n",
+      other_token_c( "##" ), C_LANG_WHICH( P_CONCAT )
     );
   }
 
   if ( token_node == p_token_node_not( mex->replace_list->head, P_SPACE ) ) {
-    print_error( &concat_token->loc, "\"##\" can not be first\n" );
+    print_error( &concat_token->loc,
+      "\"%s\" can not be first\n", other_token_c( "##" )
+    );
     return false;
   }
 
   token_node = p_token_node_not( token_node->next, P_SPACE );
   if ( token_node == NULL ) {
-    print_error( &concat_token->loc, "\"##\" can not be last\n" );
+    print_error( &concat_token->loc,
+      "\"%s\" can not be last\n", other_token_c( "##" )
+    );
     return false;
   }
 
@@ -1060,7 +1065,8 @@ static bool mex_check_stringify( mex_state_t *mex,
   if ( !p_macro_is_func_like( mex->macro ) ) {
     if ( false_set( &mex->warned_stringify_in_non_func_like_macro ) ) {
       print_warning( &stringify_token->loc,
-        "'#' in non-function-like macro treated as text\n"
+        "'%s' in non-function-like macro treated as text\n",
+        other_token_c( "#" )
       );
     }
     return true;
@@ -1069,7 +1075,8 @@ static bool mex_check_stringify( mex_state_t *mex,
   if ( !OPT_LANG_IS( P_STRINGIFY ) ) {
     if ( false_set( &mex->warned_stringify_not_supported ) ) {
       print_warning( &stringify_token->loc,
-        "'#' not supported%s; treated as text\n",
+        "'%s' not supported%s; treated as text\n",
+        other_token_c( "#" ),
         C_LANG_WHICH( P_STRINGIFY )
       );
     }
@@ -1096,7 +1103,9 @@ static bool mex_check_stringify( mex_state_t *mex,
   return true;
 
 error:
-  print_error( &stringify_token->loc, "'#' not followed by macro parameter" );
+  print_error( &stringify_token->loc,
+    "'%s' not followed by macro parameter", other_token_c( "#" )
+  );
   if ( OPT_LANG_IS( VARIADIC_MACROS ) ) {
     if ( OPT_LANG_IS( P___VA_OPT__ ) )
       EPUTS( ", \"__VA_ARGS__\", or \"__VA_OPT__\"" );
@@ -1211,7 +1220,8 @@ static bool mex_check___VA_OPT__( mex_state_t const *mex,
       case P_CONCAT:
         if ( prev_token == NULL ) {
           print_error( &token->loc,
-            "\"##\" can not be first within \"__VA_OPT__\"\n"
+            "\"%s\" can not be first within \"__VA_OPT__\"\n",
+            other_token_c( "##" )
           );
           return false;
         }
@@ -1228,7 +1238,8 @@ static bool mex_check___VA_OPT__( mex_state_t const *mex,
                 break;
               if ( prev_token != NULL && prev_token->kind == P_CONCAT ) {
                 print_error( &prev_token->loc,
-                  "\"##\" can not be last within \"__VA_OPT__\"\n"
+                  "\"%s\" can not be last within \"__VA_OPT__\"\n",
+                  other_token_c( "##" )
                 );
                 return false;
               }
@@ -1565,8 +1576,8 @@ static mex_rv_t mex_expand_all_concat( mex_state_t *mex ) {
 
     if ( p_token_is_macro( token ) ) {
       print_warning( &token->loc,
-        "\"##\" doesn't expand macro arguments; \"%s\" will not expand\n",
-        token->ident.name
+        "\"%s\" doesn't expand macro arguments; \"%s\" will not expand\n",
+        other_token_c( "##" ), token->ident.name
       );
     }
 
@@ -1581,8 +1592,8 @@ static mex_rv_t mex_expand_all_concat( mex_state_t *mex ) {
 
       if ( p_token_is_macro( next_token ) ) {
         print_warning( &next_token->loc,
-          "\"##\" doesn't expand macro arguments; \"%s\" will not expand\n",
-          next_token->ident.name
+          "\"%s\" doesn't expand macro arguments; \"%s\" will not expand\n",
+          other_token_c( "##" ), next_token->ident.name
         );
       }
 
@@ -2561,7 +2572,8 @@ static void mex_stringify_identifier( mex_state_t *mex,
     p_token_t const *const arg_token = slist_front( arg_tokens );
     if ( p_token_is_macro( arg_token ) ) {
       print_warning( &identifier_token->loc,
-        "'#' doesn't expand macro arguments; \"%s\" will not expand\n",
+        "'%s' doesn't expand macro arguments; \"%s\" will not expand\n",
+        other_token_c( "#" ),
         arg_token->ident.name
       );
     }
@@ -2815,7 +2827,8 @@ static void p_macro_relocate_params( p_macro_t *macro ) {
   assert( macro != NULL );
   assert( p_macro_is_func_like( macro ) );
 
-  size_t column = STRLITLEN( "#define " ) + strlen( macro->name ) + 1/*'('*/;
+  size_t column = strlen( other_token_c( "#" ) ) + STRLITLEN( "define " )
+    + strlen( macro->name ) + 1/*'('*/;
 
   bool comma = false;
   FOREACH_SLIST_NODE( param_node, macro->param_list ) {

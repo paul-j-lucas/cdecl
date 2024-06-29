@@ -151,6 +151,28 @@ expand OLD_VA_ARGS(x,y)
 #define OLD_QUOTE(X)              #X
 expand OLD_QUOTE(a)
 
+set c17
+set digraphs
+
+%:define PASTE_DIGRAPH(A,B)       A %:%: B
+expand PASTE_DIGRAPH(a,b)
+show PASTE_DIGRAPH
+
+%:define QUOTE_DIGRAPH(X)         %:X
+expand QUOTE_DIGRAPH(a)
+show QUOTE_DIGRAPH
+
+set trigraphs
+
+??=define PASTE_TRIGRAPH(A,B)     A ??=??= B
+expand PASTE_TRIGRAPH(a,b)
+show PASTE_TRIGRAPH
+
+??=define QUOTE_TRIGRAPH(X)       ??=X
+expand QUOTE_TRIGRAPH(a)
+show QUOTE_TRIGRAPH
+
+set nographs
 set c
 
 ////////// NARG() /////////////////////////////////////////////////////////////
