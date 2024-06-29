@@ -135,7 +135,7 @@ char const* cdecl_debug_str( void ) {
   char *s = buf;
 
   if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_AST_UNIQUE_ID) != 0 )
-    *s++ = 'u';
+    *s++ = 'u';                         // LCOV_EXCL_LINE -- unique_ids vary
 
   assert( s < buf + ARRAY_SIZE( buf ) );
   *s = '\0';
@@ -231,8 +231,10 @@ bool parse_cdecl_debug( char const *debug_format ) {
   for ( char const *s = debug_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
       case 'u':
+        // LCOV_EXCL_START -- unique_ids vary
         cdecl_debug |= CDECL_DEBUG_OPT_AST_UNIQUE_ID;
         break;
+        // LCOV_EXCL_STOP
       default:
         return false;
     } // switch

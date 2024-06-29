@@ -479,6 +479,8 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
   return true;
 }
 
+// LCOV_EXCL_START -- can't test these since expected value always changes
+
 /**
  * Gets the current value of the `__DATE__` macro.
  *
@@ -510,6 +512,8 @@ static char const* get___TIME___str( void ) {
   STRFTIME( buf, sizeof buf, "%H:%M:%S", localtime( &now ) );
   return buf;
 }
+
+// LCOV_EXCL_STOP
 
 /**
  * Checks whether \a name is a predefined macro or `__VA_ARGS__` or

@@ -162,3 +162,21 @@ c++decl> set
   notrailing-return
     using
   nowest-decl
+c++decl> set west-decl=*
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+  noinfer-command
+    lang=C++23
+    prompt
+    semicolon
+  notrailing-return
+    using
+    west-decl=bflost
+c++decl> set west-decl=-

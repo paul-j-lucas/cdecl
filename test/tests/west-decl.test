@@ -81,4 +81,7 @@ declare _x as user-defined literal( char ) returning pointer to pointer to int
 
 set nowest-decl
 set
+set west-decl=*
+set
+set west-decl=-
 END
