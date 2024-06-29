@@ -25,6 +25,23 @@ c++decl> set
   notrailing-return
     using
     west-decl=bflo
+c++decl> set explicit-ecsu=*
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+    explicit-ecsu=ecsu
+  noexplicit-int
+  nographs
+  noinfer-command
+    lang=C++23
+    prompt
+    semicolon
+  notrailing-return
+    using
+    west-decl=bflo
 c++decl> 
 c++decl> declare s as struct S
 struct S s;
@@ -56,6 +73,23 @@ c++decl> set
   notrailing-return
     using
     west-decl=bflo
+c++decl> set explicit-ecsu=-
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplicit-ecsu
+  noexplicit-int
+  nographs
+  noinfer-command
+    lang=C++23
+    prompt
+    semicolon
+  notrailing-return
+    using
+    west-decl=bflo
 c++decl> 
 c++decl> declare s as struct S
 S s;
@@ -69,4 +103,4 @@ c++decl>
 c++decl> set c
 cdecl> set explicit-ecsu=su
            ^
-29,5: warning: "explicit-ecsu" is ignored in C
+33,5: warning: "explicit-ecsu" is ignored in C

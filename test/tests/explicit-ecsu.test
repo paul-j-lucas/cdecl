@@ -8,6 +8,8 @@ declare c as class C
 
 set explicit-ecsu=ecsu
 set
+set explicit-ecsu=*
+set
 
 declare s as struct S
 declare u as union U
@@ -18,6 +20,8 @@ class C
 explain C *p
 
 set noexplicit-ecsu
+set
+set explicit-ecsu=-
 set
 
 declare s as struct S
