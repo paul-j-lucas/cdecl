@@ -835,26 +835,6 @@ static bool c_ast_check_errors( c_ast_t const *ast ) {
 }
 
 /**
- * Helper function for c_ast_list_check() that checks whether \a ast should be
- * further checked for multiple conflicting declarations, e.g.:
- *
- *      int j, *j;                      // error (different types)
- *
- * @param ast The AST to check.
- * @return Returns `true` only if \a ast should be further checked for multiple
- * conflicting declarations.
- */
-NODISCARD
-static bool c_ast_check_for_multi_decl( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  if ( (ast->kind & K_ANY_MULTI_DECL) == 0 )
-    return false;
-  if ( (ast->kind & K_ANY_NAMEABLE) == 0 || c_sname_empty( &ast->sname ) )
-    return false;
-  return true;
-}
-
-/**
  * Checks a function-like AST for errors.
  *
  * @param ast The function-like AST to check.
@@ -3269,8 +3249,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
 static void c_ast_warn_name( c_ast_t const *ast ) {
   assert( ast != NULL );
 
-  if ( (ast->kind & K_ANY_NAMEABLE) != 0 )
-    c_sname_warn( &ast->sname, &ast->loc );
+  c_sname_warn( &ast->sname, &ast->loc );
   if ( (ast->kind & K_ANY_NAMED) != 0 )
     c_sname_warn( &ast->named.sname, &ast->loc );
 }
@@ -3332,10 +3311,10 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
     //      int i, i;                   // OK in C (same type); error in C++
     //      int j, *j;                  // error (different types)
     //
-    if ( c_ast_check_for_multi_decl( ast ) ) {
+    if ( !c_sname_empty( &ast->sname ) ) {
       FOREACH_SLIST_NODE_UNTIL( prev_ast_node, ast_list, ast_node ) {
         c_ast_t const *const prev_ast = prev_ast_node->data;
-        if ( !c_ast_check_for_multi_decl( prev_ast ) )
+        if ( c_sname_empty( &prev_ast->sname ) )
           continue;
         if ( c_sname_cmp( &ast->sname, &prev_ast->sname ) != 0 )
           continue;

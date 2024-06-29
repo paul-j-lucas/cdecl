@@ -300,30 +300,9 @@ typedef enum c_ast_kind c_ast_kind_t;
                                   | K_UDEF_CONV | K_UDEF_LIT )
 
 /**
- * Shorthand for any kind of "object" or function-like AST that can be declared
- * as part of a multiple declaration, e.g.:
- *
- *      int i, a[2], (^b)(), f(), operator~(S&), operator""_x(char)
- */
-#define K_ANY_MULTI_DECL          ( K_ANY_OBJECT | K_APPLE_BLOCK | K_FUNCTION \
-                                  | K_OPERATOR | K_UDEF_LIT )
-
-/**
- * Shorthand for any kind that can or must be named: #K_APPLE_BLOCK, #K_ARRAY,
- * #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_CONSTRUCTOR, #K_DESTRUCTOR, #K_ENUM,
- * #K_FUNCTION, #K_POINTER, #K_POINTER_TO_MEMBER, #K_REFERENCE,
- * #K_RVALUE_REFERENCE, #K_TYPEDEF, or #K_UDEF_LIT.
- *
- * @sa #K_ANY_NAMED
- */
-#define K_ANY_NAMEABLE            ( K_ANY_OBJECT | K_APPLE_BLOCK \
-                                  | K_CONSTRUCTOR | K_DESTRUCTOR | K_FUNCTION \
-                                  | K_UDEF_LIT )
-/**
  * Shorthand for any kind that has a name: #K_CLASS_STRUCT_UNION, #K_CONCEPT,
  * #K_ENUM, or #K_POINTER_TO_MEMBER.
  *
- * @sa #K_ANY_NAMEABLE
  * @sa #K_ANY_OBJECT
  */
 #define K_ANY_NAMED               ( K_ANY_ECSU | K_CONCEPT \
