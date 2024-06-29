@@ -685,8 +685,10 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   if ( opt_version > 0 ) {
     if ( *pargc > 0 )                   // cdecl -v foo
       print_usage( EX_USAGE );
+    // LCOV_EXCL_START -- since the version changes
     print_version( /*verbose=*/opt_version > 1 );
     exit( EX_OK );
+    // LCOV_EXCL_STOP
   }
 
   return;
