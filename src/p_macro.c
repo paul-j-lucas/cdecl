@@ -643,7 +643,9 @@ static c_lang_id_t macro_dyn___cplusplus( p_token_t **ptoken ) {
 static c_lang_id_t macro_dyn___DATE__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     *ptoken = !OPT_LANG_IS( __DATE__ ) ? NULL :
+      // LCOV_EXCL_START
       p_token_new( P_STR_LIT, check_strdup( get___DATE___str() ) );
+      // LCOV_EXCL_STOP
   }
   return LANG___DATE__;
 }
@@ -739,7 +741,9 @@ static c_lang_id_t macro_dyn___STDC_VERSION__( p_token_t **ptoken ) {
 static c_lang_id_t macro_dyn___TIME__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     *ptoken = !OPT_LANG_IS( __TIME__ ) ? NULL :
+      // LCOV_EXCL_START
       p_token_new( P_STR_LIT, check_strdup( get___TIME___str() ) );
+      // LCOV_EXCL_STOP
   }
   return LANG___TIME__;
 }
