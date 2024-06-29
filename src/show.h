@@ -32,6 +32,7 @@
 #include "types.h"
 
 // standard
+#include <stdbool.h>
 #include <stdio.h>                      /* for FILE */
 
 /**
@@ -85,17 +86,18 @@ void show_macros( cdecl_show_t show, FILE *fout );
 void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *fout );
 
 /**
- * Shows (prints) the definition of defined types.
+ * Shows (prints) the definition of defined types matching \a glob, if any.
  *
  * @param show Which types to show.
  * @param glob The glob string; may be NULL.
  * @param decl_flags The declaration flags to use.
  * @param fout The `FILE` to print to.
+ * @return Returns `true` only if at least one type was shown.
  *
  * @sa print_type_decl()
  * @sa show_type()
  */
-void show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
+bool show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
                  FILE *fout );
 
 ///////////////////////////////////////////////////////////////////////////////

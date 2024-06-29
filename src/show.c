@@ -221,7 +221,7 @@ void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *fout ) {
   FPUTC( '\n', fout );
 }
 
-void show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
+bool show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
                  FILE *fout ) {
   assert( fout != NULL );
 
@@ -246,6 +246,7 @@ void show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
   }
 
   c_sglob_cleanup( &sti.sglob );
+  return sti.showed_any;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

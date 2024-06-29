@@ -65,6 +65,8 @@ wouldn't show anything because the default show-type is user-defined and
 std::ios is predefined.  Now, if we didn't show a specific user-defined type
 (having a name with no `*`s in it), try showing a specific predefined type.
 
+Additionally, an error message will now be printed if a glob has no matches.
+
 
 * Changes in Cdecl 17.0.1
 

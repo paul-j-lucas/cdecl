@@ -3520,16 +3520,28 @@ show_command
       show_type( $tdef, $format, stdout );
     }
 
-  | Y_show show_types_opt[show] glob_opt[glob_name] show_format_opt[format]
+  | Y_show show_types_opt[show] glob_opt[name] show_format_opt[format]
     {
-      show_types( $show, $glob_name, $format, stdout );
-      free( $glob_name );
+      bool const showed_any = show_types( $show, $name, $format, stdout );
+      if ( !showed_any ) {
+        print_error( &@name, "\"%s\": no such type or macro defined", $name );
+        print_suggestions( DYM_C_MACROS | DYM_C_TYPES, $name );
+        EPUTC( '\n' );
+      }
+      free( $name );
+      PARSE_ASSERT( showed_any );
     }
 
-  | Y_show show_types_opt[show] glob_opt[glob_name] Y_as show_format_exp[format]
+  | Y_show show_types_opt[show] glob_opt[name] Y_as show_format_exp[format]
     {
-      show_types( $show, $glob_name, $format, stdout );
-      free( $glob_name );
+      bool const showed_any = show_types( $show, $name, $format, stdout );
+      if ( !showed_any ) {
+        print_error( &@name, "\"%s\": no such type or macro defined", $name );
+        print_suggestions( DYM_C_MACROS | DYM_C_TYPES, $name );
+        EPUTC( '\n' );
+      }
+      free( $name );
+      PARSE_ASSERT( showed_any );
     }
 
   | Y_show show_types_opt[show] Y_macros
