@@ -3271,7 +3271,7 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
 
   c_sname_warn( &ast->sname, &ast->loc );
   if ( (ast->kind & K_ANY_NAMED_OBJECT) != 0 )
-    c_sname_warn( &ast->csu.csu_sname, &ast->loc );
+    c_sname_warn( &ast->named.sname, &ast->loc );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

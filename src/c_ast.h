@@ -360,6 +360,25 @@ struct c_lambda_ast {
 };
 
 /**
+ * Generic AST node for a #K_ANY_NAMED_OBJECT.
+ *
+ * @sa c_concept_ast
+ * @sa c_csu_ast
+ * @sa c_enum_ast
+ * @sa c_ptr_mbr_ast
+ */
+struct c_named_ast {
+  /// @cond DOXYGEN_IGNORE
+  /// So sname is at the same offset as class_sname, concept_sname, csu_sname,
+  /// and enum_sname.
+  DECL_UNUSED(c_ast_t*);
+  DECL_UNUSED(unsigned);
+  /// @endcond
+
+  c_sname_t   sname;                    ///< Name.
+};
+
+/**
  * AST node for a #K_OPERATOR.
  *
  * @note Members are laid out in the same order as c_function_ast: this is
@@ -523,6 +542,7 @@ struct c_ast {
     c_function_ast_t    func;       ///< #K_FUNCTION members.
     c_lambda_ast_t      lambda;     ///< #K_LAMBDA members.
                     // nothing needed for K_NAME
+    c_named_ast_t       named;      ///< #K_ANY_NAMED_OBJECT members.
     c_operator_ast_t    oper;       ///< #K_OPERATOR members.
                     // nothing needed for K_PLACEHOLDER
     c_ptr_mbr_ast_t     ptr_mbr;    ///< #K_POINTER_TO_MEMBER members.

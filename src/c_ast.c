@@ -66,9 +66,27 @@ static_assert(
 );
 
 static_assert(
+  offsetof( c_concept_ast_t, concept_sname ) ==
+  offsetof( c_named_ast_t, sname ),
+  "offsetof concept_sname != offsetof sname"
+);
+
+static_assert(
   offsetof( c_constructor_ast_t, param_ast_list ) ==
   offsetof( c_function_ast_t, param_ast_list ),
   "offsetof param_ast_list in c_constructor_ast_t & c_function_ast_t must equal"
+);
+
+static_assert(
+  offsetof( c_csu_ast_t, csu_sname ) ==
+  offsetof( c_named_ast_t, sname ),
+  "offsetof csu_sname != offsetof sname"
+);
+
+static_assert(
+  offsetof( c_enum_ast_t, enum_sname ) ==
+  offsetof( c_named_ast_t, sname ),
+  "offsetof enum_sname != offsetof sname"
 );
 
 static_assert(
@@ -84,27 +102,15 @@ static_assert(
 );
 
 static_assert(
+  offsetof( c_ptr_mbr_ast_t, class_sname ) ==
+  offsetof( c_named_ast_t, sname ),
+  "offsetof class_sname != offsetof sname"
+);
+
+static_assert(
   offsetof( c_udef_lit_ast_t, param_ast_list ) ==
   offsetof( c_function_ast_t, param_ast_list ),
   "offsetof param_ast_list in c_udef_lit_ast_t & c_function_ast_t must equal"
-);
-
-static_assert(
-  offsetof( c_concept_ast_t, concept_sname ) ==
-  offsetof( c_csu_ast_t, csu_sname ),
-  "offsetof concept_sname != offsetof csu_sname"
-);
-
-static_assert(
-  offsetof( c_csu_ast_t, csu_sname ) ==
-  offsetof( c_enum_ast_t, enum_sname ),
-  "offsetof csu_sname != offsetof enum_sname"
-);
-
-static_assert(
-  offsetof( c_enum_ast_t, enum_sname ) ==
-  offsetof( c_ptr_mbr_ast_t, class_sname ),
-  "offsetof enum_sname != offsetof class_sname"
 );
 
 static_assert(
@@ -276,7 +282,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
     case K_CLASS_STRUCT_UNION:
     case K_CONCEPT:
     case K_POINTER_TO_MEMBER:
-      dup_ast->csu.csu_sname = c_sname_dup( &ast->csu.csu_sname );
+      dup_ast->named.sname = c_sname_dup( &ast->named.sname );
       break;
 
     case K_OPERATOR:
@@ -416,7 +422,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_CLASS_STRUCT_UNION:
     case K_CONCEPT:
     case K_POINTER_TO_MEMBER:
-      if ( c_sname_cmp( &i_ast->csu.csu_sname, &j_ast->csu.csu_sname ) != 0 )
+      if ( c_sname_cmp( &i_ast->named.sname, &j_ast->named.sname ) != 0 )
         return false;
       break;
 
@@ -475,7 +481,7 @@ void c_ast_free( c_ast_t *ast ) {
       case K_CONCEPT:
       case K_ENUM:
       case K_POINTER_TO_MEMBER:
-        c_sname_cleanup( &ast->csu.csu_sname );
+        c_sname_cleanup( &ast->named.sname );
         break;
       case K_STRUCTURED_BINDING:
         c_sname_list_cleanup( &ast->struct_bind.sname_list );
