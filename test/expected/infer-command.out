@@ -69,3 +69,4 @@ c++decl> set
 c++decl> 
 c++decl> int x
 declare x as integer
+c++decl> q
