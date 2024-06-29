@@ -37,6 +37,9 @@ correct tokens are used:
     cdecl> show QD
     %:define QD(X) %:X
 
+** Digraph & trigraph structured binding support
+Digraphs & trigraphs are now correctly supported for structured bindings.
+
 ** File line number
 When reading from a file via `-f`, now includes the file name and error line
 number in error messages.

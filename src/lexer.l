@@ -759,7 +759,7 @@ _Atomic/{S}*\( {
                * the parser sets lexer_is_param_list_decl so a structured
                * binding "auto" won't be returned.
                */
-auto/({S}+(const|volatile))*{S}*?&?&?{S}*\[ {
+auto/({S}+(const|volatile))*{S}*?&?&?{S}*(\[|<:|\?\?\() {
                 if ( !lexer_is_param_list_decl )
                   return Y_auto_STRUCTURED_BINDING;
                 CDECL_REJECT;

@@ -34,6 +34,7 @@ explain bool operator??!??!(const S&, const S&)
 explain S operator??!(const S&, const S&)
 explain S& operator??!=(int)
 explain S operator??-()
+explain auto ??(x, y??)
 
 set nographs
 

@@ -57,13 +57,15 @@ c++decl> explain S& operator??!=(int)
 declare ??!= as member operator (integer) returning reference to structure S
 c++decl> explain S operator??-()
 declare ??- as member operator returning structure S
+c++decl> explain auto ??(x, y??)
+declare x, y as structured binding
 c++decl> 
 c++decl> set nographs
 c++decl> 
 c++decl> set knr
 cdecl> set trigraphs
            ^
-41,5: warning: trigraphs not supported until C89
+42,5: warning: trigraphs not supported until C89
 cdecl> set
   noalt-tokens
   nodebug
@@ -87,7 +89,7 @@ cdecl>
 cdecl> set c23
 cdecl> set trigraphs
            ^
-47,5: warning: trigraphs not supported since C23
+48,5: warning: trigraphs not supported since C23
 cdecl> set
   noalt-tokens
   nodebug
@@ -111,7 +113,7 @@ cdecl>
 cdecl> set c++
 c++decl> set trigraphs
              ^
-53,5: warning: trigraphs not supported since C++17
+54,5: warning: trigraphs not supported since C++17
 c++decl> set
   noalt-tokens
   nodebug

@@ -8,6 +8,8 @@ c++decl> declare [] as operator (int) returning int
 int operator<::>(int);
 c++decl> explain <:<:noreturn:>:> void f(int)
 declare f as non-returning function (integer) returning void
+c++decl> explain auto <:x, y:>
+declare x, y as structured binding
 c++decl> struct S { typedef int I; }
 c++decl> struct T <% typedef int I; %>
 c++decl> show typedef
@@ -24,7 +26,7 @@ cdecl> set c89
 warning: digraphs not supported until C95
 cdecl> explain int a<:9:>
                     ^
-17,14: warning: digraphs not supported until C95
+18,14: warning: digraphs not supported until C95
 declare a as array 9 of integer
 cdecl> 
 cdecl> set nographs
@@ -33,7 +35,7 @@ int a[9];
 cdecl> 
 cdecl> set di
            ^
-22,5: warning: digraphs not supported until C95
+23,5: warning: digraphs not supported until C95
 cdecl> declare a as array 9 of int
 int a[9];
 cdecl> 
@@ -43,4 +45,4 @@ int a[9];
 cdecl> 
 cdecl> set c89 digraphs
                ^
-28,9: warning: digraphs not supported until C95
+29,9: warning: digraphs not supported until C95

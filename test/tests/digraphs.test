@@ -6,6 +6,7 @@ set c++
 declare f as non-returning function (int) returning void
 declare [] as operator (int) returning int
 explain <:<:noreturn:>:> void f(int)
+explain auto <:x, y:>
 struct S { typedef int I; }
 struct T <% typedef int I; %>
 show typedef
