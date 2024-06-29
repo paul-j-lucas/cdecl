@@ -5545,6 +5545,124 @@ c++decl> class C
   }
 }
 
+c++decl> explain auto [x, y]
+{
+  rule: {
+    lhs: "sname_c",
+    rhs: "NAME"
+  },
+  NAME: "x",
+  $$_sname: { string: "x", scopes: "none" }
+}
+
+{
+  rule: {
+    lhs: "sname_list_c",
+    rhs: "sname_c"
+  },
+  sname_c: { string: "x", scopes: "none" },
+  $$_sname_list: [ { string: "x", scopes: "none" } ]
+}
+
+{
+  rule: {
+    lhs: "sname_c",
+    rhs: "NAME"
+  },
+  NAME: "y",
+  $$_sname: { string: "y", scopes: "none" }
+}
+
+{
+  rule: {
+    lhs: "sname_list_c",
+    rhs: "sname_list_c ',' sname_c"
+  },
+  sname_list_c: [ { string: "x", scopes: "none" } ],
+  sname_c: { string: "y", scopes: "none" },
+  $$_sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
+}
+
+{
+  rule: {
+    lhs: "structured_binding_type_c_ast",
+    rhs: "AUTO cv_qualifier_list_stid_opt ref_qualifier_c_stid_opt '[' sname_list_c ']'"
+  },
+  cv_qualifier_list_stid_opt: { string: "none" },
+  ref_qualifier_c_stid_opt: { string: "none" },
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x8000, string: "structured binding" },
+    depth: 0,
+    loc: { first_line: 24, first_column: 8, last_column: 18 },
+    type: { string: "none" },
+    struct_bind: {
+      sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "east_modified_type_c_ast",
+    rhs: "east_modifiable_type_c_ast type_modifier_list_c_type_opt"
+  },
+  east_modifiable_type_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x8000, string: "structured binding" },
+    depth: 0,
+    loc: { first_line: 24, first_column: 8, last_column: 18 },
+    type: { string: "none" },
+    struct_bind: {
+      sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
+    }
+  },
+  type_modifier_list_c_type_opt: { string: "none" },
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x8000, string: "structured binding" },
+    depth: 0,
+    loc: { first_line: 24, first_column: 8, last_column: 18 },
+    type: { string: "none" },
+    struct_bind: {
+      sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "<empty>"
+  },
+  in_attr__type_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x8000, string: "structured binding" },
+    depth: 0,
+    loc: { first_line: 24, first_column: 8, last_column: 18 },
+    type: { string: "none" },
+    struct_bind: {
+      sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
+    }
+  },
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x8000, string: "structured binding" },
+    depth: 0,
+    loc: { first_line: 24, first_column: 8, last_column: 18 },
+    type: { string: "none" },
+    struct_bind: {
+      sname_list: [ { string: "x", scopes: "none" }, { string: "y", scopes: "none" } ]
+    }
+  }
+}
+
+declare x, y as structured binding
 c++decl> explain bool operator!() const
 {
   rule: {
@@ -5557,7 +5675,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 24, first_column: 8, last_column: 11 },
+    loc: { first_line: 25, first_column: 8, last_column: 11 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -5575,7 +5693,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 24, first_column: 8, last_column: 11 },
+    loc: { first_line: 25, first_column: 8, last_column: 11 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -5587,7 +5705,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 24, first_column: 8, last_column: 11 },
+    loc: { first_line: 25, first_column: 8, last_column: 11 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -5615,7 +5733,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 24, first_column: 8, last_column: 11 },
+    loc: { first_line: 25, first_column: 8, last_column: 11 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -5635,7 +5753,7 @@ c++decl> explain bool operator!() const
       is_param_pack: false,
       kind: { value: 0x200000, string: "operator" },
       depth: 0,
-      loc: { first_line: 24, first_column: 11, last_column: 29 },
+      loc: { first_line: 25, first_column: 11, last_column: 29 },
       type: { stid: 0x0000000200000002, string: "const" },
       oper: {
         op_id: { value: 6, string: "!" },
@@ -5646,7 +5764,7 @@ c++decl> explain bool operator!() const
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 24, first_column: 8, last_column: 11 },
+          loc: { first_line: 25, first_column: 8, last_column: 11 },
           type: { btid: 0x0000000000000081, string: "bool" },
           builtin: {
             bit_width: 0
@@ -5659,7 +5777,7 @@ c++decl> explain bool operator!() const
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 24, first_column: 8, last_column: 11 },
+      loc: { first_line: 25, first_column: 8, last_column: 11 },
       type: { btid: 0x0000000000000081, string: "bool" },
       builtin: {
         bit_width: 0
@@ -5679,7 +5797,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 24, first_column: 8, last_column: 11 },
+    loc: { first_line: 25, first_column: 8, last_column: 11 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -5691,7 +5809,7 @@ c++decl> explain bool operator!() const
       is_param_pack: false,
       kind: { value: 0x200000, string: "operator" },
       depth: 0,
-      loc: { first_line: 24, first_column: 11, last_column: 29 },
+      loc: { first_line: 25, first_column: 11, last_column: 29 },
       type: { stid: 0x0000000200000002, string: "const" },
       oper: {
         op_id: { value: 6, string: "!" },
@@ -5702,7 +5820,7 @@ c++decl> explain bool operator!() const
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 24, first_column: 8, last_column: 11 },
+          loc: { first_line: 25, first_column: 8, last_column: 11 },
           type: { btid: 0x0000000000000081, string: "bool" },
           builtin: {
             bit_width: 0
@@ -5715,7 +5833,7 @@ c++decl> explain bool operator!() const
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 24, first_column: 8, last_column: 11 },
+      loc: { first_line: 25, first_column: 8, last_column: 11 },
       type: { btid: 0x0000000000000081, string: "bool" },
       builtin: {
         bit_width: 0
@@ -5727,7 +5845,7 @@ c++decl> explain bool operator!() const
     is_param_pack: false,
     kind: { value: 0x200000, string: "operator" },
     depth: 0,
-    loc: { first_line: 24, first_column: 11, last_column: 29 },
+    loc: { first_line: 25, first_column: 11, last_column: 29 },
     type: { stid: 0x0000000200000002, string: "const" },
     oper: {
       op_id: { value: 6, string: "!" },
@@ -5738,7 +5856,7 @@ c++decl> explain bool operator!() const
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 24, first_column: 8, last_column: 11 },
+        loc: { first_line: 25, first_column: 8, last_column: 11 },
         type: { btid: 0x0000000000000081, string: "bool" },
         builtin: {
           bit_width: 0
@@ -5759,7 +5877,7 @@ c++decl> explain bool operator!() const
       is_param_pack: false,
       kind: { value: 0x200000, string: "operator" },
       depth: 0,
-      loc: { first_line: 24, first_column: 11, last_column: 29 },
+      loc: { first_line: 25, first_column: 11, last_column: 29 },
       type: { stid: 0x0000000200000002, string: "const" },
       oper: {
         op_id: { value: 6, string: "!" },
@@ -5770,7 +5888,7 @@ c++decl> explain bool operator!() const
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 24, first_column: 8, last_column: 11 },
+          loc: { first_line: 25, first_column: 8, last_column: 11 },
           type: { btid: 0x0000000000000081, string: "bool" },
           builtin: {
             bit_width: 0
@@ -5794,7 +5912,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 25, first_column: 8, last_column: 10 },
+    loc: { first_line: 26, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -5812,7 +5930,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 25, first_column: 8, last_column: 10 },
+    loc: { first_line: 26, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -5824,7 +5942,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 25, first_column: 8, last_column: 10 },
+    loc: { first_line: 26, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -5842,7 +5960,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 25, first_column: 8, last_column: 10 },
+    loc: { first_line: 26, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -5855,7 +5973,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
-    loc: { first_line: 25, first_column: 12, last_column: 15 },
+    loc: { first_line: 26, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
@@ -5864,7 +5982,7 @@ c++decl> explain int C::*p
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 25, first_column: 8, last_column: 10 },
+        loc: { first_line: 26, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -5893,7 +6011,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
-    loc: { first_line: 25, first_column: 12, last_column: 15 },
+    loc: { first_line: 26, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
@@ -5902,7 +6020,7 @@ c++decl> explain int C::*p
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 25, first_column: 8, last_column: 10 },
+        loc: { first_line: 26, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -5917,7 +6035,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
-    loc: { first_line: 25, first_column: 12, last_column: 15 },
+    loc: { first_line: 26, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
@@ -5926,7 +6044,7 @@ c++decl> explain int C::*p
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 25, first_column: 8, last_column: 10 },
+        loc: { first_line: 26, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -5946,7 +6064,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
-    loc: { first_line: 25, first_column: 12, last_column: 15 },
+    loc: { first_line: 26, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
@@ -5955,7 +6073,7 @@ c++decl> explain int C::*p
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 25, first_column: 8, last_column: 10 },
+        loc: { first_line: 26, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -5969,7 +6087,7 @@ c++decl> explain int C::*p
       is_param_pack: false,
       kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
-      loc: { first_line: 25, first_column: 12, last_column: 15 },
+      loc: { first_line: 26, first_column: 12, last_column: 15 },
       type: { btid: 0x0000000004000001, string: "class" },
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
@@ -5978,7 +6096,7 @@ c++decl> explain int C::*p
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 25, first_column: 8, last_column: 10 },
+          loc: { first_line: 26, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -5994,7 +6112,7 @@ c++decl> explain int C::*p
       is_param_pack: false,
       kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
-      loc: { first_line: 25, first_column: 12, last_column: 16 },
+      loc: { first_line: 26, first_column: 12, last_column: 16 },
       type: { btid: 0x0000000004000001, string: "class" },
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
@@ -6003,7 +6121,7 @@ c++decl> explain int C::*p
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 25, first_column: 8, last_column: 10 },
+          loc: { first_line: 26, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6026,7 +6144,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 25, first_column: 8, last_column: 10 },
+    loc: { first_line: 26, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6038,7 +6156,7 @@ c++decl> explain int C::*p
       is_param_pack: false,
       kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
-      loc: { first_line: 25, first_column: 12, last_column: 16 },
+      loc: { first_line: 26, first_column: 12, last_column: 16 },
       type: { btid: 0x0000000004000001, string: "class" },
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
@@ -6047,7 +6165,7 @@ c++decl> explain int C::*p
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 25, first_column: 8, last_column: 10 },
+          loc: { first_line: 26, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6062,7 +6180,7 @@ c++decl> explain int C::*p
     is_param_pack: false,
     kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
-    loc: { first_line: 25, first_column: 12, last_column: 16 },
+    loc: { first_line: 26, first_column: 12, last_column: 16 },
     type: { btid: 0x0000000004000001, string: "class" },
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
@@ -6071,7 +6189,7 @@ c++decl> explain int C::*p
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 25, first_column: 8, last_column: 10 },
+        loc: { first_line: 26, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -6092,7 +6210,7 @@ c++decl> explain int C::*p
       is_param_pack: false,
       kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
-      loc: { first_line: 25, first_column: 12, last_column: 16 },
+      loc: { first_line: 26, first_column: 12, last_column: 16 },
       type: { btid: 0x0000000004000001, string: "class" },
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
@@ -6101,7 +6219,7 @@ c++decl> explain int C::*p
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 25, first_column: 8, last_column: 10 },
+          loc: { first_line: 26, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6125,7 +6243,7 @@ c++decl> explain operator bool() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 26, first_column: 17, last_column: 20 },
+    loc: { first_line: 27, first_column: 17, last_column: 20 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -6143,7 +6261,7 @@ c++decl> explain operator bool() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 26, first_column: 17, last_column: 20 },
+    loc: { first_line: 27, first_column: 17, last_column: 20 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -6155,7 +6273,7 @@ c++decl> explain operator bool() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 26, first_column: 17, last_column: 20 },
+    loc: { first_line: 27, first_column: 17, last_column: 20 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -6185,7 +6303,7 @@ c++decl> explain operator bool() const
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 26, first_column: 17, last_column: 20 },
+    loc: { first_line: 27, first_column: 17, last_column: 20 },
     type: { btid: 0x0000000000000081, string: "bool" },
     builtin: {
       bit_width: 0
@@ -6201,7 +6319,7 @@ c++decl> explain operator bool() const
       is_param_pack: false,
       kind: { value: 0x400000, string: "user-defined conversion operator" },
       depth: 0,
-      loc: { first_line: 26, first_column: 6, last_column: 28 },
+      loc: { first_line: 27, first_column: 6, last_column: 28 },
       type: { stid: 0x0000000200000002, string: "const" },
       udef_conv: {
         to_ast: {
@@ -6209,7 +6327,7 @@ c++decl> explain operator bool() const
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 26, first_column: 17, last_column: 20 },
+          loc: { first_line: 27, first_column: 17, last_column: 20 },
           type: { btid: 0x0000000000000081, string: "bool" },
           builtin: {
             bit_width: 0
@@ -6222,7 +6340,7 @@ c++decl> explain operator bool() const
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 26, first_column: 17, last_column: 20 },
+      loc: { first_line: 27, first_column: 17, last_column: 20 },
       type: { btid: 0x0000000000000081, string: "bool" },
       builtin: {
         bit_width: 0
@@ -6242,7 +6360,7 @@ c++decl> explain operator bool() const
       is_param_pack: false,
       kind: { value: 0x400000, string: "user-defined conversion operator" },
       depth: 0,
-      loc: { first_line: 26, first_column: 6, last_column: 28 },
+      loc: { first_line: 27, first_column: 6, last_column: 28 },
       type: { stid: 0x0000000200000002, string: "const" },
       udef_conv: {
         to_ast: {
@@ -6250,7 +6368,7 @@ c++decl> explain operator bool() const
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 26, first_column: 17, last_column: 20 },
+          loc: { first_line: 27, first_column: 17, last_column: 20 },
           type: { btid: 0x0000000000000081, string: "bool" },
           builtin: {
             bit_width: 0
@@ -6263,7 +6381,7 @@ c++decl> explain operator bool() const
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 26, first_column: 17, last_column: 20 },
+      loc: { first_line: 27, first_column: 17, last_column: 20 },
       type: { btid: 0x0000000000000081, string: "bool" },
       builtin: {
         bit_width: 0
@@ -6285,7 +6403,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 8, last_column: 10 },
+    loc: { first_line: 28, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6303,7 +6421,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 8, last_column: 10 },
+    loc: { first_line: 28, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6315,7 +6433,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 8, last_column: 10 },
+    loc: { first_line: 28, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6334,7 +6452,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 26, last_column: 29 },
+    loc: { first_line: 28, first_column: 26, last_column: 29 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -6352,7 +6470,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 26, last_column: 29 },
+    loc: { first_line: 28, first_column: 26, last_column: 29 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -6364,7 +6482,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 26, last_column: 35 },
+    loc: { first_line: 28, first_column: 26, last_column: 35 },
     type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
     builtin: {
       bit_width: 0
@@ -6382,7 +6500,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 26, last_column: 35 },
+    loc: { first_line: 28, first_column: 26, last_column: 35 },
     type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
     builtin: {
       bit_width: 0
@@ -6394,7 +6512,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 27, first_column: 37 },
+    loc: { first_line: 28, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6402,7 +6520,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 27, first_column: 26, last_column: 35 },
+        loc: { first_line: 28, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6431,7 +6549,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 27, first_column: 37 },
+    loc: { first_line: 28, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6439,7 +6557,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 27, first_column: 26, last_column: 35 },
+        loc: { first_line: 28, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6454,7 +6572,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 27, first_column: 37 },
+    loc: { first_line: 28, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6462,7 +6580,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 27, first_column: 26, last_column: 35 },
+        loc: { first_line: 28, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6482,7 +6600,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 27, first_column: 37 },
+    loc: { first_line: 28, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6490,7 +6608,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 27, first_column: 26, last_column: 35 },
+        loc: { first_line: 28, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6504,7 +6622,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800, string: "pointer" },
       depth: 0,
-      loc: { first_line: 27, first_column: 37 },
+      loc: { first_line: 28, first_column: 37 },
       type: { string: "none" },
       ptr_ref: {
         to_ast: {
@@ -6512,7 +6630,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 27, first_column: 26, last_column: 35 },
+          loc: { first_line: 28, first_column: 26, last_column: 35 },
           type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
           builtin: {
             bit_width: 0
@@ -6528,7 +6646,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800, string: "pointer" },
       depth: 0,
-      loc: { first_line: 27, first_column: 37 },
+      loc: { first_line: 28, first_column: 37 },
       type: { string: "none" },
       ptr_ref: {
         to_ast: {
@@ -6536,7 +6654,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 27, first_column: 26, last_column: 35 },
+          loc: { first_line: 28, first_column: 26, last_column: 35 },
           type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
           builtin: {
             bit_width: 0
@@ -6559,7 +6677,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 26, last_column: 35 },
+    loc: { first_line: 28, first_column: 26, last_column: 35 },
     type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
     builtin: {
       bit_width: 0
@@ -6571,7 +6689,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800, string: "pointer" },
       depth: 0,
-      loc: { first_line: 27, first_column: 37 },
+      loc: { first_line: 28, first_column: 37 },
       type: { string: "none" },
       ptr_ref: {
         to_ast: {
@@ -6579,7 +6697,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 27, first_column: 26, last_column: 35 },
+          loc: { first_line: 28, first_column: 26, last_column: 35 },
           type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
           builtin: {
             bit_width: 0
@@ -6594,7 +6712,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 27, first_column: 37 },
+    loc: { first_line: 28, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6602,7 +6720,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 27, first_column: 26, last_column: 35 },
+        loc: { first_line: 28, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6622,7 +6740,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800, string: "pointer" },
     depth: 0,
-    loc: { first_line: 27, first_column: 37 },
+    loc: { first_line: 28, first_column: 37 },
     type: { string: "none" },
     ptr_ref: {
       to_ast: {
@@ -6630,7 +6748,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 27, first_column: 26, last_column: 35 },
+        loc: { first_line: 28, first_column: 26, last_column: 35 },
         type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
         builtin: {
           bit_width: 0
@@ -6644,7 +6762,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800, string: "pointer" },
       depth: 0,
-      loc: { first_line: 27, first_column: 37 },
+      loc: { first_line: 28, first_column: 37 },
       type: { string: "none" },
       ptr_ref: {
         to_ast: {
@@ -6652,7 +6770,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 27, first_column: 26, last_column: 35 },
+          loc: { first_line: 28, first_column: 26, last_column: 35 },
           type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
           builtin: {
             bit_width: 0
@@ -6673,7 +6791,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 8, last_column: 10 },
+    loc: { first_line: 28, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6687,7 +6805,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800, string: "pointer" },
       depth: 0,
-      loc: { first_line: 27, first_column: 37 },
+      loc: { first_line: 28, first_column: 37 },
       type: { string: "none" },
       ptr_ref: {
         to_ast: {
@@ -6695,7 +6813,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 27, first_column: 26, last_column: 35 },
+          loc: { first_line: 28, first_column: 26, last_column: 35 },
           type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
           builtin: {
             bit_width: 0
@@ -6712,7 +6830,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800000, string: "user-defined literal" },
       depth: 0,
-      loc: { first_line: 27, first_column: 10, last_column: 41 },
+      loc: { first_line: 28, first_column: 10, last_column: 41 },
       type: { string: "none" },
       udef_lit: {
         param_ast_list: [
@@ -6721,7 +6839,7 @@ c++decl> explain int operator ""_w(char const *arg)
             is_param_pack: false,
             kind: { value: 0x800, string: "pointer" },
             depth: 0,
-            loc: { first_line: 27, first_column: 37 },
+            loc: { first_line: 28, first_column: 37 },
             type: { string: "none" },
             ptr_ref: {
               to_ast: {
@@ -6729,7 +6847,7 @@ c++decl> explain int operator ""_w(char const *arg)
                 is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
-                loc: { first_line: 27, first_column: 26, last_column: 35 },
+                loc: { first_line: 28, first_column: 26, last_column: 35 },
                 type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
                 builtin: {
                   bit_width: 0
@@ -6743,7 +6861,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 27, first_column: 8, last_column: 10 },
+          loc: { first_line: 28, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6756,7 +6874,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 27, first_column: 8, last_column: 10 },
+      loc: { first_line: 28, first_column: 8, last_column: 10 },
       type: { btid: 0x0000000000004001, string: "int" },
       builtin: {
         bit_width: 0
@@ -6776,7 +6894,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 27, first_column: 8, last_column: 10 },
+    loc: { first_line: 28, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -6788,7 +6906,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800000, string: "user-defined literal" },
       depth: 0,
-      loc: { first_line: 27, first_column: 10, last_column: 41 },
+      loc: { first_line: 28, first_column: 10, last_column: 41 },
       type: { string: "none" },
       udef_lit: {
         param_ast_list: [
@@ -6797,7 +6915,7 @@ c++decl> explain int operator ""_w(char const *arg)
             is_param_pack: false,
             kind: { value: 0x800, string: "pointer" },
             depth: 0,
-            loc: { first_line: 27, first_column: 37 },
+            loc: { first_line: 28, first_column: 37 },
             type: { string: "none" },
             ptr_ref: {
               to_ast: {
@@ -6805,7 +6923,7 @@ c++decl> explain int operator ""_w(char const *arg)
                 is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
-                loc: { first_line: 27, first_column: 26, last_column: 35 },
+                loc: { first_line: 28, first_column: 26, last_column: 35 },
                 type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
                 builtin: {
                   bit_width: 0
@@ -6819,7 +6937,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 27, first_column: 8, last_column: 10 },
+          loc: { first_line: 28, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6832,7 +6950,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 27, first_column: 8, last_column: 10 },
+      loc: { first_line: 28, first_column: 8, last_column: 10 },
       type: { btid: 0x0000000000004001, string: "int" },
       builtin: {
         bit_width: 0
@@ -6844,7 +6962,7 @@ c++decl> explain int operator ""_w(char const *arg)
     is_param_pack: false,
     kind: { value: 0x800000, string: "user-defined literal" },
     depth: 0,
-    loc: { first_line: 27, first_column: 10, last_column: 41 },
+    loc: { first_line: 28, first_column: 10, last_column: 41 },
     type: { string: "none" },
     udef_lit: {
       param_ast_list: [
@@ -6853,7 +6971,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x800, string: "pointer" },
           depth: 0,
-          loc: { first_line: 27, first_column: 37 },
+          loc: { first_line: 28, first_column: 37 },
           type: { string: "none" },
           ptr_ref: {
             to_ast: {
@@ -6861,7 +6979,7 @@ c++decl> explain int operator ""_w(char const *arg)
               is_param_pack: false,
               kind: { value: 0x2, string: "built-in type" },
               depth: 0,
-              loc: { first_line: 27, first_column: 26, last_column: 35 },
+              loc: { first_line: 28, first_column: 26, last_column: 35 },
               type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
               builtin: {
                 bit_width: 0
@@ -6875,7 +6993,7 @@ c++decl> explain int operator ""_w(char const *arg)
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_line: 27, first_column: 8, last_column: 10 },
+        loc: { first_line: 28, first_column: 8, last_column: 10 },
         type: { btid: 0x0000000000004001, string: "int" },
         builtin: {
           bit_width: 0
@@ -6896,7 +7014,7 @@ c++decl> explain int operator ""_w(char const *arg)
       is_param_pack: false,
       kind: { value: 0x800000, string: "user-defined literal" },
       depth: 0,
-      loc: { first_line: 27, first_column: 10, last_column: 41 },
+      loc: { first_line: 28, first_column: 10, last_column: 41 },
       type: { string: "none" },
       udef_lit: {
         param_ast_list: [
@@ -6905,7 +7023,7 @@ c++decl> explain int operator ""_w(char const *arg)
             is_param_pack: false,
             kind: { value: 0x800, string: "pointer" },
             depth: 0,
-            loc: { first_line: 27, first_column: 37 },
+            loc: { first_line: 28, first_column: 37 },
             type: { string: "none" },
             ptr_ref: {
               to_ast: {
@@ -6913,7 +7031,7 @@ c++decl> explain int operator ""_w(char const *arg)
                 is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
-                loc: { first_line: 27, first_column: 26, last_column: 35 },
+                loc: { first_line: 28, first_column: 26, last_column: 35 },
                 type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
                 builtin: {
                   bit_width: 0
@@ -6927,7 +7045,7 @@ c++decl> explain int operator ""_w(char const *arg)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 27, first_column: 8, last_column: 10 },
+          loc: { first_line: 28, first_column: 8, last_column: 10 },
           type: { btid: 0x0000000000004001, string: "int" },
           builtin: {
             bit_width: 0
@@ -6939,6 +7057,129 @@ c++decl> explain int operator ""_w(char const *arg)
 }
 
 declare _w as user-defined literal (arg as pointer to constant character) returning integer
+c++decl> explain C auto x
+{
+  rule: {
+    lhs: "typedef_type_c_ast",
+    rhs: "any_typedef_tdef sub_scope_sname_c_opt"
+  },
+  in_attr__type_c_ast: null,
+  any_typedef__ast: {
+    sname: { string: "C", scopes: "class" },
+    is_param_pack: false,
+    kind: { value: 0x8, string: "class, struct, or union" },
+    depth: 0,
+    loc: { first_line: 23, first_column: 6 },
+    type: { btid: 0x0000000004000001, string: "class" },
+    csu: {
+      csu_sname: { string: "C", scopes: "none" }
+    }
+  },
+  sub_scope_sname_c_opt: null,
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x40, string: "typedef" },
+    depth: 0,
+    loc: { first_line: 29, first_column: 8 },
+    type: { btid: 0x0000000020000001, string: "none" },
+    tdef: {
+      for_ast: {
+        sname: { string: "C", scopes: "class" },
+        is_param_pack: false,
+        kind: { value: 0x8, string: "class, struct, or union" },
+        depth: 0,
+        loc: { first_line: 23, first_column: 6 },
+        type: { btid: 0x0000000004000001, string: "class" },
+        csu: {
+          csu_sname: { string: "C", scopes: "none" }
+        }
+      },
+      bit_width: 0
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "east_modified_type_c_ast",
+    rhs: "east_modifiable_type_c_ast type_modifier_list_c_type_opt"
+  },
+  east_modifiable_type_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x40, string: "typedef" },
+    depth: 0,
+    loc: { first_line: 29, first_column: 8 },
+    type: { btid: 0x0000000020000001, string: "none" },
+    tdef: {
+      for_ast: {
+        sname: { string: "C", scopes: "class" },
+        is_param_pack: false,
+        kind: { value: 0x8, string: "class, struct, or union" },
+        depth: 0,
+        loc: { first_line: 23, first_column: 6 },
+        type: { btid: 0x0000000004000001, string: "class" },
+        csu: {
+          csu_sname: { string: "C", scopes: "none" }
+        }
+      },
+      bit_width: 0
+    }
+  },
+  type_modifier_list_c_type_opt: { string: "none" },
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x40, string: "typedef" },
+    depth: 0,
+    loc: { first_line: 29, first_column: 8 },
+    type: { btid: 0x0000000020000001, string: "none" },
+    tdef: {
+      for_ast: {
+        sname: { string: "C", scopes: "class" },
+        is_param_pack: false,
+        kind: { value: 0x8, string: "class, struct, or union" },
+        depth: 0,
+        loc: { first_line: 23, first_column: 6 },
+        type: { btid: 0x0000000004000001, string: "class" },
+        csu: {
+          csu_sname: { string: "C", scopes: "none" }
+        }
+      },
+      bit_width: 0
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "<empty>"
+  },
+  in_attr__type_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x40, string: "typedef" },
+    depth: 0,
+    loc: { first_line: 29, first_column: 8 },
+    type: { btid: 0x0000000020000001, string: "none" },
+    tdef: {
+      for_ast: {
+        sname: { string: "C", scopes: "class" },
+        is_param_pack: false,
+        kind: { value: 0x8, string: "class, struct, or union" },
+        depth: 0,
+        loc: { first_line: 23, first_column: 6 },
+        type: { btid: 0x0000000004000001, string: "class" },
+        csu: {
+          csu_sname: { string: "C", scopes: "none" }
+        }
+      },
+      bit_width: 0
+    }
+  }                   ^
+31,11: error: [parser.y:4529] declaration expected ("auto" is a keyword)
 c++decl> explain ~C()
 {
   rule: {
@@ -6955,7 +7196,7 @@ c++decl> explain ~C()
     is_param_pack: false,
     kind: { value: 0x20000, string: "destructor" },
     depth: 0,
-    loc: { first_line: 28, first_column: 6, last_column: 11 },
+    loc: { first_line: 30, first_column: 6, last_column: 11 },
     type: { string: "none" }
   }
 }
@@ -6976,7 +7217,7 @@ c++decl> explain []
     is_param_pack: false,
     kind: { value: 0x100000, string: "lambda" },
     depth: 0,
-    loc: { first_line: 29, first_column: 8, last_column: 9 },
+    loc: { first_line: 31, first_column: 8, last_column: 9 },
     type: { string: "none" },
     lambda: {
       capture_ast_list: [],
@@ -6998,7 +7239,7 @@ c++decl> explain [](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 30, first_column: 11, last_column: 14 },
+    loc: { first_line: 32, first_column: 11, last_column: 14 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7016,7 +7257,7 @@ c++decl> explain [](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 30, first_column: 11, last_column: 14 },
+    loc: { first_line: 32, first_column: 11, last_column: 14 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7028,7 +7269,7 @@ c++decl> explain [](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 30, first_column: 11, last_column: 14 },
+    loc: { first_line: 32, first_column: 11, last_column: 14 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7055,7 +7296,7 @@ c++decl> explain [](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 30, first_column: 11, last_column: 14 },
+    loc: { first_line: 32, first_column: 11, last_column: 14 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7068,7 +7309,7 @@ c++decl> explain [](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 30, first_column: 11, last_column: 14 },
+    loc: { first_line: 32, first_column: 11, last_column: 14 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7087,7 +7328,7 @@ c++decl> explain [](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 30, first_column: 11, last_column: 14 },
+    loc: { first_line: 32, first_column: 11, last_column: 14 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7099,7 +7340,7 @@ c++decl> explain [](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 30, first_column: 11, last_column: 14 },
+      loc: { first_line: 32, first_column: 11, last_column: 14 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -7112,7 +7353,7 @@ c++decl> explain [](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 30, first_column: 11, last_column: 14 },
+    loc: { first_line: 32, first_column: 11, last_column: 14 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7130,7 +7371,7 @@ c++decl> explain [](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 30, first_column: 11, last_column: 14 },
+    loc: { first_line: 32, first_column: 11, last_column: 14 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7142,7 +7383,7 @@ c++decl> explain [](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 30, first_column: 11, last_column: 14 },
+      loc: { first_line: 32, first_column: 11, last_column: 14 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -7163,7 +7404,7 @@ c++decl> explain [](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 30, first_column: 11, last_column: 14 },
+      loc: { first_line: 32, first_column: 11, last_column: 14 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -7177,7 +7418,7 @@ c++decl> explain [](char c)
     is_param_pack: false,
     kind: { value: 0x100000, string: "lambda" },
     depth: 0,
-    loc: { first_line: 30, first_column: 8, last_column: 17 },
+    loc: { first_line: 32, first_column: 8, last_column: 17 },
     type: { string: "none" },
     lambda: {
       capture_ast_list: [],
@@ -7187,7 +7428,7 @@ c++decl> explain [](char c)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 30, first_column: 11, last_column: 14 },
+          loc: { first_line: 32, first_column: 11, last_column: 14 },
           type: { btid: 0x0000000000000101, string: "char" },
           builtin: {
             bit_width: 0
@@ -7210,7 +7451,7 @@ c++decl> explain [x]
     is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    loc: { first_line: 31, first_column: 9 },
+    loc: { first_line: 33, first_column: 9 },
     type: { string: "none" },
     capture: {
       kind: "variable"
@@ -7222,7 +7463,7 @@ c++decl> explain [x]
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 31, first_column: 9 },
+      loc: { first_line: 33, first_column: 9 },
       type: { string: "none" },
       capture: {
         kind: "variable"
@@ -7242,7 +7483,7 @@ c++decl> explain [x]
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 31, first_column: 9 },
+      loc: { first_line: 33, first_column: 9 },
       type: { string: "none" },
       capture: {
         kind: "variable"
@@ -7257,7 +7498,7 @@ c++decl> explain [x]
     is_param_pack: false,
     kind: { value: 0x100000, string: "lambda" },
     depth: 0,
-    loc: { first_line: 31, first_column: 8, last_column: 10 },
+    loc: { first_line: 33, first_column: 8, last_column: 10 },
     type: { string: "none" },
     lambda: {
       capture_ast_list: [
@@ -7266,7 +7507,7 @@ c++decl> explain [x]
           is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          loc: { first_line: 31, first_column: 9 },
+          loc: { first_line: 33, first_column: 9 },
           type: { string: "none" },
           capture: {
             kind: "variable"
@@ -7290,7 +7531,7 @@ c++decl> explain [x](char c)
     is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    loc: { first_line: 32, first_column: 9 },
+    loc: { first_line: 34, first_column: 9 },
     type: { string: "none" },
     capture: {
       kind: "variable"
@@ -7302,7 +7543,7 @@ c++decl> explain [x](char c)
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 32, first_column: 9 },
+      loc: { first_line: 34, first_column: 9 },
       type: { string: "none" },
       capture: {
         kind: "variable"
@@ -7322,7 +7563,7 @@ c++decl> explain [x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 32, first_column: 12, last_column: 15 },
+    loc: { first_line: 34, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7340,7 +7581,7 @@ c++decl> explain [x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 32, first_column: 12, last_column: 15 },
+    loc: { first_line: 34, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7352,7 +7593,7 @@ c++decl> explain [x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 32, first_column: 12, last_column: 15 },
+    loc: { first_line: 34, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7379,7 +7620,7 @@ c++decl> explain [x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 32, first_column: 12, last_column: 15 },
+    loc: { first_line: 34, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7392,7 +7633,7 @@ c++decl> explain [x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 32, first_column: 12, last_column: 15 },
+    loc: { first_line: 34, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7411,7 +7652,7 @@ c++decl> explain [x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 32, first_column: 12, last_column: 15 },
+    loc: { first_line: 34, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7423,7 +7664,7 @@ c++decl> explain [x](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 32, first_column: 12, last_column: 15 },
+      loc: { first_line: 34, first_column: 12, last_column: 15 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -7436,7 +7677,7 @@ c++decl> explain [x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 32, first_column: 12, last_column: 15 },
+    loc: { first_line: 34, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7454,7 +7695,7 @@ c++decl> explain [x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 32, first_column: 12, last_column: 15 },
+    loc: { first_line: 34, first_column: 12, last_column: 15 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -7466,7 +7707,7 @@ c++decl> explain [x](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 32, first_column: 12, last_column: 15 },
+      loc: { first_line: 34, first_column: 12, last_column: 15 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -7486,358 +7727,10 @@ c++decl> explain [x](char c)
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 32, first_column: 9 },
+      loc: { first_line: 34, first_column: 9 },
       type: { string: "none" },
       capture: {
         kind: "variable"
-      }
-    }
-  ],
-  paren_param_c_ast_list_opt: [
-    {
-      sname: { string: "c", scopes: "none" },
-      is_param_pack: false,
-      kind: { value: 0x2, string: "built-in type" },
-      depth: 0,
-      loc: { first_line: 32, first_column: 12, last_column: 15 },
-      type: { btid: 0x0000000000000101, string: "char" },
-      builtin: {
-        bit_width: 0
-      }
-    }
-  ],
-  storage_class_subset_english_type_opt: { string: "none" },
-  lambda_return_type_c_ast_opt: null,
-  $$_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x100000, string: "lambda" },
-    depth: 0,
-    loc: { first_line: 32, first_column: 8, last_column: 18 },
-    type: { string: "none" },
-    lambda: {
-      capture_ast_list: [
-        {
-          sname: { string: "x", scopes: "none" },
-          is_param_pack: false,
-          kind: { value: 0x4, string: "capture" },
-          depth: 0,
-          loc: { first_line: 32, first_column: 9 },
-          type: { string: "none" },
-          capture: {
-            kind: "variable"
-          }
-        }
-      ],
-      param_ast_list: [
-        {
-          sname: { string: "c", scopes: "none" },
-          is_param_pack: false,
-          kind: { value: 0x2, string: "built-in type" },
-          depth: 0,
-          loc: { first_line: 32, first_column: 12, last_column: 15 },
-          type: { btid: 0x0000000000000101, string: "char" },
-          builtin: {
-            bit_width: 0
-          }
-        }
-      ]
-    }
-  }
-}
-
-declare lambda capturing [x] (c as character)
-c++decl> explain [=]
-{
-  rule: {
-    lhs: "capture_decl_list_c",
-    rhs: "capture_decl_c_ast"
-  },
-  capture_decl_c_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x4, string: "capture" },
-    depth: 0,
-    loc: { first_line: 33, first_column: 9 },
-    type: { string: "none" },
-    capture: {
-      kind: '='
-    }
-  },
-  $$_ast_list: [
-    {
-      sname: null,
-      is_param_pack: false,
-      kind: { value: 0x4, string: "capture" },
-      depth: 0,
-      loc: { first_line: 33, first_column: 9 },
-      type: { string: "none" },
-      capture: {
-        kind: '='
-      }
-    }
-  ]
-}
-
-{
-  rule: {
-    lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
-  },
-  capture_decl_list_c_opt: [
-    {
-      sname: null,
-      is_param_pack: false,
-      kind: { value: 0x4, string: "capture" },
-      depth: 0,
-      loc: { first_line: 33, first_column: 9 },
-      type: { string: "none" },
-      capture: {
-        kind: '='
-      }
-    }
-  ],
-  paren_param_c_ast_list_opt: [],
-  storage_class_subset_english_type_opt: { string: "none" },
-  lambda_return_type_c_ast_opt: null,
-  $$_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x100000, string: "lambda" },
-    depth: 0,
-    loc: { first_line: 33, first_column: 8, last_column: 10 },
-    type: { string: "none" },
-    lambda: {
-      capture_ast_list: [
-        {
-          sname: null,
-          is_param_pack: false,
-          kind: { value: 0x4, string: "capture" },
-          depth: 0,
-          loc: { first_line: 33, first_column: 9 },
-          type: { string: "none" },
-          capture: {
-            kind: '='
-          }
-        }
-      ],
-      param_ast_list: []
-    }
-  }
-}
-
-declare lambda capturing [copy by default]
-c++decl> explain [=](char c)
-{
-  rule: {
-    lhs: "capture_decl_list_c",
-    rhs: "capture_decl_c_ast"
-  },
-  capture_decl_c_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x4, string: "capture" },
-    depth: 0,
-    loc: { first_line: 34, first_column: 9 },
-    type: { string: "none" },
-    capture: {
-      kind: '='
-    }
-  },
-  $$_ast_list: [
-    {
-      sname: null,
-      is_param_pack: false,
-      kind: { value: 0x4, string: "capture" },
-      depth: 0,
-      loc: { first_line: 34, first_column: 9 },
-      type: { string: "none" },
-      capture: {
-        kind: '='
-      }
-    }
-  ]
-}
-
-{
-  rule: {
-    lhs: "builtin_type_c_ast",
-    rhs: "builtin_no_BitInt_c_btid"
-  },
-  builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
-  $$_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x2, string: "built-in type" },
-    depth: 0,
-    loc: { first_line: 34, first_column: 12, last_column: 15 },
-    type: { btid: 0x0000000000000101, string: "char" },
-    builtin: {
-      bit_width: 0
-    }
-  }
-}
-
-{
-  rule: {
-    lhs: "east_modified_type_c_ast",
-    rhs: "east_modifiable_type_c_ast type_modifier_list_c_type_opt"
-  },
-  east_modifiable_type_c_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x2, string: "built-in type" },
-    depth: 0,
-    loc: { first_line: 34, first_column: 12, last_column: 15 },
-    type: { btid: 0x0000000000000101, string: "char" },
-    builtin: {
-      bit_width: 0
-    }
-  },
-  type_modifier_list_c_type_opt: { string: "none" },
-  $$_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x2, string: "built-in type" },
-    depth: 0,
-    loc: { first_line: 34, first_column: 12, last_column: 15 },
-    type: { btid: 0x0000000000000101, string: "char" },
-    builtin: {
-      bit_width: 0
-    }
-  }
-}
-
-{
-  rule: {
-    lhs: "sname_c",
-    rhs: "NAME"
-  },
-  NAME: "c",
-  $$_sname: { string: "c", scopes: "none" }
-}
-
-{
-  rule: {
-    lhs: "sname_c_ast",
-    rhs: "sname_c"
-  },
-  in_attr__type_c_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x2, string: "built-in type" },
-    depth: 0,
-    loc: { first_line: 34, first_column: 12, last_column: 15 },
-    type: { btid: 0x0000000000000101, string: "char" },
-    builtin: {
-      bit_width: 0
-    }
-  },
-  sname_c: { string: "c", scopes: "none" },
-  bit_field_c_uint_opt: 0,
-  $$_ast: {
-    sname: { string: "c", scopes: "none" },
-    is_param_pack: false,
-    kind: { value: 0x2, string: "built-in type" },
-    depth: 0,
-    loc: { first_line: 34, first_column: 12, last_column: 15 },
-    type: { btid: 0x0000000000000101, string: "char" },
-    builtin: {
-      bit_width: 0
-    }
-  }
-}
-
-{
-  rule: {
-    lhs: "param_c_ast",
-    rhs: "this_stid_opt type_c_ast cast_c_astp_opt"
-  },
-  this_stid_opt: { string: "none" },
-  type_c_ast: {
-    sname: null,
-    is_param_pack: false,
-    kind: { value: 0x2, string: "built-in type" },
-    depth: 0,
-    loc: { first_line: 34, first_column: 12, last_column: 15 },
-    type: { btid: 0x0000000000000101, string: "char" },
-    builtin: {
-      bit_width: 0
-    }
-  },
-  cast_c_astp_opt: {
-    ast: {
-      sname: { string: "c", scopes: "none" },
-      is_param_pack: false,
-      kind: { value: 0x2, string: "built-in type" },
-      depth: 0,
-      loc: { first_line: 34, first_column: 12, last_column: 15 },
-      type: { btid: 0x0000000000000101, string: "char" },
-      builtin: {
-        bit_width: 0
-      }
-    },
-    target_ast: null
-  },
-  $$_ast: {
-    sname: { string: "c", scopes: "none" },
-    is_param_pack: false,
-    kind: { value: 0x2, string: "built-in type" },
-    depth: 0,
-    loc: { first_line: 34, first_column: 12, last_column: 15 },
-    type: { btid: 0x0000000000000101, string: "char" },
-    builtin: {
-      bit_width: 0
-    }
-  }
-}
-
-{
-  rule: {
-    lhs: "param_c_ast_list",
-    rhs: "param_c_ast"
-  },
-  param_c_ast: {
-    sname: { string: "c", scopes: "none" },
-    is_param_pack: false,
-    kind: { value: 0x2, string: "built-in type" },
-    depth: 0,
-    loc: { first_line: 34, first_column: 12, last_column: 15 },
-    type: { btid: 0x0000000000000101, string: "char" },
-    builtin: {
-      bit_width: 0
-    }
-  },
-  $$_ast_list: [
-    {
-      sname: { string: "c", scopes: "none" },
-      is_param_pack: false,
-      kind: { value: 0x2, string: "built-in type" },
-      depth: 0,
-      loc: { first_line: 34, first_column: 12, last_column: 15 },
-      type: { btid: 0x0000000000000101, string: "char" },
-      builtin: {
-        bit_width: 0
-      }
-    }
-  ]
-}
-
-{
-  rule: {
-    lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
-  },
-  capture_decl_list_c_opt: [
-    {
-      sname: null,
-      is_param_pack: false,
-      kind: { value: 0x4, string: "capture" },
-      depth: 0,
-      loc: { first_line: 34, first_column: 9 },
-      type: { string: "none" },
-      capture: {
-        kind: '='
       }
     }
   ],
@@ -7866,14 +7759,14 @@ c++decl> explain [=](char c)
     lambda: {
       capture_ast_list: [
         {
-          sname: null,
+          sname: { string: "x", scopes: "none" },
           is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_line: 34, first_column: 9 },
           type: { string: "none" },
           capture: {
-            kind: '='
+            kind: "variable"
           }
         }
       ],
@@ -7894,8 +7787,8 @@ c++decl> explain [=](char c)
   }
 }
 
-declare lambda capturing [copy by default] (c as character)
-c++decl> explain [&]
+declare lambda capturing [x] (c as character)
+c++decl> explain [=]
 {
   rule: {
     lhs: "capture_decl_list_c",
@@ -7909,7 +7802,7 @@ c++decl> explain [&]
     loc: { first_line: 35, first_column: 9 },
     type: { string: "none" },
     capture: {
-      kind: '&'
+      kind: '='
     }
   },
   $$_ast_list: [
@@ -7921,7 +7814,7 @@ c++decl> explain [&]
       loc: { first_line: 35, first_column: 9 },
       type: { string: "none" },
       capture: {
-        kind: '&'
+        kind: '='
       }
     }
   ]
@@ -7941,7 +7834,7 @@ c++decl> explain [&]
       loc: { first_line: 35, first_column: 9 },
       type: { string: "none" },
       capture: {
-        kind: '&'
+        kind: '='
       }
     }
   ],
@@ -7965,7 +7858,7 @@ c++decl> explain [&]
           loc: { first_line: 35, first_column: 9 },
           type: { string: "none" },
           capture: {
-            kind: '&'
+            kind: '='
           }
         }
       ],
@@ -7974,8 +7867,8 @@ c++decl> explain [&]
   }
 }
 
-declare lambda capturing [reference by default]
-c++decl> explain [&](char c)
+declare lambda capturing [copy by default]
+c++decl> explain [=](char c)
 {
   rule: {
     lhs: "capture_decl_list_c",
@@ -7989,7 +7882,7 @@ c++decl> explain [&](char c)
     loc: { first_line: 36, first_column: 9 },
     type: { string: "none" },
     capture: {
-      kind: '&'
+      kind: '='
     }
   },
   $$_ast_list: [
@@ -8001,7 +7894,7 @@ c++decl> explain [&](char c)
       loc: { first_line: 36, first_column: 9 },
       type: { string: "none" },
       capture: {
-        kind: '&'
+        kind: '='
       }
     }
   ]
@@ -8185,7 +8078,7 @@ c++decl> explain [&](char c)
       loc: { first_line: 36, first_column: 9 },
       type: { string: "none" },
       capture: {
-        kind: '&'
+        kind: '='
       }
     }
   ],
@@ -8221,7 +8114,7 @@ c++decl> explain [&](char c)
           loc: { first_line: 36, first_column: 9 },
           type: { string: "none" },
           capture: {
-            kind: '&'
+            kind: '='
           }
         }
       ],
@@ -8232,6 +8125,354 @@ c++decl> explain [&](char c)
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_line: 36, first_column: 12, last_column: 15 },
+          type: { btid: 0x0000000000000101, string: "char" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      ]
+    }
+  }
+}
+
+declare lambda capturing [copy by default] (c as character)
+c++decl> explain [&]
+{
+  rule: {
+    lhs: "capture_decl_list_c",
+    rhs: "capture_decl_c_ast"
+  },
+  capture_decl_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x4, string: "capture" },
+    depth: 0,
+    loc: { first_line: 37, first_column: 9 },
+    type: { string: "none" },
+    capture: {
+      kind: '&'
+    }
+  },
+  $$_ast_list: [
+    {
+      sname: null,
+      is_param_pack: false,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      loc: { first_line: 37, first_column: 9 },
+      type: { string: "none" },
+      capture: {
+        kind: '&'
+      }
+    }
+  ]
+}
+
+{
+  rule: {
+    lhs: "lambda_declaration_c",
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+  },
+  capture_decl_list_c_opt: [
+    {
+      sname: null,
+      is_param_pack: false,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      loc: { first_line: 37, first_column: 9 },
+      type: { string: "none" },
+      capture: {
+        kind: '&'
+      }
+    }
+  ],
+  paren_param_c_ast_list_opt: [],
+  storage_class_subset_english_type_opt: { string: "none" },
+  lambda_return_type_c_ast_opt: null,
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x100000, string: "lambda" },
+    depth: 0,
+    loc: { first_line: 37, first_column: 8, last_column: 10 },
+    type: { string: "none" },
+    lambda: {
+      capture_ast_list: [
+        {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x4, string: "capture" },
+          depth: 0,
+          loc: { first_line: 37, first_column: 9 },
+          type: { string: "none" },
+          capture: {
+            kind: '&'
+          }
+        }
+      ],
+      param_ast_list: []
+    }
+  }
+}
+
+declare lambda capturing [reference by default]
+c++decl> explain [&](char c)
+{
+  rule: {
+    lhs: "capture_decl_list_c",
+    rhs: "capture_decl_c_ast"
+  },
+  capture_decl_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x4, string: "capture" },
+    depth: 0,
+    loc: { first_line: 38, first_column: 9 },
+    type: { string: "none" },
+    capture: {
+      kind: '&'
+    }
+  },
+  $$_ast_list: [
+    {
+      sname: null,
+      is_param_pack: false,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      loc: { first_line: 38, first_column: 9 },
+      type: { string: "none" },
+      capture: {
+        kind: '&'
+      }
+    }
+  ]
+}
+
+{
+  rule: {
+    lhs: "builtin_type_c_ast",
+    rhs: "builtin_no_BitInt_c_btid"
+  },
+  builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_line: 38, first_column: 12, last_column: 15 },
+    type: { btid: 0x0000000000000101, string: "char" },
+    builtin: {
+      bit_width: 0
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "east_modified_type_c_ast",
+    rhs: "east_modifiable_type_c_ast type_modifier_list_c_type_opt"
+  },
+  east_modifiable_type_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_line: 38, first_column: 12, last_column: 15 },
+    type: { btid: 0x0000000000000101, string: "char" },
+    builtin: {
+      bit_width: 0
+    }
+  },
+  type_modifier_list_c_type_opt: { string: "none" },
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_line: 38, first_column: 12, last_column: 15 },
+    type: { btid: 0x0000000000000101, string: "char" },
+    builtin: {
+      bit_width: 0
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "sname_c",
+    rhs: "NAME"
+  },
+  NAME: "c",
+  $$_sname: { string: "c", scopes: "none" }
+}
+
+{
+  rule: {
+    lhs: "sname_c_ast",
+    rhs: "sname_c"
+  },
+  in_attr__type_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_line: 38, first_column: 12, last_column: 15 },
+    type: { btid: 0x0000000000000101, string: "char" },
+    builtin: {
+      bit_width: 0
+    }
+  },
+  sname_c: { string: "c", scopes: "none" },
+  bit_field_c_uint_opt: 0,
+  $$_ast: {
+    sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_line: 38, first_column: 12, last_column: 15 },
+    type: { btid: 0x0000000000000101, string: "char" },
+    builtin: {
+      bit_width: 0
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "param_c_ast",
+    rhs: "this_stid_opt type_c_ast cast_c_astp_opt"
+  },
+  this_stid_opt: { string: "none" },
+  type_c_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_line: 38, first_column: 12, last_column: 15 },
+    type: { btid: 0x0000000000000101, string: "char" },
+    builtin: {
+      bit_width: 0
+    }
+  },
+  cast_c_astp_opt: {
+    ast: {
+      sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      loc: { first_line: 38, first_column: 12, last_column: 15 },
+      type: { btid: 0x0000000000000101, string: "char" },
+      builtin: {
+        bit_width: 0
+      }
+    },
+    target_ast: null
+  },
+  $$_ast: {
+    sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_line: 38, first_column: 12, last_column: 15 },
+    type: { btid: 0x0000000000000101, string: "char" },
+    builtin: {
+      bit_width: 0
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "param_c_ast_list",
+    rhs: "param_c_ast"
+  },
+  param_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_line: 38, first_column: 12, last_column: 15 },
+    type: { btid: 0x0000000000000101, string: "char" },
+    builtin: {
+      bit_width: 0
+    }
+  },
+  $$_ast_list: [
+    {
+      sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      loc: { first_line: 38, first_column: 12, last_column: 15 },
+      type: { btid: 0x0000000000000101, string: "char" },
+      builtin: {
+        bit_width: 0
+      }
+    }
+  ]
+}
+
+{
+  rule: {
+    lhs: "lambda_declaration_c",
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+  },
+  capture_decl_list_c_opt: [
+    {
+      sname: null,
+      is_param_pack: false,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      loc: { first_line: 38, first_column: 9 },
+      type: { string: "none" },
+      capture: {
+        kind: '&'
+      }
+    }
+  ],
+  paren_param_c_ast_list_opt: [
+    {
+      sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      loc: { first_line: 38, first_column: 12, last_column: 15 },
+      type: { btid: 0x0000000000000101, string: "char" },
+      builtin: {
+        bit_width: 0
+      }
+    }
+  ],
+  storage_class_subset_english_type_opt: { string: "none" },
+  lambda_return_type_c_ast_opt: null,
+  $$_ast: {
+    sname: null,
+    is_param_pack: false,
+    kind: { value: 0x100000, string: "lambda" },
+    depth: 0,
+    loc: { first_line: 38, first_column: 8, last_column: 18 },
+    type: { string: "none" },
+    lambda: {
+      capture_ast_list: [
+        {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x4, string: "capture" },
+          depth: 0,
+          loc: { first_line: 38, first_column: 9 },
+          type: { string: "none" },
+          capture: {
+            kind: '&'
+          }
+        }
+      ],
+      param_ast_list: [
+        {
+          sname: { string: "c", scopes: "none" },
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_line: 38, first_column: 12, last_column: 15 },
           type: { btid: 0x0000000000000101, string: "char" },
           builtin: {
             bit_width: 0
@@ -8254,7 +8495,7 @@ c++decl> explain [&x]
     is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    loc: { first_line: 37, first_column: 9, last_column: 10 },
+    loc: { first_line: 39, first_column: 9, last_column: 10 },
     type: { string: "none" },
     capture: {
       kind: '&'
@@ -8266,7 +8507,7 @@ c++decl> explain [&x]
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 37, first_column: 9, last_column: 10 },
+      loc: { first_line: 39, first_column: 9, last_column: 10 },
       type: { string: "none" },
       capture: {
         kind: '&'
@@ -8286,7 +8527,7 @@ c++decl> explain [&x]
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 37, first_column: 9, last_column: 10 },
+      loc: { first_line: 39, first_column: 9, last_column: 10 },
       type: { string: "none" },
       capture: {
         kind: '&'
@@ -8301,7 +8542,7 @@ c++decl> explain [&x]
     is_param_pack: false,
     kind: { value: 0x100000, string: "lambda" },
     depth: 0,
-    loc: { first_line: 37, first_column: 8, last_column: 11 },
+    loc: { first_line: 39, first_column: 8, last_column: 11 },
     type: { string: "none" },
     lambda: {
       capture_ast_list: [
@@ -8310,7 +8551,7 @@ c++decl> explain [&x]
           is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          loc: { first_line: 37, first_column: 9, last_column: 10 },
+          loc: { first_line: 39, first_column: 9, last_column: 10 },
           type: { string: "none" },
           capture: {
             kind: '&'
@@ -8334,7 +8575,7 @@ c++decl> explain [&x](char c)
     is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    loc: { first_line: 38, first_column: 9, last_column: 10 },
+    loc: { first_line: 40, first_column: 9, last_column: 10 },
     type: { string: "none" },
     capture: {
       kind: '&'
@@ -8346,7 +8587,7 @@ c++decl> explain [&x](char c)
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 38, first_column: 9, last_column: 10 },
+      loc: { first_line: 40, first_column: 9, last_column: 10 },
       type: { string: "none" },
       capture: {
         kind: '&'
@@ -8366,7 +8607,7 @@ c++decl> explain [&x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 38, first_column: 13, last_column: 16 },
+    loc: { first_line: 40, first_column: 13, last_column: 16 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8384,7 +8625,7 @@ c++decl> explain [&x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 38, first_column: 13, last_column: 16 },
+    loc: { first_line: 40, first_column: 13, last_column: 16 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8396,7 +8637,7 @@ c++decl> explain [&x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 38, first_column: 13, last_column: 16 },
+    loc: { first_line: 40, first_column: 13, last_column: 16 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8423,7 +8664,7 @@ c++decl> explain [&x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 38, first_column: 13, last_column: 16 },
+    loc: { first_line: 40, first_column: 13, last_column: 16 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8436,7 +8677,7 @@ c++decl> explain [&x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 38, first_column: 13, last_column: 16 },
+    loc: { first_line: 40, first_column: 13, last_column: 16 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8455,7 +8696,7 @@ c++decl> explain [&x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 38, first_column: 13, last_column: 16 },
+    loc: { first_line: 40, first_column: 13, last_column: 16 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8467,7 +8708,7 @@ c++decl> explain [&x](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 38, first_column: 13, last_column: 16 },
+      loc: { first_line: 40, first_column: 13, last_column: 16 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -8480,7 +8721,7 @@ c++decl> explain [&x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 38, first_column: 13, last_column: 16 },
+    loc: { first_line: 40, first_column: 13, last_column: 16 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8498,7 +8739,7 @@ c++decl> explain [&x](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 38, first_column: 13, last_column: 16 },
+    loc: { first_line: 40, first_column: 13, last_column: 16 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8510,7 +8751,7 @@ c++decl> explain [&x](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 38, first_column: 13, last_column: 16 },
+      loc: { first_line: 40, first_column: 13, last_column: 16 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -8530,7 +8771,7 @@ c++decl> explain [&x](char c)
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 38, first_column: 9, last_column: 10 },
+      loc: { first_line: 40, first_column: 9, last_column: 10 },
       type: { string: "none" },
       capture: {
         kind: '&'
@@ -8543,7 +8784,7 @@ c++decl> explain [&x](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 38, first_column: 13, last_column: 16 },
+      loc: { first_line: 40, first_column: 13, last_column: 16 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -8557,7 +8798,7 @@ c++decl> explain [&x](char c)
     is_param_pack: false,
     kind: { value: 0x100000, string: "lambda" },
     depth: 0,
-    loc: { first_line: 38, first_column: 8, last_column: 19 },
+    loc: { first_line: 40, first_column: 8, last_column: 19 },
     type: { string: "none" },
     lambda: {
       capture_ast_list: [
@@ -8566,7 +8807,7 @@ c++decl> explain [&x](char c)
           is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          loc: { first_line: 38, first_column: 9, last_column: 10 },
+          loc: { first_line: 40, first_column: 9, last_column: 10 },
           type: { string: "none" },
           capture: {
             kind: '&'
@@ -8579,7 +8820,7 @@ c++decl> explain [&x](char c)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 38, first_column: 13, last_column: 16 },
+          loc: { first_line: 40, first_column: 13, last_column: 16 },
           type: { btid: 0x0000000000000101, string: "char" },
           builtin: {
             bit_width: 0
@@ -8602,7 +8843,7 @@ c++decl> explain [this]
     is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    loc: { first_line: 39, first_column: 9, last_column: 12 },
+    loc: { first_line: 41, first_column: 9, last_column: 12 },
     type: { string: "none" },
     capture: {
       kind: "this"
@@ -8614,7 +8855,7 @@ c++decl> explain [this]
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 39, first_column: 9, last_column: 12 },
+      loc: { first_line: 41, first_column: 9, last_column: 12 },
       type: { string: "none" },
       capture: {
         kind: "this"
@@ -8634,7 +8875,7 @@ c++decl> explain [this]
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 39, first_column: 9, last_column: 12 },
+      loc: { first_line: 41, first_column: 9, last_column: 12 },
       type: { string: "none" },
       capture: {
         kind: "this"
@@ -8649,7 +8890,7 @@ c++decl> explain [this]
     is_param_pack: false,
     kind: { value: 0x100000, string: "lambda" },
     depth: 0,
-    loc: { first_line: 39, first_column: 8, last_column: 13 },
+    loc: { first_line: 41, first_column: 8, last_column: 13 },
     type: { string: "none" },
     lambda: {
       capture_ast_list: [
@@ -8658,7 +8899,7 @@ c++decl> explain [this]
           is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          loc: { first_line: 39, first_column: 9, last_column: 12 },
+          loc: { first_line: 41, first_column: 9, last_column: 12 },
           type: { string: "none" },
           capture: {
             kind: "this"
@@ -8682,7 +8923,7 @@ c++decl> explain [this](char c)
     is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    loc: { first_line: 40, first_column: 9, last_column: 12 },
+    loc: { first_line: 42, first_column: 9, last_column: 12 },
     type: { string: "none" },
     capture: {
       kind: "this"
@@ -8694,7 +8935,7 @@ c++decl> explain [this](char c)
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 40, first_column: 9, last_column: 12 },
+      loc: { first_line: 42, first_column: 9, last_column: 12 },
       type: { string: "none" },
       capture: {
         kind: "this"
@@ -8714,7 +8955,7 @@ c++decl> explain [this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 40, first_column: 15, last_column: 18 },
+    loc: { first_line: 42, first_column: 15, last_column: 18 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8732,7 +8973,7 @@ c++decl> explain [this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 40, first_column: 15, last_column: 18 },
+    loc: { first_line: 42, first_column: 15, last_column: 18 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8744,7 +8985,7 @@ c++decl> explain [this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 40, first_column: 15, last_column: 18 },
+    loc: { first_line: 42, first_column: 15, last_column: 18 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8771,7 +9012,7 @@ c++decl> explain [this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 40, first_column: 15, last_column: 18 },
+    loc: { first_line: 42, first_column: 15, last_column: 18 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8784,7 +9025,7 @@ c++decl> explain [this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 40, first_column: 15, last_column: 18 },
+    loc: { first_line: 42, first_column: 15, last_column: 18 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8803,7 +9044,7 @@ c++decl> explain [this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 40, first_column: 15, last_column: 18 },
+    loc: { first_line: 42, first_column: 15, last_column: 18 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8815,7 +9056,7 @@ c++decl> explain [this](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 40, first_column: 15, last_column: 18 },
+      loc: { first_line: 42, first_column: 15, last_column: 18 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -8828,7 +9069,7 @@ c++decl> explain [this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 40, first_column: 15, last_column: 18 },
+    loc: { first_line: 42, first_column: 15, last_column: 18 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8846,7 +9087,7 @@ c++decl> explain [this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 40, first_column: 15, last_column: 18 },
+    loc: { first_line: 42, first_column: 15, last_column: 18 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -8858,7 +9099,7 @@ c++decl> explain [this](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 40, first_column: 15, last_column: 18 },
+      loc: { first_line: 42, first_column: 15, last_column: 18 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -8878,7 +9119,7 @@ c++decl> explain [this](char c)
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 40, first_column: 9, last_column: 12 },
+      loc: { first_line: 42, first_column: 9, last_column: 12 },
       type: { string: "none" },
       capture: {
         kind: "this"
@@ -8891,7 +9132,7 @@ c++decl> explain [this](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 40, first_column: 15, last_column: 18 },
+      loc: { first_line: 42, first_column: 15, last_column: 18 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -8905,7 +9146,7 @@ c++decl> explain [this](char c)
     is_param_pack: false,
     kind: { value: 0x100000, string: "lambda" },
     depth: 0,
-    loc: { first_line: 40, first_column: 8, last_column: 21 },
+    loc: { first_line: 42, first_column: 8, last_column: 21 },
     type: { string: "none" },
     lambda: {
       capture_ast_list: [
@@ -8914,7 +9155,7 @@ c++decl> explain [this](char c)
           is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          loc: { first_line: 40, first_column: 9, last_column: 12 },
+          loc: { first_line: 42, first_column: 9, last_column: 12 },
           type: { string: "none" },
           capture: {
             kind: "this"
@@ -8927,7 +9168,7 @@ c++decl> explain [this](char c)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 40, first_column: 15, last_column: 18 },
+          loc: { first_line: 42, first_column: 15, last_column: 18 },
           type: { btid: 0x0000000000000101, string: "char" },
           builtin: {
             bit_width: 0
@@ -8950,7 +9191,7 @@ c++decl> explain [*this]
     is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    loc: { first_line: 41, first_column: 9, last_column: 13 },
+    loc: { first_line: 43, first_column: 9, last_column: 13 },
     type: { string: "none" },
     capture: {
       kind: "*this"
@@ -8962,7 +9203,7 @@ c++decl> explain [*this]
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 41, first_column: 9, last_column: 13 },
+      loc: { first_line: 43, first_column: 9, last_column: 13 },
       type: { string: "none" },
       capture: {
         kind: "*this"
@@ -8982,7 +9223,7 @@ c++decl> explain [*this]
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 41, first_column: 9, last_column: 13 },
+      loc: { first_line: 43, first_column: 9, last_column: 13 },
       type: { string: "none" },
       capture: {
         kind: "*this"
@@ -8997,7 +9238,7 @@ c++decl> explain [*this]
     is_param_pack: false,
     kind: { value: 0x100000, string: "lambda" },
     depth: 0,
-    loc: { first_line: 41, first_column: 8, last_column: 14 },
+    loc: { first_line: 43, first_column: 8, last_column: 14 },
     type: { string: "none" },
     lambda: {
       capture_ast_list: [
@@ -9006,7 +9247,7 @@ c++decl> explain [*this]
           is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          loc: { first_line: 41, first_column: 9, last_column: 13 },
+          loc: { first_line: 43, first_column: 9, last_column: 13 },
           type: { string: "none" },
           capture: {
             kind: "*this"
@@ -9030,7 +9271,7 @@ c++decl> explain [*this](char c)
     is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    loc: { first_line: 42, first_column: 9, last_column: 13 },
+    loc: { first_line: 44, first_column: 9, last_column: 13 },
     type: { string: "none" },
     capture: {
       kind: "*this"
@@ -9042,7 +9283,7 @@ c++decl> explain [*this](char c)
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 42, first_column: 9, last_column: 13 },
+      loc: { first_line: 44, first_column: 9, last_column: 13 },
       type: { string: "none" },
       capture: {
         kind: "*this"
@@ -9062,7 +9303,7 @@ c++decl> explain [*this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 42, first_column: 16, last_column: 19 },
+    loc: { first_line: 44, first_column: 16, last_column: 19 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -9080,7 +9321,7 @@ c++decl> explain [*this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 42, first_column: 16, last_column: 19 },
+    loc: { first_line: 44, first_column: 16, last_column: 19 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -9092,7 +9333,7 @@ c++decl> explain [*this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 42, first_column: 16, last_column: 19 },
+    loc: { first_line: 44, first_column: 16, last_column: 19 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -9119,7 +9360,7 @@ c++decl> explain [*this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 42, first_column: 16, last_column: 19 },
+    loc: { first_line: 44, first_column: 16, last_column: 19 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -9132,7 +9373,7 @@ c++decl> explain [*this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 42, first_column: 16, last_column: 19 },
+    loc: { first_line: 44, first_column: 16, last_column: 19 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -9151,7 +9392,7 @@ c++decl> explain [*this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 42, first_column: 16, last_column: 19 },
+    loc: { first_line: 44, first_column: 16, last_column: 19 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -9163,7 +9404,7 @@ c++decl> explain [*this](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 42, first_column: 16, last_column: 19 },
+      loc: { first_line: 44, first_column: 16, last_column: 19 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -9176,7 +9417,7 @@ c++decl> explain [*this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 42, first_column: 16, last_column: 19 },
+    loc: { first_line: 44, first_column: 16, last_column: 19 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -9194,7 +9435,7 @@ c++decl> explain [*this](char c)
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 42, first_column: 16, last_column: 19 },
+    loc: { first_line: 44, first_column: 16, last_column: 19 },
     type: { btid: 0x0000000000000101, string: "char" },
     builtin: {
       bit_width: 0
@@ -9206,7 +9447,7 @@ c++decl> explain [*this](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 42, first_column: 16, last_column: 19 },
+      loc: { first_line: 44, first_column: 16, last_column: 19 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -9226,7 +9467,7 @@ c++decl> explain [*this](char c)
       is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      loc: { first_line: 42, first_column: 9, last_column: 13 },
+      loc: { first_line: 44, first_column: 9, last_column: 13 },
       type: { string: "none" },
       capture: {
         kind: "*this"
@@ -9239,7 +9480,7 @@ c++decl> explain [*this](char c)
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 42, first_column: 16, last_column: 19 },
+      loc: { first_line: 44, first_column: 16, last_column: 19 },
       type: { btid: 0x0000000000000101, string: "char" },
       builtin: {
         bit_width: 0
@@ -9253,7 +9494,7 @@ c++decl> explain [*this](char c)
     is_param_pack: false,
     kind: { value: 0x100000, string: "lambda" },
     depth: 0,
-    loc: { first_line: 42, first_column: 8, last_column: 22 },
+    loc: { first_line: 44, first_column: 8, last_column: 22 },
     type: { string: "none" },
     lambda: {
       capture_ast_list: [
@@ -9262,7 +9503,7 @@ c++decl> explain [*this](char c)
           is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          loc: { first_line: 42, first_column: 9, last_column: 13 },
+          loc: { first_line: 44, first_column: 9, last_column: 13 },
           type: { string: "none" },
           capture: {
             kind: "*this"
@@ -9275,7 +9516,7 @@ c++decl> explain [*this](char c)
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_line: 42, first_column: 16, last_column: 19 },
+          loc: { first_line: 44, first_column: 16, last_column: 19 },
           type: { btid: 0x0000000000000101, string: "char" },
           builtin: {
             bit_width: 0
@@ -9337,7 +9578,7 @@ c++decl> explain int x
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 50, first_column: 8, last_column: 10 },
+    loc: { first_line: 52, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -9355,7 +9596,7 @@ c++decl> explain int x
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 50, first_column: 8, last_column: 10 },
+    loc: { first_line: 52, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -9367,7 +9608,7 @@ c++decl> explain int x
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 50, first_column: 8, last_column: 10 },
+    loc: { first_line: 52, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -9394,7 +9635,7 @@ c++decl> explain int x
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 50, first_column: 8, last_column: 10 },
+    loc: { first_line: 52, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -9407,7 +9648,7 @@ c++decl> explain int x
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 50, first_column: 8, last_column: 10 },
+    loc: { first_line: 52, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -9426,7 +9667,7 @@ c++decl> explain int x
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 50, first_column: 8, last_column: 10 },
+    loc: { first_line: 52, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -9438,7 +9679,7 @@ c++decl> explain int x
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 50, first_column: 8, last_column: 10 },
+      loc: { first_line: 52, first_column: 8, last_column: 10 },
       type: { btid: 0x0000000000004001, string: "int" },
       builtin: {
         bit_width: 0
@@ -9451,7 +9692,7 @@ c++decl> explain int x
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_line: 50, first_column: 8, last_column: 10 },
+    loc: { first_line: 52, first_column: 8, last_column: 10 },
     type: { btid: 0x0000000000004001, string: "int" },
     builtin: {
       bit_width: 0
@@ -9470,7 +9711,7 @@ c++decl> explain int x
       is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      loc: { first_line: 50, first_column: 8, last_column: 10 },
+      loc: { first_line: 52, first_column: 8, last_column: 10 },
       type: { btid: 0x0000000000004001, string: "int" },
       builtin: {
         bit_width: 0
@@ -9489,7 +9730,7 @@ c++decl> #define NAME2_HELPER(A,B)         A ## B
   },
   p_param: "A",
   $$_list: [
-    { name: "A", loc: { first_line: 52, first_column: 21 } }
+    { name: "A", loc: { first_line: 54, first_column: 21 } }
   ]
 }
 
@@ -9499,12 +9740,12 @@ c++decl> #define NAME2_HELPER(A,B)         A ## B
     rhs: "p_param"
   },
   p_param_list: [
-    { name: "A", loc: { first_line: 52, first_column: 21 } }
+    { name: "A", loc: { first_line: 54, first_column: 21 } }
   ],
   p_param: "B",
   $$_list: [
-    { name: "A", loc: { first_line: 52, first_column: 21 } },
-    { name: "B", loc: { first_line: 52, first_column: 23 } }
+    { name: "A", loc: { first_line: 54, first_column: 21 } },
+    { name: "B", loc: { first_line: 54, first_column: 23 } }
   ]
 }
 
@@ -9515,30 +9756,30 @@ c++decl> #define NAME2_HELPER(A,B)         A ## B
   },
   name: "NAME2_HELPER",
   p_paren_param_list_opt: [
-    { name: "A", loc: { first_line: 52, first_column: 21 } },
-    { name: "B", loc: { first_line: 52, first_column: 23 } }
+    { name: "A", loc: { first_line: 54, first_column: 21 } },
+    { name: "B", loc: { first_line: 54, first_column: 23 } }
   ],
   p_replace_list_opt: [
-    { kind: " ", loc: { first_line: 52, first_column: 25, last_column: 33 } },
-    { kind: "identifier", string: "A", loc: { first_line: 52, first_column: 34 } },
-    { kind: " ", loc: { first_line: 52, first_column: 35 } },
-    { kind: "##", loc: { first_line: 52, first_column: 36, last_column: 37 } },
-    { kind: " ", loc: { first_line: 52, first_column: 38 } },
-    { kind: "identifier", string: "B", loc: { first_line: 52, first_column: 39 } }
+    { kind: " ", loc: { first_line: 54, first_column: 25, last_column: 33 } },
+    { kind: "identifier", string: "A", loc: { first_line: 54, first_column: 34 } },
+    { kind: " ", loc: { first_line: 54, first_column: 35 } },
+    { kind: "##", loc: { first_line: 54, first_column: 36, last_column: 37 } },
+    { kind: " ", loc: { first_line: 54, first_column: 38 } },
+    { kind: "identifier", string: "B", loc: { first_line: 54, first_column: 39 } }
   ],
   macro: {
     name: "NAME2_HELPER",
     is_dynamic: false,
     param_list: [
-      { name: "A", loc: { first_line: 52, first_column: 21 } },
-      { name: "B", loc: { first_line: 52, first_column: 24 } }
+      { name: "A", loc: { first_line: 54, first_column: 21 } },
+      { name: "B", loc: { first_line: 54, first_column: 24 } }
     ],
     replace_list: [
-      { kind: "identifier", string: "A", loc: { first_line: 52, first_column: 34 } },
-      { kind: " ", loc: { first_line: 52, first_column: 35 } },
-      { kind: "##", loc: { first_line: 52, first_column: 36, last_column: 37 } },
-      { kind: " ", loc: { first_line: 52, first_column: 38 } },
-      { kind: "identifier", string: "B", loc: { first_line: 52, first_column: 39 } }
+      { kind: "identifier", string: "A", loc: { first_line: 54, first_column: 34 } },
+      { kind: " ", loc: { first_line: 54, first_column: 35 } },
+      { kind: "##", loc: { first_line: 54, first_column: 36, last_column: 37 } },
+      { kind: " ", loc: { first_line: 54, first_column: 38 } },
+      { kind: "identifier", string: "B", loc: { first_line: 54, first_column: 39 } }
     ]
   }
 }
@@ -9551,7 +9792,7 @@ c++decl> #define NAME2(A,B)                NAME2_HELPER(A,B)
   },
   p_param: "A",
   $$_list: [
-    { name: "A", loc: { first_line: 53, first_column: 14 } }
+    { name: "A", loc: { first_line: 55, first_column: 14 } }
   ]
 }
 
@@ -9561,12 +9802,12 @@ c++decl> #define NAME2(A,B)                NAME2_HELPER(A,B)
     rhs: "p_param"
   },
   p_param_list: [
-    { name: "A", loc: { first_line: 53, first_column: 14 } }
+    { name: "A", loc: { first_line: 55, first_column: 14 } }
   ],
   p_param: "B",
   $$_list: [
-    { name: "A", loc: { first_line: 53, first_column: 14 } },
-    { name: "B", loc: { first_line: 53, first_column: 16 } }
+    { name: "A", loc: { first_line: 55, first_column: 14 } },
+    { name: "B", loc: { first_line: 55, first_column: 16 } }
   ]
 }
 
@@ -9577,32 +9818,32 @@ c++decl> #define NAME2(A,B)                NAME2_HELPER(A,B)
   },
   name: "NAME2",
   p_paren_param_list_opt: [
-    { name: "A", loc: { first_line: 53, first_column: 14 } },
-    { name: "B", loc: { first_line: 53, first_column: 16 } }
+    { name: "A", loc: { first_line: 55, first_column: 14 } },
+    { name: "B", loc: { first_line: 55, first_column: 16 } }
   ],
   p_replace_list_opt: [
-    { kind: " ", loc: { first_line: 53, first_column: 18, last_column: 33 } },
-    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 53, first_column: 34, last_column: 45 } },
-    { kind: "punctuator", string: "(", loc: { first_line: 53, first_column: 46 } },
-    { kind: "identifier", string: "A", loc: { first_line: 53, first_column: 47 } },
-    { kind: "punctuator", string: ",", loc: { first_line: 53, first_column: 48 } },
-    { kind: "identifier", string: "B", loc: { first_line: 53, first_column: 49 } },
-    { kind: "punctuator", string: ")", loc: { first_line: 53, first_column: 50 } }
+    { kind: " ", loc: { first_line: 55, first_column: 18, last_column: 33 } },
+    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 55, first_column: 34, last_column: 45 } },
+    { kind: "punctuator", string: "(", loc: { first_line: 55, first_column: 46 } },
+    { kind: "identifier", string: "A", loc: { first_line: 55, first_column: 47 } },
+    { kind: "punctuator", string: ",", loc: { first_line: 55, first_column: 48 } },
+    { kind: "identifier", string: "B", loc: { first_line: 55, first_column: 49 } },
+    { kind: "punctuator", string: ")", loc: { first_line: 55, first_column: 50 } }
   ],
   macro: {
     name: "NAME2",
     is_dynamic: false,
     param_list: [
-      { name: "A", loc: { first_line: 53, first_column: 14 } },
-      { name: "B", loc: { first_line: 53, first_column: 17 } }
+      { name: "A", loc: { first_line: 55, first_column: 14 } },
+      { name: "B", loc: { first_line: 55, first_column: 17 } }
     ],
     replace_list: [
-      { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 53, first_column: 34, last_column: 45 } },
-      { kind: "punctuator", string: "(", loc: { first_line: 53, first_column: 46 } },
-      { kind: "identifier", string: "A", loc: { first_line: 53, first_column: 47 } },
-      { kind: "punctuator", string: ",", loc: { first_line: 53, first_column: 48 } },
-      { kind: "identifier", string: "B", loc: { first_line: 53, first_column: 49 } },
-      { kind: "punctuator", string: ")", loc: { first_line: 53, first_column: 50 } }
+      { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 55, first_column: 34, last_column: 45 } },
+      { kind: "punctuator", string: "(", loc: { first_line: 55, first_column: 46 } },
+      { kind: "identifier", string: "A", loc: { first_line: 55, first_column: 47 } },
+      { kind: "punctuator", string: ",", loc: { first_line: 55, first_column: 48 } },
+      { kind: "identifier", string: "B", loc: { first_line: 55, first_column: 49 } },
+      { kind: "punctuator", string: ")", loc: { first_line: 55, first_column: 50 } }
     ]
   }
 }
@@ -9616,11 +9857,11 @@ c++decl> expand NAME2(x, __LINE__)
   name: "NAME2",
   arg_list: [
     [
-      { kind: "identifier", string: "x", loc: { first_line: 54, first_column: 13 } }
+      { kind: "identifier", string: "x", loc: { first_line: 56, first_column: 13 } }
     ],
     [
-      { kind: " ", loc: { first_line: 54, first_column: 15 } },
-      { kind: "identifier", string: "__LINE__", loc: { first_line: 54, first_column: 16, last_column: 23 } }
+      { kind: " ", loc: { first_line: 56, first_column: 15 } },
+      { kind: "identifier", string: "__LINE__", loc: { first_line: 56, first_column: 16, last_column: 23 } }
     ]
   ]
 }
@@ -9630,35 +9871,35 @@ NAME2(x, __LINE__) => NAME2_HELPER(A,B)
   macro: "NAME2",
   arg_list: [
     [
-      { kind: "identifier", string: "x", loc: { first_line: 54, first_column: 6 } }
+      { kind: "identifier", string: "x", loc: { first_line: 56, first_column: 6 } }
     ],
     [
-      { kind: " ", loc: { first_line: 54, first_column: 15 } },
-      { kind: "identifier", string: "__LINE__", loc: { first_line: 54, first_column: 9, last_column: 16 } }
+      { kind: " ", loc: { first_line: 56, first_column: 15 } },
+      { kind: "identifier", string: "__LINE__", loc: { first_line: 56, first_column: 9, last_column: 16 } }
     ]
   ],
   token_list: [
-    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 54, first_column: 22, last_column: 33 } },
-    { kind: "punctuator", string: "(", loc: { first_line: 54, first_column: 34 } },
-    { kind: "identifier", string: "A", loc: { first_line: 54, first_column: 35 } },
-    { kind: "punctuator", string: ",", loc: { first_line: 54, first_column: 36 } },
-    { kind: "identifier", string: "B", loc: { first_line: 54, first_column: 37 } },
-    { kind: "punctuator", string: ")", loc: { first_line: 54, first_column: 38 } }
+    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 56, first_column: 22, last_column: 33 } },
+    { kind: "punctuator", string: "(", loc: { first_line: 56, first_column: 34 } },
+    { kind: "identifier", string: "A", loc: { first_line: 56, first_column: 35 } },
+    { kind: "punctuator", string: ",", loc: { first_line: 56, first_column: 36 } },
+    { kind: "identifier", string: "B", loc: { first_line: 56, first_column: 37 } },
+    { kind: "punctuator", string: ")", loc: { first_line: 56, first_column: 38 } }
   ]
 }
 | A => x
   {
     macro: "A",
     token_list: [
-      { kind: "identifier", string: "x", loc: { first_line: 54, first_column: 6 } }
+      { kind: "identifier", string: "x", loc: { first_line: 56, first_column: 6 } }
     ]
   }
 | B => __LINE__
   {
     macro: "B",
     token_list: [
-      { kind: " ", loc: { first_line: 54, first_column: 15 } },
-      { kind: "identifier", string: "__LINE__", loc: { first_line: 54, first_column: 9, last_column: 16 } }
+      { kind: " ", loc: { first_line: 56, first_column: 15 } },
+      { kind: "identifier", string: "__LINE__", loc: { first_line: 56, first_column: 9, last_column: 16 } }
     ]
   }
 | | __LINE__ => 42
@@ -9680,19 +9921,19 @@ NAME2(x, 42) => NAME2_HELPER(x,42)
   macro: "NAME2",
   arg_list: [
     [
-      { kind: "identifier", string: "x", loc: { first_line: 54, first_column: 6 } }
+      { kind: "identifier", string: "x", loc: { first_line: 56, first_column: 6 } }
     ],
     [
       { kind: "num_lit", string: "42", loc: { first_column: 9, last_column: 10 } }
     ]
   ],
   token_list: [
-    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 54, first_column: 16, last_column: 27 } },
-    { kind: "punctuator", string: "(", loc: { first_line: 54, first_column: 28 } },
-    { kind: "identifier", string: "x", loc: { first_line: 54, first_column: 29 } },
-    { kind: "punctuator", string: ",", loc: { first_line: 54, first_column: 30 } },
+    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 56, first_column: 16, last_column: 27 } },
+    { kind: "punctuator", string: "(", loc: { first_line: 56, first_column: 28 } },
+    { kind: "identifier", string: "x", loc: { first_line: 56, first_column: 29 } },
+    { kind: "punctuator", string: ",", loc: { first_line: 56, first_column: 30 } },
     { kind: "num_lit", string: "42", loc: { first_column: 31, last_column: 32 } },
-    { kind: "punctuator", string: ")", loc: { first_line: 54, first_column: 33 } }
+    { kind: "punctuator", string: ")", loc: { first_line: 56, first_column: 33 } }
   ]
 }
 | NAME2_HELPER(x, 42) => A ## B
@@ -9700,18 +9941,18 @@ NAME2(x, 42) => NAME2_HELPER(x,42)
     macro: "NAME2_HELPER",
     arg_list: [
       [
-        { kind: "identifier", string: "x", loc: { first_line: 54, first_column: 29 } }
+        { kind: "identifier", string: "x", loc: { first_line: 56, first_column: 29 } }
       ],
       [
         { kind: "num_lit", string: "42", loc: { first_column: 31, last_column: 32 } }
       ]
     ],
     token_list: [
-      { kind: "identifier", string: "A", loc: { first_line: 52, first_column: 34 } },
-      { kind: " ", loc: { first_line: 52, first_column: 35 } },
-      { kind: "##", loc: { first_line: 52, first_column: 36, last_column: 37 } },
-      { kind: " ", loc: { first_line: 52, first_column: 38 } },
-      { kind: "identifier", string: "B", loc: { first_line: 52, first_column: 39 } }
+      { kind: "identifier", string: "A", loc: { first_line: 54, first_column: 34 } },
+      { kind: " ", loc: { first_line: 54, first_column: 35 } },
+      { kind: "##", loc: { first_line: 54, first_column: 36, last_column: 37 } },
+      { kind: " ", loc: { first_line: 54, first_column: 38 } },
+      { kind: "identifier", string: "B", loc: { first_line: 54, first_column: 39 } }
     ]
   }
 | NAME2_HELPER(x, 42) => x ## 42
@@ -9719,17 +9960,17 @@ NAME2(x, 42) => NAME2_HELPER(x,42)
     macro: "NAME2_HELPER",
     arg_list: [
       [
-        { kind: "identifier", string: "x", loc: { first_line: 54, first_column: 15 } }
+        { kind: "identifier", string: "x", loc: { first_line: 56, first_column: 15 } }
       ],
       [
         { kind: "num_lit", string: "42", loc: { first_column: 18, last_column: 19 } }
       ]
     ],
     token_list: [
-      { kind: "identifier", string: "x", loc: { first_line: 54, first_column: 25 } },
-      { kind: " ", loc: { first_line: 54, first_column: 26 } },
-      { kind: "##", loc: { first_line: 54, first_column: 27, last_column: 28 } },
-      { kind: " ", loc: { first_line: 54, first_column: 29 } },
+      { kind: "identifier", string: "x", loc: { first_line: 56, first_column: 25 } },
+      { kind: " ", loc: { first_line: 56, first_column: 26 } },
+      { kind: "##", loc: { first_line: 56, first_column: 27, last_column: 28 } },
+      { kind: " ", loc: { first_line: 56, first_column: 29 } },
       { kind: "num_lit", string: "42", loc: { first_column: 30, last_column: 31 } }
     ]
   }
@@ -9738,14 +9979,14 @@ NAME2(x, 42) => NAME2_HELPER(x,42)
     macro: "NAME2_HELPER",
     arg_list: [
       [
-        { kind: "identifier", string: "x", loc: { first_line: 54, first_column: 15 } }
+        { kind: "identifier", string: "x", loc: { first_line: 56, first_column: 15 } }
       ],
       [
         { kind: "num_lit", string: "42", loc: { first_column: 18, last_column: 19 } }
       ]
     ],
     token_list: [
-      { kind: "identifier", string: "x42", loc: { first_line: 54, first_column: 25, last_column: 27 } }
+      { kind: "identifier", string: "x42", loc: { first_line: 56, first_column: 25, last_column: 27 } }
     ]
   }
 NAME2(x, 42) => x42
@@ -9753,13 +9994,13 @@ NAME2(x, 42) => x42
   macro: "NAME2",
   arg_list: [
     [
-      { kind: "identifier", string: "x", loc: { first_line: 54, first_column: 6 } }
+      { kind: "identifier", string: "x", loc: { first_line: 56, first_column: 6 } }
     ],
     [
       { kind: "num_lit", string: "42", loc: { first_column: 9, last_column: 10 } }
     ]
   ],
   token_list: [
-    { kind: "identifier", string: "x42", loc: { first_line: 54, first_column: 16, last_column: 18 } }
+    { kind: "identifier", string: "x42", loc: { first_line: 56, first_column: 16, last_column: 18 } }
   ]
 }
