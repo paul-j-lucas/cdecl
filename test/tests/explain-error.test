@@ -27,6 +27,7 @@ explain ~C()
 explain constexpr volatile int x
 explain EE x : 4
 explain enum E x : 3
+explain extern "C" int x
 explain extern static void f()
 explain friend void f()
 explain F_v f()
