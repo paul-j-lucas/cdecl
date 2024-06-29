@@ -98,254 +98,254 @@ cdecl> declare p as pointer to register int
 36,9: error: pointer to "register" is illegal
 cdecl> declare p as pointer to S
 S *p;
-cdecl> declare r as const reference to int
-               ^
-38,9: error: reference not supported in C
-cdecl> declare r as volatile reference to int
-               ^
-39,9: error: reference not supported in C
 cdecl> declare S as int
                ^
-40,9: error: "S": previously declared as type "struct S"
+38,9: error: "S": previously declared as type "struct S"
 cdecl> declare x as _BitInt(129)
                ^
-41,9: error: _BitInt can be at most 128 bits
+39,9: error: _BitInt can be at most 128 bits
 cdecl> declare x as class C
                     ^
-42,14: error: "class": unsupported type in C
+40,14: error: "class": unsupported type in C
 cdecl> declare x as consteval int
                     ^
-43,14: error: "consteval": unsupported keyword in C; did you mean "constexpr"?
+41,14: error: "consteval": unsupported keyword in C; did you mean "constexpr"?
 cdecl> declare x as enum class C
                ^
-44,9: warning: "class" is a keyword in C++98
+42,9: warning: "class" is a keyword in C++98
 enum class x;
                                ^
-44,25: syntax error: "C": unexpected token
+42,25: syntax error: "C": unexpected token
 cdecl> declare x as inline int
                ^
-45,9: error: inline variables not supported in C
+43,9: error: inline variables not supported in C
 cdecl> declare x as long bool
                ^
-46,9: error: "long bool" is illegal for built-in type
+44,9: error: "long bool" is illegal for built-in type
 cdecl> declare x as long char
                ^
-47,9: error: "long char" is illegal for built-in type
+45,9: error: "long char" is illegal for built-in type
 cdecl> declare x as long char16_t
                ^
-48,9: error: "long char16_t" is illegal for built-in type
+46,9: error: "long char16_t" is illegal for built-in type
 cdecl> declare x as long char32_t
                ^
-49,9: error: "long char32_t" is illegal for built-in type
+47,9: error: "long char32_t" is illegal for built-in type
 cdecl> declare x as long float
                ^
-50,9: error: "long float" is illegal for built-in type unless K&RC
+48,9: error: "long float" is illegal for built-in type unless K&RC
 cdecl> declare x as long long long
                               ^
-51,24: error: "long int" can not be combined with "long long int"
+49,24: error: "long int" can not be combined with "long long int"
 cdecl> declare x as long void
                ^
-52,9: error: "long void" is illegal for built-in type
+50,9: error: "long void" is illegal for built-in type
 cdecl> declare x as long wchar_t
                ^
-53,9: error: "long wchar_t" is illegal for built-in type
+51,9: error: "long wchar_t" is illegal for built-in type
 cdecl> declare x as non-empty int
                ^
-54,9: error: built-in type can not be "non-empty"
+52,9: error: built-in type can not be "non-empty"
 cdecl> declare x as non-returning int
                ^
-55,9: error: built-in type can not be "noreturn"
-cdecl> declare x as pointer to member of C reference to int
-                                         ^
-56,35: syntax error: "C": "class", "struct", or "union" expected
+53,9: error: built-in type can not be "noreturn"
 cdecl> declare x as pointer to unsigned width 3 bits
                                         ^
-57,34: error: invalid bit-field type "pointer to unsigned integer"; must be an integral type
+54,34: error: invalid bit-field type "pointer to unsigned integer"; must be an integral type
 cdecl> declare x as short bool
                ^
-58,9: error: "short bool" is illegal for built-in type
+55,9: error: "short bool" is illegal for built-in type
 cdecl> declare x as short char
                ^
-59,9: error: "short char" is illegal for built-in type
+56,9: error: "short char" is illegal for built-in type
 cdecl> declare x as short char16_t
                ^
-60,9: error: "short char16_t" is illegal for built-in type
+57,9: error: "short char16_t" is illegal for built-in type
 cdecl> declare x as short char32_t
                ^
-61,9: error: "short char32_t" is illegal for built-in type
+58,9: error: "short char32_t" is illegal for built-in type
 cdecl> declare x as short double
                ^
-62,9: error: "short double" is illegal for built-in type
+59,9: error: "short double" is illegal for built-in type
 cdecl> declare x as short float
                ^
-63,9: error: "short float" is illegal for built-in type
+60,9: error: "short float" is illegal for built-in type
 cdecl> declare x as short long
                ^
-64,9: error: "short long int" is illegal for built-in type
+61,9: error: "short long int" is illegal for built-in type
 cdecl> declare x as short long long
                ^
-65,9: error: "short long long int" is illegal for built-in type
+62,9: error: "short long long int" is illegal for built-in type
 cdecl> declare x as short void
                ^
-66,9: error: "short void" is illegal for built-in type
+63,9: error: "short void" is illegal for built-in type
 cdecl> declare x as short wchar_t
                ^
-67,9: error: "short wchar_t" is illegal for built-in type
+64,9: error: "short wchar_t" is illegal for built-in type
 cdecl> declare x as signed bool
                ^
-68,9: error: "signed bool" is illegal for built-in type
+65,9: error: "signed bool" is illegal for built-in type
 cdecl> declare x as signed char16_t
                ^
-69,9: error: "signed char16_t" is illegal for built-in type
+66,9: error: "signed char16_t" is illegal for built-in type
 cdecl> declare x as signed char32_t
                ^
-70,9: error: "signed char32_t" is illegal for built-in type
+67,9: error: "signed char32_t" is illegal for built-in type
 cdecl> declare x as signed void
                ^
-71,9: error: variable of "void"; did you mean "pointer to void"?
+68,9: error: variable of "void"; did you mean "pointer to void"?
 cdecl> declare x as signed wchar_t
                ^
-72,9: error: "signed wchar_t" is illegal for built-in type
+69,9: error: "signed wchar_t" is illegal for built-in type
 cdecl> declare x as typedef int aligned 64
                                 ^
-73,26: error: types can not be aligned
+70,26: error: types can not be aligned
 cdecl> declare x as unsigned bool
                ^
-74,9: error: "unsigned bool" is illegal for built-in type
+71,9: error: "unsigned bool" is illegal for built-in type
 cdecl> declare x as unsigned char16_t
                ^
-75,9: error: "unsigned char16_t" is illegal for built-in type
+72,9: error: "unsigned char16_t" is illegal for built-in type
 cdecl> declare x as unsigned char32_t
                ^
-76,9: error: "unsigned char32_t" is illegal for built-in type
+73,9: error: "unsigned char32_t" is illegal for built-in type
 cdecl> declare x as unsigned double
                ^
-77,9: error: "unsigned double" is illegal for built-in type
+74,9: error: "unsigned double" is illegal for built-in type
 cdecl> declare x as unsigned float
                ^
-78,9: error: "unsigned float" is illegal for built-in type
+75,9: error: "unsigned float" is illegal for built-in type
 cdecl> declare x as unsigned size_t
                ^
-79,9: error: "unsigned" is illegal for typedef
+76,9: error: "unsigned" is illegal for typedef
 cdecl> declare x as unsigned void
                ^
-80,9: error: "unsigned void" is illegal for built-in type
+77,9: error: "unsigned void" is illegal for built-in type
 cdecl> declare x as unsigned wchar_t
                ^
-81,9: error: "unsigned wchar_t" is illegal for built-in type
+78,9: error: "unsigned wchar_t" is illegal for built-in type
 cdecl> declare x as void
                ^
-82,9: error: variable of "void"; did you mean "pointer to void"?
+79,9: error: variable of "void"; did you mean "pointer to void"?
 cdecl> declare x as y
                     ^
-83,14: error: "y": unknown name
+80,14: error: "y": unknown name
 cdecl> declare x of scope s as int
                     ^
-84,14: error: scoped names not supported in C
+81,14: error: scoped names not supported in C
 cdecl> explain [[unsequenced]] int x
                ^
-85,9: error: built-in type can not be "unsequenced"
+82,9: error: built-in type can not be "unsequenced"
 cdecl> 
 cdecl> set knr
 cdecl> declare p as pointer to void
                                ^
-88,25: error: "void": unsupported type until C89
+85,25: error: "void": unsupported type until C89
 cdecl> declare x as long double
                ^
-89,9: error: "long double" is illegal for built-in type until C89
+86,9: error: "long double" is illegal for built-in type until C89
 cdecl> declare x as long long x
                               ^
-90,24: syntax error: "x": "as" expected
+87,24: syntax error: "x": "as" expected
 cdecl> declare x as signed char
                     ^
-91,14: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
+88,14: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
 cdecl> declare x as signed int
                     ^
-92,14: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
+89,14: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
 cdecl> declare x as signed long
                     ^
-93,14: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
+90,14: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
 cdecl> 
 cdecl> set c89
 cdecl> declare x as bool
                     ^
-96,14: error: "bool": unsupported type in C
+93,14: error: "bool": unsupported type in C
 cdecl> declare x as long long x
                               ^
-97,24: syntax error: "x": "as" expected
+94,24: syntax error: "x": "as" expected
 cdecl> declare x as wchar_t
                     ^
-98,14: error: "wchar_t": unsupported type until C95
+95,14: error: "wchar_t": unsupported type until C95
 cdecl> 
 cdecl> set c99
 cdecl> declare x as char16_t
                     ^
-101,14: error: "char16_t": unsupported type until C11; did you mean "wchar_t"?
+98,14: error: "char16_t": unsupported type until C11; did you mean "wchar_t"?
 cdecl> declare x as char32_t
                     ^
-102,14: error: "char32_t": unsupported type until C11; did you mean "wchar_t"?
+99,14: error: "char32_t": unsupported type until C11; did you mean "wchar_t"?
 cdecl> 
 cdecl> set c17
 cdecl> declare x as constexpr int
                     ^
-105,14: error: "constexpr": unsupported keyword until C23
+102,14: error: "constexpr": unsupported keyword until C23
 cdecl> 
 cdecl> set c++
 c++decl> declare C as static constructor
                  ^
-108,9: error: constructors can not be "static"
+105,9: error: constructors can not be "static"
 c++decl> declare C as destructor (int)
                                   ^
-109,26: syntax error: destructors may not have parameters
+106,26: syntax error: destructors may not have parameters
 c++decl> declare C of class X as constructor
                  ^
-110,9: error: "X", "C": class and constructor names don't match
+107,9: error: "X", "C": class and constructor names don't match
 c++decl> declare f as const non-member function
                  ^
-111,9: error: non-member functions can not be "const"
+108,9: error: non-member functions can not be "const"
 c++decl> declare f as explicit function
                  ^
-112,9: error: function can not be "explicit"
+109,9: error: function can not be "explicit"
 c++decl> declare f as extern member function
                  ^
-113,9: error: member functions can not be "extern"
+110,9: error: member functions can not be "extern"
 c++decl> declare f as non-unique-address function
                  ^
-114,9: error: function can not be "no_unique_address"
+111,9: error: function can not be "no_unique_address"
 c++decl> declare f as _Noreturn function (int) returning void
                       ^
-115,14: error: "_Noreturn": unsupported attribute in C++; did you mean "noreturn"?
+112,14: error: "_Noreturn": unsupported attribute in C++; did you mean "noreturn"?
 c++decl> declare f of scope S as virtual function
                  ^
-116,9: error: "S::f": "virtual" can not be used in file-scoped functions
+113,9: error: "S::f": "virtual" can not be used in file-scoped functions
 c++decl> declare new as operator (size_t) returning int
                                                     ^
-117,44: error: invalid operator "new" return type "integer"; must be "pointer to void"
+114,44: error: invalid operator "new" return type "integer"; must be "pointer to void"
 c++decl> declare p as pointer to structured binding
                                  ^
-118,25: error: pointer to structured binding is illegal
+115,25: error: pointer to structured binding is illegal
 c++decl> declare S::x as structured binding
                  ^
-119,9: error: "S::x": structured binding names may not be scoped
+116,9: error: "S::x": structured binding names may not be scoped
 c++decl> declare x, x as structured binding
                  ^
-120,9: error: "x": redefinition of structured binding
+117,9: error: "x": redefinition of structured binding
+c++decl> declare r as const reference to int
+                 ^
+118,9: error: reference can not be "const"; did you mean "reference to const"?
+c++decl> declare r as volatile reference to int
+                 ^
+119,9: error: reference can not be "volatile"; did you mean "reference to volatile"?
 c++decl> declare x as array of reference to int
                  ^
-121,9: error: array of reference is illegal; did you mean reference to array?
+120,9: error: array of reference is illegal; did you mean reference to array?
 c++decl> declare x as auto int
 auto x;
                            ^
-122,19: syntax error: "int": unexpected token ("int" is a keyword)
+121,19: syntax error: "int": unexpected token ("int" is a keyword)
 c++decl> declare x as consteval int
                  ^
-123,9: error: only functions can be "consteval"
+122,9: error: only functions can be "consteval"
 c++decl> declare x as exported static int x
                  ^
-124,9: error: "export static int" is illegal for built-in type
+123,9: error: "export static int" is illegal for built-in type
 c++decl> declare x as long char8_t
                  ^
-125,9: error: "long char8_t" is illegal for built-in type
+124,9: error: "long char8_t" is illegal for built-in type
+c++decl> declare x as pointer to member of C reference to int
+                                           ^
+125,35: syntax error: "C": "class", "struct", or "union" expected
 c++decl> declare x as pointer to reference to int
                  ^
 126,9: error: pointer to reference is illegal; did you mean "reference to pointer"?

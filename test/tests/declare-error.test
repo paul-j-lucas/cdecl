@@ -35,8 +35,6 @@ declare main as function ( argc as int, argv as pointer to int ) returning int
 declare p as pointer to function (x) returning int
 declare p as pointer to register int
 declare p as pointer to S
-declare r as const reference to int
-declare r as volatile reference to int
 declare S as int
 declare x as _BitInt(129)
 declare x as class C
@@ -53,7 +51,6 @@ declare x as long void
 declare x as long wchar_t
 declare x as non-empty int
 declare x as non-returning int
-declare x as pointer to member of C reference to int
 declare x as pointer to unsigned width 3 bits
 declare x as short bool
 declare x as short char
@@ -118,11 +115,14 @@ declare new as operator (size_t) returning int
 declare p as pointer to structured binding
 declare S::x as structured binding
 declare x, x as structured binding
+declare r as const reference to int
+declare r as volatile reference to int
 declare x as array of reference to int
 declare x as auto int
 declare x as consteval int
 declare x as exported static int x
 declare x as long char8_t
+declare x as pointer to member of C reference to int
 declare x as pointer to reference to int
 declare x as reference to register int
 declare x as reference to void
