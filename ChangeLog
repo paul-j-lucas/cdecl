@@ -1,5 +1,63 @@
 2024-06-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c, lexer.l, p_macro.c, p_token.c, show.c, expand.out,
+     expand.test: Added digraph & trigraph support to the preprocessor.
+   * lcovrc: Added EX_UNAVAILABLE; removed fatal_error.
+   * test/Makefile.am, include-empty_path.out, include-empty_path.test: More
+     tests.
+   * debug.out, debug.test: More tests.
+   * cli_options.c: Exluded some lines from coverage.
+   * options.c, options.h: Eliminated any_explicit_int().
+   * options.c, p_macro.c, west-decl.out, west-decl.test: More tests.
+   * explicit-ecsu.out, explicit-ecsu.test: More tests.
+   * preprocessor-error.out, preprocessor-error.test: More tests.
+   * print.c: Exluded lines from test coverage.
+   * show.out, show.test: More tests.
+   * west-decl.out, west-decl.test: More tests.
+   * using.out, using.test: More tests.
+   * test/Makefile.am, declare.out, trailing-return.out, declare.test,
+     trailing-return.test: More tests.
+   * set_options.c: Put quotes around option names.
+   * explicit-ecsu.out, explicit-ecsu.test: More tests.
+   * set_options.c, set-error.out: Now using OPTION_INVALID_VALUE().
+   * set_options.c, test/Makefile.am, echo-commands.out, echo-commands.test:
+     More tests.
+   * alt-tokens.out, alt-tokens.test: More tests.
+   * east-const.out, east-const.test: More tests.
+   * declare.out, declare.test: More tests.
+   * ntu.out, ntu.test: More tests.
+   * declare.out, declare.test: Another test.
+   * command_line-noinput_error.out, command_line-noinput_error.test: Added
+     test.
+   * conf_file.c: Put quotes around file name.
+   * Makefile.am: Tests are not in color.
+   * test/Makefile.am, cli_options-error.out, command_line-noinput_error.out,
+     cli_options-error.test, command_line-noinput_error.test: More tests.
+   * test/Makefile.am: Test consolidation.
+   * test/Makefile.am: Renamed test.
+   * cli_options.c, cli_options-error.out: Now using OPT_INVALID_VALUE() macro.
+   * cli_options-error.out, cli_options-error.test: More CLI error tests.
+   * util.h: Eliminated is_01_bit_only_in_set().
+   * c_ast_util.c, c_ast_util.h: Eliminated nonconst_c_ast_leaf().
+   * alt-tokens.out, concept.out, declare.out, declare_operator.out,
+     east-const.out, english-types.out, expand-C23_std-6.10.4.1-ex-2.out,
+     expand-error.out, expand-robertelder.out, expand.out, explain.out,
+     explain_cast.out, explain_operator.out, explain_udc.out,
+     explicit-ecsu.out, explicit-int.out, help.out, lang.out, ntu.out,
+     semicolon.out, show.out, trigraphs.out, using.out, west-decl.out,
+     alt-tokens.test, concept.test, declare.test, declare_operator.test,
+     east-const.test, english-types.test, expand-C23_std-6.10.4.1-ex-2.test,
+     expand-error.test, expand-robertelder.test, expand.test, explain.test,
+     explain_cast.test, explain_operator.test, explain_udc.test,
+     explicit-ecsu.test, explicit-int.test, help.test, lang.test, ntu.test,
+     semicolon.test, show.test, trigraphs.test, using.test, west-decl.test:
+     Removed blank lines before END.
+   * concept.out, concept.test: Added pointer to concept tests.
+   * parser.y, explain-error.out, explain-error.test: Now syntactically
+     allowing more storage classes in storage_class_subset_english_stid to give
+     better error messages, e.g., "explain [] extern".
+   * c_ast.c, c_ast.h: Eliminated nonconst_c_ast_visit().
+   * util.c: Added lcov comments.
    * read_line.c, util.c, util.h: Eliminated str_chomp().
 
 2024-06-27  Paul J. Lucas <paul@lucasmail.org>
