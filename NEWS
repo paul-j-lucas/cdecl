@@ -18,6 +18,9 @@ declarations, e.g.:
 
     int i, a[2], (^b)(char), f(double), operator~(S&), operator""_x(char)
 
+** C99 language extensions
+Fixed printing of C99 language extention names.
+
 ** `CDECL_DEBUG` environment variable
 If set to an "affirmative" value (one of 1, t, true, y, or yes, case-
 insensitive), then **cdecl** will print its process ID and a "waiting for

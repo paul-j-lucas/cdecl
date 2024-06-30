@@ -75,47 +75,25 @@ _GL_INLINE_HEADER_BEGIN
 #define FOREACH_LANG(VAR) \
   for ( c_lang_t const *VAR = NULL; (VAR = c_lang_next( VAR )) != NULL; )
 
-// languages supported
-#define LANG_NONE     0u                /**< No languages. */
-#define LANG_ANY      (~LANGX_MASK)     /**< Any supported language. */
-
-#define LANG_C_OLD    LANG_C_KNR        /**< Oldest supported C language. */
-#define LANG_C_KNR    (1u << 0)         /**< K&R (pre-ANSI) C. */
-#define LANG_C_89     (1u << 1)         /**< C 89 (first ANSI C). */
-#define LANG_C_95     (1u << 2)         /**< C 95. */
-#define LANG_C_99     (1u << 3)         /**< C 99. */
-#define LANG_C_11     (1u << 4)         /**< C 11. */
-#define LANG_C_17     (1u << 5)         /**< C 17. */
-#define LANG_C_23     (1u << 6)         /**< C 23. */
-#define LANG_C_NEW    LANG_C_23         /**< Newest supported C language. */
-#define LANG_C_ANY    LANG_MAX(C_NEW)   /**< Any C language. */
-
-#define LANG_CPP_OLD  LANG_CPP_98       /**< Oldest supported C++ language. */
-#define LANG_CPP_98   (1u << 9)         /**< C++ 98. */
-#define LANG_CPP_03   (1u << 10)        /**< C++ 03. */
-#define LANG_CPP_11   (1u << 11)        /**< C++ 11. */
-#define LANG_CPP_14   (1u << 12)        /**< C++ 14. */
-#define LANG_CPP_17   (1u << 13)        /**< C++ 17. */
-#define LANG_CPP_20   (1u << 14)        /**< C++ 20. */
-#define LANG_CPP_23   (1u << 15)        /**< C++ 23. */
-#define LANG_CPP_NEW  LANG_CPP_23       /**< Newest supported C++ language. */
-#define LANG_CPP_ANY  0xFE00u           /**< Any C++ language. */
+///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Language eXtensions for Embedded C.
  *
  * @sa #LANG_C_99_EMC
  * @sa #LANGX_MASK
+ * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
  */
-#define LANGX_EMC     (1u << 7)
+#define LANGX_EMC     1u
 
 /**
  * Language eXtensions for Unified Parallel C.
  *
  * @sa #LANG_C_99_UPC
  * @sa #LANGX_MASK
+ * @sa [Unified Parallel C](http://upc-lang.org/)
  */
-#define LANGX_UPC     (1u << 8)
+#define LANGX_UPC     2u
 
 /**
  * Language eXtensions bitmask.
@@ -134,6 +112,34 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANGX_UPC
  */
 #define LANGX_MASK    (LANGX_EMC | LANGX_UPC)
+
+///////////////////////////////////////////////////////////////////////////////
+
+// languages supported
+#define LANG_NONE     0u                /**< No languages. */
+#define LANG_ANY      (~LANGX_MASK)     /**< Any supported language. */
+
+#define LANG_C_OLD    LANG_C_KNR        /**< Oldest supported C language. */
+#define LANG_C_KNR    (1u << 2)         /**< K&R (pre-ANSI) C. */
+#define LANG_C_89     (1u << 3)         /**< C 89 (first ANSI C). */
+#define LANG_C_95     (1u << 4)         /**< C 95. */
+#define LANG_C_99     (1u << 5)         /**< C 99. */
+#define LANG_C_11     (1u << 6)         /**< C 11. */
+#define LANG_C_17     (1u << 7)         /**< C 17. */
+#define LANG_C_23     (1u << 8)         /**< C 23. */
+#define LANG_C_NEW    LANG_C_23         /**< Newest supported C language. */
+#define LANG_C_ANY    LANG_MAX(C_NEW)   /**< Any C language. */
+
+#define LANG_CPP_OLD  LANG_CPP_98       /**< Oldest supported C++ language. */
+#define LANG_CPP_98   (1u << 9)         /**< C++ 98. */
+#define LANG_CPP_03   (1u << 10)        /**< C++ 03. */
+#define LANG_CPP_11   (1u << 11)        /**< C++ 11. */
+#define LANG_CPP_14   (1u << 12)        /**< C++ 14. */
+#define LANG_CPP_17   (1u << 13)        /**< C++ 17. */
+#define LANG_CPP_20   (1u << 14)        /**< C++ 20. */
+#define LANG_CPP_23   (1u << 15)        /**< C++ 23. */
+#define LANG_CPP_NEW  LANG_CPP_23       /**< Newest supported C++ language. */
+#define LANG_CPP_ANY  0xFE00u           /**< Any C++ language. */
 
 /**
  * Embedded C, or more formally, _Programming languages - C - Extensions to
@@ -1529,7 +1535,7 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
  */
 NODISCARD C_LANG_H_INLINE
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
-  return ls_bit1_32( lang_ids & ~LANGX_MASK );
+  return ls_bit1_32( lang_ids & ~LANGX_MASK ) | (lang_ids & LANGX_MASK);
 }
 
 /**

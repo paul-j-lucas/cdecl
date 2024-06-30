@@ -149,6 +149,14 @@ explain typedef int int32_t
 explain typedef int x
 explain typedef unsigned long size_t
 
+explain int _Accum
+explain int _Fract
+explain int _Sat
+
+explain int relaxed
+explain int shared
+explain int strict
+
 explain typeof(int) x
 explain typeof(int) *x, y
 explain typeof(typeof(int)) x
