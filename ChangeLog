@@ -1,5 +1,6 @@
 2024-06-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * declare.out, declare.test: Another test.
    * c_lang.h, explain.out, explain.test: Fixed printing of C99 language
      extention names.
 
