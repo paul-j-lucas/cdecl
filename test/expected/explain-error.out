@@ -496,58 +496,61 @@ c++decl> explain auto [x] f()
 c++decl> explain extern auto [x]
                  ^
 181,9: error: structured binding may not be "extern"
+c++decl> explain C() const
+                 ^
+182,9: error: constructors can not be "const"
 c++decl> explain C(int, int) = default
                  ^
-182,9: error: "default" can be used only for special member functions and relational operators
+183,9: error: "default" can be used only for special member functions and relational operators
 c++decl> explain constinit int f()
                                ^
-183,23: error: function can not be "constinit"
+184,23: error: function can not be "constinit"
 c++decl> explain decltype(x) y
                  ^
-184,9: error: decltype declarations not supported by cdecl
+185,9: error: decltype declarations not supported by cdecl
 c++decl> explain enum class C x
                  ^
-185,9: error: "enum class": enum classes must just use "enum"
+186,9: error: "enum class": enum classes must just use "enum"
 c++decl> explain enum E : double x
                           ^
-186,18: error: invalid enum underlying type "double"; must be integral
+187,18: error: invalid enum underlying type "double"; must be integral
 c++decl> explain enum struct C x
                  ^
-187,9: error: "enum struct": enum classes must just use "enum"
+188,9: error: "enum struct": enum classes must just use "enum"
 c++decl> explain explicit C(int) const
                           ^
-188,18: error: function can not be "explicit"
+189,18: error: function can not be "explicit"
 c++decl> explain export static int x
                  ^
-189,9: error: "export static int" is illegal for built-in type
+190,9: error: "export static int" is illegal for built-in type
 c++decl> explain extern R"abc(X)ab)abc" void f()
                         ^
-190,16: error: "X)ab": unknown linkage language; did you mean "C" or "C++"?
+191,16: error: "X)ab": unknown linkage language; did you mean "C" or "C++"?
 c++decl> explain extern void v
                  ^
-191,9: error: variable of "void"; did you mean "void*"?
+192,9: error: variable of "void"; did you mean "void*"?
 c++decl> explain [[foo]] int x
                    ^
-192,11: warning: "foo": unknown attribute
+193,11: warning: "foo": unknown attribute
 declare x as integer
 c++decl> explain friend static void f()
                                     ^
-193,28: error: "friend static" is illegal for function
+194,28: error: "friend static" is illegal for function
 c++decl> explain [&,&i]
                     ^
-194,12: error: default capture is already by reference
+195,12: error: default capture is already by reference
 c++decl> explain [i,&]
                     ^
-195,12: error: default capture must be specified first
+196,12: error: default capture must be specified first
 c++decl> explain [i,=]
                     ^
-196,12: error: default capture must be specified first
+197,12: error: default capture must be specified first
 c++decl> explain [i,i]
                     ^
-197,12: error: "i" previously captured
+198,12: error: "i" previously captured
 c++decl> explain int &const r
                      ^
-198,13: error: reference can not be "const"; did you mean "const&"?
+199,13: error: reference can not be "const"; did you mean "const&"?
 c++decl> explain int& &&r
 declare r as rvalue reference to reference to integer
 c++decl> explain int& &r
@@ -558,219 +561,219 @@ c++decl> explain int&& &r
 declare r as reference to rvalue reference to integer
 c++decl> explain int& r[2]
                     ^
-203,12: error: array of reference is illegal; did you mean (&r)[]?
+204,12: error: array of reference is illegal; did you mean (&r)[]?
 c++decl> explain int *restrict p
                       ^
-204,14: error: "restrict" not supported in C++; use "__restrict" instead
+205,14: error: "restrict" not supported in C++; use "__restrict" instead
 c++decl> explain int S3::x : 3
                  ^
-205,9: error: scoped names can not have bit-field widths
+206,9: error: scoped names can not have bit-field widths
 c++decl> explain int &&*x
                      ^
-206,13: error: pointer to rvalue reference is illegal; did you mean "*&"?
+207,13: error: pointer to rvalue reference is illegal; did you mean "*&"?
 c++decl> explain int x, x
                  ^
-207,9: error: "x": redefinition
+208,9: error: "x": redefinition
 c++decl> explain long char8_t x
                  ^
-208,9: error: "long char8_t" is illegal for built-in type
+209,9: error: "long char8_t" is illegal for built-in type
 c++decl> explain noreturn void f(int)
                  ^
-209,9: error: "noreturn" keyword not supported in C++; did you mean [[noreturn]]?
+210,9: error: "noreturn" keyword not supported in C++; did you mean [[noreturn]]?
 c++decl> explain [[no_unique_address]] int x : 4
                  ^
-210,9: error: "no_unique_address" built-in types can not have bit-field widths
+211,9: error: "no_unique_address" built-in types can not have bit-field widths
 c++decl> explain [[no_unique_address]] void f()
                                             ^
-211,36: error: function can not be "no_unique_address"
+212,36: error: function can not be "no_unique_address"
 c++decl> explain *p
                  ^
-212,9: error: implicit "int" is illegal in C++
+213,9: error: implicit "int" is illegal in C++
 c++decl> explain register int &x
                               ^
-213,22: error: "register" is illegal for reference since C++17
+214,22: error: "register" is illegal for reference since C++17
 c++decl> explain RI *p
                     ^
-214,12: error: pointer to reference type "RI" (aka, "int&") is illegal
+215,12: error: pointer to reference type "RI" (aka, "int&") is illegal
 c++decl> explain short char8_t x
                  ^
-215,9: error: "short char8_t" is illegal for built-in type
+216,9: error: "short char8_t" is illegal for built-in type
 c++decl> explain signed char8_t x
                  ^
-216,9: error: "signed char8_t" is illegal for built-in type
+217,9: error: "signed char8_t" is illegal for built-in type
 c++decl> explain static mutable int x
                  ^
-217,9: error: "mutable static int" is illegal for built-in type
+218,9: error: "mutable static int" is illegal for built-in type
 c++decl> explain static void f() &
                              ^
-218,21: error: reference qualified functions can not be "static"
+219,21: error: reference qualified functions can not be "static"
 c++decl> explain static void f() &&
                              ^
-219,21: error: reference qualified functions can not be "static"
+220,21: error: reference qualified functions can not be "static"
 c++decl> explain static void f() const
                              ^
-220,21: error: "static" functions can not be "const"
+221,21: error: "static" functions can not be "const"
 c++decl> explain static void f( this S &self )
                                        ^
-221,31: error: function with "this" parameter can not be "static"
+222,31: error: function with "this" parameter can not be "static"
 c++decl> explain [*this,*this]
                         ^
-222,16: error: "this" previously captured
+223,16: error: "this" previously captured
 c++decl> explain [*this,this]
                         ^
-223,16: error: "this" previously captured
+224,16: error: "this" previously captured
 c++decl> explain [this,*this]
                        ^
-224,15: error: "this" previously captured
+225,15: error: "this" previously captured
 c++decl> explain [this,this]
                        ^
-225,15: error: "this" previously captured
+226,15: error: "this" previously captured
 c++decl> explain typename T x
                           ^
-226,18: error: qualified name expected after "typename"
+227,18: error: qualified name expected after "typename"
 c++decl> explain unsigned char8_t x
                  ^
-227,9: error: "unsigned char8_t" is illegal for built-in type
+228,9: error: "unsigned char8_t" is illegal for built-in type
 c++decl> explain virtual void C::f()
                               ^
-228,22: error: "C::f": "virtual" can not be used in file-scoped functions
+229,22: error: "C::f": "virtual" can not be used in file-scoped functions
 c++decl> explain virtual void f() = 1
                                     ^
-229,28: error: '0' expected
+230,28: error: '0' expected
 c++decl> explain virtual void f( this S &self )
                                         ^
-230,32: error: function with "this" parameter can not be "virtual"
+231,32: error: function with "this" parameter can not be "virtual"
 c++decl> explain void f() = 0
                       ^
-231,14: error: non-virtual function can not be pure
+232,14: error: non-virtual function can not be pure
 c++decl> explain void f() = default
                       ^
-232,14: error: "default" can be used only for special member functions and relational operators
+233,14: error: "default" can be used only for special member functions and relational operators
 c++decl> explain void f() -> void
                  ^
-233,9: error: function with trailing return type must only specify "auto"
+234,9: error: function with trailing return type must only specify "auto"
 c++decl> explain void f( int x, this S &self )
                                        ^
-234,31: error: "this" can be only first parameter
+235,31: error: "this" can be only first parameter
 c++decl> explain void f() restrict
 declare f as function returning void
                           ^
-235,18: syntax error: "restrict": unexpected token ("restrict" is a keyword)
+236,18: syntax error: "restrict": unexpected token ("restrict" is a keyword)
 c++decl> explain void f( this S &self ) &
                                 ^
-236,24: error: function with "this" parameter can not be "reference"
+237,24: error: function with "this" parameter can not be "reference"
 c++decl> explain void f( this S &self ) const
                                 ^
-237,24: error: function with "this" parameter can not be "const"
+238,24: error: function with "this" parameter can not be "const"
 c++decl> explain void f() throw()
                       ^
-238,14: error: "throw" not supported since C++17; did you mean "noexcept"?
+239,14: error: "throw" not supported since C++17; did you mean "noexcept"?
 c++decl> explain void f(int (*g) const)
                                  ^
-239,25: syntax error: "const": ',' expected
+240,25: syntax error: "const": ',' expected
 c++decl> explain void f(int SP::x)
                         ^
-240,16: error: parameter names can not be scoped
+241,16: error: parameter names can not be scoped
 c++decl> explain void f(int x[*])
                              ^
-241,21: error: variable length arrays not supported in C++
+242,21: error: variable length arrays not supported in C++
 c++decl> explain void f(int x[const 3])
                              ^
-242,21: error: "const" arrays not supported in C++
+243,21: error: "const" arrays not supported in C++
 c++decl> explain void f(int x[static 3])
                              ^
-243,21: error: "static" arrays not supported in C++
+244,21: error: "static" arrays not supported in C++
 c++decl> explain void f(x)
                         ^
-244,16: error: type specifier required in C++
+245,16: error: type specifier required in C++
 c++decl> 
 c++decl> explain auto ...
                          ^
-246,17: syntax error: name expected
+247,17: syntax error: name expected
 c++decl> explain auto... f()
                  ^
-247,9: error: function can not return parameter pack
+248,9: error: function can not return parameter pack
 c++decl> explain auto... f(), x
                      ^
-248,13: error: can not use parameter pack in multiple declaration
+249,13: error: can not use parameter pack in multiple declaration
 c++decl> explain auto... x, f()
                  ^
-249,9: error: can not use parameter pack in multiple declaration
+250,9: error: can not use parameter pack in multiple declaration
 c++decl> explain auto&... f()
                      ^
-250,13: error: function can not return parameter pack
+251,13: error: function can not return parameter pack
 c++decl> explain auto&... f(), x
                      ^
-251,13: error: function can not return parameter pack
+252,13: error: function can not return parameter pack
 c++decl> explain auto&... x, f()
                      ^
-252,13: error: can not use parameter pack in multiple declaration
+253,13: error: can not use parameter pack in multiple declaration
 c++decl> explain auto*... f()
                      ^
-253,13: error: function can not return parameter pack
+254,13: error: function can not return parameter pack
 c++decl> explain void f(int ...)
                         ^
-254,16: error: parameter pack type must be "auto"
+255,16: error: parameter pack type must be "auto"
 c++decl> explain void f(int &...)
                         ^
-255,16: error: parameter pack type must be "auto"
+256,16: error: parameter pack type must be "auto"
 c++decl> 
 c++decl> explain void &x
                       ^
-257,14: error: reference to "void" is illegal; did you mean "void*"?
+258,14: error: reference to "void" is illegal; did you mean "void*"?
 c++decl> explain C::~C(int)
                        ^
-258,15: syntax error: destructors may not have parameters
+259,15: syntax error: destructors may not have parameters
 c++decl> explain X::C()
                  ^
-259,9: error: "X::C": unknown name
+260,9: error: "X::C": unknown name
 c++decl> explain X::~C()
                  ^
-260,9: error: matching class name after '~' expected
+261,9: error: matching class name after '~' expected
 c++decl> 
 c++decl> set c++03
 c++decl> explain auto f() -> void
                           ^
-263,18: error: trailing return type not supported until C++11
+264,18: error: trailing return type not supported until C++11
 c++decl> explain char16_t x
                  ^
-264,9: error: "char16_t": unsupported type until C++11; did you mean "wchar_t"?
+265,9: error: "char16_t": unsupported type until C++11; did you mean "wchar_t"?
 c++decl> explain char32_t x
                  ^
-265,9: error: "char32_t": unsupported type until C++11; did you mean "wchar_t"?
+266,9: error: "char32_t": unsupported type until C++11; did you mean "wchar_t"?
 c++decl> explain explicit operator bool()
                         ^
-266,16: error: user-defined conversion operator can not be "explicit" until C++11
+267,16: error: user-defined conversion operator can not be "explicit" until C++11
 c++decl> explain void f() &
                       ^
-267,14: error: reference qualified functions not supported until C++11
+268,14: error: reference qualified functions not supported until C++11
 c++decl> explain void f() &&
                       ^
-268,14: error: reference qualified functions not supported until C++11
+269,14: error: reference qualified functions not supported until C++11
 c++decl> explain void f(int &&r)
                             ^
-269,20: error: rvalue reference not supported until C++11
+270,20: error: rvalue reference not supported until C++11
 c++decl> 
 c++decl> set c++11
 c++decl> explain auto f()
                  ^
-272,9: error: function returning "auto" not supported until C++14
+273,9: error: function returning "auto" not supported until C++14
 c++decl> explain constexpr void f()
                                 ^
-273,24: error: "constexpr void" is illegal until C++14
+274,24: error: "constexpr void" is illegal until C++14
 c++decl> explain [*this]
                   ^
-274,10: error: capturing "*this" not supported until C++17
+275,10: error: capturing "*this" not supported until C++17
 c++decl> 
 c++decl> set c++17
 c++decl> explain char8_t x
                  ^
-277,9: error: "char8_t": unsupported type until C++20; did you mean "char16_t", "char32_t", or "wchar_t"?
+278,9: error: "char8_t": unsupported type until C++20; did you mean "char16_t", "char32_t", or "wchar_t"?
 c++decl> explain void f(auto)
                         ^
-278,16: error: "auto" parameters not supported until C++20
+279,16: error: "auto" parameters not supported until C++20
 c++decl> 
 c++decl> set c++20
 c++decl> explain _Atomic(int) x
                  ^
-281,9: error: "_Atomic int" is illegal for built-in type until C++23
+282,9: error: "_Atomic int" is illegal for built-in type until C++23

@@ -5167,7 +5167,8 @@ pc99_func_or_constructor_declaration_c
         assert( csu_tdef->ast == csu_ast );
       }
     }
-    param_c_ast_list_opt[param_ast_list] param_list_rparen
+    param_c_ast_list_opt[param_ast_list]
+    param_list_rparen_func_qualifier_list_c_stid_opt[qual_stids]
     noexcept_c_stid_opt[noexcept_stid] func_equals_c_stid_opt[equals_stid]
     {
       DUMP_START( "pc99_func_or_constructor_declaration_c",
@@ -5175,6 +5176,7 @@ pc99_func_or_constructor_declaration_c
                   "func_equals_c_stid_opt" );
       DUMP_STR( "NAME", $name );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
+      DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
       DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
 
@@ -5237,8 +5239,10 @@ pc99_func_or_constructor_declaration_c
       }
 
       c_sname_init_name( &ast->sname, $name );
-      ast->type.stids =
-        c_tid_check( $noexcept_stid | $equals_stid, C_TPID_STORE );
+      ast->type.stids = c_tid_check(
+        $qual_stids | $noexcept_stid | $equals_stid,
+        C_TPID_STORE
+      );
       c_ast_list_set_param_of( &$param_ast_list, ast );
       ast->func.param_ast_list = slist_move( &$param_ast_list );
 
