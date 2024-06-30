@@ -481,6 +481,9 @@ c++decl> declare final as int
                        ^
 252,15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
 c++decl> 
+c++decl> declare T of namespace A of scope B as type int
+namespace B::A { using T = int; };
+c++decl> 
 c++decl> declare x as constexpr int
 constexpr int x;
 c++decl> declare x as const expression int
@@ -709,5 +712,5 @@ c++decl>
 c++decl> set c++14
 c++decl> declare f as throw function
                  ^
-376,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+378,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 void f() noexcept;

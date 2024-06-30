@@ -251,6 +251,8 @@ declare f as virtual override final function
 
 declare final as int
 
+declare T of namespace A of scope B as type int
+
 declare x as constexpr int
 declare x as const expression int
 declare x as constant expression int
