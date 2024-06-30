@@ -1,2 +1,20 @@
+#  s/tid/tids/ where appropriate.
+112763dbc752b184e965fe934eecfb1b0e87fdd8
+
 # Moved functions around.
 397f7b05603bab3fb1d48f04fe8b3b7d6c560041
+
+# Renamed TB_*, TS_*, TA_* macros to use lower-case for the C/C++ type keyword.
+52763aa3fbe8687e11aad1e101e9718994713fe7
+
+# Now using Bison named references.
+a9033aeb635c7da86a740966c57533185e8bbf87
+
+# c_sname_t clean-up.
+c7e25d5bcadd0b3d1a4f5d3b0eee621425b8dc0a
+
+# s/base_tid/btid/; s/store_tid/stid/; s/attr_tid/atid/
+e9d60fe74f5f54025330d7d8a206dc7745ff634a
+
+# s/c_type_id/c_tid/; s/c_type_part_id/c_tpid/
+ea9c11d9819ca6c5bfe10976ed39a7c500be2bc7
