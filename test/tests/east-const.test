@@ -44,4 +44,14 @@ set -e-a--st-
 declare x as const int
 set no-e-a--st-
 declare x as const int
+
+set c++
+declare x, y as reference to const structured binding
+declare x, y as reference to const static structured binding
+declare x, y as reference to static const structured binding
+declare x, y as const reference to structured binding
+declare x, y as const reference to static structured binding
+declare x, y as static reference to const structured binding
+declare x, y as const static reference to structured binding
+declare x, y as static const reference to structured binding
 END

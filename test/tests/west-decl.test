@@ -79,6 +79,20 @@ declare ! as operator returning pointer to pointer to int
 declare _x as user-defined literal( char ) returning pointer to int
 declare _x as user-defined literal( char ) returning pointer to pointer to int
 
+set west-decl=s
+declare x, y as reference to structured binding
+declare x, y as rvalue reference to structured binding
+declare x, y as reference to const structured binding
+declare x, y as reference to static structured binding
+declare x, y as reference to const static structured binding
+declare x, y as reference to static const structured binding
+declare x, y as const reference to structured binding
+declare x, y as const reference to static structured binding
+declare x, y as static reference to structured binding
+declare x, y as static reference to const structured binding
+declare x, y as const static reference to structured binding
+declare x, y as static const reference to structured binding
+
 set nowest-decl
 set
 set west-decl=*

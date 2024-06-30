@@ -73,6 +73,11 @@ cdecl> set alt-tokens
 36,5: warning: alternative tokens not supported until C95
 cdecl> set c++
 c++decl> 
+c++decl> declare x, y as reference to structured binding
+auto bitand [x, y];
+c++decl> declare x, y as rvalue reference to structured binding
+auto and [x, y];
+c++decl> 
 c++decl> // Test that abbreviations work.
 c++decl> set noalt
 c++decl> declare D as destructor

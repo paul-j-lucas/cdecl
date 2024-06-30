@@ -36,6 +36,9 @@ set c89
 set alt-tokens
 set c++
 
+declare x, y as reference to structured binding
+declare x, y as rvalue reference to structured binding
+
 // Test that abbreviations work.
 set noalt
 declare D as destructor

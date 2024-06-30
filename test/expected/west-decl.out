@@ -145,6 +145,32 @@ int *operator"" _x(char);
 c++decl> declare _x as user-defined literal( char ) returning pointer to pointer to int
 int **operator"" _x(char);
 c++decl> 
+c++decl> set west-decl=s
+c++decl> declare x, y as reference to structured binding
+auto& [x, y];
+c++decl> declare x, y as rvalue reference to structured binding
+auto&& [x, y];
+c++decl> declare x, y as reference to const structured binding
+const auto& [x, y];
+c++decl> declare x, y as reference to static structured binding
+static auto& [x, y];
+c++decl> declare x, y as reference to const static structured binding
+static const auto& [x, y];
+c++decl> declare x, y as reference to static const structured binding
+static const auto& [x, y];
+c++decl> declare x, y as const reference to structured binding
+const auto& [x, y];
+c++decl> declare x, y as const reference to static structured binding
+static const auto& [x, y];
+c++decl> declare x, y as static reference to structured binding
+static auto& [x, y];
+c++decl> declare x, y as static reference to const structured binding
+static const auto& [x, y];
+c++decl> declare x, y as const static reference to structured binding
+static const auto& [x, y];
+c++decl> declare x, y as static const reference to structured binding
+static const auto& [x, y];
+c++decl> 
 c++decl> set nowest-decl
 c++decl> set
   noalt-tokens
