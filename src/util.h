@@ -1438,6 +1438,16 @@ bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
 }
 
 /**
+ * Checks whether \a s is an affirmative value.  An affirmative value is one of
+ * 1, t, true, y, or yes, case-insensitive.
+ *
+ * @param s The null-terminated string to check or null.
+ * @return Returns `true` only if \a s is affirmative.
+ */
+NODISCARD
+bool is_affirmative( char const *s );
+
+/**
  * Checks whether \a s contains only decimal digit characters.
  *
  * @param s The null-terminated string to check.

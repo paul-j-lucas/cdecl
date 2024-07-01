@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 27, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 30, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -3097,6 +3097,26 @@ was compiled with
 .B NDEBUG
 .I not
 defined.
+.TP
+.B CDECL_TEST
+If set to an ``affirmative'' value
+(one of
+.BR 1 ,
+.BR t ,
+.BR true ,
+.BR y ,
+or
+.BR yes ,
+case-insensitive),
+then
+.B cdecl
+will show constant values
+for the
+.B __DATE__
+and
+.B __TIME__
+macros
+to facilitate testing.
 .TP
 .B CDECLRC
 The full path to the user-specific configuration file

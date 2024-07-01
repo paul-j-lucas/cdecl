@@ -77,8 +77,6 @@ static char const* fput_list_apc_gets( void const **ppelt ) {
   return *ps;
 }
 
-#ifndef NDEBUG
-// LCOV_EXCL_START
 /**
  * Checks whether \a s is any one of \a matches, case-insensitive.
  *
@@ -96,28 +94,6 @@ static bool is_any( char const *s, char const *const matches[const static 2] ) {
   }
   return false;
 }
-
-/**
- * Checks whether \a s is an affirmative value.  An affirmative value is one of
- * 1, t, true, y, or yes, case-insensitive.
- *
- * @param s The null-terminated string to check or null.
- * @return Returns `true` only if \a s is affirmative.
- */
-NODISCARD
-static bool is_affirmative( char const *s ) {
-  static char const *const AFFIRMATIVES[] = {
-    "1",
-    "t",
-    "true",
-    "y",
-    "yes",
-    NULL
-  };
-  return is_any( s, AFFIRMATIVES );
-}
-// LCOV_EXCL_STOP
-#endif /* NDEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -352,6 +328,18 @@ void* free_later( void *p ) {
 
 void free_now( void ) {
   slist_cleanup( &free_later_list, &free );
+}
+
+bool is_affirmative( char const *s ) {
+  static char const *const AFFIRMATIVES[] = {
+    "1",
+    "t",
+    "true",
+    "y",
+    "yes",
+    NULL
+  };
+  return is_any( s, AFFIRMATIVES );
 }
 
 bool is_ident_prefix( char const *ident, size_t ident_len, char const *s,

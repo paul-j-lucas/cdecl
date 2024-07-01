@@ -58,6 +58,7 @@
 // extern variable definitions
 bool        cdecl_initialized;
 bool        cdecl_interactive;
+bool        cdecl_is_testing;
 char const *me;
 
 /// @endcond
@@ -103,6 +104,7 @@ bool is_cppdecl( void ) {
 int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   ATEXIT( &cdecl_cleanup );
+  cdecl_is_testing = is_affirmative( getenv( "CDECL_TEST" ) );
   wait_for_debugger_attach( "CDECL_DEBUG" );
   cli_options_init( &argc, &argv );
   c_keywords_init();

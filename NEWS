@@ -27,6 +27,11 @@ insensitive), then **cdecl** will print its process ID and a "waiting for
 debugger to attach" message to standard error and wait indefinitely for a
 debugger to attach.
 
+** `CDECL_TEST` environment variable
+If set to an "affirmative" value (one of 1, t, true, y, or yes, case-
+insensitive), then **cdecl** will show constant values for the `__DATE__` and
+`__TIME__` macros to facilitate testing.
+
 ** Constructor & pre-C99 function qualifiers
 `const`, `volatile`, `__restrict`, `final`, and `override` qualifiers are now
 syntactically allowed on constructors and pre-c99 functions even though they

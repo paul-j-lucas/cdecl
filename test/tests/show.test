@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bEL$LINENO <<END
+CDECL_TEST=1 cdecl -bEL$LINENO <<END
 typedef int Int
 
 show all
@@ -22,6 +22,7 @@ show __STDC__
 show NAME2_HELPER
 show macros
 show user macros
+show predefined macros
 
 set c89
 show __STDC_VERSION__
@@ -37,6 +38,7 @@ set c23
 show __STDC_VERSION__
 
 set c++
+show std::ios
 show all predefined typedef
 show all predefined *::atomic* as typedef
 show all predefined **::*clock as typedef
@@ -44,7 +46,7 @@ show all predefined ** :: *clock as typedef
 show predefined
 show predefined typedef
 show predefined using
-show std::ios
+show predefined macros
 
 typedef int (*const CPF)(const char *const s)
 typedef int *const CPI

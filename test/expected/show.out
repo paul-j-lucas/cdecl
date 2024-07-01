@@ -2704,6 +2704,13 @@ cdecl> show macros
 cdecl> show user macros
 #define NAME2(A, B) NAME2_HELPER(A,B)
 #define NAME2_HELPER(A, B) A ## B
+cdecl> show predefined macros
+#define __DATE__ "Sep 09 1941"
+#define __FILE__ "example.c"
+#define __LINE__ 42
+#define __STDC_VERSION__ 202311L
+#define __STDC__ 1
+#define __TIME__ "12:34:56"
 cdecl> 
 cdecl> set c89
 cdecl> show __STDC_VERSION__
@@ -2725,6 +2732,8 @@ cdecl> show __STDC_VERSION__
 #define __STDC_VERSION__ 202311L
 cdecl> 
 cdecl> set c++
+c++decl> show std::ios
+namespace std { class ios; }
 c++decl> show all predefined typedef
 typedef WORD ATOM;
 typedef int BOOL;
@@ -5309,8 +5318,12 @@ using va_list = void*;
 using wctrans_t = int;
 using wctype_t = unsigned long;
 using wint_t = int;
-c++decl> show std::ios
-namespace std { class ios; }
+c++decl> show predefined macros
+#define __DATE__ "Sep 09 1941"
+#define __FILE__ "example.cpp"
+#define __LINE__ 42
+#define __TIME__ "12:34:56"
+#define __cplusplus 202302L
 c++decl> 
 c++decl> typedef int (*const CPF)(const char *const s)
 c++decl> typedef int *const CPI
