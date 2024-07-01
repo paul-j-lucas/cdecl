@@ -10777,6 +10777,42 @@ c++decl> explain int x
 
 declare x as integer
 c++decl> 
+c++decl> #define AT                        @
+{
+  rule: {
+    lhs: "p_define",
+    rhs: "#define NAME p_paren_param_list_opt p_replace_list_opt"
+  },
+  name: "AT",
+  p_replace_list_opt: [
+    { kind: " ", loc: { first_line: 60, first_column: 10, last_column: 33 } },
+    { kind: "other", string: "@", loc: { first_line: 60, first_column: 34 } }
+  ],
+  macro: {
+    name: "AT",
+    is_dynamic: false,
+    replace_list: [
+      { kind: "other", string: "@", loc: { first_line: 60, first_column: 34 } }
+    ]
+  }
+}
+
+c++decl> 
+c++decl> #define EMPTY
+{
+  rule: {
+    lhs: "p_define",
+    rhs: "#define NAME p_paren_param_list_opt p_replace_list_opt"
+  },
+  name: "EMPTY",
+  macro: {
+    name: "EMPTY",
+    is_dynamic: false,
+    replace_list: []
+  }
+}
+
+c++decl> 
 c++decl> #define NAME2_HELPER(A,B)         A ## B
 {
   rule: {
@@ -10785,7 +10821,7 @@ c++decl> #define NAME2_HELPER(A,B)         A ## B
   },
   p_param: "A",
   $$_list: [
-    { name: "A", loc: { first_line: 60, first_column: 21 } }
+    { name: "A", loc: { first_line: 64, first_column: 21 } }
   ]
 }
 
@@ -10795,12 +10831,12 @@ c++decl> #define NAME2_HELPER(A,B)         A ## B
     rhs: "p_param"
   },
   p_param_list: [
-    { name: "A", loc: { first_line: 60, first_column: 21 } }
+    { name: "A", loc: { first_line: 64, first_column: 21 } }
   ],
   p_param: "B",
   $$_list: [
-    { name: "A", loc: { first_line: 60, first_column: 21 } },
-    { name: "B", loc: { first_line: 60, first_column: 23 } }
+    { name: "A", loc: { first_line: 64, first_column: 21 } },
+    { name: "B", loc: { first_line: 64, first_column: 23 } }
   ]
 }
 
@@ -10811,30 +10847,30 @@ c++decl> #define NAME2_HELPER(A,B)         A ## B
   },
   name: "NAME2_HELPER",
   p_paren_param_list_opt: [
-    { name: "A", loc: { first_line: 60, first_column: 21 } },
-    { name: "B", loc: { first_line: 60, first_column: 23 } }
+    { name: "A", loc: { first_line: 64, first_column: 21 } },
+    { name: "B", loc: { first_line: 64, first_column: 23 } }
   ],
   p_replace_list_opt: [
-    { kind: " ", loc: { first_line: 60, first_column: 25, last_column: 33 } },
-    { kind: "identifier", string: "A", loc: { first_line: 60, first_column: 34 } },
-    { kind: " ", loc: { first_line: 60, first_column: 35 } },
-    { kind: "##", loc: { first_line: 60, first_column: 36, last_column: 37 } },
-    { kind: " ", loc: { first_line: 60, first_column: 38 } },
-    { kind: "identifier", string: "B", loc: { first_line: 60, first_column: 39 } }
+    { kind: " ", loc: { first_line: 64, first_column: 25, last_column: 33 } },
+    { kind: "identifier", string: "A", loc: { first_line: 64, first_column: 34 } },
+    { kind: " ", loc: { first_line: 64, first_column: 35 } },
+    { kind: "##", loc: { first_line: 64, first_column: 36, last_column: 37 } },
+    { kind: " ", loc: { first_line: 64, first_column: 38 } },
+    { kind: "identifier", string: "B", loc: { first_line: 64, first_column: 39 } }
   ],
   macro: {
     name: "NAME2_HELPER",
     is_dynamic: false,
     param_list: [
-      { name: "A", loc: { first_line: 60, first_column: 21 } },
-      { name: "B", loc: { first_line: 60, first_column: 24 } }
+      { name: "A", loc: { first_line: 64, first_column: 21 } },
+      { name: "B", loc: { first_line: 64, first_column: 24 } }
     ],
     replace_list: [
-      { kind: "identifier", string: "A", loc: { first_line: 60, first_column: 34 } },
-      { kind: " ", loc: { first_line: 60, first_column: 35 } },
-      { kind: "##", loc: { first_line: 60, first_column: 36, last_column: 37 } },
-      { kind: " ", loc: { first_line: 60, first_column: 38 } },
-      { kind: "identifier", string: "B", loc: { first_line: 60, first_column: 39 } }
+      { kind: "identifier", string: "A", loc: { first_line: 64, first_column: 34 } },
+      { kind: " ", loc: { first_line: 64, first_column: 35 } },
+      { kind: "##", loc: { first_line: 64, first_column: 36, last_column: 37 } },
+      { kind: " ", loc: { first_line: 64, first_column: 38 } },
+      { kind: "identifier", string: "B", loc: { first_line: 64, first_column: 39 } }
     ]
   }
 }
@@ -10847,7 +10883,7 @@ c++decl> #define NAME2(A,B)                NAME2_HELPER(A,B)
   },
   p_param: "A",
   $$_list: [
-    { name: "A", loc: { first_line: 61, first_column: 14 } }
+    { name: "A", loc: { first_line: 65, first_column: 14 } }
   ]
 }
 
@@ -10857,12 +10893,12 @@ c++decl> #define NAME2(A,B)                NAME2_HELPER(A,B)
     rhs: "p_param"
   },
   p_param_list: [
-    { name: "A", loc: { first_line: 61, first_column: 14 } }
+    { name: "A", loc: { first_line: 65, first_column: 14 } }
   ],
   p_param: "B",
   $$_list: [
-    { name: "A", loc: { first_line: 61, first_column: 14 } },
-    { name: "B", loc: { first_line: 61, first_column: 16 } }
+    { name: "A", loc: { first_line: 65, first_column: 14 } },
+    { name: "B", loc: { first_line: 65, first_column: 16 } }
   ]
 }
 
@@ -10873,32 +10909,32 @@ c++decl> #define NAME2(A,B)                NAME2_HELPER(A,B)
   },
   name: "NAME2",
   p_paren_param_list_opt: [
-    { name: "A", loc: { first_line: 61, first_column: 14 } },
-    { name: "B", loc: { first_line: 61, first_column: 16 } }
+    { name: "A", loc: { first_line: 65, first_column: 14 } },
+    { name: "B", loc: { first_line: 65, first_column: 16 } }
   ],
   p_replace_list_opt: [
-    { kind: " ", loc: { first_line: 61, first_column: 18, last_column: 33 } },
-    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 61, first_column: 34, last_column: 45 } },
-    { kind: "punctuator", string: "(", loc: { first_line: 61, first_column: 46 } },
-    { kind: "identifier", string: "A", loc: { first_line: 61, first_column: 47 } },
-    { kind: "punctuator", string: ",", loc: { first_line: 61, first_column: 48 } },
-    { kind: "identifier", string: "B", loc: { first_line: 61, first_column: 49 } },
-    { kind: "punctuator", string: ")", loc: { first_line: 61, first_column: 50 } }
+    { kind: " ", loc: { first_line: 65, first_column: 18, last_column: 33 } },
+    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 65, first_column: 34, last_column: 45 } },
+    { kind: "punctuator", string: "(", loc: { first_line: 65, first_column: 46 } },
+    { kind: "identifier", string: "A", loc: { first_line: 65, first_column: 47 } },
+    { kind: "punctuator", string: ",", loc: { first_line: 65, first_column: 48 } },
+    { kind: "identifier", string: "B", loc: { first_line: 65, first_column: 49 } },
+    { kind: "punctuator", string: ")", loc: { first_line: 65, first_column: 50 } }
   ],
   macro: {
     name: "NAME2",
     is_dynamic: false,
     param_list: [
-      { name: "A", loc: { first_line: 61, first_column: 14 } },
-      { name: "B", loc: { first_line: 61, first_column: 17 } }
+      { name: "A", loc: { first_line: 65, first_column: 14 } },
+      { name: "B", loc: { first_line: 65, first_column: 17 } }
     ],
     replace_list: [
-      { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 61, first_column: 34, last_column: 45 } },
-      { kind: "punctuator", string: "(", loc: { first_line: 61, first_column: 46 } },
-      { kind: "identifier", string: "A", loc: { first_line: 61, first_column: 47 } },
-      { kind: "punctuator", string: ",", loc: { first_line: 61, first_column: 48 } },
-      { kind: "identifier", string: "B", loc: { first_line: 61, first_column: 49 } },
-      { kind: "punctuator", string: ")", loc: { first_line: 61, first_column: 50 } }
+      { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 65, first_column: 34, last_column: 45 } },
+      { kind: "punctuator", string: "(", loc: { first_line: 65, first_column: 46 } },
+      { kind: "identifier", string: "A", loc: { first_line: 65, first_column: 47 } },
+      { kind: "punctuator", string: ",", loc: { first_line: 65, first_column: 48 } },
+      { kind: "identifier", string: "B", loc: { first_line: 65, first_column: 49 } },
+      { kind: "punctuator", string: ")", loc: { first_line: 65, first_column: 50 } }
     ]
   }
 }
@@ -10912,11 +10948,11 @@ c++decl> expand NAME2(x, __LINE__)
   name: "NAME2",
   arg_list: [
     [
-      { kind: "identifier", string: "x", loc: { first_line: 62, first_column: 13 } }
+      { kind: "identifier", string: "x", loc: { first_line: 66, first_column: 13 } }
     ],
     [
-      { kind: " ", loc: { first_line: 62, first_column: 15 } },
-      { kind: "identifier", string: "__LINE__", loc: { first_line: 62, first_column: 16, last_column: 23 } }
+      { kind: " ", loc: { first_line: 66, first_column: 15 } },
+      { kind: "identifier", string: "__LINE__", loc: { first_line: 66, first_column: 16, last_column: 23 } }
     ]
   ]
 }
@@ -10926,35 +10962,35 @@ NAME2(x, __LINE__) => NAME2_HELPER(A,B)
   macro: "NAME2",
   arg_list: [
     [
-      { kind: "identifier", string: "x", loc: { first_line: 62, first_column: 6 } }
+      { kind: "identifier", string: "x", loc: { first_line: 66, first_column: 6 } }
     ],
     [
-      { kind: " ", loc: { first_line: 62, first_column: 15 } },
-      { kind: "identifier", string: "__LINE__", loc: { first_line: 62, first_column: 9, last_column: 16 } }
+      { kind: " ", loc: { first_line: 66, first_column: 15 } },
+      { kind: "identifier", string: "__LINE__", loc: { first_line: 66, first_column: 9, last_column: 16 } }
     ]
   ],
   token_list: [
-    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 62, first_column: 22, last_column: 33 } },
-    { kind: "punctuator", string: "(", loc: { first_line: 62, first_column: 34 } },
-    { kind: "identifier", string: "A", loc: { first_line: 62, first_column: 35 } },
-    { kind: "punctuator", string: ",", loc: { first_line: 62, first_column: 36 } },
-    { kind: "identifier", string: "B", loc: { first_line: 62, first_column: 37 } },
-    { kind: "punctuator", string: ")", loc: { first_line: 62, first_column: 38 } }
+    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 66, first_column: 22, last_column: 33 } },
+    { kind: "punctuator", string: "(", loc: { first_line: 66, first_column: 34 } },
+    { kind: "identifier", string: "A", loc: { first_line: 66, first_column: 35 } },
+    { kind: "punctuator", string: ",", loc: { first_line: 66, first_column: 36 } },
+    { kind: "identifier", string: "B", loc: { first_line: 66, first_column: 37 } },
+    { kind: "punctuator", string: ")", loc: { first_line: 66, first_column: 38 } }
   ]
 }
 | A => x
   {
     macro: "A",
     token_list: [
-      { kind: "identifier", string: "x", loc: { first_line: 62, first_column: 6 } }
+      { kind: "identifier", string: "x", loc: { first_line: 66, first_column: 6 } }
     ]
   }
 | B => __LINE__
   {
     macro: "B",
     token_list: [
-      { kind: " ", loc: { first_line: 62, first_column: 15 } },
-      { kind: "identifier", string: "__LINE__", loc: { first_line: 62, first_column: 9, last_column: 16 } }
+      { kind: " ", loc: { first_line: 66, first_column: 15 } },
+      { kind: "identifier", string: "__LINE__", loc: { first_line: 66, first_column: 9, last_column: 16 } }
     ]
   }
 | | __LINE__ => 42
@@ -10976,19 +11012,19 @@ NAME2(x, 42) => NAME2_HELPER(x,42)
   macro: "NAME2",
   arg_list: [
     [
-      { kind: "identifier", string: "x", loc: { first_line: 62, first_column: 6 } }
+      { kind: "identifier", string: "x", loc: { first_line: 66, first_column: 6 } }
     ],
     [
       { kind: "num_lit", string: "42", loc: { first_column: 9, last_column: 10 } }
     ]
   ],
   token_list: [
-    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 62, first_column: 16, last_column: 27 } },
-    { kind: "punctuator", string: "(", loc: { first_line: 62, first_column: 28 } },
-    { kind: "identifier", string: "x", loc: { first_line: 62, first_column: 29 } },
-    { kind: "punctuator", string: ",", loc: { first_line: 62, first_column: 30 } },
+    { kind: "identifier", string: "NAME2_HELPER", loc: { first_line: 66, first_column: 16, last_column: 27 } },
+    { kind: "punctuator", string: "(", loc: { first_line: 66, first_column: 28 } },
+    { kind: "identifier", string: "x", loc: { first_line: 66, first_column: 29 } },
+    { kind: "punctuator", string: ",", loc: { first_line: 66, first_column: 30 } },
     { kind: "num_lit", string: "42", loc: { first_column: 31, last_column: 32 } },
-    { kind: "punctuator", string: ")", loc: { first_line: 62, first_column: 33 } }
+    { kind: "punctuator", string: ")", loc: { first_line: 66, first_column: 33 } }
   ]
 }
 | NAME2_HELPER(x, 42) => A ## B
@@ -10996,18 +11032,18 @@ NAME2(x, 42) => NAME2_HELPER(x,42)
     macro: "NAME2_HELPER",
     arg_list: [
       [
-        { kind: "identifier", string: "x", loc: { first_line: 62, first_column: 29 } }
+        { kind: "identifier", string: "x", loc: { first_line: 66, first_column: 29 } }
       ],
       [
         { kind: "num_lit", string: "42", loc: { first_column: 31, last_column: 32 } }
       ]
     ],
     token_list: [
-      { kind: "identifier", string: "A", loc: { first_line: 60, first_column: 34 } },
-      { kind: " ", loc: { first_line: 60, first_column: 35 } },
-      { kind: "##", loc: { first_line: 60, first_column: 36, last_column: 37 } },
-      { kind: " ", loc: { first_line: 60, first_column: 38 } },
-      { kind: "identifier", string: "B", loc: { first_line: 60, first_column: 39 } }
+      { kind: "identifier", string: "A", loc: { first_line: 64, first_column: 34 } },
+      { kind: " ", loc: { first_line: 64, first_column: 35 } },
+      { kind: "##", loc: { first_line: 64, first_column: 36, last_column: 37 } },
+      { kind: " ", loc: { first_line: 64, first_column: 38 } },
+      { kind: "identifier", string: "B", loc: { first_line: 64, first_column: 39 } }
     ]
   }
 | NAME2_HELPER(x, 42) => x ## 42
@@ -11015,17 +11051,17 @@ NAME2(x, 42) => NAME2_HELPER(x,42)
     macro: "NAME2_HELPER",
     arg_list: [
       [
-        { kind: "identifier", string: "x", loc: { first_line: 62, first_column: 15 } }
+        { kind: "identifier", string: "x", loc: { first_line: 66, first_column: 15 } }
       ],
       [
         { kind: "num_lit", string: "42", loc: { first_column: 18, last_column: 19 } }
       ]
     ],
     token_list: [
-      { kind: "identifier", string: "x", loc: { first_line: 62, first_column: 25 } },
-      { kind: " ", loc: { first_line: 62, first_column: 26 } },
-      { kind: "##", loc: { first_line: 62, first_column: 27, last_column: 28 } },
-      { kind: " ", loc: { first_line: 62, first_column: 29 } },
+      { kind: "identifier", string: "x", loc: { first_line: 66, first_column: 25 } },
+      { kind: " ", loc: { first_line: 66, first_column: 26 } },
+      { kind: "##", loc: { first_line: 66, first_column: 27, last_column: 28 } },
+      { kind: " ", loc: { first_line: 66, first_column: 29 } },
       { kind: "num_lit", string: "42", loc: { first_column: 30, last_column: 31 } }
     ]
   }
@@ -11034,14 +11070,14 @@ NAME2(x, 42) => NAME2_HELPER(x,42)
     macro: "NAME2_HELPER",
     arg_list: [
       [
-        { kind: "identifier", string: "x", loc: { first_line: 62, first_column: 15 } }
+        { kind: "identifier", string: "x", loc: { first_line: 66, first_column: 15 } }
       ],
       [
         { kind: "num_lit", string: "42", loc: { first_column: 18, last_column: 19 } }
       ]
     ],
     token_list: [
-      { kind: "identifier", string: "x42", loc: { first_line: 62, first_column: 25, last_column: 27 } }
+      { kind: "identifier", string: "x42", loc: { first_line: 66, first_column: 25, last_column: 27 } }
     ]
   }
 NAME2(x, 42) => x42
@@ -11049,13 +11085,54 @@ NAME2(x, 42) => x42
   macro: "NAME2",
   arg_list: [
     [
-      { kind: "identifier", string: "x", loc: { first_line: 62, first_column: 6 } }
+      { kind: "identifier", string: "x", loc: { first_line: 66, first_column: 6 } }
     ],
     [
       { kind: "num_lit", string: "42", loc: { first_column: 9, last_column: 10 } }
     ]
   ],
   token_list: [
-    { kind: "identifier", string: "x42", loc: { first_line: 62, first_column: 16, last_column: 18 } }
+    { kind: "identifier", string: "x42", loc: { first_line: 66, first_column: 16, last_column: 18 } }
+  ]
+}
+c++decl> 
+c++decl> #define NO_PARAM()                "x"
+{
+  rule: {
+    lhs: "p_define",
+    rhs: "#define NAME p_paren_param_list_opt p_replace_list_opt"
+  },
+  name: "NO_PARAM",
+  p_paren_param_list_opt: [],
+  p_replace_list_opt: [
+    { kind: " ", loc: { first_line: 68, first_column: 18, last_column: 33 } },
+    { kind: "str_lit", string: "x", loc: { first_line: 68, first_column: 34, last_column: 36 } }
+  ],
+  macro: {
+    name: "NO_PARAM",
+    is_dynamic: false,
+    param_list: [],
+    replace_list: [
+      { kind: "str_lit", string: "x", loc: { first_line: 68, first_column: 34, last_column: 36 } }
+    ]
+  }
+}
+
+c++decl> expand NO_PARAM()
+{
+  rule: {
+    lhs: "expand_command",
+    rhs: "EXPAND NAME arg_list_opt extra_list_opt"
+  },
+  name: "NO_PARAM",
+  arg_list: []
+}
+
+NO_PARAM() => "x"
+{
+  macro: "NO_PARAM",
+  arg_list: [],
+  token_list: [
+    { kind: "str_lit", string: "x", loc: { first_line: 69, first_column: 14, last_column: 16 } }
   ]
 }

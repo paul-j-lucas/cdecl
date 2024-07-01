@@ -59,7 +59,16 @@ set debug
 set
 explain int x
 
+#define AT                        @
+
+#define EMPTY
+
 #define NAME2_HELPER(A,B)         A ## B
 #define NAME2(A,B)                NAME2_HELPER(A,B)
 expand NAME2(x, __LINE__)
+
+#define NO_PARAM()                "x"
+expand NO_PARAM()
 END
+
+# vim:set syntax=sh et sw=2 ts=2:
