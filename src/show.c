@@ -235,16 +235,6 @@ bool show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
 
   c_typedef_visit( &show_type_visitor, &sti );
 
-  if ( !sti.showed_any && show == CDECL_SHOW_USER_DEFINED &&
-       glob != NULL && strchr( glob, '*' ) == NULL ) {
-    //
-    // We didn't show a specific user-defined type, so try showing a specific
-    // predefined type.
-    //
-    sti.show = CDECL_SHOW_PREDEFINED;
-    c_typedef_visit( &show_type_visitor, &sti );
-  }
-
   c_sglob_cleanup( &sti.sglob );
   return sti.showed_any;
 }
