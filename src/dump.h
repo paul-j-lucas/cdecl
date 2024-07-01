@@ -179,17 +179,6 @@ void p_param_list_dump( p_param_list_t const *list, unsigned indent,
 void p_token_list_dump( p_token_list_t const *list, unsigned indent,
                         FILE *fout );
 
-/**
- * Dumps \a list of strings in [JSON5](https://json5.org) format (for
- * debugging).
- *
- * @param list The list of strings to dump.
- * @param fout The `FILE` to dump to.
- *
- * @sa str_dump()
- */
-void str_list_dump( slist_t const *list, FILE *fout );
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

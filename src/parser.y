@@ -492,21 +492,9 @@
  *
  * @sa #DUMP_INT()
  * @sa #DUMP_SNAME()
- * @sa #DUMP_STR_LIST()
  */
 #define DUMP_STR(KEY,STR) IF_CDECL_DEBUG( \
   DUMP_KEY_IMPL( KEY ": " ); fputs_quoted( (STR), '"', stdout ); )
-
-/**
- * Dumps a list of C strings.
- *
- * @param KEY The key name to print.
- * @param STR_LIST The list of C strings to dump.
- *
- * @sa #DUMP_STR()
- */
-#define DUMP_STR_LIST(KEY,STR_LIST) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); str_list_dump( (STR_LIST), stdout ); )
 
 /**
  * Dumps a \ref c_tid_t.

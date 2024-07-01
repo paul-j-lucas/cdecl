@@ -865,26 +865,6 @@ void p_token_list_dump( p_token_list_t const *list, unsigned indent,
   p_token_list_dump_impl( list, &dump );
 }
 
-void str_list_dump( slist_t const *list, FILE *fout ) {
-  assert( list != NULL );
-  assert( fout != NULL );
-
-  if ( slist_empty( list ) ) {
-    FPUTS( "[]", fout );
-    return;
-  }
-
-  FPUTS( "[ ", fout );
-
-  bool comma = false;
-  FOREACH_SLIST_NODE( node, list ) {
-    fput_sep( ", ", &comma, fout );
-    fputs_quoted( node->data, '"', fout );
-  } // for
-
-  FPUTS( " ]", fout );
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
