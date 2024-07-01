@@ -125,19 +125,25 @@ slist_test_SOURCES = \
 
 CDECL =		cdecl$(EXEEXT)
 CPPDECL =	c++decl$(EXEEXT)
+
+CAST =		cast$(EXEEXT)
+DECLARE =	declare$(EXEEXT)
+EXPLAIN =	explain$(EXEEXT)
+SYMLINKS =	$(CPPDECL) $(CAST) $(DECLARE) $(EXPLAIN)
+
 INSTALL_CPPDECL= $(DESTDIR)$(bindir)/$(CPPDECL)
 TESTS =		$(check_PROGRAMS)
 
-all-local: $(CPPDECL)
+all-local: $(SYMLINKS)
 
-$(CPPDECL): $(CDECL)
+$(SYMLINKS): $(CDECL)
 	rm -f $@
 	$(LN_S) $(CDECL) $@
 
 check-local: clean-coverage-local
 
 clean-local:
-	rm -f $(BUILT_SOURCES) $(CPPDECL) parser.output
+	rm -f $(BUILT_SOURCES) $(SYMLINKS) parser.output
 
 distclean-local: distclean-coverage-local
 
