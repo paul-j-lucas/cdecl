@@ -53,6 +53,9 @@ correct tokens are used:
 ** Digraph & trigraph structured binding support
 Digraphs & trigraphs are now correctly supported for structured bindings.
 
+** `--echo-commands` & config files
+Commands are now also echoed for those in configuration files.
+
 ** File line number
 When reading from a file via `-f`, now includes the file name and error line
 number in error messages.

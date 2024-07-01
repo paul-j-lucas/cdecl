@@ -1,0 +1,2 @@
+EXPECTED_EXIT=65
+cdecl -bE --config=data/config_err-1.cdeclrc
