@@ -1,3 +1,0 @@
-cdecl> cast x into
-                  ^
-data/cast_x.cdecl:1,12: syntax error: "as", "into", or "to" expected

@@ -1,2 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -bE -f data/cast_x.cdecl

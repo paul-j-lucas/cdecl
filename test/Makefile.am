@@ -95,12 +95,8 @@ TESTS+=	tests/config.test \
 	tests/config-does_not_exist.test
 
 # File tests
-TESTS+=	tests/file.test
-
-# File error tests
-TESTS+=	tests/file-cast_x.test \
-	tests/file-declare_x.test \
-	tests/file-explain_x.test
+TESTS+=	tests/file.test \
+	tests/file-error.test
 
 # include tests
 TESTS+= tests/include-ok-nested-01.test \

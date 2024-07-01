@@ -1,3 +1,0 @@
-cdecl> explain x
-               ^
-data/explain_x.cdecl:1,9: error: "x": unknown name

@@ -1,0 +1,9 @@
+cdecl> cast x into
+                  ^
+data/cast_x.cdecl:1,12: syntax error: "as", "into", or "to" expected
+cdecl> declare x int
+                 ^
+data/declare_x.cdecl:1,11: syntax error: "int": "as" expected ("int" is a keyword)
+cdecl> explain x
+               ^
+data/explain_x.cdecl:1,9: error: "x": unknown name
