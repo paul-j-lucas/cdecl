@@ -1,3 +1,15 @@
+2024-07-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * config_file.c, config.out: Now echoing comments when echoing commands for
+     config files.
+   * config.out: Commands are now also echoed for those in configuration files,
+     part 2.
+   * config_err-1.cdeclrc, config-error.out, config-error.test: Commands are
+     now also echoed for those in configuration files.
+   * config-error.test: chmod -x.
+   * test/Makefile.am, config-error.out, config-error.test: Another test.
+   * test/Makefile.am, config.out, config.test: Test consolidation.
+
 2024-06-30  Paul J. Lucas <paul@lucasmail.org>
 
    * test/Makefile.am, cli_options.out, cli_options-error.test,
