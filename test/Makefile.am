@@ -91,7 +91,8 @@ TESTS+=	tests/show.test \
 	tests/show-error.test
 
 # Config file tests
-TESTS+=	tests/config.test
+TESTS+=	tests/config.test \
+	tests/config-error.test
 
 # File tests
 TESTS+=	tests/file-cast_i.test \
