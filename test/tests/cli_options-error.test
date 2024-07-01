@@ -1,39 +1,39 @@
 EXPECTED_EXIT=64
 
-bad_opts() {
+test_cdecl() {
   echo | cdecl $* && exit 1
 }
 
-bad_opts --digraphs --trigraphs
-bad_opts -23
-bad_opts -9
+test_cdecl --digraphs --trigraphs
+test_cdecl -23
+test_cdecl -9
 
-bad_opts --color
-bad_opts -k
-bad_opts --color=xxx
-bad_opts -kxxx
-bad_opts --kolor
+test_cdecl --color
+test_cdecl -k
+test_cdecl --color=xxx
+test_cdecl -kxxx
+test_cdecl --kolor
 
-bad_opts --lineno
-bad_opts -L
-bad_opts --lineno=0
-bad_opts -L0
+test_cdecl --lineno
+test_cdecl -L
+test_cdecl --lineno=0
+test_cdecl -L0
 
-bad_opts --explicit-ecsu
-bad_opts -S
-bad_opts --explicit-ecsu=x
-bad_opts -Sx
+test_cdecl --explicit-ecsu
+test_cdecl -S
+test_cdecl --explicit-ecsu=x
+test_cdecl -Sx
 
-bad_opts --explicit-int
-bad_opts -i
-bad_opts --explicit-int=x
-bad_opts -ix
+test_cdecl --explicit-int
+test_cdecl -i
+test_cdecl --explicit-int=x
+test_cdecl -ix
 
-bad_opts -hv
+test_cdecl -hv
 
-bad_opts --lang=x
-bad_opts -xx
+test_cdecl --lang=x
+test_cdecl -xx
 
-bad_opts -v help
+test_cdecl -v help
 
 # vim:set syntax=sh et sw=2 ts=2:
