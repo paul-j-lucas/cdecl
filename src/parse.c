@@ -189,7 +189,7 @@ static bool cdecl_parse_macro( char const *s ) {
   assert( s != NULL );
   SKIP_WS( s );
   if ( !is_ident_first( *s ) )
-    return false;
+    return false;                       // LCOV_EXCL_LINE
   char const *const ident = s;
   SKIP_CHARS( s, IDENT_CHARS );
   size_t const ident_len = STATIC_CAST( size_t, s - ident );
