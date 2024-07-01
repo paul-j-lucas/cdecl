@@ -1,0 +1,6 @@
+cdecl> declare x as c_ast_id_t
+c_ast_id_t x;
+cdecl> explain c_ast_id_t x
+declare x as c_ast_id_t
+c++decl> declare i as Int
+Int i;

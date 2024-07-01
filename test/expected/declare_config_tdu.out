@@ -1,2 +1,0 @@
-cdecl> declare x as c_ast_id_t
-c_ast_id_t x;

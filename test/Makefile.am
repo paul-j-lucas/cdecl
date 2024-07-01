@@ -91,9 +91,7 @@ TESTS+=	tests/show.test \
 	tests/show-error.test
 
 # Config file tests
-TESTS+=	tests/declare_config_tdu.test \
-	tests/explain_config_tdu.test \
-	tests/using_config_i.test
+TESTS+=	tests/config.test
 
 # File tests
 TESTS+=	tests/file-cast_i.test \
