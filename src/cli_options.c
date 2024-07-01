@@ -493,7 +493,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(CONFIG):
         if ( *SKIP_WS( optarg ) == '\0' )
           goto missing_arg;
-        opt_conf_path = optarg;
+        opt_config_path = optarg;
         break;
       case COPT(DIGRAPHS):
         opt_graph = C_GRAPH_DI;

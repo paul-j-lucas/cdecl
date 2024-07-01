@@ -659,8 +659,8 @@ void print_loc( c_loc_t const *loc ) {
   size_t const column = print_caret( STATIC_CAST( size_t, loc->first_column ) );
 
   char const *path = NULL;
-  if ( print_params.conf_path != NULL )
-    path = print_params.conf_path;
+  if ( print_params.config_path != NULL )
+    path = print_params.config_path;
   else if ( strcmp( opt_file, "-" ) != 0 )
     path = opt_file;
 

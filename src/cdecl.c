@@ -122,7 +122,7 @@ int main( int argc, char const *argv[] ) {
   yylineno = 1;
 
   if ( opt_read_conf )
-    conf_init();
+    config_init();
   cdecl_initialized = true;
   //
   // Note that cli_options_init() adjusts argv such that argv[0] becomes the

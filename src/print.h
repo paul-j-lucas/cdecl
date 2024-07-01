@@ -99,7 +99,7 @@
 struct print_params {
   char const *command_line;             ///< Command from command line, if any.
   size_t      command_line_len;         ///< Length of `command_line`.
-  char const *conf_path;                ///< Configuration file path, if any.
+  char const *config_path;              ///< Configuration file path, if any.
   size_t      inserted_len;             ///< Length of inserted string, if any.
   bool        opt_no_print_input_line;  ///< Don't print input line before `^`.
 };

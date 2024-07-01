@@ -79,40 +79,40 @@ static char const* home_dir( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void conf_init( void ) {
+void config_init( void ) {
   ASSERT_RUN_ONCE();
 
-  char const *conf_path = opt_conf_path;
-  if ( conf_path == NULL )
-    conf_path = null_if_empty( getenv( "CDECLRC" ) );
+  char const *config_path = opt_config_path;
+  if ( config_path == NULL )
+    config_path = null_if_empty( getenv( "CDECLRC" ) );
 
   strbuf_t sbuf;
   strbuf_init( &sbuf );
 
-  if ( conf_path == NULL ) {
+  if ( config_path == NULL ) {
     char const *const home = home_dir();
     if ( home != NULL ) {
       strbuf_puts( &sbuf, home );
       strbuf_paths( &sbuf, CONF_FILE_NAME_DEFAULT );
-      conf_path = sbuf.str;
+      config_path = sbuf.str;
     }
   }
 
   int parse_rv = EX_OK;
 
-  if ( conf_path != NULL ) {
-    print_params.conf_path = conf_path;
+  if ( config_path != NULL ) {
+    print_params.config_path = config_path;
 
-    FILE *const conf_file = fopen( conf_path, "r" );
-    if ( conf_file != NULL ) {
-      parse_rv = cdecl_parse_file( conf_file );
-      fclose( conf_file );
+    FILE *const config_file = fopen( config_path, "r" );
+    if ( config_file != NULL ) {
+      parse_rv = cdecl_parse_file( config_file );
+      fclose( config_file );
     }
-    else if ( opt_conf_path != NULL ) {
-      fatal_error( EX_NOINPUT, "\"%s\": %s\n", conf_path, STRERROR() );
+    else if ( opt_config_path != NULL ) {
+      fatal_error( EX_NOINPUT, "\"%s\": %s\n", config_path, STRERROR() );
     }
 
-    print_params.conf_path = NULL;
+    print_params.config_path = NULL;
   }
 
   strbuf_cleanup( &sbuf );

@@ -68,7 +68,7 @@ extern bool         opt_alt_tokens;     ///< Print alternative tokens?
 extern cdecl_debug_t opt_cdecl_debug;   ///< Print JSON5 debug output?
 
 extern color_when_t opt_color_when;     ///< When to print color.
-extern char const  *opt_conf_path;      ///< Configuration file path.
+extern char const  *opt_config_path;    ///< Configuration file path.
 extern bool         opt_east_const;     ///< Print in "east const" form?
 extern bool         opt_echo_commands;  ///< Echo commands?
 extern bool         opt_english_types;  ///< Print types in English, not C/C++.

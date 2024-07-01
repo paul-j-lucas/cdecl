@@ -52,7 +52,7 @@
 bool                opt_alt_tokens;
 cdecl_debug_t       opt_cdecl_debug;
 color_when_t        opt_color_when = COLOR_NOT_FILE;
-char const         *opt_conf_path;
+char const         *opt_config_path;
 bool                opt_east_const;
 bool                opt_echo_commands;
 bool                opt_english_types = true;

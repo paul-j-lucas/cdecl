@@ -44,7 +44,7 @@
  *
  * @note This function must be called as most once.
  */
-void conf_init( void );
+void config_init( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 
