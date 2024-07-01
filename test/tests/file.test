@@ -1,0 +1,4 @@
+EXPECTED_EXIT=0
+cdecl -bE --file=data/cast_i.cdecl
+cdecl -bE --file=data/declare_i.cdecl
+cdecl -bE --file=data/explain_i.cdecl

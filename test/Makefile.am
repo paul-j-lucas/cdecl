@@ -95,9 +95,7 @@ TESTS+=	tests/config.test \
 	tests/config-does_not_exist.test
 
 # File tests
-TESTS+=	tests/file-cast_i.test \
-	tests/file-declare_i.test \
-	tests/file-explain_i.test
+TESTS+=	tests/file.test
 
 # File error tests
 TESTS+=	tests/file-cast_x.test \

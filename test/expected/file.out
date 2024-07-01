@@ -1,0 +1,6 @@
+cdecl> cast x into int
+(int)x
+cdecl> declare x as int
+int x;
+cdecl> explain int x
+declare x as integer
