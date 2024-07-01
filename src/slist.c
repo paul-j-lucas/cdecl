@@ -85,30 +85,19 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
                slist_cmp_fn_t cmp_fn ) {
   assert( i_list != NULL );
   assert( j_list != NULL );
+  assert( cmp_fn != NULL );
 
   if ( i_list == j_list )
     return 0;
 
   slist_node_t const *i_node = i_list->head, *j_node = j_list->head;
 
-  if ( cmp_fn == NULL ) {               // avoid repeated check in loop
-    for ( ; i_node != NULL && j_node != NULL;
+  for ( ; i_node != NULL && j_node != NULL;
           i_node = i_node->next, j_node = j_node->next ) {
-      int const cmp = STATIC_CAST( int,
-        (intptr_t)i_node->data - (intptr_t)j_node->data
-      );
-      if ( cmp != 0 )
-        return cmp;
-    } // for
-  }
-  else {
-    for ( ; i_node != NULL && j_node != NULL;
-          i_node = i_node->next, j_node = j_node->next ) {
-      int const cmp = (*cmp_fn)( i_node->data, j_node->data );
-      if ( cmp != 0 )
-        return cmp;
-    } // for
-  }
+    int const cmp = (*cmp_fn)( i_node->data, j_node->data );
+    if ( cmp != 0 )
+      return cmp;
+  } // for
 
   return i_node == NULL ? (j_node == NULL ? 0 : -1) : 1;
 }
@@ -144,6 +133,7 @@ bool slist_equal( slist_t const *i_list, slist_t const *j_list,
                   slist_equal_fn_t equal_fn ) {
   assert( i_list != NULL );
   assert( j_list != NULL );
+  assert( equal_fn != NULL );
 
   if ( i_list == j_list )
     return true;
@@ -152,20 +142,11 @@ bool slist_equal( slist_t const *i_list, slist_t const *j_list,
 
   slist_node_t const *i_node = i_list->head, *j_node = j_list->head;
 
-  if ( equal_fn == NULL ) {             // avoid repeated check in loop
-    for ( ; i_node != NULL && j_node != NULL;
+  for ( ; i_node != NULL && j_node != NULL;
           i_node = i_node->next, j_node = j_node->next ) {
-      if ( i_node->data != j_node->data )
-        return false;
-    } // for
-  }
-  else {
-    for ( ; i_node != NULL && j_node != NULL;
-          i_node = i_node->next, j_node = j_node->next ) {
-      if ( !(*equal_fn)( i_node->data, j_node->data ) )
-        return false;
-    } // for
-  }
+    if ( !(*equal_fn)( i_node->data, j_node->data ) )
+      return false;
+  } // for
 
   return true;
 }
