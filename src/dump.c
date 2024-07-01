@@ -858,12 +858,6 @@ void p_param_list_dump( p_param_list_t const *list, unsigned indent,
   p_param_list_dump_impl( list, &dump );
 }
 
-void p_token_dump( p_token_t const *token, FILE *fout ) {
-  dump_state_t dump;
-  dump_init( &dump, /*indent=*/1, fout );
-  p_token_dump_impl( token, &dump );
-}
-
 void p_token_list_dump( p_token_list_t const *list, unsigned indent,
                         FILE *fout ) {
   dump_state_t dump;

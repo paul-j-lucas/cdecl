@@ -167,16 +167,6 @@ void p_param_list_dump( p_param_list_t const *list, unsigned indent,
                         FILE *fout );
 
 /**
- * Dumps \a token in [JSON5](https://json5.org) format (for debugging).
- *
- * @param token The \ref p_token to dump.
- * @param fout The `FILE` to dump to.
- *
- * @sa p_token_list_dump()
- */
-void p_token_dump( p_token_t const *token, FILE *fout );
-
-/**
  * Dumps \a list of preprocessor macro tokens in [JSON5](https://json5.org)
  * format (for debugging).
  *
