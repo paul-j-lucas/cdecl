@@ -1,16 +1,16 @@
-// begin "data/config_tdu.cdeclrc"
+/* begin "data/config_tdu.cdeclrc" */
 cdecl> typedef unsigned c_ast_id_t;
-// end "data/config_tdu.cdeclrc"
+/* end "data/config_tdu.cdeclrc" */
 cdecl> declare x as c_ast_id_t
 c_ast_id_t x;
-// begin "data/config_tdu.cdeclrc"
+/* begin "data/config_tdu.cdeclrc" */
 cdecl> typedef unsigned c_ast_id_t;
-// end "data/config_tdu.cdeclrc"
+/* end "data/config_tdu.cdeclrc" */
 cdecl> explain c_ast_id_t x
 declare x as c_ast_id_t
-// begin "data/config_using_i.cdeclrc"
+/* begin "data/config_using_i.cdeclrc" */
 cdecl> set c++11
 c++decl> using Int = int
-// end "data/config_using_i.cdeclrc"
+/* end "data/config_using_i.cdeclrc" */
 c++decl> declare i as Int
 Int i;
