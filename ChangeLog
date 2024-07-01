@@ -1,5 +1,15 @@
 2024-06-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * test/Makefile.am, cli_options.out, cli_options-error.test,
+     cli_options.test, digraphs.test, trigraphs.test: Testing more command-line
+     options.
+   * share/man/man1/cdecl.1, cdecl.c, cdecl.h, p_macro.c, util.c, util.h,
+     show.out, show.test: Added CDECL_TEST environment variable.
+   * show.c: Undid apparently useless check for '*' when showing globs.
+   * slist.c, slist.h: Comparison functions can no longer be null.
+   * alt-tokens.out, declare.out, east-const.out, west-decl.out,
+     alt-tokens.test, declare.test, east-const.test, west-decl.test: Test
+     re-org.
    * declare.out, declare.test: Another test.
    * c_lang.h, explain.out, explain.test: Fixed printing of C99 language
      extention names.
