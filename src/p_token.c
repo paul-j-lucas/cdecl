@@ -488,7 +488,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       break;
 
     case Y_LEXER_ERROR:
-      goto done;
+      goto done;                        // LCOV_EXCL_LINE
 
     default:
       UNEXPECTED_INT_VALUE( y_token_id );

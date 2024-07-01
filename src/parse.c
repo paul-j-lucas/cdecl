@@ -137,7 +137,7 @@ static int cdecl_parse_command( char const *command, size_t cli_count,
   strbuf_init( &sbuf );
   // If command wasn't cdecl or c++decl, start the command string with it.
   if ( (space = command != NULL) )
-    strbuf_puts( &sbuf, command );
+    strbuf_puts( &sbuf, command );      // LCOV_EXCL_LINE
   // Concatenate arguments, if any, into a single string.
   for ( size_t i = 0; i < cli_count; ++i )
     strbuf_sepc_puts( &sbuf, ' ', &space, cli_value[i] );
