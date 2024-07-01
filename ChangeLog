@@ -1,5 +1,11 @@
 2024-07-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * debug.out, debug.test: More tests.
+   * debug.out, debug.test: More preprocessor debug tests.
+   * dump.c, dump.h, parser.y: Eliminated str_list_dump() -- never called.
+   * dump.c, dump.h: Eliminated p_token_dump() -- never called.
+   * debug.out, debug.test: More coverage tests.
+   * config_file.c, config.out: Changed //... to /*...*/.
    * config_file.c, config.out: Now echoing comments when echoing commands for
      config files.
    * config.out: Commands are now also echoed for those in configuration files,
