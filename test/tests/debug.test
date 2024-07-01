@@ -60,8 +60,8 @@ set
 explain int x
 
 #define AT                        @
-
 #define EMPTY
+#define N1                        -1
 
 #define NAME2_HELPER(A,B)         A ## B
 #define NAME2(A,B)                NAME2_HELPER(A,B)

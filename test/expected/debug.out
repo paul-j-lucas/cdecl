@@ -10797,7 +10797,6 @@ c++decl> #define AT                        @
   }
 }
 
-c++decl> 
 c++decl> #define EMPTY
 {
   rule: {
@@ -10809,6 +10808,26 @@ c++decl> #define EMPTY
     name: "EMPTY",
     is_dynamic: false,
     replace_list: []
+  }
+}
+
+c++decl> #define N1                        -1
+{
+  rule: {
+    lhs: "p_define",
+    rhs: "#define NAME p_paren_param_list_opt p_replace_list_opt"
+  },
+  name: "N1",
+  p_replace_list_opt: [
+    { kind: " ", loc: { first_line: 62, first_column: 10, last_column: 33 } },
+    { kind: "num_lit", string: "-1", loc: { first_line: 62, first_column: 34, last_column: 35 } }
+  ],
+  macro: {
+    name: "N1",
+    is_dynamic: false,
+    replace_list: [
+      { kind: "num_lit", string: "-1", loc: { first_line: 62, first_column: 34, last_column: 35 } }
+    ]
   }
 }
 
