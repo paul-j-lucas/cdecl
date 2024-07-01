@@ -8,8 +8,9 @@ explain alignas(long) int x
 explain enum E : int x
 explain enum E x
 explain int x
-explain int x[4]
 explain int x[]
+explain int x[4]
+explain int x[N]
 explain size_t x
 explain struct S x
 explain unsigned x : 4
@@ -44,6 +45,11 @@ explain [this]
 explain [this](char c)
 explain [*this]
 explain [*this](char c)
+explain [[maybe_unused]] int x
+explain enum E x : 4
+
+declare f as non-member function
+declare f as const member function
 
 set nodebug
 set
