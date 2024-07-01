@@ -92,7 +92,7 @@ TESTS+=	tests/show.test \
 
 # Config file tests
 TESTS+=	tests/config.test \
-	tests/config-error.test
+	tests/config-does_not_exist.test
 
 # File tests
 TESTS+=	tests/file-cast_i.test \
