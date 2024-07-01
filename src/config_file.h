@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/conf_file.h
+**      src/config_file.h
 **
 **      Copyright (C) 2017-2024  Paul J. Lucas, et al.
 **
@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_conf_file_H
-#define cdecl_conf_file_H
+#ifndef cdecl_config_file_H
+#define cdecl_config_file_H
 
 /**
  * @file
@@ -50,5 +50,5 @@ void conf_init( void );
 
 /** @} */
 
-#endif /* cdecl_conf_file_H */
+#endif /* cdecl_config_file_H */
 /* vim:set et sw=2 ts=2: */

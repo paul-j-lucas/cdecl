@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/conf_file.c
+**      src/config_file.c
 **
 **      Copyright (C) 2017-2024  Paul J. Lucas, et al.
 **
@@ -25,7 +25,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "conf_file.h"
+#include "config_file.h"
 #include "cdecl.h"
 #include "options.h"
 #include "parse.h"

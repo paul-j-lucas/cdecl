@@ -311,7 +311,8 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   PERROR_EXIT_IF( mem_file == NULL, EX_IOERR );
   yyrestart( mem_file );
 
-  if ( opt_echo_commands && !cdecl_interactive && cdecl_initialized ) {
+  if ( opt_echo_commands && !cdecl_interactive &&
+       (cdecl_initialized || print_params.conf_path != NULL) ) {
     //
     // Echo the original command (without "explain" or "expand" possibly having
     // been inserted) without a trailing newline (if any) so we can always

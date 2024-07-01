@@ -33,7 +33,7 @@
 #include "cdecl_keyword.h"
 #include "cli_options.h"
 #include "color.h"
-#include "conf_file.h"
+#include "config_file.h"
 #include "lexer.h"
 #include "options.h"
 #include "p_keyword.h"
