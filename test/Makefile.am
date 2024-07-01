@@ -31,14 +31,8 @@ TESTS=	tests/command_line.test \
 	tests/command_line-usage_error.test
 
 # Command-line option tests
-TESTS+= tests/cdecl--color.test \
-	tests/cdecl--commands.test \
-	tests/cdecl--help.test \
-	tests/cdecl--no-typedefs.test \
-	tests/cdecl--options.test
-
-# Command-line option error tests
-TESTS+=	tests/cli_options-error.test
+TESTS+= tests/cli_options.test \
+	tests/cli_options-error.test
 
 # Cast tests
 TESTS+=	tests/cast.test \

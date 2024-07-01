@@ -1,0 +1,49 @@
+EXPECTED_EXIT=0
+
+test_cdecl() {
+  echo '$ cdecl' $*
+  echo | cdecl $* || exit 1
+  echo
+}
+
+# --alt-tokens -> alt-tokens.test
+
+test_cdecl --color=never
+
+test_cdecl --commands
+test_cdecl -xc++ --commands
+
+# --config -> *_config_*.test
+# --debug -> debug.test
+# --digraphs -> digraphs.test
+# --east-const -> east-const.test
+# --echo-commands -> *.test
+
+test_cdecl --explicit-ecsu=ecsu set
+test_cdecl --explicit-int=u set
+
+test_cdecl --help
+
+# --infer-command -> infer-command.test
+# --language -> *.test
+# --lineno -> *.test
+# --no-buffer-stdout -> *.test
+# --no-english-types -> english-types.test
+# --no-semicolon -> semicolon.test
+
+echo '$ cdecl --no-typedefs'
+cdecl -bEL$LINENO --no-typedefs <<END
+define Int as int
+show all
+END
+echo
+
+test_cdecl -xc++ --no-using set
+test_cdecl --options
+test_cdecl -xc++ --trailing-return set
+
+# --trigraphs -> trigraphs.test
+
+test_cdecl --west-decl=t set
+
+# vim:set syntax=sh et sw=2 ts=2:

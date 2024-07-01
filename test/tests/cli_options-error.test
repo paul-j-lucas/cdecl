@@ -36,4 +36,4 @@ bad_opts -xx
 
 bad_opts -v help
 
-# vim:set et sw=2 ts=2:
+# vim:set syntax=sh et sw=2 ts=2:

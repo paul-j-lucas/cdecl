@@ -1,0 +1,198 @@
+$ cdecl --color=never
+
+$ cdecl --commands
+cast
+declare
+define
+enum
+expand
+explain
+help
+include
+set
+show
+struct
+typedef
+union
+
+$ cdecl -xc++ --commands
+cast
+class
+const
+declare
+define
+dynamic
+enum
+expand
+explain
+help
+include
+inline
+namespace
+reinterpret
+set
+show
+static
+struct
+typedef
+union
+using
+
+$ cdecl --explicit-ecsu=ecsu set
+  noalt-tokens
+  nodebug
+  noeast-const
+  noecho-commands
+    english-types
+    explicit-ecsu=ecsu       (Not supported in C.)
+  noexplicit-int
+  nographs
+  noinfer-command
+    lang=C23
+    prompt
+    semicolon
+  notrailing-return
+    using                    (Not supported in C.)
+    west-decl=bflo
+
+$ cdecl --explicit-int=u set
+  noalt-tokens
+  nodebug
+  noeast-const
+  noecho-commands
+    english-types
+    explicit-ecsu=su         (Not supported in C.)
+    explicit-int=u
+  nographs
+  noinfer-command
+    lang=C23
+    prompt
+    semicolon
+  notrailing-return
+    using                    (Not supported in C.)
+    west-decl=bflo
+
+$ cdecl --help
+usage: cdecl [options] [command...]
+options:
+  --alt-tokens        (-a) Print alternative tokens.
+  --color=ARG         (-k) Colorize output [default: not_file].
+  --commands          (-K) Print commands (for shell completion).
+  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --debug[=ARG]       (-d) Print cdecl debug output.
+  --digraphs          (-2) Print digraphs.
+  --east-const        (-e) Print in "east const" form.
+  --echo-commands     (-E) Echo commands given before corresponding output.
+  --explicit-ecsu=ARG (-S) Print "class", "struct", "union" explicitly.
+  --explicit-int=ARG  (-i) Print "int" explicitly.
+  --file=ARG          (-f) Read from file [default: stdin].
+  --help              (-h) Print this help and exit.
+  --infer-command     (-I) Try to infer command when none is given.
+  --language=ARG      (-x) Use language.
+  --lineno=ARG        (-L) Add to all line numbers in messages.
+  --no-buffer-stdout  (-b) Set stdout to unbuffered.
+  --no-config         (-C) Suppress reading configuration file.
+  --no-english-types  (-T) Print types in C/C++, not English.
+  --no-prompt         (-p) Suppress printing prompts.
+  --no-semicolon      (-s) Suppress printing final semicolon for declarations.
+  --no-typedefs       (-t) Suppress predefining standard types.
+  --no-using          (-u) Declare types with typedef, not using, in C++.
+  --options           (-O) Print command-line options (for shell completion).
+  --output=ARG        (-o) Write to file [default: stdout].
+  --trailing-return   (-r) Print trailing return type in C++.
+  --trigraphs         (-3) Print trigraphs.
+  --version           (-v) Print version and exit.
+  --west-decl=ARG     (-w) Print *, &, and && next to type.
+
+cdecl home page: https://github.com/paul-j-lucas/cdecl
+Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
+
+$ cdecl --no-typedefs
+cdecl> define Int as int
+cdecl> show all
+define Int as integer
+namespace std { struct partial_ordering; }
+namespace std { struct strong_ordering; }
+namespace std { struct weak_ordering; }
+
+$ cdecl -xc++ --no-using set
+  noalt-tokens
+  nodebug
+  noeast-const
+  noecho-commands
+    english-types
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+  noinfer-command
+    lang=C++23
+    prompt
+    semicolon
+  notrailing-return
+  nousing
+    west-decl=bflo
+
+$ cdecl --options
+--alt-tokens -a Print alternative tokens
+--color -k Colorize output [default: not_file]
+--commands -K Print commands (for shell completion)
+--config -c Configuration file path [default: ~/.cdeclrc]
+--debug -d Print cdecl debug output
+--digraphs -2 Print digraphs
+--east-const -e Print in "east const" form
+--echo-commands -E Echo commands given before corresponding output
+--explicit-ecsu -S Print "class", "struct", "union" explicitly
+--explicit-int -i Print "int" explicitly
+--file -f Read from file [default: stdin]
+--help -h Print this help and exit
+--infer-command -I Try to infer command when none is given
+--language -x Use language
+--lineno -L Add to all line numbers in messages
+--no-buffer-stdout -b Set stdout to unbuffered
+--no-config -C Suppress reading configuration file
+--no-english-types -T Print types in C/C++, not English
+--no-prompt -p Suppress printing prompts
+--no-semicolon -s Suppress printing final semicolon for declarations
+--no-typedefs -t Suppress predefining standard types
+--no-using -u Declare types with typedef, not using, in C++
+--options -O Print command-line options (for shell completion)
+--output -o Write to file [default: stdout]
+--trailing-return -r Print trailing return type in C++
+--trigraphs -3 Print trigraphs
+--version -v Print version and exit
+--west-decl -w Print *, &, and && next to type
+
+$ cdecl -xc++ --trailing-return set
+  noalt-tokens
+  nodebug
+  noeast-const
+  noecho-commands
+    english-types
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+  noinfer-command
+    lang=C++23
+    prompt
+    semicolon
+    trailing-return
+    using
+    west-decl=bflo
+
+$ cdecl --west-decl=t set
+  noalt-tokens
+  nodebug
+  noeast-const
+  noecho-commands
+    english-types
+    explicit-ecsu=su         (Not supported in C.)
+  noexplicit-int
+  nographs
+  noinfer-command
+    lang=C23
+    prompt
+    semicolon
+  notrailing-return
+    using                    (Not supported in C.)
+    west-decl=t
+

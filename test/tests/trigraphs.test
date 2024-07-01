@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bEL$LINENO -3 <<END
+cdecl -bEL$LINENO --trigraphs <<END
 struct S
 
 set c17

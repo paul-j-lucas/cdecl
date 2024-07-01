@@ -1,6 +1,0 @@
-cdecl> define Int as int
-cdecl> show all
-define Int as integer
-namespace std { struct partial_ordering; }
-namespace std { struct strong_ordering; }
-namespace std { struct weak_ordering; }
