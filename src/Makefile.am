@@ -126,10 +126,8 @@ slist_test_SOURCES = \
 CDECL =		cdecl$(EXEEXT)
 CPPDECL =	c++decl$(EXEEXT)
 
-CAST =		cast$(EXEEXT)
-DECLARE =	declare$(EXEEXT)
 EXPLAIN =	explain$(EXEEXT)
-SYMLINKS =	$(CPPDECL) $(CAST) $(DECLARE) $(EXPLAIN)
+SYMLINKS =	$(CPPDECL) $(EXPLAIN)
 
 INSTALL_CPPDECL= $(DESTDIR)$(bindir)/$(CPPDECL)
 TESTS =		$(check_PROGRAMS)
