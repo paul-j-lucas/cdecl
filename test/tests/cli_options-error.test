@@ -10,6 +10,7 @@ test_cdecl --color=X
 test_cdecl -kX
 
 test_cdecl --config
+test_cdecl --config=
 test_cdecl -c
 
 test_cdecl --digraphs --trigraphs
@@ -30,6 +31,7 @@ test_cdecl --explicit-int=X
 test_cdecl -iX
 
 test_cdecl --file
+test_cdecl --file=
 test_cdecl -f
 
 test_cdecl --lineno
@@ -52,6 +54,7 @@ test_cdecl --lang=X
 test_cdecl -xX
 
 test_cdecl --output
+test_cdecl --output=
 test_cdecl -xo
 
 test_cdecl --west-decl

@@ -4,6 +4,7 @@ cdecl: "X": invalid value for --color/-k; must be always, auto, isatty, never, n
 cdecl: "X": invalid value for --color/-k; must be always, auto, isatty, never, not_file, not_isreg, tty
 cdecl: "--config/-c" requires an argument
 cdecl: "--config/-c" requires an argument
+cdecl: "--config/-c" requires an argument
 cdecl: --digraphs/-2 and --trigraphs/-3 are mutually exclusive
 cdecl: --digraphs/-2 and --trigraphs/-3 are mutually exclusive
 cdecl: '9': invalid option; use --help or -h for help
@@ -17,6 +18,7 @@ cdecl: "--explicit-int/-i" requires an argument
 cdecl: "--explicit-int/-i" requires an argument
 cdecl: "X": invalid value for --explicit-int/-i; must be i|u|{[u]{i|s|l[l]}[,]}+|*|-
 cdecl: "X": invalid value for --explicit-int/-i; must be i|u|{[u]{i|s|l[l]}[,]}+|*|-
+cdecl: "--file/-f" requires an argument
 cdecl: "--file/-f" requires an argument
 cdecl: "--file/-f" requires an argument
 cdecl: "--lineno/-L" requires an argument
@@ -99,6 +101,7 @@ cdecl: "--language/-x" requires an argument
 cdecl: 'X': invalid option; use --help or -h for help
 cdecl: "X": invalid value for --language/-x; must be C, K&RC, C89, C95, C99, C11, C17, C23, C++, C++98, C++03, C++11, C++14, C++17, C++20, C++23
 cdecl: "X": invalid value for --language/-x; must be C, K&RC, C89, C95, C99, C11, C17, C23, C++, C++98, C++03, C++11, C++14, C++17, C++20, C++23
+cdecl: "--output/-o" requires an argument
 cdecl: "--output/-o" requires an argument
 cdecl: "o": invalid value for --language/-x; must be C, K&RC, C89, C95, C99, C11, C17, C23, C++, C++98, C++03, C++11, C++14, C++17, C++20, C++23
 cdecl: "--west-decl/-w" requires an argument
