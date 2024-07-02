@@ -153,6 +153,8 @@
 /**
  * This code is inserted by Flex at the beginning of each rule to set the
  * current token location information.
+ *
+ * @note Flex expects this to end with a `;`.
  */
 #define YY_USER_ACTION \
   BLOCK( is_constrained_auto = false; lexer_update_loc(); );
