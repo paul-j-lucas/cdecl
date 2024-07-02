@@ -18,6 +18,11 @@ declarations, e.g.:
 
     int i, a[2], (^b)(char), f(double), operator~(S&), operator""_x(char)
 
+** `cast` & `declare` command executable name support
+Support for the `cast` & `declare` command as the executable name has been
+dropped; only the `explain` command is still supported.  (I didn't realize
+until now that `declare` conflicts with the shell built-in.)`
+
 ** C99 language extensions
 Fixed printing of C99 language extention names.
 

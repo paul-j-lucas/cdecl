@@ -71,6 +71,8 @@ enum cdecl_command_kind {
    * name (`argv[0]`):
    *
    * `$` _command_ _args_
+   *
+   * @note Currently, the only command this applies to is `explain`.
    */
   CDECL_COMMAND_PROG_NAME,
 };

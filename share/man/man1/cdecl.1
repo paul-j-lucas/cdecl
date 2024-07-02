@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 30, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 1, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -44,14 +44,6 @@ cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .B c++decl
 .BI [ options ]
 .BI [ command " " ... ]
-.br
-.B cast
-.BI [ options ]
-.I english
-.br
-.B declare
-.BI [ options ]
-.I english
 .br
 .B explain
 .BI [ options ]
@@ -106,14 +98,6 @@ Runs with the latest supported version of C as the default language.
 .BR c++decl " | " cppdecl " | " cxxdecl
 Runs with the latest supported version of C++ as the default language.
 .TP
-.BR cast " | " declare
-Runs with the latest supported version of C as the default language
-interpreting the rest of the command-line
-(if given)
-as pseudo-English,
-performs the conversion to gibberish,
-and exits.
-.TP
 .B explain
 Runs with the latest supported version of C as the default language
 interpreting the rest of the command-line
@@ -125,16 +109,11 @@ and exits.
 For example
 (where \f(CW$\fP is the shell prompt):
 .cS
-$ declare p as pointer to const pointer to const int
-const int *const *p;
-.cE
-When using
-.BR explain ,
-care must be taken either to escape or quote shell metacharacters:
-.cS
 $ explain 'int *const (*p)[4]'
 declare p as pointer to array 4 of constant pointer to integer
 .cE
+For declarations given on the command line,
+care must be taken either to escape or quote shell metacharacters.
 The default language can be specified via the
 .B cdeclrc
 file
