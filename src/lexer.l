@@ -1327,6 +1327,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 "??!??!"      { set_trigraph( "||" ); return Y_PIPE_PIPE  ; }
 "??'"         { set_trigraph( "^"  ); return '^'          ; }
 "??("         { set_trigraph( "["  ); return '['          ; }
+"??/"         { set_trigraph( "\\" ); return '\\'         ; }
 "??)"         { set_trigraph( "]"  ); return ']'          ; }
 "??<"         { set_trigraph( "{"  ); return '{'          ; }
 "??!"         { set_trigraph( "|"  ); return '|'          ; }
