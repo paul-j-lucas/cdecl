@@ -504,23 +504,23 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
 
   real_path = realpath( we.we_wordv[0], /*real_buf=*/NULL );
   if ( real_path == NULL ) {
-    print_error( path_loc, "%s: could not resolve path\n", path );
+    print_error( path_loc, "\"%s\": could not resolve path\n", path );
     goto done;
   }
 
   if ( rb_tree_find( &include_set, real_path ) != NULL ) {
-    print_error( path_loc, "%s: file previously included\n", path );
+    print_error( path_loc, "\"%s\": file previously included\n", path );
     goto done;
   }
 
   if ( !path_is_file( real_path ) ) {
-    print_error( path_loc, "%s: not a plain file\n", path );
+    print_error( path_loc, "\"%s\": not a plain file\n", path );
     goto done;
   }
 
   FILE *const include_file = fopen( real_path, "r" );
   if ( include_file == NULL ) {
-    print_error( path_loc, "%s: %s\n", path, STRERROR() );
+    print_error( path_loc, "\"%s\": %s\n", path, STRERROR() );
     goto done;
   }
 
