@@ -1144,6 +1144,13 @@ void c_typedefs_init( void ) {
   rb_tree_init( &typedef_set, POINTER_CAST( rb_cmp_fn_t, &c_typedef_cmp ) );
   ATEXIT( &c_typedefs_cleanup );
 
+#ifdef ENABLE_BISON_DEBUG
+  //
+  // Temporarily turn off Bison debug output for built-in typedefs.
+  //
+  int const orig_bison_debug = opt_bison_debug;
+  opt_bison_debug = false;
+#endif /* ENABLE_BISON_DEBUG */
   //
   // Temporarily turn off debug output for built-in typedefs.
   //
@@ -1156,13 +1163,6 @@ void c_typedefs_init( void ) {
   int const orig_flex_debug = opt_flex_debug;
   opt_flex_debug = false;
 #endif /* ENABLE_FLEX_DEBUG */
-#ifdef ENABLE_BISON_DEBUG
-  //
-  // Temporarily turn off Bison debug output for built-in typedefs.
-  //
-  int const orig_bison_debug = opt_bison_debug;
-  opt_bison_debug = false;
-#endif /* ENABLE_BISON_DEBUG */
 
   //
   // Temporarily set config_path to this file so if there's an error in a
@@ -1241,19 +1241,17 @@ void c_typedefs_init( void ) {
 
   predef_lang_ids = LANG_MIN(CPP_20);
   parse_predef_types( PREDEFINED_STD_CPP_20_REQUIRED );
-
   predef_lang_ids = LANG_NONE;
 
-  opt_echo_commands = orig_echo_commands;
-  opt_lang_id = orig_lang_id;
-
-  opt_cdecl_debug = orig_cdecl_debug;
-#ifdef ENABLE_FLEX_DEBUG
-  opt_flex_debug = orig_flex_debug;
-#endif /* ENABLE_FLEX_DEBUG */
 #ifdef ENABLE_BISON_DEBUG
   opt_bison_debug = orig_bison_debug;
 #endif /* ENABLE_BISON_DEBUG */
+  opt_cdecl_debug = orig_cdecl_debug;
+  opt_echo_commands = orig_echo_commands;
+#ifdef ENABLE_FLEX_DEBUG
+  opt_flex_debug = orig_flex_debug;
+#endif /* ENABLE_FLEX_DEBUG */
+  opt_lang_id = orig_lang_id;
 
   print_params.config_path = NULL;
 }
