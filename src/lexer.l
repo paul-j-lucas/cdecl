@@ -658,7 +658,7 @@ D             [0-9]
 H             [0-9A-Fa-f]
 NI            [^A-Za-z_0-9]
 S             [ \f\r\t\v]
-NS            [^ \f\r\t\v]
+NS            [^ \f\n\r\t\v]
 
 identifier    {L}({L}|{D})*
 sname         {identifier}({S}*::{S}*{identifier})+
@@ -841,12 +841,16 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * To forbid a string like `q x`, we first have to match its
                * pattern explicitly and always forbid it.
                */
-^{S}*q{S}+{NS} {
-                char const *s = yytext + yylloc.last_column;
-                // Set the offending token to the one past the `q`.
-                while ( !isspace( s[-1] ) )
-                  --s;
-                set_yytext( s );
+^{S}*q{S}+{NS}+ {
+                char const *const yytext_orig = yytext;
+                // update yytext to be only the offending token past the 'q'
+                SKIP_WS( yytext );
+                assert( yytext[0] == 'q' );
+                ++yytext;
+                SKIP_WS( yytext );
+                // update yyloc to be at the start of the offending token
+                token_column = yytext - yytext_orig;
+                lexer_update_loc();
                 return Y_LEXER_ERROR;
               }
 ^{S}*q{S}*    { set_yytext( L_quit ); return Y_quit; }
