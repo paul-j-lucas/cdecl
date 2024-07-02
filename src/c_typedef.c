@@ -33,6 +33,7 @@
 #include "lexer.h"
 #include "options.h"
 #include "parse.h"
+#include "print.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -1163,6 +1164,16 @@ void c_typedefs_init( void ) {
   opt_bison_debug = false;
 #endif /* ENABLE_BISON_DEBUG */
 
+  //
+  // Temporarily set config_path to this file so if there's an error in a
+  // predefined type, print_loc() will print this file in the error message.
+  //
+  // Doing this requires that we also temporarily turn off command echoing.
+  //
+  print_params.config_path = __FILE__;
+  bool const orig_echo_commands = opt_echo_commands;
+  opt_echo_commands = false;
+
   c_lang_id_t const orig_lang_id = opt_lang_id;
 
   if ( opt_typedefs ) {
@@ -1232,6 +1243,8 @@ void c_typedefs_init( void ) {
   parse_predef_types( PREDEFINED_STD_CPP_20_REQUIRED );
 
   predef_lang_ids = LANG_NONE;
+
+  opt_echo_commands = orig_echo_commands;
   opt_lang_id = orig_lang_id;
 
   opt_cdecl_debug = orig_cdecl_debug;
@@ -1241,6 +1254,8 @@ void c_typedefs_init( void ) {
 #ifdef ENABLE_BISON_DEBUG
   opt_bison_debug = orig_bison_debug;
 #endif /* ENABLE_BISON_DEBUG */
+
+  print_params.config_path = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
