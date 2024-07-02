@@ -1316,10 +1316,10 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 <*>{
               /* Digraphs. */
 "%:"          { set_digraph( "#" ); return '#'; }
-"<%"          { set_digraph( "{" ); return '{'; }
-"%>"          { set_digraph( "}" ); return '}'; }
 "<:"          { set_digraph( "[" ); return '['; }
 ":>"          { set_digraph( "]" ); return ']'; }
+"<%"          { set_digraph( "{" ); return '{'; }
+"%>"          { set_digraph( "}" ); return '}'; }
 
               /* Trigraphs. */
 "??'="        { set_trigraph( "^=" ); return Y_CARET_EQUAL; }
