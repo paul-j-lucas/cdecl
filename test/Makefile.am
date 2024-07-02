@@ -106,6 +106,7 @@ TESTS+= tests/include-ok-nested-01.test \
 # include error tests
 TESTS+=	tests/include-empty_path.test \
 	tests/include-err-01.test \
+	tests/include-recursive.test \
 	tests/include-too_many_files.test \
 	tests/include-unquoted.test
 

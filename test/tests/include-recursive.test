@@ -1,0 +1,4 @@
+EXPECTED_EXIT=0
+cdecl -bEL$LINENO <<END
+#include "data/include-recursive.cdeclrc"
+END

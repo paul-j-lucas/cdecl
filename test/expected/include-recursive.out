@@ -1,0 +1,3 @@
+cdecl> #include "data/include-recursive.cdeclrc"
+                ^
+data/include-recursive.cdeclrc:1,10: error: "data/include-recursive.cdeclrc": file previously included
