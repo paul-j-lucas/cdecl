@@ -120,29 +120,41 @@ cdecl_command_t const* cdecl_command_find( char const *s ) {
   SKIP_WS( s );
 
   FOREACH_CDECL_COMMAND( command ) {
-    size_t const literal_len = strlen( command->literal );
+    size_t literal_len = strlen( command->literal );
     if ( !starts_with_token( s, command->literal, literal_len ) )
       continue;
     if ( !opt_infer_command )
       return command;
-    if ( command->literal == L_const || command->literal == L_static ) {
+    if ( command->literal != L_const && command->literal != L_static )
+      return command;
+
+    //
+    // When in infer-command mode, a special case has to be made for "const"
+    // and "static" since "explain" is implied only when NOT followed by
+    // "cast":
+    //
+    //      const int *p                            // Implies explain.
+    //      const cast p into pointer to int        // Does NOT imply explain.
+    //
+    if ( strncmp( s, "constant", STRLITLEN( "constant" ) ) == 0 ) {
       //
-      // When in infer-command mode, a special case has to be made for const
-      // and static since explain is implied only when NOT followed by "cast":
+      // An even more special case has to be made for "constant cast":
       //
-      //      const int *p                      // Implies explain.
-      //      const cast p into pointer to int  // Does NOT imply explain.
+      //      constant cast p into pointer to int   // Does NOT imply explain.
       //
-      char const *p = s + literal_len;
-      if ( !isspace( *p ) )
-        break;
-      SKIP_WS( p );
-      if ( !starts_with_token( p, L_cast, 4 ) )
-        break;
-      p += 4;
-      if ( !isspace( *p ) )
-        break;
+      literal_len += STRLITLEN( "ant" );
     }
+
+    char const *p = s + literal_len;
+    if ( !isspace( *p ) )
+      break;
+    SKIP_WS( p );
+    if ( !starts_with_token( p, L_cast, 4 ) )
+      break;
+    p += 4;
+    if ( !isspace( *p ) )
+      break;
+
     return command;
   } // for
   return NULL;

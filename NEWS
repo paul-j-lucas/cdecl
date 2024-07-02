@@ -61,6 +61,11 @@ Digraphs & trigraphs are now correctly supported for structured bindings.
 ** `--echo-commands` & config files
 Commands are now also echoed for those in configuration files.
 
+** `infer-command` and `constant cast`
+When `infer-command` mode is set, spelling out `constant` now works correctly:
+
+    constant cast p into pointer to int
+
 ** File line number
 When reading from a file via `-f`, now includes the file name and error line
 number in error messages.
