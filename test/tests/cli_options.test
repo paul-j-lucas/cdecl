@@ -46,6 +46,22 @@ echo
 
 test_cdecl -xc++ --no-using set
 test_cdecl --options
+
+[ -n "$TMPDIR" ] || TMPDIR=/tmp
+OUTPUT="$TMPDIR/cdecl_output_$$_"
+trap "x=$?; rm -f $TMPDIR/cdecl*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
+echo '$ cdecl --output=...'
+cdecl -E --output="$OUTPUT" set
+[ -e "$OUTPUT" ] || {
+  echo "$OUTPUT: file not found" >&2
+  exit 1
+}
+grep set "$OUTPUT" >/dev/null || {
+  echo "$OUTPUT: unexpected contents" >&1
+  exit 1
+}
+echo
+
 test_cdecl -xc++ --trailing-return set
 
 # --trigraphs -> trigraphs.test
