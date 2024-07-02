@@ -492,10 +492,10 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
         "\"%s\": contains unquoted shell characters\n", path
       );
       return;
+    // LCOV_EXCL_START
     case WRDE_SYNTAX:
       print_error( path_loc, "\"%s\": path syntax error\n", path );
       return;
-    // LCOV_EXCL_START
     case WRDE_NOSPACE:                  // unlikely
       print_error( path_loc, "out of memory\n" );
       _Exit( EX_OSERR );
@@ -518,14 +518,18 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   }
 
   if ( !path_is_file( real_path ) ) {
+    // LCOV_EXCL_START
     print_error( path_loc, "\"%s\": not a plain file\n", path );
     goto done;
+    // LCOV_EXCL_STOP
   }
 
   FILE *const include_file = fopen( real_path, "r" );
   if ( include_file == NULL ) {
+    // LCOV_EXCL_START
     print_error( path_loc, "\"%s\": %s\n", path, STRERROR() );
     goto done;
+    // LCOV_EXCL_STOP
   }
 
   //
