@@ -9,6 +9,8 @@ explain __attribute__(( foo(1,2) )) int i
 explain __attribute__(( foo(name) )) int i
 explain __attribute__((const)) int i
 explain __attribute__((unused)) int i
+set c17
+explain __attribute__((unused)) int i
 
 explain int *__attribute__(( foo )) const p
 explain int *const __attribute__(( foo )) p
