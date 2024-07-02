@@ -11,6 +11,7 @@ explain __attribute__((const)) int i
 explain __attribute__((unused)) int i
 set c17
 explain __attribute__((unused)) int i
+set c
 
 explain int *__attribute__(( foo )) const p
 explain int *const __attribute__(( foo )) p

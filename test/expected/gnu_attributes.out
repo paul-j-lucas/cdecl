@@ -39,28 +39,29 @@ cdecl> explain __attribute__((unused)) int i
                ^
 13,9: warning: "__attribute__" not supported by cdecl (ignoring)
 declare i as integer
+cdecl> set c
 cdecl> 
 cdecl> explain int *__attribute__(( foo )) const p
                     ^
-15,14: warning: "__attribute__" not supported by cdecl (ignoring)
+16,14: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant pointer to integer
 cdecl> explain int *const __attribute__(( foo )) p
                           ^
-16,20: warning: "__attribute__" not supported by cdecl (ignoring)
+17,20: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant pointer to integer
 cdecl> explain int *const __attribute__(( foo )) __attribute__(( bar )) p
                           ^
-17,20: warning: "__attribute__" not supported by cdecl (ignoring)
+18,20: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
                                                  ^
-17,43: warning: "__attribute__" not supported by cdecl (ignoring)
+18,43: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant pointer to integer
 cdecl> explain int *volatile __attribute__(( foo )) const p
                              ^
-18,23: warning: "__attribute__" not supported by cdecl (ignoring)
+19,23: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant volatile pointer to integer
 cdecl> explain int *volatile __attribute__(( foo )) const __attribute__(( bar )) p
                              ^
-19,23: warning: "__attribute__" not supported by cdecl (ignoring)
+20,23: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
                                                           ^
-19,52: warning: "__attribute__" not supported by cdecl (ignoring)
+20,52: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant volatile pointer to integer
