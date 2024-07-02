@@ -10,8 +10,9 @@ const int x
 const cast p into pointer to int
 constant cast p into pointer to int
 
-typedef int consty
+typedef int consty, casty
 consty c
+const casty c
 
 __FILE__
 __LINE__

@@ -27,9 +27,11 @@ const_cast<int*>(p)
 c++decl> constant cast p into pointer to int
 const_cast<int*>(p)
 c++decl> 
-c++decl> typedef int consty
+c++decl> typedef int consty, casty
 c++decl> consty c
 declare c as consty
+c++decl> const casty c
+declare c as constant casty
 c++decl> 
 c++decl> __FILE__
 __FILE__ => "example.cpp"
