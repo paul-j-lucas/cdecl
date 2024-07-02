@@ -109,6 +109,24 @@ Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
 
 $ cdecl --no-config
 
+$ cdecl -E --no-prompt set
+set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+    explicit-ecsu=su         (Not supported in C.)
+  noexplicit-int
+  nographs
+  noinfer-command
+    lang=C23
+  noprompt
+    semicolon
+  notrailing-return
+    using                    (Not supported in C.)
+    west-decl=bflo
+
 $ cdecl --no-typedefs
 cdecl> define Int as int
 cdecl> show all

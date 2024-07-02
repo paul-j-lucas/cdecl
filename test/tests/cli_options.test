@@ -32,6 +32,9 @@ test_cdecl --help
 test_cdecl --no-config
 
 # --no-english-types -> english-types.test
+
+test_cdecl -E --no-prompt set
+
 # --no-semicolon -> semicolon.test
 
 echo '$ cdecl --no-typedefs'
