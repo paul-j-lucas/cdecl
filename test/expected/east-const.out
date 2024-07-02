@@ -65,20 +65,21 @@ cdecl> set no-e-a--st-
 cdecl> declare x as const int
 const int x;
 cdecl> 
+cdecl> set east-const
 cdecl> set c++
 c++decl> declare x, y as reference to const structured binding
-const auto &[x, y];
+auto const &[x, y];
 c++decl> declare x, y as reference to const static structured binding
-static const auto &[x, y];
+static auto const &[x, y];
 c++decl> declare x, y as reference to static const structured binding
-static const auto &[x, y];
+static auto const &[x, y];
 c++decl> declare x, y as const reference to structured binding
-const auto &[x, y];
+auto const &[x, y];
 c++decl> declare x, y as const reference to static structured binding
-static const auto &[x, y];
+static auto const &[x, y];
 c++decl> declare x, y as static reference to const structured binding
-static const auto &[x, y];
+static auto const &[x, y];
 c++decl> declare x, y as const static reference to structured binding
-static const auto &[x, y];
+static auto const &[x, y];
 c++decl> declare x, y as static const reference to structured binding
-static const auto &[x, y];
+static auto const &[x, y];

@@ -45,6 +45,7 @@ declare x as const int
 set no-e-a--st-
 declare x as const int
 
+set east-const
 set c++
 declare x, y as reference to const structured binding
 declare x, y as reference to const static structured binding
