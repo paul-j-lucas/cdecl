@@ -360,7 +360,7 @@ static char const* opt_get_long( char short_opt ) {
     if ( opt->val == short_opt )
       return opt->name;
   } // for
-  return "";
+  return "";                            // LCOV_EXCL_LINE
 }
 
 /**
