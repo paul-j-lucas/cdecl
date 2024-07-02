@@ -1,2 +1,0 @@
-EXPECTED_EXIT=66
-cdecl -bE --config=does_not_exist

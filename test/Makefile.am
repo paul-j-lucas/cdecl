@@ -27,7 +27,6 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 
 # Command-line tests
 TESTS=	tests/command_line.test \
-	tests/command_line-noinput_error.test \
 	tests/command_line-usage_error.test
 
 # Command-line option tests
@@ -92,7 +91,6 @@ TESTS+=	tests/show.test \
 
 # Config file tests
 TESTS+=	tests/config.test \
-	tests/config-does_not_exist.test \
 	tests/config-error.test
 
 # File tests

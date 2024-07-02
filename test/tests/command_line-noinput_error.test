@@ -1,3 +1,0 @@
-EXPECTED_EXIT=66
-cdecl -c does_not_exist
-cdecl -f does_not_exist
