@@ -28,6 +28,9 @@ test_cdecl --help
 # --language -> *.test
 # --lineno -> *.test
 # --no-buffer-stdout -> *.test
+
+test_cdecl --no-config
+
 # --no-english-types -> english-types.test
 # --no-semicolon -> semicolon.test
 

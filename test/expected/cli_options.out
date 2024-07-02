@@ -107,6 +107,8 @@ options:
 cdecl home page: https://github.com/paul-j-lucas/cdecl
 Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
 
+$ cdecl --no-config
+
 $ cdecl --no-typedefs
 cdecl> define Int as int
 cdecl> show all
