@@ -3,6 +3,10 @@ cdecl -bEL$LINENO <<END
 struct S
 
 define Int as int
+set c17
+define Int as int
+show
+
 define int_least32_t as int
 
 declare x as Int

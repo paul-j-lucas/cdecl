@@ -1,6 +1,11 @@
 cdecl> struct S
 cdecl> 
 cdecl> define Int as int
+cdecl> set c17
+cdecl> define Int as int
+cdecl> show
+define Int as integer
+cdecl> 
 cdecl> define int_least32_t as int
 cdecl> 
 cdecl> declare x as Int
