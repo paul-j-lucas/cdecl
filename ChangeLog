@@ -1,5 +1,17 @@
 2024-07-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * east-const.out, east-const.test: Fixed east-const structured binding test.
+   * gibberish.c: Eliminated apparently dead code in c_ast_name_gibberish().
+   * gibberish.c, cast.out, cast.test: Casting to a `typedef`d type is fixed.
+   * src/Makefile.am, util_test.c: Added util_test.
+   * util.c: Added LCOV_EXCL_LINE.
+   * config_file.c: Added LCOV_EXCL_START/STOP.
+   * run_test.sh, update_test.sh: Now using $TMPDIR, if set.
+   * cli_options.out, cli_options.test: Added --output test.
+   * cli_options.out, cli_options.test: Added --no-prompt test.
+   * cli_options.out, cli_options.test: Another test.
+   * update_test.sh: Now setting CDECL_TEST in update_test.sh.
+   * cli_options-error.out, cli_options-error.test: More coverage tests.
    * cli_options-error.test: Eliminated "exit 1".
    * run_test.sh, show.test: Now setting CDECL_TEST in run_test.sh.
    * share/man/man1/cdecl.1, cli_options.c: If cdecl is testing, will not read
