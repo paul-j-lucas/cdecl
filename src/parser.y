@@ -9562,6 +9562,7 @@ static bool print_error_token( char const *token ) {
     return false;
   EPRINTF( "\"%s\"", token );
   if ( opt_cdecl_debug != CDECL_DEBUG_NO ) {
+    // LCOV_EXCL_START
     switch ( yychar ) {
       case YYEMPTY:
         EPUTS( " [<empty>]" );
@@ -9572,6 +9573,7 @@ static bool print_error_token( char const *token ) {
       default:
         EPRINTF( " [%d]", yychar );
     } // switch
+    // LCOV_EXCL_STOP
   }
   return true;
 }
