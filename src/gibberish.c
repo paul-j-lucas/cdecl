@@ -307,16 +307,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       type.atids &= c_tid_compl( TA_ANY_MSC_CALL );
 
       //
-      // Depending on the C++ language version, change noexcept to throw() or
-      // vice versa.
+      // If noexcept is supported, change throw() to noexcept.
       //
-      if ( OPT_LANG_IS( noexcept ) ) {
-        if ( true_clear( &is_throw ) )
-          is_noexcept = true;
-      } else {
-        if ( true_clear( &is_noexcept ) )
-          is_throw = true;
-      }
+      if ( OPT_LANG_IS( noexcept ) && true_clear( &is_throw ) )
+        is_noexcept = true;
       FALLTHROUGH;
 
     case K_APPLE_BLOCK:
