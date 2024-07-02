@@ -1,5 +1,15 @@
 2024-07-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * cli_options-error.test: Eliminated "exit 1".
+   * run_test.sh, show.test: Now setting CDECL_TEST in run_test.sh.
+   * share/man/man1/cdecl.1, cli_options.c: If cdecl is testing, will not read
+     any config file by default.
+   * cli_options.c: Added LCOV_EXCL_LINE.
+   * cli_options-error.out, cli_options-error.test: Updated.
+   * util.c: s/_Exit()/exit()/ so fatal_error() is counted in coverage -- don't
+     recall why _Exit() in the first place.
+   * lcovrc, test/Makefile.am: Removed tests that compared output of strerror()
+     since it could vary by OS.
    * c_typedef.c, debug.out: Now setting print_params.config_path = __FILE__
      during predefining types.
    * infer-command.out, infer-command.test: Another cdecl_command.c coverage
