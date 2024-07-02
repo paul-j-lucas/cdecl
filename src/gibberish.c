@@ -698,18 +698,6 @@ static void c_ast_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   assert( ast != NULL );
   assert( gib != NULL );
 
-  if ( (gib->gib_flags & C_GIB_PRINT_CAST) != 0 ) {
-    //
-    // When printing a cast, the cast itself and the AST's name (the thing
-    // that's being cast) is printed in c_ast_gibberish_impl(), so we mustn't
-    // print it here and print only the type T:
-    //
-    //      (T)name
-    //      static_cast<T>(name)
-    //
-    return;
-  }
-
   if ( (gib->gib_flags & C_GIB_USING) != 0 ) {
     //
     // If we're printing a type as a "using" declaration, we have to skip

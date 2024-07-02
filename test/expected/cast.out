@@ -1,3 +1,5 @@
+cdecl> typedef int Int
+cdecl> 
 cdecl> cast b into block (x as int, y as int) returning double
 (double(^)(int, int))b
 cdecl> cast into array of constant pointer to constant character
@@ -70,6 +72,8 @@ cdecl> cast x into unsigned int
 (unsigned)x
 cdecl> cast x into unsigned long long
 (unsigned long long)x
+cdecl> cast x into Int
+(Int)x
 cdecl> 
 cdecl> set knr
 cdecl> cast p into pointer to function (x) returning int
@@ -78,7 +82,7 @@ cdecl>
 cdecl> set c17
 cdecl> cast p into pointer to function (x) returning int
                                         ^
-44,34: warning: missing type specifier; "int" assumed
+47,34: warning: missing type specifier; "int" assumed
 (int(*)(int))p
 cdecl> 
 cdecl> set c++
@@ -104,3 +108,5 @@ c++decl> static cast S::x into int
 static_cast<int>(S::x)
 c++decl> static cast x into int
 static_cast<int>(x)
+c++decl> static cast x into Int
+static_cast<Int>(x)

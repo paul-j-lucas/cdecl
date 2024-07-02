@@ -1,5 +1,7 @@
 EXPECTED_EXIT=0
 cdecl -bEL$LINENO <<END
+typedef int Int
+
 cast b into block (x as int, y as int) returning double
 cast into array of constant pointer to constant character
 cast p into const pointer to array 3 of const pointer to array 5 of int
@@ -36,6 +38,7 @@ cast x into unsigned
 cast x into unsigned char
 cast x into unsigned int
 cast x into unsigned long long
+cast x into Int
 
 set knr
 cast p into pointer to function (x) returning int
@@ -55,4 +58,5 @@ reinterpret cast S::x into pointer to void
 reinterpret cast x into pointer to void
 static cast S::x into int
 static cast x into int
+static cast x into Int
 END
