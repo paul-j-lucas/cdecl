@@ -494,6 +494,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         if ( *SKIP_WS( optarg ) == '\0' )
           goto missing_arg;
         opt_config_path = optarg;
+        if ( cdecl_is_testing )
+          opt_read_conf = true;
         break;
       case COPT(DIGRAPHS):
         opt_graph = C_GRAPH_DI;
@@ -890,6 +892,14 @@ void cli_options_init( int *pargc, char const **pargv[const] ) {
   //
   opt_flex_debug = false;
 #endif /* ENABLE_FLEX_DEBUG */
+
+  if ( cdecl_is_testing ) {
+    //
+    // Don't read the cdeclrc by default since it'll interfere with testing.
+    //
+    opt_read_conf = false;
+  }
+
   parse_options( pargc, pargv );
   c_lang_set( opt_lang_id );
 }

@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 1, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 2, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -3089,13 +3089,26 @@ or
 case-insensitive),
 then
 .B cdecl
-will show constant values
+will (not) do the following to facilitate testing:
+.RS 6
+.IP \(bu 3
+Not read any
+.B cdeclrc
+file
+unless specified explicitly
+via either the
+.B \-\-config
+or
+.B \-c
+option.
+.IP \(bu
+Show constant values
 for the
 .B __DATE__
 and
 .B __TIME__
-macros
-to facilitate testing.
+macros.
+.RE
 .TP
 .B CDECLRC
 The full path to the user-specific configuration file
