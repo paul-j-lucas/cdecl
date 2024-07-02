@@ -2,6 +2,7 @@ EXPECTED_EXIT=0
 CDECL_TEST=1 cdecl -bEL$LINENO <<END
 typedef int Int
 
+show
 show all
 show all predefined
 show all predefined atomic* as typedef

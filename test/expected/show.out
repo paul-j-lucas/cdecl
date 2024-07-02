@@ -1,5 +1,7 @@
 cdecl> typedef int Int
 cdecl> 
+cdecl> show
+typedef int Int;
 cdecl> show all
 typedef WORD ATOM;
 typedef int BOOL;

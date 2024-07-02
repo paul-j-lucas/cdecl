@@ -3511,7 +3511,7 @@ show_command
   | Y_show show_types_opt[show] glob_opt[name] show_format_opt[format]
     {
       bool const showed_any = show_types( $show, $name, $format, stdout );
-      if ( !showed_any ) {
+      if ( $name != NULL && !showed_any ) {
         print_error( &@name, "\"%s\": no such type or macro defined", $name );
         print_suggestions( DYM_C_MACROS | DYM_C_TYPES, $name );
         EPUTC( '\n' );
