@@ -193,6 +193,12 @@ EXPECTED_DIR=$srcdir/expected
 DIFF_FILE=/tmp/cdecl_diff_$$_
 
 ##
+# Ensure cdecl knows it's being tested.
+##
+CDECL_TEST=true
+export CDECL_TEST
+
+##
 # Must fix the number of terminal columns at 80 overriding the actual TERM
 # number of columns so that columns-dependent tests pass.
 ##

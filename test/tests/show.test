@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-CDECL_TEST=1 cdecl -bEL$LINENO <<END
+cdecl -bEL$LINENO <<END
 typedef int Int
 
 show
