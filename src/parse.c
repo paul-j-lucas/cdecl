@@ -240,7 +240,7 @@ int cdecl_parse_cli( size_t cli_count, char const *const cli_value[const] ) {
   }
   else {
     //
-    // Is the program name itself a command, i.e., cast, declare, or explain?
+    // Is the program name itself a command, i.e., explain?
     //
     find_what = me;
     found_command = cdecl_command_find( find_what );
