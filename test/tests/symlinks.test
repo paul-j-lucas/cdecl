@@ -1,0 +1,3 @@
+EXPECTED_EXIT=0
+c++decl -bE set
+explain -be int x
