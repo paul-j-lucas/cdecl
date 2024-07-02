@@ -1,5 +1,12 @@
 2024-07-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl_command.c, infer-command.out, infer-command.test: When
+     `infer-command` mode is set, spelling out `constant` now works correctly.
+   * parser.y: Added LCOV_EXCL_LINE.
+   * gnu_attributes.out, gnu_attributes.test: Another attribute test.
+   * ntu-error.out, ntu-error.test: Another test.
+   * define.out, define.test: Another test.
+   * parser.y, show.out, show.test: Fixed "show" command with a NULL glob.
    * share/man/man1/cdecl.1, cdecl_command.c, cdecl_command.h: Dropped support
      for `cast` & `declare` as the command name.
    * test/Makefile.am, symlinks.out, symlinks.test: Added symlinked executable
