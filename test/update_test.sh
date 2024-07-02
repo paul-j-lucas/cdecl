@@ -81,7 +81,8 @@ DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
 ACTUAL_OUTPUT=/tmp/cdecl_test_output_$$_
 
-trap "x=$?; rm -f /tmp/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
+[ -n "$TMPDIR" ] || TMPDIR=/tmp
+trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
 ########## Update tests #######################################################
 

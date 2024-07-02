@@ -210,7 +210,8 @@ export COLUMNS
 ##
 PATH=$BUILD_SRC:$PATH
 
-trap "x=$?; rm -f /tmp/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
+[ -n "$TMPDIR" ] || TMPDIR=/tmp
+trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
 ##
 # Disable core dumps so we won't fill up the disk with them if a bunch of tests
