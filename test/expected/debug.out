@@ -11115,7 +11115,7 @@ NAME2(x, 42) => x42
   ]
 }
 c++decl> 
-c++decl> #define NO_PARAM()                "x"
+c++decl> #define NO_PARAM()                42
 {
   rule: {
     lhs: "p_define",
@@ -11125,14 +11125,14 @@ c++decl> #define NO_PARAM()                "x"
   p_paren_param_list_opt: [],
   p_replace_list_opt: [
     { kind: " ", loc: { first_line: 68, first_column: 18, last_column: 33 } },
-    { kind: "str_lit", string: "x", loc: { first_line: 68, first_column: 34, last_column: 36 } }
+    { kind: "num_lit", string: "42", loc: { first_line: 68, first_column: 34, last_column: 35 } }
   ],
   macro: {
     name: "NO_PARAM",
     is_dynamic: false,
     param_list: [],
     replace_list: [
-      { kind: "str_lit", string: "x", loc: { first_line: 68, first_column: 34, last_column: 36 } }
+      { kind: "num_lit", string: "42", loc: { first_line: 68, first_column: 34, last_column: 35 } }
     ]
   }
 }
@@ -11147,11 +11147,144 @@ c++decl> expand NO_PARAM()
   arg_list: []
 }
 
-NO_PARAM() => "x"
+NO_PARAM() => 42
 {
   macro: "NO_PARAM",
   arg_list: [],
   token_list: [
-    { kind: "str_lit", string: "x", loc: { first_line: 69, first_column: 14, last_column: 16 } }
+    { kind: "num_lit", string: "42", loc: { first_line: 69, first_column: 14, last_column: 15 } }
   ]
 }
+c++decl> 
+c++decl> #define QUOTE(X)                  # X
+{
+  rule: {
+    lhs: "p_param_list",
+    rhs: "p_param"
+  },
+  p_param: "X",
+  $$_list: [
+    { name: "X", loc: { first_line: 71, first_column: 14 } }
+  ]
+}
+
+{
+  rule: {
+    lhs: "p_define",
+    rhs: "#define NAME p_paren_param_list_opt p_replace_list_opt"
+  },
+  name: "QUOTE",
+  p_paren_param_list_opt: [
+    { name: "X", loc: { first_line: 71, first_column: 14 } }
+  ],
+  p_replace_list_opt: [
+    { kind: " ", loc: { first_line: 71, first_column: 16, last_column: 33 } },
+    { kind: "#", loc: { first_line: 71, first_column: 34 } },
+    { kind: " ", loc: { first_line: 71, first_column: 35 } },
+    { kind: "identifier", string: "X", loc: { first_line: 71, first_column: 36 } }
+  ],
+  macro: {
+    name: "QUOTE",
+    is_dynamic: false,
+    param_list: [
+      { name: "X", loc: { first_line: 71, first_column: 14 } }
+    ],
+    replace_list: [
+      { kind: "#", loc: { first_line: 71, first_column: 34 } },
+      { kind: " ", loc: { first_line: 71, first_column: 35 } },
+      { kind: "identifier", string: "X", loc: { first_line: 71, first_column: 36 } }
+    ]
+  }
+}
+
+c++decl> #define CHAR_LIT                  'x'
+{
+  rule: {
+    lhs: "p_define",
+    rhs: "#define NAME p_paren_param_list_opt p_replace_list_opt"
+  },
+  name: "CHAR_LIT",
+  p_replace_list_opt: [
+    { kind: " ", loc: { first_line: 72, first_column: 16, last_column: 33 } },
+    { kind: "char_lit", string: "x", loc: { first_line: 72, first_column: 34, last_column: 36 } }
+  ],
+  macro: {
+    name: "CHAR_LIT",
+    is_dynamic: false,
+    replace_list: [
+      { kind: "char_lit", string: "x", loc: { first_line: 72, first_column: 34, last_column: 36 } }
+    ]
+  }
+}
+
+c++decl> #define STR_LIT                   "x"
+{
+  rule: {
+    lhs: "p_define",
+    rhs: "#define NAME p_paren_param_list_opt p_replace_list_opt"
+  },
+  name: "STR_LIT",
+  p_replace_list_opt: [
+    { kind: " ", loc: { first_line: 73, first_column: 15, last_column: 33 } },
+    { kind: "str_lit", string: "x", loc: { first_line: 73, first_column: 34, last_column: 36 } }
+  ],
+  macro: {
+    name: "STR_LIT",
+    is_dynamic: false,
+    replace_list: [
+      { kind: "str_lit", string: "x", loc: { first_line: 73, first_column: 34, last_column: 36 } }
+    ]
+  }
+}
+
+c++decl> #define VA(...)                   X __VA_OPT__(,) __VA_ARGS__
+{
+  rule: {
+    lhs: "p_param_list",
+    rhs: "p_param"
+  },
+  p_param: "...",
+  $$_list: [
+    { name: "...", loc: { first_line: 74, first_column: 11, last_column: 13 } }
+  ]
+}
+
+{
+  rule: {
+    lhs: "p_define",
+    rhs: "#define NAME p_paren_param_list_opt p_replace_list_opt"
+  },
+  name: "VA",
+  p_paren_param_list_opt: [
+    { name: "...", loc: { first_line: 74, first_column: 11, last_column: 13 } }
+  ],
+  p_replace_list_opt: [
+    { kind: " ", loc: { first_line: 74, first_column: 15, last_column: 33 } },
+    { kind: "identifier", string: "X", loc: { first_line: 74, first_column: 34 } },
+    { kind: " ", loc: { first_line: 74, first_column: 35 } },
+    { kind: "__VA_OPT__", loc: { first_line: 74, first_column: 36, last_column: 45 } },
+    { kind: "punctuator", string: "(", loc: { first_line: 74, first_column: 46 } },
+    { kind: "punctuator", string: ",", loc: { first_line: 74, first_column: 47 } },
+    { kind: "punctuator", string: ")", loc: { first_line: 74, first_column: 48 } },
+    { kind: " ", loc: { first_line: 74, first_column: 49 } },
+    { kind: "__VA_ARGS__", loc: { first_line: 74, first_column: 50, last_column: 60 } }
+  ],
+  macro: {
+    name: "VA",
+    is_dynamic: false,
+    param_list: [
+      { name: "...", loc: { first_line: 74, first_column: 11, last_column: 13 } }
+    ],
+    replace_list: [
+      { kind: "identifier", string: "X", loc: { first_line: 74, first_column: 34 } },
+      { kind: " ", loc: { first_line: 74, first_column: 35 } },
+      { kind: "__VA_OPT__", loc: { first_line: 74, first_column: 36, last_column: 45 } },
+      { kind: "punctuator", string: "(", loc: { first_line: 74, first_column: 46 } },
+      { kind: "punctuator", string: ",", loc: { first_line: 74, first_column: 47 } },
+      { kind: "punctuator", string: ")", loc: { first_line: 74, first_column: 48 } },
+      { kind: " ", loc: { first_line: 74, first_column: 49 } },
+      { kind: "__VA_ARGS__", loc: { first_line: 74, first_column: 50, last_column: 60 } }
+    ]
+  }
+}
+

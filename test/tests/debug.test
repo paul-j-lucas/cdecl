@@ -67,8 +67,13 @@ explain int x
 #define NAME2(A,B)                NAME2_HELPER(A,B)
 expand NAME2(x, __LINE__)
 
-#define NO_PARAM()                "x"
+#define NO_PARAM()                42
 expand NO_PARAM()
+
+#define QUOTE(X)                  # X
+#define CHAR_LIT                  'x'
+#define STR_LIT                   "x"
+#define VA(...)                   X __VA_OPT__(,) __VA_ARGS__
 END
 
 # vim:set syntax=sh et sw=2 ts=2:
