@@ -687,7 +687,7 @@ static void c_ast_list_gibberish( c_ast_list_t const *ast_list,
 
 /**
  * Prints either the full or local name of \a ast based on whether we're
- * emitting the gibberish for a `typedef` since it can't have a scoped name.
+ * emitting the gibberish for nested scope.
  *
  * @param ast The AST to get the name of.
  * @param gib The gib_state to use.
@@ -697,26 +697,6 @@ static void c_ast_list_gibberish( c_ast_list_t const *ast_list,
 static void c_ast_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   assert( ast != NULL );
   assert( gib != NULL );
-
-  if ( (gib->gib_flags & C_GIB_USING) != 0 ) {
-    //
-    // If we're printing a type as a "using" declaration, we have to skip
-    // printing the type name since it's already been printed immediately after
-    // the "using".  For example, the type:
-    //
-    //      typedef int (*PF)(char c);
-    //
-    // when printed as a "using":
-    //
-    //      using PF = int(*)(char c);
-    //
-    // had the "using PF =" part already printed in c_typedef_gibberish(), so
-    // we don't print it again after the '*'; but we still need to print all
-    // subsequent names, if any.  Hence, reset the flag and print nothing.
-    //
-    gib->printed_space = true;
-    return;
-  }
 
   FPUTS(
     //
