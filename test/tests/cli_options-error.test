@@ -1,7 +1,7 @@
 EXPECTED_EXIT=64
 
 test_cdecl() {
-  echo | cdecl $* && exit 1
+  echo | cdecl $*
 }
 
 test_cdecl --color
