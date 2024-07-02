@@ -145,7 +145,7 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
         goto error;
       goto done;
     }
-    if ( strncmp( end, "::", 2 ) != 0 )
+    if ( STRNCMPLIT( end, "::" ) != 0 )
       break;
     s = end + 2;
     SKIP_WS( s );

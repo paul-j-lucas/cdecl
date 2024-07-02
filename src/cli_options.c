@@ -697,7 +697,7 @@ invalid_opt:
   NO_OP;
   // Determine whether the invalid option was short or long.
   char const *invalid_opt = (*pargv)[ optind - 1 ];
-  if ( invalid_opt != NULL && strncmp( invalid_opt, "--", 2 ) == 0 ) {
+  if ( invalid_opt != NULL && STRNCMPLIT( invalid_opt, "--" ) == 0 ) {
     invalid_opt += 2;                   // skip over "--"
     EPRINTF( "%s: \"%s\": invalid option", me, invalid_opt );
     if ( !print_suggestions( DYM_CLI_OPTIONS, invalid_opt ) )

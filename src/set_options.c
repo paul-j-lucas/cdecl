@@ -795,7 +795,7 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   assert( opt_value == NULL || opt_value_loc != NULL );
 
   char const *const orig_name = opt_name;
-  bool const is_no = strncmp( opt_name, "no", 2 ) == 0;
+  bool const is_no = STRNCMPLIT( opt_name, "no" ) == 0;
   if ( is_no )
     opt_name += 2/*no*/;
   size_t const opt_name_len = strlen( opt_name );

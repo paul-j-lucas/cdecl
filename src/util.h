@@ -958,6 +958,16 @@ _GL_INLINE_HEADER_BEGIN
   (ARRAY_SIZE(S) - STATIC_ASSERT_EXPR( IS_C_STR(S), #S " must be a C string literal" ))
 
 /**
+ * Calls **strncmp**(3) with #STRLITLEN(\a LIT) for the third argument.
+ *
+ * @param S The string to compare.
+ * @param LIT The string literal to compare against.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a S is
+ * less than, equal to, or greater than \a LIT, respectively.
+ */
+#define STRNCMPLIT(S,LIT)         strncmp( (S), (LIT), STRLITLEN( (LIT) ) )
+
+/**
  * The return value from check_strtoull() indicating an error.
  */
 #define STRTOULL_ERROR            STATIC_CAST( unsigned long long, -1 )

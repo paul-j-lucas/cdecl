@@ -136,7 +136,7 @@ cdecl_command_t const* cdecl_command_find( char const *s ) {
     //      const int *p                            // Implies explain.
     //      const cast p into pointer to int        // Does NOT imply explain.
     //
-    if ( strncmp( s, "constant", STRLITLEN( "constant" ) ) == 0 ) {
+    if ( STRNCMPLIT( s, "constant" ) == 0 ) {
       //
       // An even more special case has to be made for "constant cast":
       //
