@@ -481,15 +481,17 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   switch ( rv_we ) {
     case 0:                             // success
       if ( we.we_wordc != 1 ) {
-        print_error( path_loc, "%s: too many files\n", path );
+        print_error( path_loc, "\"%s\": too many files\n", path );
         goto done;
       }
       break;
     case WRDE_BADCHAR:
-      print_error( path_loc, "%s: contains unquoted shell characters\n", path );
+      print_error( path_loc,
+        "\"%s\": contains unquoted shell characters\n", path
+      );
       return;
     case WRDE_SYNTAX:
-      print_error( path_loc, "%s: path syntax error\n", path );
+      print_error( path_loc, "\"%s\": path syntax error\n", path );
       return;
     // LCOV_EXCL_START
     case WRDE_NOSPACE:                  // unlikely
