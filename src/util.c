@@ -356,7 +356,7 @@ uint32_t ls_bit1_32( uint32_t n ) {
         return b;
     } // for
   }
-  return 0;
+  return 0;                             // LCOV_EXCL_LINE
 }
 
 uint32_t ms_bit1_32( uint32_t n ) {
@@ -366,7 +366,7 @@ uint32_t ms_bit1_32( uint32_t n ) {
         return b;
     } // for
   }
-  return 0;
+  return 0;                             // LCOV_EXCL_LINE
 }
 
 char const* parse_identifier( char const *s ) {
