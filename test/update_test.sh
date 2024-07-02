@@ -67,6 +67,12 @@ shift `expr $OPTIND - 1`
 [ "$srcdir" ] || srcdir="."
 
 ##
+# Ensure cdecl knows it's being tested.
+##
+CDECL_TEST=true
+export CDECL_TEST
+
+##
 # Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
 ##
 PATH=$BUILD_SRC:$PATH
