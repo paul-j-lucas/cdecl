@@ -1642,7 +1642,7 @@ PJL_DISCARD
 char* str_realloc_cat( char *dst, char const *sep, char const *src );
 
 /**
- * Prepends \a src to \a dst.
+ * Prepends \a src and \a sep to \a dst.
  *
  * @param src The string to prepend.
  * @param sep The string to prepend to \a dst before prepending \a src.
