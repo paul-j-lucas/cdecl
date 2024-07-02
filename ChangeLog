@@ -1,5 +1,24 @@
+2024-07-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, debug.out: Now setting print_params.config_path = __FILE__
+     during predefining types.
+   * infer-command.out, infer-command.test: Another cdecl_command.c coverage
+     test.
+   * c_sname.c, cdecl_command.c, cli_options.c, set_options.c, util.h: Added
+     STRNCMPLIT().
+   * lexer.l: More coverage exclusions.
+   * test/Makefile.am, include-recursive.cdeclrc, include-recursive.out,
+     include-recursive.test: Added recursive include file test.
+   * lexer.l: Added missing call to newline().
+   * lexer.l, include-too_many_files.out, include-unquoted.out: Put quotes
+     around paths, part 2.
+   * lexer.l: Better handling of "q x."
+   * src/Makefile.am: Dropped support for `cast` & `declare` as the command
+     name, part 2.
+
 2024-07-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l, include-err-01.out: Put quotes around paths.
    * cdecl_command.c, infer-command.out, infer-command.test: When
      `infer-command` mode is set, spelling out `constant` now works correctly.
    * parser.y: Added LCOV_EXCL_LINE.
