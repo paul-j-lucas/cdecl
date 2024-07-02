@@ -7,6 +7,9 @@ typedef register int SI
 typedef static int SI
 typedef typename int Int
 
+typedef int LI
+typedef long LI
+
 struct S { typedef int I; }
 
 typedef void Void
