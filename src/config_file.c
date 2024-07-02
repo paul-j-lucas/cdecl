@@ -54,6 +54,7 @@
 
 ////////// local functions ////////////////////////////////////////////////////
 
+// LCOV_EXCL_START
 /**
  * Gets the full path of the user's home directory.
  *
@@ -76,6 +77,7 @@ static char const* home_dir( void ) {
 
   return home;
 }
+// LCOV_EXCL_STOP
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -90,12 +92,14 @@ void config_init( void ) {
   strbuf_init( &sbuf );
 
   if ( config_path == NULL ) {
+    // LCOV_EXCL_START
     char const *const home = home_dir();
     if ( home != NULL ) {
       strbuf_puts( &sbuf, home );
       strbuf_paths( &sbuf, CONF_FILE_NAME_DEFAULT );
       config_path = sbuf.str;
     }
+    // LCOV_EXCL_STOP
   }
 
   int parse_rv = EX_OK;
