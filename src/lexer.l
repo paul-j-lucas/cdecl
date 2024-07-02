@@ -551,6 +551,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
   print_params.config_path = check_strdup( we.we_wordv[0] );
   yylineno = 1;
+  newline();
 
 done:
   FREE( real_path );
