@@ -1,5 +1,16 @@
 2024-07-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * share/man/man1/cdecl.1, cdecl_command.c, cdecl_command.h: Dropped support
+     for `cast` & `declare` as the command name.
+   * test/Makefile.am, symlinks.out, symlinks.test: Added symlinked executable
+     tests.
+   * src/Makefile.am: Now creating cast, declare, & explain symlinks in src.
+   * parse.c: Added LCOV_EXCL_LINE.
+   * config-error.test: Added config-error.test again??
+   * test/Makefile.am, config-error.out: Another test.
+   * test/Makefile.am, file-error.out, file-error.test: Test consolidation.
+   * test/Makefile.am, file.out, file.test: Test consolidation.
+   * p_token.c, parse.c: Added LCOV_EXCL_LINE.
    * debug.out, debug.test: More tests.
    * debug.out, debug.test: More preprocessor debug tests.
    * dump.c, dump.h, parser.y: Eliminated str_list_dump() -- never called.
