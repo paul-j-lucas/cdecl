@@ -4,36 +4,64 @@ test_cdecl() {
   echo | cdecl $* && exit 1
 }
 
+test_cdecl --color
+test_cdecl -k
+test_cdecl --color=X
+test_cdecl -kX
+
+test_cdecl --config
+test_cdecl -c
+
 test_cdecl --digraphs --trigraphs
 test_cdecl -23
 test_cdecl -9
 
-test_cdecl --color
-test_cdecl -k
-test_cdecl --color=xxx
-test_cdecl -kxxx
-test_cdecl --kolor
+test_cdecl --debug=X
+test_cdecl -dX
+
+test_cdecl --explicit-ecsu
+test_cdecl -S
+test_cdecl --explicit-ecsu=X
+test_cdecl -SX
+
+test_cdecl --explicit-int
+test_cdecl -i
+test_cdecl --explicit-int=X
+test_cdecl -iX
+
+test_cdecl --file
+test_cdecl -f
 
 test_cdecl --lineno
 test_cdecl -L
 test_cdecl --lineno=0
 test_cdecl -L0
+test_cdecl --lineno=X
+test_cdecl -LX
 
-test_cdecl --explicit-ecsu
-test_cdecl -S
-test_cdecl --explicit-ecsu=x
-test_cdecl -Sx
-
-test_cdecl --explicit-int
-test_cdecl -i
-test_cdecl --explicit-int=x
-test_cdecl -ix
-
+test_cdecl --help X
+test_cdecl -h X
+test_cdecl --help=X
+test_cdecl -hX
+test_cdecl --help --version
 test_cdecl -hv
 
-test_cdecl --lang=x
-test_cdecl -xx
+test_cdecl --lang
+test_cdecl -X
+test_cdecl --lang=X
+test_cdecl -xX
 
-test_cdecl -v help
+test_cdecl --output
+test_cdecl -xo
+
+test_cdecl --west-decl
+test_cdecl -w
+test_cdecl --west-decl=X
+test_cdecl -wX
+
+test_cdecl --version X
+test_cdecl -v X
+test_cdecl --version=X
+test_cdecl -vX
 
 # vim:set syntax=sh et sw=2 ts=2:
