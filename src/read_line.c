@@ -104,8 +104,8 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
 #endif /* WITH_READLINE */
 
     if ( is_interactive ) {
-      // LCOV_EXCL_START -- tests are not interactive
 #ifdef WITH_READLINE
+      // LCOV_EXCL_START -- tests are not interactive
       readline_init( fin, stdout );
       // Note: readline() does NOT include the '\n'.
       readline_line = readline( prompts[ is_cont_line ] );
