@@ -358,7 +358,7 @@ void c_sname_list_cleanup( slist_t *list ) {
 
 char const* c_sname_local_name( c_sname_t const *sname ) {
   if ( sname != NULL ) {
-    c_scope_data_t const *const local_data = slist_back( sname );
+    c_scope_data_t const *const local_data = c_sname_local_data( sname );
     if ( local_data != NULL )
       return local_data->name;
   }
