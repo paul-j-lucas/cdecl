@@ -302,8 +302,6 @@ NODISCARD
 static bool             mex_check( mex_state_t *mex ),
                         mex_check_concat( mex_state_t*,
                                           p_token_node_t const* ),
-                        mex_check_identifier( mex_state_t*,
-                                              p_token_node_t const* ),
                         mex_check_stringify( mex_state_t*,
                                              p_token_node_t const* ),
                         mex_check___VA_ARGS__( mex_state_t*,
@@ -314,6 +312,8 @@ static bool             mex_check( mex_state_t *mex ),
                                             mex_expand_all_fn_t
                                               const[static 1] );
 
+static void             mex_check_identifier( mex_state_t*,
+                                              p_token_node_t const* );
 static void             mex_cleanup( mex_state_t* );
 
 NODISCARD
@@ -761,8 +761,7 @@ static bool mex_check( mex_state_t *mex ) {
           return false;
         break;
       case P_IDENTIFIER:
-        if ( !mex_check_identifier( mex, token_node ) )
-          return false;
+        mex_check_identifier( mex, token_node );
         break;
       case P_STRINGIFY:
         if ( !mex_check_stringify( mex, token_node ) )
@@ -833,14 +832,12 @@ static bool mex_check_concat( mex_state_t *mex,
 }
 
 /**
- * Checks a #P_IDENTIFIER macro for syntactic & semantic errors.
+ * Checks a #P_IDENTIFIER macro for semantic warnings.
  *
  * @param mex The mex_state to use.
  * @param token_node The node pointing to the #P_IDENTIFIER token.
- * @return Returns `true` only if all checks passed.
  */
-NODISCARD
-static bool mex_check_identifier( mex_state_t *mex,
+static void mex_check_identifier( mex_state_t *mex,
                                   p_token_node_t const *token_node ) {
   assert( mex != NULL );
   assert( token_node != NULL );
@@ -848,12 +845,12 @@ static bool mex_check_identifier( mex_state_t *mex,
   assert( identifier_token->kind == P_IDENTIFIER );
 
   if ( identifier_token->ident.ineligible )
-    return true;
+    return;
 
   p_macro_t const *const found_macro =
     p_macro_find( identifier_token->ident.name );
   if ( found_macro == NULL )            // identifier is not a macro
-    return true;
+    return;
 
   if ( found_macro->is_dynamic ) {
     c_lang_id_t const lang_ids = (*found_macro->dyn_fn)( /*ptoken=*/NULL );
@@ -889,11 +886,11 @@ static bool mex_check_identifier( mex_state_t *mex,
         );
       }
     }
-    return true;
+    return;
   }
 
   if ( !p_macro_is_func_like( found_macro ) )
-    return true;
+    return;
 
   token_node = p_token_node_not( token_node->next, P_ANY_TRANSPARENT );
   if ( token_node == NULL && mex->param_node != NULL ) {
@@ -925,14 +922,14 @@ static bool mex_check_identifier( mex_state_t *mex,
         // "##" doesn't expand macro arguments so the fact that the macro isn't
         // followed by '(' is irrelevant.
         //
-        return true;
+        return;
 
       case P_IDENTIFIER:
         if ( p_macro_find( next_token->ident.name ) != NULL ) {
           //
           // The macro could expand into tokens starting with '('.
           //
-          return true;
+          return;
         }
 
         if ( p_macro_find_param( mex->macro,
@@ -941,7 +938,7 @@ static bool mex_check_identifier( mex_state_t *mex,
           // The parent's macro parameter could expand into tokens starting
           // with '('.
           //
-          return true;
+          return;
         }
         break;
 
@@ -954,7 +951,7 @@ static bool mex_check_identifier( mex_state_t *mex,
 
       case P_PUNCTUATOR:
         if ( p_punct_token_is_char( next_token, '(' ) )
-          return true;
+          return;
         break;
 
       case P_PLACEMARKER:
@@ -967,7 +964,7 @@ static bool mex_check_identifier( mex_state_t *mex,
         // Either __VA_ARGS__ or __VA_OPT__ could expand into tokens starting
         // with '('.
         //
-        return true;
+        return;
     } // switch
   }
 
@@ -986,7 +983,7 @@ static bool mex_check_identifier( mex_state_t *mex,
   }
 
   if ( !rbi_rv.inserted )
-    return true;
+    return;
 
   //
   // Now that we know the macro has been inserted, replace the static key used
@@ -999,8 +996,6 @@ static bool mex_check_identifier( mex_state_t *mex,
     "\"%s\": function-like macro without arguments will not expand\n",
     identifier_token->ident.name
   );
-
-  return true;
 }
 
 /**
