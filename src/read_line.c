@@ -53,6 +53,37 @@
 
 /// @endcond
 
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Checks whether \a s is a "continued line," that is a line that ends with a
+ * `\` or `??/` (the trigraph sequence for `\`).
+ *
+ * @param s The string to check.
+ * @param ps_len A pointer to the length of \a s.  If \a s is a continued line,
+ * this is decremented by the number of characters comprising the continuation
+ * sequence.
+ * @return Returns `true` only if \a s is a continued line.
+ */
+NODISCARD
+static bool is_continued_line( char const *s, size_t *ps_len ) {
+  assert( s != NULL );
+  assert( ps_len != NULL );
+
+  if ( *ps_len >= 0 ) {
+    if ( s[ *ps_len - 1 ] == '\\' ) {
+      --*ps_len;
+      return true;
+    }
+    if ( *ps_len >= 3 && STRNCMPLIT( s + *ps_len - 3, "?\?/" ) == 0 ) {
+      *ps_len -= 3;
+      return true;
+    }
+  }
+
+  return false;
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
@@ -110,12 +141,9 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
       return false;
     }
 
-    is_cont_line = line_len >= 1 && line[ line_len - 1 ] == '\\';
-    if ( is_cont_line ) {
-      --line_len;                       // eat '\'
-      if ( line_no != NULL )
-        ++*line_no;
-    }
+    is_cont_line = is_continued_line( line, &line_len );
+    if ( is_cont_line && line_no != NULL )
+      ++*line_no;
 
     strbuf_putsn( sbuf, line, line_len );
 #ifdef WITH_READLINE

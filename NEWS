@@ -52,6 +52,9 @@ are still sematically illegal to give better error messages.
 ** Digraph & trigraph preprocessor support
 Digraphs & trigraphs are now supported by the preprocessor:
 
+    #define   ML ??/
+      multiline
+
     %:define  QD(X)  %:X          // same as: #define QD(X) #X
     ??=define QT(X)  ??=X         // same as: #define QT(X) #X
 
