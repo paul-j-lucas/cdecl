@@ -85,10 +85,6 @@ TESTS+=	tests/explain_udl.test \
 TESTS+=	tests/ntu.test \
 	tests/ntu-error.test
 
-# Show tests
-TESTS+=	tests/show.test \
-	tests/show-error.test
-
 # Config file tests
 TESTS+=	tests/config.test \
 	tests/config-error.test
@@ -97,16 +93,20 @@ TESTS+=	tests/config.test \
 TESTS+=	tests/file.test \
 	tests/file-error.test
 
-# include tests
+# Include tests
 TESTS+= tests/include-ok-nested-01.test \
 	tests/include-ok.test
 
-# include error tests
+# Include error tests
 TESTS+=	tests/include-empty_path.test \
 	tests/include-err-01.test \
 	tests/include-recursive.test \
 	tests/include-too_many_files.test \
 	tests/include-unquoted.test
+
+# Show tests
+TESTS+=	tests/show.test \
+	tests/show-error.test
 
 # Embedded C tests
 TESTS+=	tests/emc.test \
