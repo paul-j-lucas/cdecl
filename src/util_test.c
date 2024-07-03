@@ -99,20 +99,6 @@ static bool test_str_is_prefix( void ) {
   TEST_FN_END();
 }
 
-static bool test_str_realloc_pcat( void ) {
-  TEST_FN_BEGIN();
-
-  char *s = MALLOC( char, STRLITLEN( "FGHI" ) + 1 );
-  strcpy( s, "FGHI" );
-  s = str_realloc_pcat( "AB", "CDE", s );
-  if ( TEST( s != NULL ) ) {
-    TEST( strcmp( s, "ABCDEFGHI" ) == 0 );
-  }
-  free( s );
-
-  TEST_FN_END();
-}
-
 static bool test_strnspn( void ) {
   TEST_FN_BEGIN();
 
@@ -138,6 +124,20 @@ static bool test_strnspn( void ) {
   TEST_FN_END();
 }
 
+static bool test_str_realloc_pcat( void ) {
+  TEST_FN_BEGIN();
+
+  char *s = MALLOC( char, STRLITLEN( "FGHI" ) + 1 );
+  strcpy( s, "FGHI" );
+  s = str_realloc_pcat( "AB", "CDE", s );
+  if ( TEST( s != NULL ) ) {
+    TEST( strcmp( s, "ABCDEFGHI" ) == 0 );
+  }
+  free( s );
+
+  TEST_FN_END();
+}
+
 // LCOV_EXCL_START
 _Noreturn
 static void usage( void ) {
@@ -158,8 +158,8 @@ int main( int argc, char const *argv[const] ) {
   test_parse_identifier();
   test_strdup_tolower();
   test_str_is_prefix();
-  test_str_realloc_pcat();
   test_strnspn();
+  test_str_realloc_pcat();
 
   printf( "%u failures\n", test_failures );
   exit( test_failures > 0 ? EX_SOFTWARE : EX_OK );
