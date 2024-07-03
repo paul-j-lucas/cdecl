@@ -1,5 +1,6 @@
 2024-07-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * util_test.c: Fixed test.
    * c_ast_check.c, c_sname.c, c_sname.h, p_macro.c, p_macro.h,
      explain-error.out, explain-error.test: Using a predefined macro name as an
      ordinary name now results in an error.
