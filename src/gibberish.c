@@ -1259,16 +1259,16 @@ static char const* graph_token_c( char const *token ) {
                         case ']': return "?\?(?\?)";
                         default : return "?\?(";
                       } // switch
+          case '\\' : return "?\?/";    // LCOV_EXCL_LINE
           case ']'  : return token[1] == ']' ? "?\?)?\?)" : "?\?)";
-          case '\\' : return "?\?/";
           case '^'  : return token[1] == '=' ? "?\?'=" : "?\?'";
           case '{'  : return "?\?<";
-          case '}'  : return "?\?>";
           case '|'  : switch ( token[1] ) {
                         case '=': return "?\?!=";
                         case '|': return "?\?!?\?!";
                         default : return "?\?!";
                       } // switch
+          case '}'  : return "?\?>";
           case '~'  : return "?\?-";
         } // switch
       }
