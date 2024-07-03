@@ -1195,9 +1195,6 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * Special case: if '[' is immediately followed by another '[',
                * return a distinct token to decrease the number of shift/reduce
                * conflicts.
-               *
-               * (This doesn't use | to have the actions fall through to
-               * eliminate a Flex warning with trailing context.)
                */
 "<:"/{S}*"<:"   { set_digraph( "[" );  return Y_ATTR_BEGIN; }
 "??("/{S}*"??(" { set_trigraph( "[" ); return Y_ATTR_BEGIN; }
