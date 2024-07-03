@@ -133,6 +133,7 @@ TESTS+=	tests/__declspec.test \
 	tests/infer-command.test \
 	tests/integers.test \
 	tests/lang.test \
+	tests/misc-error-65.test \
 	tests/prompt.test \
 	tests/semicolon.test \
 	tests/set.test \

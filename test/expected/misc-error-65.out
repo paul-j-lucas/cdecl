@@ -1,0 +1,3 @@
+cdecl> __DATE__
+       ^
+3,1: syntax error: "__DATE__": unexpected token ("__DATE__" is a macro)

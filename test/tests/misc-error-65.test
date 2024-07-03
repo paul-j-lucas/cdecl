@@ -1,0 +1,4 @@
+EXPECTED_EXIT=65
+cdecl -bEL$LINENO <<END
+__DATE__
+END
