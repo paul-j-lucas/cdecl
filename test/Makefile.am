@@ -109,12 +109,12 @@ TESTS+=	tests/include-empty_path.test \
 	tests/include-unquoted.test
 
 # Embedded C tests
-TESTS+=	tests/xec.test \
-	tests/xec-error.test
+TESTS+=	tests/emc.test \
+	tests/emc-error.test
 
 # Unified Parallel C tests
-TESTS+=	tests/xupc.test \
-	tests/xupc-error.test
+TESTS+=	tests/upc.test \
+	tests/upc-error.test
 
 # Miscellaneous tests
 TESTS+=	tests/__declspec.test \
