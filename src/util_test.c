@@ -104,8 +104,8 @@ static bool test_str_realloc_pcat( void ) {
 
   char *s = MALLOC( char, STRLITLEN( "FGHI" ) + 1 );
   strcpy( s, "FGHI" );
-
-  if ( TEST( str_realloc_pcat( "AB", "CDE", s ) != NULL ) ) {
+  s = str_realloc_pcat( "AB", "CDE", s );
+  if ( TEST( s != NULL ) ) {
     TEST( strcmp( s, "ABCDEFGHI" ) == 0 );
   }
   free( s );
