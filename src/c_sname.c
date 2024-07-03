@@ -323,10 +323,8 @@ void c_sname_fill_in_namespaces( c_sname_t *sname ) {
 
   FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
     c_type_t *const type = &c_scope_data( scope )->type;
-    if ( type->btids == TB_SCOPE || c_type_is_none( type ) ) {
-      type->btids &= c_tid_compl( TB_SCOPE );
-      type->btids |= TB_namespace;
-    }
+    if ( type->btids == TB_SCOPE || c_type_is_none( type ) )
+      type->btids = TB_namespace;
   } // for
 }
 
