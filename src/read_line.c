@@ -56,6 +56,33 @@
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Wrapper around **getline**(3).
+ *
+ * @param fin The file to read from.
+ * @param pline_len A pointer to receive the length of the line read.
+ * @return Returns the line read or NULL for EOF.
+ */
+NODISCARD
+static char const* getline_wrapper( FILE *fin, size_t *pline_len ) {
+  assert( fin != NULL );
+  assert( pline_len != NULL );
+
+  static char *line;
+  static size_t line_cap;
+
+  // Note: getline() DOES include the '\n'.
+  ssize_t const rv = getline( &line, &line_cap, fin );
+  if ( rv == -1 )
+    return NULL;
+
+  *pline_len = STATIC_CAST( size_t, rv );
+  // Chop off the newline so it's consistent with readline().
+  strn_rtrim( line, pline_len );
+
+  return line;
+}
+
+/**
  * Checks whether \a s is a "continued line," that is a line that ends with a
  * `\` or `??/` (the trigraph sequence for `\`).
  *
@@ -84,6 +111,36 @@ static bool is_continued_line( char const *s, size_t *ps_len ) {
   return false;
 }
 
+#ifdef WITH_READLINE
+// LCOV_EXCL_START -- tests are not interactive
+/**
+ * Wrapper around GNU **readline**(3).
+ *
+ * @param fin The file to read from.
+ * @param prompt The prompt to use.
+ * @param pline_len A pointer to receive the length of the line read.
+ * @return Returns the line read or NULL for EOF.
+ */
+NODISCARD
+static char const* readline_wrapper( FILE *fin, char const *prompt,
+                                     size_t *pline_len ) {
+  assert( fin != NULL );
+  assert( prompt != NULL );
+  assert( pline_len != NULL );
+
+  static char *line;
+  free( line );
+
+  readline_init( fin, stdout );
+  // Note: readline() does NOT include the '\n'.
+  line = readline( prompt );
+  if ( line != NULL )
+    *pline_len = strlen( line );
+  return line;
+}
+// LCOV_EXCL_STOP
+#endif /* WITH_READLINE */
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
@@ -96,24 +153,13 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
   bool is_cont_line = false;
 
   do {
-    bool got_line;
-    char *line = NULL;
-    size_t line_len = 0;
-#ifdef WITH_READLINE
-    char *readline_line = NULL;
-#endif /* WITH_READLINE */
+    char const *line;
+    size_t line_len;
 
     if ( is_interactive ) {
 #ifdef WITH_READLINE
       // LCOV_EXCL_START -- tests are not interactive
-      readline_init( fin, stdout );
-      // Note: readline() does NOT include the '\n'.
-      readline_line = readline( prompts[ is_cont_line ] );
-      got_line = readline_line != NULL;
-      if ( got_line ) {
-        line = readline_line;
-        line_len = strlen( line );
-      }
+      line = readline_wrapper( fin, prompts[ is_cont_line ], &line_len );
       // LCOV_EXCL_STOP
     }
     else
@@ -123,20 +169,10 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
     }
 #endif /* WITH_READLINE */
     {                                   // needed for "else" for WITH_READLINE
-      static char *getline_line;
-      static size_t getline_cap;
-      // Note: getline() DOES include the '\n'.
-      ssize_t const rv = getline( &getline_line, &getline_cap, fin );
-      got_line = rv != -1;
-      if ( got_line ) {
-        line = getline_line;
-        line_len = STATIC_CAST( size_t, rv );
-        // Chop off the newline so it's consistent with readline().
-        strn_rtrim( line, &line_len );
-      }
+      line = getline_wrapper( fin, &line_len );
     }
 
-    if ( !got_line ) {
+    if ( line == NULL ) {
       FERROR( fin );
       return false;
     }
@@ -146,9 +182,6 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
       ++*line_no;
 
     strbuf_putsn( sbuf, line, line_len );
-#ifdef WITH_READLINE
-    free( readline_line );
-#endif /* WITH_READLINE */
   } while ( is_cont_line );
 
   strbuf_putc( sbuf, '\n' );
