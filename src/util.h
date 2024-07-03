@@ -119,9 +119,9 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #FOREACH_ARRAY_ELEMENT()
  */
-#define ARRAY_SIZE(ARRAY) (         \
-  sizeof(ARRAY) / sizeof(0[ARRAY])  \
-  * STATIC_ASSERT_EXPR( IS_ARRAY(ARRAY), #ARRAY " must be an array" ))
+#define ARRAY_SIZE(ARRAY) (                 \
+  sizeof( (ARRAY) ) / sizeof(0[ (ARRAY )])  \
+  * STATIC_ASSERT_EXPR( IS_ARRAY( (ARRAY) ), #ARRAY " must be an array" ))
 
 #ifndef NDEBUG
 /**
@@ -387,8 +387,10 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #ARRAY_SIZE()
  * @sa #FOR_N_TIMES()
  */
-#define FOREACH_ARRAY_ELEMENT(TYPE,VAR,ARRAY) \
-  for ( TYPE const *VAR = (ARRAY); VAR < (ARRAY) + ARRAY_SIZE(ARRAY); ++VAR )
+#define FOREACH_ARRAY_ELEMENT(TYPE,VAR,ARRAY)   \
+  for ( TYPE const *VAR = (ARRAY);              \
+        VAR < (ARRAY) + ARRAY_SIZE( (ARRAY) );  \
+        ++VAR )
 
 /**
  * Convenience macro for iterating \a N times.
@@ -551,10 +553,10 @@ _GL_INLINE_HEADER_BEGIN
  * @sa https://stackoverflow.com/a/77881417/99089
  */
 #ifdef PJL_TYPEOF
-# define IS_ARRAY(A)            \
-    _Generic( &(A),             \
-      PJL_TYPEOF(*A) (*)[]: 1,  \
-      default             : 0   \
+# define IS_ARRAY(A)              \
+    _Generic( &(A),               \
+      PJL_TYPEOF(*(A)) (*)[]: 1,  \
+      default             : 0     \
     )
 #else
 # define IS_ARRAY(A)              1
@@ -724,7 +726,7 @@ _GL_INLINE_HEADER_BEGIN
 #define NONCONST_OVERLOAD(FN, PTR, ...) \
   STATIC_IF( IS_PTR_TO_CONST( (PTR) ),  \
     FN,                                 \
-    nonconst_ ## FN                     \
+    NAME2(nonconst_,FN)                 \
   )( (PTR) VA_OPT( (,), __VA_ARGS__ ) )
 
 /**
@@ -955,7 +957,8 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns said length.
  */
 #define STRLITLEN(S) \
-  (ARRAY_SIZE(S) - STATIC_ASSERT_EXPR( IS_C_STR(S), #S " must be a C string literal" ))
+  (ARRAY_SIZE( (S) ) \
+   - STATIC_ASSERT_EXPR( IS_C_STR( (S) ), #S " must be a C string literal" ))
 
 /**
  * Calls **strncmp**(3) with #STRLITLEN(\a LIT) for the third argument.
