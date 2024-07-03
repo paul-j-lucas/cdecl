@@ -1424,7 +1424,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
 
   c_sname_t const *sname = c_ast_find_name( tdef->ast, C_VISIT_DOWN );
   if ( sname != NULL && c_sname_count( sname ) > 1 ) {
-    scope_type = *c_sname_first_type( sname );
+    scope_type = *c_sname_global_type( sname );
     //
     // A type name can't be scoped in a typedef declaration, e.g.:
     //
@@ -1461,7 +1461,8 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
         // so we have to turn off TS_inline on the sname's scope type.
         //
         temp_sname = c_sname_dup( sname );
-        c_scope_data( temp_sname.head )->type.stids &= c_tid_compl( TS_inline );
+        c_sname_global_data( &temp_sname )->type.stids &=
+          c_tid_compl( TS_inline );
         sname = &temp_sname;
       }
       else {

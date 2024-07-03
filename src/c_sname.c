@@ -209,7 +209,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
 
   size_t const sname_count = c_sname_count( sname );
   if ( sname_count > 1 ) {
-    c_type_t const *const scope_type = c_sname_first_type( sname );
+    c_type_t const *const scope_type = c_sname_global_type( sname );
     bool const is_inline_namespace =
       c_tid_is_any( scope_type->stids, TS_inline ) &&
       c_tid_is_any( scope_type->btids, TB_namespace );
@@ -317,6 +317,9 @@ bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc ) {
 
 void c_sname_fill_in_namespace_types( c_sname_t *sname ) {
   assert( sname != NULL );
+
+  if ( c_sname_empty( sname ) )
+    return;                             // LCOV_EXCL_LINE
 
   c_type_t const *const local_type = c_sname_local_type( sname );
   if ( local_type->btids != TB_namespace )
@@ -436,7 +439,7 @@ c_sname_t c_sname_scope_sname( c_sname_t const *sname ) {
     FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
       c_scope_data_t const *const scope_data = c_scope_data( scope );
       c_sname_append_name( &rv_sname, check_strdup( scope_data->name ) );
-      c_sname_set_local_type( &rv_sname, &scope_data->type );
+      c_sname_local_data( &rv_sname )->type = scope_data->type;
     } // for
   }
 
@@ -452,6 +455,9 @@ void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname ) {
 
 void c_sname_set_all_types( c_sname_t *sname ) {
   assert( sname != NULL );
+
+  if ( c_sname_empty( sname ) )
+    return;                             // LCOV_EXCL_LINE
 
   FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
     c_type_t *const scope_type = &c_scope_data( scope )->type;
@@ -483,7 +489,7 @@ void c_sname_set_all_types( c_sname_t *sname ) {
   // Special case: if the outermost scope's name is "std", make the scope's
   // type be TB_namespace.
   //
-  c_scope_data_t *const scope = c_scope_data( sname->head );
+  c_scope_data_t *const scope = c_sname_global_data( sname );
   if ( scope->type.btids == TB_SCOPE && strcmp( scope->name, "std" ) == 0 )
     scope->type.btids = TB_namespace;
 }

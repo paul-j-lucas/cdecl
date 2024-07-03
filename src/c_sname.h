@@ -69,6 +69,46 @@ _GL_INLINE_HEADER_BEGIN
  */
 
 /**
+ * Gets the \ref c_scope_data associated with \a SCOPE.
+ *
+ * @param SCOPE The scope to get the data of.  Must not be NULL.
+ * @return Returns said data.
+ *
+ * @sa c_sname_global_data()
+ * @sa c_sname_local_data()
+ */
+#define c_scope_data(SCOPE)       STATIC_CAST( c_scope_data_t*, (SCOPE)->data )
+
+/**
+ * Gets the global scope data of \a SNAME (which is the data of the outermost
+ * scope).
+ *
+ * @param SNAME The scoped name to get the global scope data of.  Must not be
+ * NULL.
+ * @return Returns the global scope data of \a SNAME.
+ *
+ * @sa c_scope_data()
+ * @sa c_sname_global_type()
+ * @sa c_sname_local_data()
+ */
+#define c_sname_global_data(SNAME) \
+  c_scope_data( (SNAME)->head )
+
+/**
+ * Gets the local scope data of \a SNAME (which is the data of the innermost
+ * scope).
+ *
+ * @param SNAME The scoped name to get the local scope data of.  Must not be
+ * NULL.
+ * @return Returns the local scope data of \a SNAME.
+ *
+ * @sa c_scope_data()
+ * @sa c_sname_local_type()
+ * @sa c_sname_global_data()
+ */
+#define c_sname_local_data(SNAME) c_scope_data( (SNAME)->tail )
+
+/**
  * Creates a scoped name variable \a VAR on the stack having a local \a NAME.
  *
  * @param VAR The \ref c_sname_t variable.
@@ -123,26 +163,6 @@ struct c_scope_data {
 typedef struct c_scope_data c_scope_data_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
-
-/**
- * Gets the \ref c_scope_data associated with \a scope.
- *
- * @param scope The scope to get the data of.
- * @return Returns said data.
- */
-NODISCARD C_SNAME_H_INLINE
-c_scope_data_t const* c_scope_data( c_scope_t const *scope ) {
-  return scope->data;
-}
-
-/// @cond DOXYGEN_IGNORE
-NODISCARD C_SNAME_H_INLINE
-c_scope_data_t* nonconst_c_scope_data( c_scope_t *scope ) {
-  return CONST_CAST( c_scope_data_t*, c_scope_data( scope ) );
-}
-
-#define c_scope_data(SCOPE)       NONCONST_OVERLOAD( c_scope_data, (SCOPE) )
-/// @endcond
 
 /**
  * Compares two \ref c_scope_data.
@@ -322,22 +342,6 @@ bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc );
 void c_sname_fill_in_namespace_types( c_sname_t *sname );
 
 /**
- * Gets the first scope-type of \a sname (which is the type of the outermost
- * scope).
- *
- * @param sname The scoped name to get the first scope-type of.
- * @return Returns the first scope-type or #T_NONE if \a sname is empty.
- *
- * @sa c_sname_local_type()
- * @sa c_sname_scope_type()
- * @sa c_sname_set_first_type()
- */
-NODISCARD C_SNAME_H_INLINE
-c_type_t const* c_sname_first_type( c_sname_t const *sname ) {
-  return c_sname_empty( sname ) ? &T_NONE : &c_scope_data( sname->head )->type;
-}
-
-/**
  * Frees all memory associated with \a sname _including_ \a sname itself.
  *
  * @param sname The scoped name to free.  If NULL, does nothing.
@@ -366,6 +370,22 @@ void c_sname_free( c_sname_t *sname );
  */
 NODISCARD
 char const* c_sname_full_name( c_sname_t const *sname );
+
+/**
+ * Gets the global scope-type of \a sname (which is the type of the outermost
+ * scope).
+ *
+ * @param sname The scoped name to get the global scope-type of.
+ * @return Returns the global scope-type or #T_NONE if \a sname is empty.
+ *
+ * @sa c_sname_global_data()
+ * @sa c_sname_local_type()
+ * @sa c_sname_scope_type()
+ */
+NODISCARD C_SNAME_H_INLINE
+c_type_t const* c_sname_global_type( c_sname_t const *sname ) {
+  return c_sname_empty( sname ) ? &T_NONE : &c_sname_global_data( sname )->type;
+}
 
 /**
  * Initializes \a sname.
@@ -448,13 +468,13 @@ char const* c_sname_local_name( c_sname_t const *sname );
  * @param sname The scoped name to get the local scope-type of.
  * @return Returns the local scope-type or #T_NONE if \a sname is empty.
  *
- * @sa c_sname_first_type()
+ * @sa c_sname_global_type()
+ * @sa c_sname_local_data()
  * @sa c_sname_scope_type()
- * @sa c_sname_set_local_type()
  */
 NODISCARD C_SNAME_H_INLINE
 c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
-  return c_sname_empty( sname ) ? &T_NONE : &c_scope_data( sname->tail )->type;
+  return c_sname_empty( sname ) ? &T_NONE : &c_sname_local_data( sname )->type;
 }
 
 /**
@@ -615,6 +635,7 @@ c_sname_t c_sname_scope_sname( c_sname_t const *sname );
  * @return Returns the scope-type #T_NONE if \a sname is empty or not within a
  * scope.
  *
+ * @sa c_sname_global_type()
  * @sa c_sname_local_type()
  * @sa c_sname_set_scope_type()
  */
@@ -659,44 +680,8 @@ void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname );
  * @param sname The scoped name to set all the scope-types of.
  *
  * @sa c_sname_fill_in_namespace_types()
- * @sa c_sname_set_first_type()
- * @sa c_sname_set_local_type()
  */
 void c_sname_set_all_types( c_sname_t *sname );
-
-/**
- * Sets the first scope-type of \a sname (which is the type of the outermost
- * scope).
- *
- * @param sname The scoped name to set the first scope-type of.
- * @param type The type.
- *
- * @sa c_sname_first_type()
- * @sa c_sname_set_all_types()
- * @sa c_sname_set_local_type()
- * @sa c_sname_set_scope_type()
- */
-C_SNAME_H_INLINE
-void c_sname_set_first_type( c_sname_t *sname, c_type_t const *type ) {
-  c_scope_data( sname->head )->type = *type;
-}
-
-/**
- * Sets the local scope-type of \a sname (which is the type of the innermost
- * scope).
- *
- * @param sname The scoped name to set the local scope-type of.
- * @param type The type.
- *
- * @sa c_sname_local_type()
- * @sa c_sname_set_all_types()
- * @sa c_sname_set_first_type()
- * @sa c_sname_set_scope_type()
- */
-C_SNAME_H_INLINE
-void c_sname_set_local_type( c_sname_t *sname, c_type_t const *type ) {
-  c_scope_data( sname->tail )->type = *type;
-}
 
 /**
  * Sets the scope scope-type of \a sname (which is the type of the next
@@ -706,8 +691,6 @@ void c_sname_set_local_type( c_sname_t *sname, c_type_t const *type ) {
  * @param type The type.
  *
  * @sa c_sname_scope_type()
- * @sa c_sname_set_first_type()
- * @sa c_sname_set_local_type()
  */
 C_SNAME_H_INLINE
 void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
