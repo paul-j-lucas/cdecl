@@ -1,3 +1,13 @@
+2024-07-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Added () around macro parameters.
+   * c_sname.c: Simplification.
+   * c_sname.c, c_sname.h, parser.y: Eliminated "default_type" parameter from
+     c_sname_set_all_types().
+   * p_macro.c: mex_check_identifier() never returned false; change to void.
+   * print.c: Eliminated apparently dead code in fl_print_error_unkown_name().
+   * test/Makefile.am, misc-error-65.out, misc-error-65.test: Another test.
+
 2024-07-02  Paul J. Lucas <paul@lucasmail.org>
 
    * util_test.c: Fixed test.
