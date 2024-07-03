@@ -6710,7 +6710,7 @@ concept_type_c_ast
       DUMP_START( "concept_type_c_ast", "Y_CONCEPT_SNAME AUTO" );
       DUMP_SNAME( "Y_CONCEPT_SNAME", $sname );
 
-      c_sname_set_all_types( &$sname, &C_TYPE_LIT_B( TB_namespace ) );
+      c_sname_set_all_types( &$sname );
 
       $$ = c_ast_new_gc( K_CONCEPT, &@sname );
       $$->concept.concept_sname = c_sname_move( &$sname );
@@ -8318,7 +8318,7 @@ concept_type_english_ast
       DUMP_START( "concept_type_english_ast", "CONCEPT sname_english_exp" );
       DUMP_SNAME( "sname_english_exp", $sname );
 
-      c_sname_set_all_types( &$sname, &C_TYPE_LIT_B( TB_namespace ) );
+      c_sname_set_all_types( &$sname );
 
       $$ = c_ast_new_gc( K_CONCEPT, &@$ );
       $$->concept.concept_sname = c_sname_move( &$sname );
@@ -8333,7 +8333,7 @@ concept_type_english_ast
                   "CONCEPT sname_english_exp PARAMTER PACK" );
       DUMP_SNAME( "sname_english_exp", $sname );
 
-      c_sname_set_all_types( &$sname, &C_TYPE_LIT_B( TB_namespace ) );
+      c_sname_set_all_types( &$sname );
 
       $$ = c_ast_new_gc( K_CONCEPT, &@$ );
       $$->is_param_pack = true;

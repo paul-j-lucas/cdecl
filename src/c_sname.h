@@ -649,19 +649,17 @@ void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname );
  * scope-type to #TB_struct; the scope-type of `x` is not changed.
  *
  * If there is no `typedef` for a partial scoped name, then that scope-type is
- * set to \a default_type.
+ * set to #TB_namespace.
  *
  * As a special case, if the first scope's name is `std`, sets that scope-type
  * to #TB_namespace.
  *
  * @param sname The scoped name to set all the scope-types of.
- * @param default_type The default type.  If NULL, then the default type is
- * #TB_SCOPE.
  *
  * @sa c_sname_set_first_type()
  * @sa c_sname_set_local_type()
  */
-void c_sname_set_all_types( c_sname_t *sname, c_type_t const *default_type );
+void c_sname_set_all_types( c_sname_t *sname );
 
 /**
  * Sets the first scope-type of \a sname (which is the type of the outermost

@@ -451,11 +451,8 @@ void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname ) {
   }
 }
 
-void c_sname_set_all_types( c_sname_t *sname, c_type_t const *default_type ) {
+void c_sname_set_all_types( c_sname_t *sname ) {
   assert( sname != NULL );
-
-  if ( default_type == NULL )
-    default_type = &C_TYPE_LIT_B( TB_SCOPE );
 
   FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
     c_type_t *const scope_type = &c_scope_data( scope )->type;
@@ -477,7 +474,7 @@ void c_sname_set_all_types( c_sname_t *sname, c_type_t const *default_type ) {
       } // for
     }
     else {
-      *scope_type = *default_type;
+      *scope_type = C_TYPE_LIT_B( TB_namespace );
     }
 
     scope->next = orig_next;
