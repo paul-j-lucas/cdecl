@@ -1,5 +1,14 @@
 2024-07-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, c_sname.c, c_sname.h, p_macro.c, p_macro.h,
+     explain-error.out, explain-error.test: Using a predefined macro name as an
+     ordinary name now results in an error.
+   * read_line.c: Added wrappers around getline() and readline().
+   * read_line.c: Fixed LCOV_EXCL_START.
+   * read_line.c, expand.out, expand.test: Now support ??/ in the preprocessor.
+   * lexer.l: Added missing ??/ trigraph.
+   * gibberish.c: Eliminated noexcept => throw case since it can never happen.
+   * debug.out, debug.test: More tests.
    * east-const.out, east-const.test: Fixed east-const structured binding test.
    * gibberish.c: Eliminated apparently dead code in c_ast_name_gibberish().
    * gibberish.c, cast.out, cast.test: Casting to a `typedef`d type is fixed.
