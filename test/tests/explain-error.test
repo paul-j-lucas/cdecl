@@ -132,6 +132,7 @@ explain void main()
 explain void (*restrict p)()
 explain void x
 explain []
+explain int __DATE__
 
 set knr
 explain const int x
@@ -243,6 +244,7 @@ explain void f(int x[*])
 explain void f(int x[const 3])
 explain void f(int x[static 3])
 explain void f(x)
+explain int S::__DATE__
 
 explain auto ...
 explain auto... f()

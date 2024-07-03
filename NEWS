@@ -98,6 +98,13 @@ as a debugging aid.  (See the man page for details.)
 ** `show` non-existent glob
 An error message will now be printed if a glob has no matches.
 
+** Using predefined macro names elsewhere
+Attempting to use a predefined macro name as an ordinary name now results in an error:
+
+    cdecl> explain int __DATE__
+                   ^
+    9: error: "__DATE__" is a predefined macro
+
 
 * Changes in Cdecl 17.0.1
 

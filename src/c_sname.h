@@ -296,6 +296,18 @@ bool c_sname_empty( c_sname_t const *sname ) {
 }
 
 /**
+ * Checks a scoped name for errors.
+ *
+ * @param sname The scoped name to check.
+ * @param sname_loc The location of \a sname.
+ * @return Returns `true` only if \a sname contains an error.
+ *
+ * @sa c_sname_warn()
+ */
+NODISCARD
+bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc );
+
+/**
  * If the local scope-type of \a sname is #TB_namespace, make all scope-types
  * of all enclosing scopes that are either #TB_NONE or #TB_SCOPE also be
  * #TB_namespace since a namespace can only nest within another namespace.
@@ -708,6 +720,8 @@ void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
  *
  * @param sname The scoped name to check.
  * @param sname_loc The location of \a sname.
+ *
+ * @sa c_name_error()
  */
 void c_sname_warn( c_sname_t const *sname, c_loc_t const *sname_loc );
 

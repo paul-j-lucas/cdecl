@@ -117,6 +117,19 @@ struct p_macro {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Checks whether \a name is a predefined macro or `__VA_ARGS__` or
+ * `__VA_OPT__`.
+ *
+ * @param name The name to check.
+ * @return Returns `true` only if it is.
+ *
+ * @sa is_VA_macro_name()
+ * @sa p_token_is_macro()
+ */
+NODISCARD
+bool is_predefined_macro_name( char const *name );
+
+/**
  * Frees all memory used by \a arg_list but _not_ \a arg_list itself.
  *
  * @param arg_list The macro argument list to cleanup.

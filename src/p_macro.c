@@ -522,25 +522,6 @@ static char const* get___TIME___str( void ) {
 // LCOV_EXCL_STOP
 
 /**
- * Checks whether \a name is a predefined macro or `__VA_ARGS__` or
- * `__VA_OPT__`.
- *
- * @param name The name to check.
- * @return Returns `true` only if it is.
- *
- * @sa is_VA_macro_name()
- * @sa p_token_is_macro()
- */
-NODISCARD
-static bool is_predefined_macro_name( char const *name ) {
-  assert( name != NULL );
-  if ( is_VA_macro_name( name ) )
-    return true;
-  p_macro_t const *const macro = p_macro_find( name );
-  return macro != NULL && macro->is_dynamic;
-}
-
-/**
  * Generates a key for function-like macros that won't expand for the \ref
  * mex_state::no_expand_set "no_expand_set".
  *
@@ -3007,6 +2988,14 @@ static void set_substituted( p_token_node_t *token_node ) {
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+bool is_predefined_macro_name( char const *name ) {
+  assert( name != NULL );
+  if ( is_VA_macro_name( name ) )
+    return true;
+  p_macro_t const *const macro = p_macro_find( name );
+  return macro != NULL && macro->is_dynamic;
+}
 
 void p_arg_list_cleanup( p_arg_list_t *arg_list ) {
   if ( arg_list == NULL )

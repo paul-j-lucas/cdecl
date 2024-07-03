@@ -37,6 +37,7 @@
 #include "color.h"
 #include "literals.h"
 #include "options.h"
+#include "p_macro.h"
 #include "print.h"
 #include "strbuf.h"
 #include "util.h"
@@ -297,6 +298,21 @@ int c_sname_cmp_name( c_sname_t const *sname, char const *name ) {
 
   SNAME_VAR_INIT_NAME( name_sname, name );
   return c_sname_cmp( sname, &name_sname );
+}
+
+bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc ) {
+  assert( sname != NULL );
+  assert( sname_loc != NULL );
+
+  FOREACH_SNAME_SCOPE( scope, sname ) {
+    char const *const name = c_scope_data( scope )->name;
+    if ( is_predefined_macro_name( name ) ) {
+      print_error( sname_loc, "\"%s\" is a predefined macro\n", name );
+      return true;
+    }
+  } // for
+
+  return false;
 }
 
 void c_sname_fill_in_namespaces( c_sname_t *sname ) {
