@@ -316,8 +316,10 @@ bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc );
  *
  * @note If there are scope-types that are something other than either #TB_NONE
  * or #TB_SCOPE, this is an error and will be caught by c_sname_check().
+ *
+ * @sa c_sname_set_all_types()
  */
-void c_sname_fill_in_namespaces( c_sname_t *sname );
+void c_sname_fill_in_namespace_types( c_sname_t *sname );
 
 /**
  * Gets the first scope-type of \a sname (which is the type of the outermost
@@ -656,6 +658,7 @@ void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname );
  *
  * @param sname The scoped name to set all the scope-types of.
  *
+ * @sa c_sname_fill_in_namespace_types()
  * @sa c_sname_set_first_type()
  * @sa c_sname_set_local_type()
  */

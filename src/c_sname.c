@@ -315,7 +315,7 @@ bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   return false;
 }
 
-void c_sname_fill_in_namespaces( c_sname_t *sname ) {
+void c_sname_fill_in_namespace_types( c_sname_t *sname ) {
   assert( sname != NULL );
 
   c_type_t const *const local_type = c_sname_local_type( sname );
