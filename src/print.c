@@ -535,14 +535,6 @@ void fl_print_error_unknown_name( char const *file, int line,
   }
   else {
     fl_print_error( file, line, loc, "\"%s\": unknown name", name );
-
-    dym_kind = DYM_C_KEYWORDS | DYM_C_TYPES;
-    if ( is_english_to_gibberish() ) {
-      dym_kind |= DYM_CDECL_KEYWORDS;
-      cdecl_keyword_t const *const cdk = cdecl_keyword_find( name );
-      if ( cdk != NULL )
-        EPRINTF( " (\"%s\" is a " CDECL " keyword)", name );
-    }
   }
 
   print_suggestions( dym_kind, name );
