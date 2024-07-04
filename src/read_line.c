@@ -97,7 +97,7 @@ static bool is_continued_line( char const *s, size_t *ps_len ) {
   assert( s != NULL );
   assert( ps_len != NULL );
 
-  if ( *ps_len >= 0 ) {
+  if ( *ps_len >= 1 ) {
     if ( s[ *ps_len - 1 ] == '\\' ) {
       --*ps_len;
       return true;

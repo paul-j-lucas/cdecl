@@ -542,7 +542,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         if ( n == STRTOULL_ERROR ) {
           fatal_error( EX_USAGE,
             "\"%s\": invalid value for %s; must be in range 1-%u\n",
-            optarg, opt_format( COPT(LINENO) ), USHRT_MAX
+            optarg, opt_format( COPT(LINENO) ),
+            STATIC_CAST( unsigned, USHRT_MAX )
           );
         }
         opt_lineno = STATIC_CAST( unsigned, n );
