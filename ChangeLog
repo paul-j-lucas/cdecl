@@ -1,5 +1,13 @@
 2024-07-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sname.c, c_sname.h, parser.y: Cdecl now automatically makes a scope
+     named `std` be a namespace.
+   * run_test.sh, update_test.sh: Fixed test script temp file location.
+   * c_sname.c, c_type.c, c_type.h, define-error.out, define-error.test: Now
+     more lax with scope ordering in that either "none" or "scope" can appear
+     in any order.
+   * c_sname.c, c_sname.h, gibberish.c, parser.y: c_sname global/local/type
+     function clean-up.
    * util.h: Added () around macro parameters.
    * c_sname.c: Simplification.
    * c_sname.c, c_sname.h, parser.y: Eliminated "default_type" parameter from
