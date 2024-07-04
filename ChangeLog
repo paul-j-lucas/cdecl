@@ -1,5 +1,12 @@
 2024-07-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * parse.c, print.c, print.h: Eliminated
+     print_params.{command_line,command_line_len} -- apparently no longer
+     needed.
+   * explain-error.out, explain-error.test: Another test.
+   * c_ast_util.c, c_type.h, parser.y, explain-error.out: Eliminated apparently
+     unnecessary TS_FUNC_LIKE_NOT_CTOR.
+   * c_sname.c: Eliminated apparently dead code in c_sname_set_all_types().
    * c_sname.c, c_sname.h, parser.y: Cdecl now automatically makes a scope
      named `std` be a namespace.
    * run_test.sh, update_test.sh: Fixed test script temp file location.
