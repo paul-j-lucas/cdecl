@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 2, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 5, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -3102,7 +3102,13 @@ or
 .B \-c
 option.
 .IP \(bu
-Show constant values
+Use 80 for the number of columns of the terminal
+ignoring its actual width
+and the
+.B COLUMNS
+variable.
+.IP \(bu
+Use constant values
 for the
 .B __DATE__
 and

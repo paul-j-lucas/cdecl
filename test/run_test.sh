@@ -207,13 +207,6 @@ CDECL_TEST=true
 export CDECL_TEST
 
 ##
-# Must fix the number of terminal columns at 80 overriding the actual TERM
-# number of columns so that columns-dependent tests pass.
-##
-COLUMNS=80
-export COLUMNS
-
-##
 # Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
 ##
 PATH=$BUILD_SRC:$PATH

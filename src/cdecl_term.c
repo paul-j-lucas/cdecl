@@ -26,6 +26,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "cdecl_term.h"
+#include "cdecl.h"
 #include "print.h"
 #include "util.h"
 
@@ -74,6 +75,7 @@ static unsigned get_columns_default( void ) {
 }
 
 #ifdef ENABLE_TERM_SIZE
+// LCOV_EXCL_START
 /**
  * Gets the number of columns of the terminal via **tigetnum**(3).
  *
@@ -88,30 +90,23 @@ static unsigned get_columns_via_tigetnum( void ) {
 
   char const *const term = null_if_empty( getenv( "TERM" ) );
   if ( unlikely( term == NULL ) ) {
-    // LCOV_EXCL_START
     reason = "TERM environment variable not set";
     goto error;
-    // LCOV_EXCL_STOP
   }
 
   char const *const cterm_path = ctermid( NULL );
   if ( unlikely( cterm_path == NULL || *cterm_path == '\0' ) ) {
-    // LCOV_EXCL_START
     reason = "ctermid(3) failed to get controlling terminal";
     goto error;
-    // LCOV_EXCL_STOP
   }
 
   if ( unlikely( (cterm_fd = open( cterm_path, O_RDWR )) == -1 ) ) {
-    // LCOV_EXCL_START
     reason = STRERROR();
     goto error;
-    // LCOV_EXCL_STOP
   }
 
   int sut_err;
   if ( setupterm( CONST_CAST( char*, term ), cterm_fd, &sut_err ) == ERR ) {
-    // LCOV_EXCL_START
     reason = reason_buf;
     switch ( sut_err ) {
       case -1:
@@ -133,18 +128,15 @@ static unsigned get_columns_via_tigetnum( void ) {
         );
     } // switch
     goto error;
-    // LCOV_EXCL_STOP
   }
 
   int const tigetnum_rv = tigetnum( CONST_CAST( char*, "cols" ) );
   switch ( tigetnum_rv ) {
-    // LCOV_EXCL_START
     case -1:
       reason = "terminal lacks \"cols\" capability";
       break;
     case -2:                            // capname is not a numeric capability
       UNEXPECTED_INT_VALUE( tigetnum_rv );
-    // LCOV_EXCL_STOP
     default:
       rv = STATIC_CAST( unsigned, tigetnum_rv );
   } // switch
@@ -153,13 +145,12 @@ error:
   if ( likely( cterm_fd != -1 ) )
     close( cterm_fd );
   if ( unlikely( reason != NULL ) ) {
-    // LCOV_EXCL_START
     print_warning( /*loc=*/NULL, "can't get terminal columns: %s\n", reason );
-    // LCOV_EXCL_STOP
   }
 
   return rv;
 }
+// LCOV_EXCL_STOP
 #endif /* ENABLE_TERM_SIZE */
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -167,12 +158,16 @@ error:
 void cdecl_term_init( void ) {
   ASSERT_RUN_ONCE();
 
+  if ( !cdecl_is_testing ) {
 #ifdef ENABLE_TERM_SIZE
-  if ( get_columns_via_tigetnum() > 0 ) {
-    get_columns_fn = &get_columns_via_tigetnum;
-    return;
-  }
+    // LCOV_EXCL_START
+    if ( get_columns_via_tigetnum() > 0 ) {
+      get_columns_fn = &get_columns_via_tigetnum;
+      return;
+    }
+    // LCOV_EXCL_STOP
 #endif /* ENABLE_TERM_SIZE */
+  }
 
   get_columns_fn = &get_columns_default;
 }
