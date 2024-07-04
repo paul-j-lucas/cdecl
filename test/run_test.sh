@@ -92,6 +92,11 @@ ME=`local_basename "$0"`
   exit 2
 }
 
+[ -n "$LINENO" ] || {
+  echo "$ME: shell's \$LINENO not set" >&2
+  exit 3
+}
+
 ########## Process command-line ###############################################
 
 while [ $# -gt 0 ]

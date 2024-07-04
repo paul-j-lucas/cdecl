@@ -45,6 +45,15 @@ END
   exit 1
 }
 
+########## Begin ##############################################################
+
+ME=`local_basename "$0"`
+
+[ -n "$LINENO" ] || {
+  echo "$ME: shell's \$LINENO not set" >&2
+  exit 3
+}
+
 ########## Process command-line ###############################################
 
 while getopts s: opt
@@ -59,6 +68,11 @@ shift `expr $OPTIND - 1`
 [ $# -ge 1 ] || usage
 
 ########## Initialize #########################################################
+
+[ -n "$BUILD_SRC" ] || {
+  echo "$ME: \$BUILD_SRC not set" >&2
+  exit 2
+}
 
 [ -n "$TMPDIR" ] || TMPDIR=/tmp
 trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
