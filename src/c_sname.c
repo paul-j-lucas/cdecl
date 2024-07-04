@@ -490,14 +490,6 @@ void c_sname_set_all_types( c_sname_t *sname ) {
 
     scope->next = orig_next;
   } // for
-
-  //
-  // Special case: if the outermost scope's name is "std", make the scope's
-  // type be TB_namespace.
-  //
-  c_scope_data_t *const scope = c_sname_global_data( sname );
-  if ( scope->type.btids == TB_SCOPE && strcmp( scope->name, "std" ) == 0 )
-    scope->type.btids = TB_namespace;
 }
 
 void c_sname_set_std_namespace( c_sname_t *sname ) {
