@@ -71,7 +71,7 @@ char const *me;
  */
 static void cdecl_cleanup( void ) {
   free_now();
-  parser_cleanup();                     // must go before c_ast_cleanup()
+  parser_cleanup();                     // must call before c_ast_cleanup()
   c_ast_cleanup();
 }
 
