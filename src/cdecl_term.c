@@ -168,8 +168,7 @@ void cdecl_term_init( void ) {
   ASSERT_RUN_ONCE();
 
 #ifdef ENABLE_TERM_SIZE
-  unsigned rv = get_columns_via_tigetnum();
-  if ( rv > 0 ) {
+  if ( get_columns_via_tigetnum() > 0 ) {
     get_columns_fn = &get_columns_via_tigetnum;
     return;
   }
