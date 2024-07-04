@@ -740,6 +740,57 @@ static c_tid_t c_tid_nosigned( c_tid_t btids ) {
 }
 
 /**
+ * Gets the "order" value of a \ref c_tid_t so it can be compared by its order.
+ *
+ * The order is:
+ *
+ * + [`inline`] `namespace` &lt;
+ *   { `struct` | `union` | `class` } &lt;
+ *   `enum` [`class`]
+ *
+ * I.e., order(T1) &le; order(T2) only if T1 can appear to the left of T2 in a
+ * declaration (or T2 can nest within T1).  For example, given:
+ *
+ *      namespace N { class C { // ...
+ *
+ * the order(`N`), order(`C`) is OK because `N` can appear to the left of `C`
+ * in a declaration (`C` can nest within `N`).  However, given:
+ *
+ *      class D { namespace M { // ...
+ *
+ * the order(`D`), order(`M`) is not OK because `D` can _not_ appear to the
+ * left of `M` in a declaration (`M` can _not_ next within `D`).
+ *
+ * @param btids The scope-type ID to get the order of.
+ * @return Returns said order or 0 if \a btids is either #TB_NONE or #TB_SCOPE
+ * since neither has an order.
+ *
+ * @note A non-zero return value by itself is meaningless.  All that matters is
+ * the result of comparing two non-zero orders.
+ */
+NODISCARD
+static unsigned c_tid_scope_order( c_tid_t btids ) {
+  c_tid_check( btids, C_TPID_BASE );
+
+  switch ( btids & (TB_ANY_SCOPE | TB_enum) ) {
+    case TB_NONE:
+    case TB_SCOPE:
+      return 0;
+    case TB_namespace:
+      return 1;
+    case TB_struct:
+    case TB_union:
+    case TB_class:
+      return 2;
+    case TB_enum:
+    case TB_enum | TB_class:
+      return 3;
+  } // switch
+
+  UNEXPECTED_INT_VALUE( btids );
+}
+
+/**
  * Creates a \ref c_type based on the \ref c_tpid "type part ID" of \a tids.
  *
  * @param tids The \ref c_tid_t to create the \ref c_type from.
@@ -1267,24 +1318,21 @@ c_tid_t c_tid_normalize( c_tid_t tids ) {
   return tids;
 }
 
-unsigned c_tid_scope_order( c_tid_t btids ) {
-  c_tid_check( btids, C_TPID_BASE );
-  switch ( btids & (TB_ANY_SCOPE | TB_enum) ) {
-    case TB_NONE:
-    case TB_SCOPE:
-      return 0;
-    case TB_namespace:
-      return 1;
-    case TB_struct:
-    case TB_union:
-    case TB_class:
-      return 2;
-    case TB_enum:
-    case TB_enum | TB_class:
-      return 3;
-  } // switch
+bool c_tid_scope_order_ok( c_tid_t i_btids, c_tid_t j_btids ) {
+  c_tid_check( i_btids, C_TPID_BASE );
+  c_tid_check( j_btids, C_TPID_BASE );
 
-  UNEXPECTED_INT_VALUE( btids );
+  i_btids &= TB_ANY_SCOPE | TB_enum;
+  unsigned const i_order = c_tid_scope_order( i_btids );
+  if ( i_order == 0 )
+    return true;
+
+  j_btids &= TB_ANY_SCOPE | TB_enum;
+  unsigned const j_order = c_tid_scope_order( j_btids );
+  if ( j_order == 0 )
+    return true;
+
+  return i_order <= j_order;
 }
 
 c_tpid_t c_tid_tpid( c_tid_t tids ) {

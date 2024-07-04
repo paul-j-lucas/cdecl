@@ -223,7 +223,6 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   }
 
   c_tid_t prev_btids = TB_NONE;
-  unsigned prev_order = 0;
 
   FOREACH_SNAME_SCOPE( scope, sname ) {
     c_type_t *const scope_type = &c_scope_data( scope )->type;
@@ -272,8 +271,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
 
     scope->next = orig_next;
 
-    unsigned const scope_order = c_tid_scope_order( scope_type->btids );
-    if ( scope_order < prev_order ) {
+    if ( !c_tid_scope_order_ok( prev_btids, scope_type->btids ) ) {
       print_error( sname_loc,
         "%s can not nest inside %s\n",
         c_tid_name_error( scope_type->btids ),
@@ -282,7 +280,6 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
       return false;
     }
     prev_btids = scope_type->btids;
-    prev_order = scope_order;
   } // for
 
   return true;

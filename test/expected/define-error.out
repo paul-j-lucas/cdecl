@@ -21,6 +21,3 @@ cdecl> set c++
 c++decl> define Int of namespace X of class C as int
                     ^
 13,12: error: namespace can not nest inside class
-c++decl> define Int of scope X of class C as int
-                    ^
-14,12: error: scope can not nest inside class

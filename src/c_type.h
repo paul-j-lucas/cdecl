@@ -991,35 +991,38 @@ NODISCARD
 c_tid_t c_tid_normalize( c_tid_t tids );
 
 /**
- * Gets the "order" value of a \ref c_tid_t so it can be compared by its order.
+ * Gets whether the ordering of the scope types \a i_btids, \a j_btids is OK,
+ * that is \a i_btids can appear to the left of \a j_btids in a declaration
+ * (or, said another way, \a j_btids can nest within \a i_btids).
  *
- * The order is:
+ * @remarks
+ * @parblock
+ * The scope type order is:
  *
- * + { _none_ | `scope` } &lt;
- *   [`inline`] `namespace` &lt;
+ * + [`inline`] `namespace` &lt;
  *   { `struct` | `union` | `class` } &lt;
  *   `enum` [`class`]
  *
- * I.e., order(T1) &le; order(T2) only if T1 can appear to the left of T2 in a
- * declaration.  For example, given:
+ * I.e., T1, T2 is OK only if T1 can appear to the left of T2 in a declaration
+ * (or T2 can nest within T1).  For example, given:
  *
  *      namespace N { class C { // ...
  *
- * order(`N`) &le; order(`C`) because `N` can appear to the left of `C` in a
- * declaration.  However, given:
+ * the order `N`, `C` is OK because `N` can appear to the left of `C` in a
+ * declaration (`C` can nest within `N`).  However, given:
  *
  *      class D { namespace M { // ...
  *
- * order(`D`) &gt; order(`M`) and so `D` can _not_ appear to the left of `M`.
+ * the order `D`, `M` is not OK because `D` can _not_ appear to the left of `M`
+ * in a declaration (`M` can _not_ next within `D`).
+ * @endparblock
  *
- * @param btids The scope-type ID to get the order of.
- * @return Returns said order.
- *
- * @note The return value by itself is meaningless.  All that matters is the
- * result of comparing two orders.
+ * @param i_btids The first scope-type ID to compare.
+ * @param j_btids The second scope-type ID to compare against.
+ * @return Returns `true` only if the scope order is OK.
  */
 NODISCARD
-unsigned c_tid_scope_order( c_tid_t btids );
+bool c_tid_scope_order_ok( c_tid_t i_btids, c_tid_t j_btids );
 
 /**
  * Gets the \ref c_tpid_t from \a tids.
