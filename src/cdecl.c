@@ -31,6 +31,7 @@
 #include "c_typedef.h"
 #include "cdecl_command.h"
 #include "cdecl_keyword.h"
+#include "cdecl_term.h"
 #include "cli_options.h"
 #include "color.h"
 #include "config_file.h"
@@ -106,18 +107,22 @@ int main( int argc, char const *argv[] ) {
   ATEXIT( &cdecl_cleanup );
   cdecl_is_testing = is_affirmative( getenv( "CDECL_TEST" ) );
   wait_for_debugger_attach( "CDECL_DEBUG" );
-  cli_options_init( &argc, &argv );
+
+  cli_options_init( &argc, &argv );     // must call before colors_init()
+  colors_init();                        // must call before cdecl_term_init()
+  cdecl_term_init();                    // call before possible print_error()
+
+  // The order of these doesn't matter.
   c_keywords_init();
   cdecl_keywords_init();
-  colors_init();
   lexer_init();
   p_keywords_init();
   p_macros_init();
-  //
-  // Everything above must come before c_typedef_init() since it actually uses
-  // the parser.
-  //
+
+  // Everything above must be called before c_typedefs_init() since it actually
+  // uses the parser.
   c_typedefs_init();
+
   lexer_reset( /*hard_reset=*/true );
   yylineno = 1;
 
