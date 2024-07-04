@@ -6800,7 +6800,7 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
         //          explain int S::T::x
         //
         $$ = type_ast;
-        c_sname_set( &$$->sname, &temp_name );
+        c_sname_set( &$$->sname, &temp_sname );
       }
 
       DUMP_AST( "$$_ast", $$ );
