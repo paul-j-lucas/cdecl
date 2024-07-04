@@ -1,5 +1,8 @@
 2024-07-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * share/man/man1/cdecl.1, cdecl_term.c, run_test.sh: CDECL_TEST now always
+     uses 80 for the number of columns.
+   * run_test.sh, update_test.sh: Insisting on bash for $LINENO.
    * cli_options.c, lexer.h, read_line.c: Fixed warnings.
    * p_macro.c: Simplified mex_expand_stringify() by returning bool.
    * cdecl_term.c: Eliminated rv.
