@@ -1,5 +1,6 @@
 2024-07-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c: Simplified mex_expand_stringify() by returning bool.
    * cdecl_term.c: Eliminated rv.
    * src/Makefile.am, cdecl.c, cdecl_term.c, cdecl_term.h, print.c: Broken out
      terminal column code into cdecl_term.[hc].
