@@ -80,7 +80,7 @@ static char const* fput_list_apc_gets( void const **ppelt ) {
 /**
  * Checks whether \a s is any one of \a matches, case-insensitive.
  *
- * @param s The null-terminated string to check or null.
+ * @param s The null-terminated string to check or null.  May be NULL.
  * @param matches The null-terminated array of values to check against.
  * @return Returns `true` only if \a s is among \a matches.
  */
