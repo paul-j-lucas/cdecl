@@ -98,6 +98,19 @@ as a debugging aid.  (See the man page for details.)
 ** `show` non-existent glob
 An error message will now be printed if a glob has no matches.
 
+** More permissive `scope`
+Now, `scope` can be used anywhere in a scoped declaration, i.e., something
+having the generic `scope` can have anything nest within it and `scope` can
+nest within anything.
+
+** C++ `std` namespace
+Whenver "std" is used for a scope, **cdecl** now automatically makes it a
+namespace, e.g.:
+
+    c++decl> struct std::T
+    c++decl> explain std::T x
+    declare x as structure T of namespace std
+
 ** Using predefined macro names elsewhere
 Attempting to use a predefined macro name as an ordinary name now results in an error:
 

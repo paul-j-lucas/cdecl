@@ -340,6 +340,15 @@ char const* c_sname_full_name( c_sname_t const *sname ) {
     c_sname_name_impl( &sbuf, sname, /*end_scope=*/NULL ) : "";
 }
 
+char const* c_sname_global_name( c_sname_t const *sname ) {
+  if ( sname != NULL ) {
+    c_scope_data_t const *const global_data = c_sname_global_data( sname );
+    if ( global_data != NULL )
+      return global_data->name;
+  }
+  return "";                            // LCOV_EXCL_LINE
+}
+
 bool c_sname_is_ctor( c_sname_t const *sname ) {
   assert( sname != NULL );
   if ( c_sname_count( sname ) < 2 )
@@ -489,6 +498,14 @@ void c_sname_set_all_types( c_sname_t *sname ) {
   c_scope_data_t *const scope = c_sname_global_data( sname );
   if ( scope->type.btids == TB_SCOPE && strcmp( scope->name, "std" ) == 0 )
     scope->type.btids = TB_namespace;
+}
+
+void c_sname_set_std_namespace( c_sname_t *sname ) {
+  assert( sname != NULL );
+  if ( c_sname_count( sname ) < 2 )
+    return;
+  if ( strcmp( c_sname_global_name( sname ), "std" ) == 0 )
+    c_sname_global_data( sname )->type.btids = TB_namespace;
 }
 
 void c_sname_warn( c_sname_t const *sname, c_loc_t const *sname_loc ) {

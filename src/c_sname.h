@@ -372,6 +372,22 @@ NODISCARD
 char const* c_sname_full_name( c_sname_t const *sname );
 
 /**
+ * Gets the global name of \a sname (which is the name of the first scope), for
+ * example the global name of `S::T::x` is `S`.
+ *
+ * @param sname The scoped name to get the global name of; may be NULL.
+ * @return Returns said name or the empty string if \a sname is empty or NULL.
+ *
+ * @sa c_sname_full_name()
+ * @sa c_sname_local_name()
+ * @sa c_sname_name_atr()
+ * @sa c_sname_scope_name()
+ * @sa c_sname_scope_sname()
+ */
+NODISCARD
+char const* c_sname_global_name( c_sname_t const *sname );
+
+/**
  * Gets the global scope-type of \a sname (which is the type of the outermost
  * scope).
  *
@@ -454,6 +470,7 @@ void c_sname_list_cleanup( slist_t *list );
  * @return Returns said name or the empty string if \a sname is empty or NULL.
  *
  * @sa c_sname_full_name()
+ * @sa c_sname_global_name()
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name()
  * @sa c_sname_scope_sname()
@@ -538,6 +555,7 @@ c_sname_t c_sname_move( c_sname_t *sname ) {
  * &ge; c_sname_count().
  *
  * @sa c_sname_full_name()
+ * @sa c_sname_global_name()
  * @sa c_sname_local_name()
  * @sa c_sname_scope_name()
  * @sa c_sname_scope_sname()
@@ -602,6 +620,7 @@ void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
  * something like call this twice in the same `printf()` statement.
  *
  * @sa c_sname_full_name()
+ * @sa c_sname_global_name()
  * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_sname()
@@ -620,6 +639,7 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  * empty, NULL, or not within a scope.
  *
  * @sa c_sname_full_name()
+ * @sa c_sname_global_name()
  * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name()
@@ -698,6 +718,14 @@ void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
   if ( data != NULL )
     data->type = *type;
 }
+
+/**
+ * If \ref c_sname_count(\a sname) &ge; 2 and \ref c_sname_global_name(\a
+ * sname) is `"std"`, then sets the global scope's type to #TB_namespace.
+ *
+ * @param sname The scoped name to possibly set.
+ */
+void c_sname_set_std_namespace( c_sname_t *sname );
 
 /**
  * Checks a scoped name for warnings.
