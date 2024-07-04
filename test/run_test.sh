@@ -182,6 +182,9 @@ yes) EXPECT_FAILURE=1 ;;
   *) EXPECT_FAILURE=0 ;;
 esac
 
+[ -n "$TMPDIR" ] || TMPDIR=/tmp
+trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
+
 ##
 # The automake framework sets $srcdir. If it's empty, it means this script was
 # called by hand, so set it ourselves.
@@ -190,7 +193,7 @@ esac
 
 DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
-DIFF_FILE=/tmp/cdecl_diff_$$_
+DIFF_FILE=$TMPDIR/cdecl_diff_$$_
 
 ##
 # Ensure cdecl knows it's being tested.
@@ -209,9 +212,6 @@ export COLUMNS
 # Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
 ##
 PATH=$BUILD_SRC:$PATH
-
-[ -n "$TMPDIR" ] || TMPDIR=/tmp
-trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
 ##
 # Disable core dumps so we won't fill up the disk with them if a bunch of tests

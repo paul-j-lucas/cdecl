@@ -60,6 +60,9 @@ shift `expr $OPTIND - 1`
 
 ########## Initialize #########################################################
 
+[ -n "$TMPDIR" ] || TMPDIR=/tmp
+trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
+
 ##
 # The automake framework sets $srcdir. If it's empty, it means this script was
 # called by hand, so set it ourselves.
@@ -79,10 +82,7 @@ PATH=$BUILD_SRC:$PATH
 
 DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
-ACTUAL_OUTPUT=/tmp/cdecl_test_output_$$_
-
-[ -n "$TMPDIR" ] || TMPDIR=/tmp
-trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
+ACTUAL_OUTPUT=$TMPDIR/cdecl_test_output_$$_
 
 ########## Update tests #######################################################
 
