@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /usr/bin/env bash
 ##
 #       cdecl -- C gibberish translator
 #       test/update_test.sh
@@ -67,7 +67,7 @@ trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 # The automake framework sets $srcdir. If it's empty, it means this script was
 # called by hand, so set it ourselves.
 ##
-[ "$srcdir" ] || srcdir="."
+[ -n "$srcdir" ] || srcdir="."
 
 ##
 # Ensure cdecl knows it's being tested.

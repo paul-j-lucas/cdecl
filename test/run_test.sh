@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /usr/bin/env bash
 ##
 #       cdecl -- C gibberish translator
 #       test/run_test.sh
@@ -189,7 +189,7 @@ trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 # The automake framework sets $srcdir. If it's empty, it means this script was
 # called by hand, so set it ourselves.
 ##
-[ "$srcdir" ] || srcdir="."
+[ -n "$srcdir" ] || srcdir="."
 
 DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
