@@ -522,7 +522,7 @@ c++decl> explain enum struct C x
 189,9: error: "enum struct": enum classes must just use "enum"
 c++decl> explain explicit C(int) const
                           ^
-190,18: error: function can not be "explicit"
+190,18: error: constructors can not be "const"
 c++decl> explain export static int x
                  ^
 191,9: error: "export static int" is illegal for built-in type

@@ -5027,12 +5027,7 @@ func_decl_c_astp
         C_TPID_STORE
       );
 
-      bool const assume_constructor =
-        // + The type is likely for a constructor; and:
-        c_ast_is_likely_ctor( type_ast ) &&
-
-        // + The new type does _not_ have any non-constructor storage classes.
-        !c_tid_is_any( func_stids, TS_FUNC_LIKE_NOT_CTOR );
+      bool const assume_constructor = c_ast_is_likely_ctor( type_ast );
 
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );

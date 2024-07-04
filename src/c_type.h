@@ -776,7 +776,6 @@ typedef enum c_tpid c_tpid_t;
  *
  * @sa #TS_CONSTRUCTOR_DECL
  * @sa #TS_CONSTRUCTOR_DEF
- * @sa #TS_FUNC_LIKE_NOT_CTOR
  * @sa #TS_MAIN_FUNC_CPP
  * @sa #TS_NEW_DELETE_OP
  * @sa #TS_USER_DEF_CONV
@@ -787,18 +786,6 @@ typedef enum c_tpid c_tpid_t;
                               | TS_friend | TS_FUNC_C | TS_noexcept \
                               | TS_override | TS_PURE_virtual \
                               | TS_ANY_REFERENCE | TS_throw | TS_virtual )
-
-/**
- * @ingroup c-storage-like-types-group
- * The types that can apply only to function-like things except constructors.
- *
- * @sa #TS_CONSTRUCTOR_DECL
- * @sa #TS_CONSTRUCTOR_DEF
- * @sa #TS_CONSTRUCTOR_ONLY
- * @sa #TS_FUNC_LIKE_CPP
- */
-#define TS_FUNC_LIKE_NOT_CTOR ( TS_ANY_LINKAGE | TS_CVR | TS_final \
-                              | TS_override | TS_ANY_REFERENCE | TS_virtual )
 
 /**
  * @ingroup c-storage-like-types-group

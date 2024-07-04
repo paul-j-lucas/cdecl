@@ -656,10 +656,6 @@ bool c_ast_is_likely_ctor( c_ast_t const *type_ast ) {
   if ( type_ast->type.btids != TB_NONE )
     return false;
 
-  // + The type has any non-constructor storage classes.
-  if ( c_tid_is_any( type_ast->type.stids, TS_FUNC_LIKE_NOT_CTOR ) )
-    return false;
-
   if (  // + The type does _not_ have any constructor-only storage-class-like
         //   types (e.g., explicit).
         !c_tid_is_any( type_ast->type.stids, TS_CONSTRUCTOR_ONLY ) &&
