@@ -783,3 +783,6 @@ c++decl> set c++20
 c++decl> explain _Atomic(int) x
                  ^
 284,9: error: "_Atomic int" is illegal for built-in type until C++23
+explain int
+           ^
+289,12: error: declaration expected
