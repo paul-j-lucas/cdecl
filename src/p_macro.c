@@ -326,8 +326,10 @@ static mex_rv_t         mex_expand_all_concat( mex_state_t* ),
                         mex_expand_all_stringify( mex_state_t* ),
                         mex_expand_all___VA_ARGS__( mex_state_t* ),
                         mex_expand_all___VA_OPT__( mex_state_t* ),
-                        mex_expand_identifier( mex_state_t*, p_token_node_t** ),
-                        mex_expand_stringify( mex_state_t*, p_token_node_t** );
+                        mex_expand_identifier( mex_state_t*, p_token_node_t** );
+
+NODISCARD
+static bool             mex_expand_stringify( mex_state_t*, p_token_node_t** );
 
 NODISCARD
 static p_token_node_t*  mex_expand___VA_OPT__( mex_state_t*,
@@ -1805,19 +1807,14 @@ static mex_rv_t mex_expand_all_stringify( mex_state_t *mex ) {
 
   FOREACH_SLIST_NODE( token_node, mex->replace_list ) {
     p_token_t *const token = token_node->data;
-    if ( token->kind == P_STRINGIFY ) {
-      switch ( mex_expand_stringify( mex, &token_node ) ) {
-        case MEX_CAN_NOT_EXPAND:
-        case MEX_DID_NOT_EXPAND:
-          break;
-        case MEX_EXPANDED:
-          rv = MEX_EXPANDED;
-          continue;
-        case MEX_ERROR:
-          return MEX_ERROR;
-      } // switch
+    if ( token->kind != P_STRINGIFY )
+      goto skip;
+    if ( mex_expand_stringify( mex, &token_node ) ) {
+      rv = MEX_EXPANDED;
+      continue;
     }
 
+skip:
     p_token_list_push_back( mex->expand_list, p_token_dup( token ) );
   } // for
 
@@ -1966,13 +1963,13 @@ parse_args_error:
  * @param ptoken_node A pointer to the token node whose token is a
  * #P_STRINGIFY.  On return \a *ptoken_node is set to point to \ref p_token of
  * macro parameter that was stringified `)`; or NULL upon error.
- * @return Returns a \ref mex_rv.
+ * @return Returns `true` only if an expansion occurred.
  *
  * @sa mex_expand_all_stringify()
  */
 NODISCARD
-static mex_rv_t mex_expand_stringify( mex_state_t *mex,
-                                      p_token_node_t **ptoken_node ) {
+static bool mex_expand_stringify( mex_state_t *mex,
+                                  p_token_node_t **ptoken_node ) {
   assert( OPT_LANG_IS( P_STRINGIFY ) );
   assert( mex != NULL );
   assert( ptoken_node != NULL );
@@ -1984,7 +1981,7 @@ static mex_rv_t mex_expand_stringify( mex_state_t *mex,
     // When # appears in the replacement list of a non-function-like macro, it
     // is treated as an ordinary character.
     //
-    return MEX_CAN_NOT_EXPAND;
+    return false;
   }
 
   p_token_node_t *next_node = p_token_node_not( stringify_node->next, P_SPACE );
@@ -2005,7 +2002,7 @@ static mex_rv_t mex_expand_stringify( mex_state_t *mex,
   } // switch
 
   *ptoken_node = next_node;
-  return MEX_EXPANDED;
+  return true;
 }
 
 /**
