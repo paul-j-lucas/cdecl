@@ -284,9 +284,12 @@ set c++20
 explain _Atomic(int) x
 END
 
-# Do another test without -E/--echo-commands to exercise more code in print.c.
+# Do more tests without -E/--echo-commands to exercise more code in print.c.
+
 cdecl -L$LINENO <<END
 explain int
 END
+
+cdecl -L$LINENO explain int
 
 # vim:set syntax=sh:
