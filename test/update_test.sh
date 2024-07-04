@@ -69,6 +69,10 @@ trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 ##
 [ -n "$srcdir" ] || srcdir="."
 
+DATA_DIR="$srcdir/data"
+EXPECTED_DIR="$srcdir/expected"
+ACTUAL_OUTPUT="$TMPDIR/cdecl_test_output_$$_"
+
 ##
 # Ensure cdecl knows it's being tested.
 ##
@@ -80,14 +84,16 @@ export CDECL_TEST
 ##
 PATH=$BUILD_SRC:$PATH
 
-DATA_DIR=$srcdir/data
-EXPECTED_DIR=$srcdir/expected
-ACTUAL_OUTPUT=$TMPDIR/cdecl_test_output_$$_
+##
+# Disable core dumps so we won't fill up the disk with them if a bunch of tests
+# crash.
+##
+ulimit -c 0
 
 ########## Update tests #######################################################
 
 update_cdecl_test() {
-  TEST_PATH=$1
+  TEST_PATH="$1"
   TEST_NAME=`local_basename "$TEST_PATH"`
   EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
 
@@ -96,16 +102,16 @@ update_cdecl_test() {
   . $TEST > $ACTUAL_OUTPUT 2>&1
 
   ACTUAL_EXIT=$?
-  if [ $ACTUAL_EXIT -eq $EXPECTED_EXIT ]
-  then mv $ACTUAL_OUTPUT $EXPECTED_OUTPUT
+  if [ "$ACTUAL_EXIT" -eq "$EXPECTED_EXIT" ]
+  then mv "$ACTUAL_OUTPUT" "$EXPECTED_OUTPUT"
   else fail
   fi
 }
 
 for TEST in $*
 do
-  case $TEST in
-  *.test) update_cdecl_test $TEST ;;
+  case "$TEST" in
+  *.test) update_cdecl_test "$TEST" ;;
   esac
 done
 

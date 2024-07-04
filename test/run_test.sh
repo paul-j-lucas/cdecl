@@ -53,7 +53,7 @@ pass() {
 }
 
 fail() {
-  result=$1; shift; [ "$result" ] || result=FAIL
+  result=$1; shift; [ -n "$result" ] || result=FAIL
   print_result $result $TEST_NAME $*
   {
     echo ":test-result: $result"
@@ -71,7 +71,7 @@ print_result() {
 }
 
 usage() {
-  [ "$1" ] && { echo "$ME: $*" >&2; usage; }
+  [ -n "$1" ] && { echo "$ME: $*" >&2; usage; }
   cat >&2 <<END
 usage: $ME --log-file=PATH --trs-file=PATH [options] TEST-FILE
 options:
@@ -87,7 +87,7 @@ END
 
 ME=`local_basename "$0"`
 
-[ "$BUILD_SRC" ] || {
+[ -n "$BUILD_SRC" ] || {
   echo "$ME: \$BUILD_SRC not set" >&2
   exit 2
 }
@@ -191,9 +191,9 @@ trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 ##
 [ -n "$srcdir" ] || srcdir="."
 
-DATA_DIR=$srcdir/data
-EXPECTED_DIR=$srcdir/expected
-DIFF_FILE=$TMPDIR/cdecl_diff_$$_
+DATA_DIR="$srcdir/data"
+EXPECTED_DIR="$srcdir/expected"
+DIFF_FILE="$TMPDIR/cdecl_diff_$$_"
 
 ##
 # Ensure cdecl knows it's being tested.
@@ -223,35 +223,35 @@ ulimit -c 0
 
 run_cdecl_test() {
   EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
-  assert_exists $EXPECTED_OUTPUT
+  assert_exists "$EXPECTED_OUTPUT"
 
   # Dot-execute the test so we get its value of EXPECTED_EXIT.
   . $TEST > $LOG_FILE 2>&1
 
   ACTUAL_EXIT=$?
-  if [ $ACTUAL_EXIT -eq $EXPECTED_EXIT ]
+  if [ "$ACTUAL_EXIT" -eq "$EXPECTED_EXIT" ]
   then
-    if diff -u $EXPECTED_OUTPUT $LOG_FILE > $DIFF_FILE
+    if diff -u "$EXPECTED_OUTPUT" "$LOG_FILE" > "$DIFF_FILE"
     then pass
-    else fail; cp $DIFF_FILE $LOG_FILE
+    else fail; cp "$DIFF_FILE" "$LOG_FILE"
     fi
   else
-    case $ACTUAL_EXIT in
+    case "$ACTUAL_EXIT" in
     0|65) fail ;;
-    *)    fail ERROR $ACTUAL_EXIT ;;
+    *)    fail ERROR "$ACTUAL_EXIT" ;;
     esac
   fi
 }
 
 run_script_test() {
-  if $TEST > $LOG_FILE 2>&1
+  if $TEST > "$LOG_FILE" 2>&1
   then pass
   else fail
   fi
 }
 
-assert_exists $TEST
-case $TEST in
+assert_exists "$TEST"
+case "$TEST" in
 *.exp)  run_script_test ;;
 *.test) run_cdecl_test ;;
 esac
