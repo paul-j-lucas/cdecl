@@ -110,9 +110,9 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
   c_sname_t temp_sname;
   c_sname_init( &temp_sname );
 
-  char const *const s_orig = s;
+  char const *const orig_s = s;
   char const *end;
-  char const *prev_end = s_orig;
+  char const *prev_end = orig_s;
   char const *prev_name = "";
 
   while ( (end = parse_identifier( s )) != NULL ) {
@@ -164,7 +164,7 @@ error:
 
 done:
   *rv_sname = temp_sname;
-  return STATIC_CAST( size_t, prev_end - s_orig );
+  return STATIC_CAST( size_t, prev_end - orig_s );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

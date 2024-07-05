@@ -155,7 +155,7 @@ bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *data ) {
   assert( list != NULL );
   assert( pred_fn != NULL );
 
-  size_t const len_orig = list->len;
+  size_t const orig_len = list->len;
 
   // special case: predicate matches list->head
   for (;;) {
@@ -193,7 +193,7 @@ bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *data ) {
   } // for
 
 done:
-  return list->len < len_orig;
+  return list->len < orig_len;
 }
 
 slist_t slist_move( slist_t *list ) {

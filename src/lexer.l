@@ -170,7 +170,7 @@
  * pushed onto \ref include_stack such that:
  *
  *  + \ref prev_orig_path is the unresolved path of the _previous_ include (or
- *    configuration) file, if any, that is the value of cdecl_config_path.
+ *    configuration) file, if any, that is the value of \ref cdecl_input_path.
  *
  *  + \ref curr_real_path is the resolved path of the _new_ file about to be
  *    included.  We need to remember the resolved path in order to be able to
@@ -183,7 +183,7 @@
 struct include_file_info {
   char const *prev_orig_path;           ///< The previous file's original path.
   char const *curr_real_path;           ///< The current file's real path.
-  c_loc_num_t opt_lineno_orig;          ///< Original value of \ref opt_lineno.
+  c_loc_num_t orig_opt_lineno;          ///< Original value of \ref opt_lineno.
   c_loc_num_t prev_lineno;              ///< The file's last line number.
 };
 typedef struct include_file_info include_file_info_t;
@@ -449,7 +449,7 @@ static bool pop_file( void ) {
   PJL_DISCARD_RV( rb_tree_delete( &include_set, found_rb ) );
 
   cdecl_input_path = ifi->prev_orig_path;
-  opt_lineno = ifi->opt_lineno_orig;
+  opt_lineno = ifi->orig_opt_lineno;
   yylineno = ifi->prev_lineno;
   ifi_free( ifi );
   lexer_pop_buffer();
@@ -543,7 +543,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   *ifi = (include_file_info_t){
     .prev_orig_path = cdecl_input_path,
     .curr_real_path = real_path,
-    .opt_lineno_orig = opt_lineno,
+    .orig_opt_lineno = opt_lineno,
     .prev_lineno = yylineno
   };
   slist_push_front( &include_stack, ifi );
@@ -850,14 +850,14 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * pattern explicitly and always forbid it.
                */
 ^{S}*q{S}+{NS}+ {
-                char const *const yytext_orig = yytext;
+                char const *const orig_yytext = yytext;
                 // update yytext to be only the offending token past the 'q'
                 SKIP_WS( yytext );
                 assert( yytext[0] == 'q' );
                 ++yytext;
                 SKIP_WS( yytext );
                 // update yyloc to be at the start of the offending token
-                token_column = yytext - yytext_orig;
+                token_column = yytext - orig_yytext;
                 lexer_update_loc();
                 return Y_LEXER_ERROR;
               }

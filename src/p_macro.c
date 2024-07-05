@@ -2938,12 +2938,12 @@ static p_token_node_t* push_back_dup_tokens( p_token_list_t *dst_list,
   assert( dst_list != NULL );
   assert( src_list != NULL );
 
-  p_token_node_t *const dst_tail_orig = dst_list->tail;
+  p_token_node_t *const orig_dst_tail = dst_list->tail;
 
   FOREACH_SLIST_NODE( src_node, src_list )
     p_token_list_push_back( dst_list, p_token_dup( src_node->data ) );
 
-  return dst_tail_orig != NULL ? dst_tail_orig->next : dst_list->head;
+  return orig_dst_tail != NULL ? orig_dst_tail->next : dst_list->head;
 }
 
 /**
@@ -3094,8 +3094,7 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
   // typed; so we have to print the ^ relative to macro expansion lines we've
   // been printing.
   //
-  bool const opt_no_print_input_line_orig =
-    print_params.opt_no_print_input_line;
+  bool const orig_no_print_input_line = print_params.opt_no_print_input_line;
 
   mex_state_t mex;
   mex_init( &mex,
@@ -3156,7 +3155,7 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
   ok = true;
 
 error:
-  print_params.opt_no_print_input_line = opt_no_print_input_line_orig;
+  print_params.opt_no_print_input_line = orig_no_print_input_line;
   mex_cleanup( &mex );
   return ok;
 }
