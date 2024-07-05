@@ -29,7 +29,6 @@
 #include "cdecl.h"
 #include "options.h"
 #include "parse.h"
-#include "print.h"
 #include "strbuf.h"
 #include "util.h"
 
@@ -105,7 +104,7 @@ void config_init( void ) {
   int parse_rv = EX_OK;
 
   if ( config_path != NULL ) {
-    print_params.config_path = config_path;
+    cdecl_input_path = config_path;
 
     FILE *const config_file = fopen( config_path, "r" );
     if ( config_file != NULL ) {
@@ -121,7 +120,7 @@ void config_init( void ) {
       fatal_error( EX_NOINPUT, "\"%s\": %s\n", config_path, STRERROR() );
     }
 
-    print_params.config_path = NULL;
+    cdecl_input_path = NULL;
   }
 
   strbuf_cleanup( &sbuf );

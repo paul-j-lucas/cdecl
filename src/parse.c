@@ -311,7 +311,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   yyrestart( mem_file );
 
   if ( opt_echo_commands && !cdecl_interactive &&
-       (cdecl_initialized || print_params.config_path != NULL) ) {
+       (cdecl_initialized || cdecl_input_path != NULL) ) {
     //
     // Echo the original command (without "explain" or "expand" possibly having
     // been inserted) without a trailing newline (if any) so we can always

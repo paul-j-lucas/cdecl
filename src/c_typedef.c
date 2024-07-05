@@ -29,11 +29,11 @@
 #include "c_typedef.h"
 #include "c_ast.h"
 #include "c_lang.h"
+#include "cdecl.h"
 #include "decl_flags.h"
 #include "lexer.h"
 #include "options.h"
 #include "parse.h"
-#include "print.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -1170,7 +1170,7 @@ void c_typedefs_init( void ) {
   //
   // Doing this requires that we also temporarily turn off command echoing.
   //
-  print_params.config_path = __FILE__;
+  cdecl_input_path = __FILE__;
   bool const orig_echo_commands = opt_echo_commands;
   opt_echo_commands = false;
 
@@ -1253,7 +1253,7 @@ void c_typedefs_init( void ) {
 #endif /* ENABLE_FLEX_DEBUG */
   opt_lang_id = orig_lang_id;
 
-  print_params.config_path = NULL;
+  cdecl_input_path = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

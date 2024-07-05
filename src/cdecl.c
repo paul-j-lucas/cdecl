@@ -58,6 +58,7 @@
 
 // extern variable definitions
 bool        cdecl_initialized;
+char const *cdecl_input_path;
 bool        cdecl_interactive;
 bool        cdecl_is_testing;
 char const *me;

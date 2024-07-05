@@ -170,8 +170,7 @@
  * pushed onto \ref include_stack such that:
  *
  *  + \ref prev_orig_path is the unresolved path of the _previous_ include (or
- *    configuration) file, if any, that is the value of
- *    print_params.config_path.
+ *    configuration) file, if any, that is the value of cdecl_config_path.
  *
  *  + \ref curr_real_path is the resolved path of the _new_ file about to be
  *    included.  We need to remember the resolved path in order to be able to
@@ -449,7 +448,7 @@ static bool pop_file( void ) {
   // with and owned by ifi.
   PJL_DISCARD_RV( rb_tree_delete( &include_set, found_rb ) );
 
-  print_params.config_path = ifi->prev_orig_path;
+  cdecl_input_path = ifi->prev_orig_path;
   opt_lineno = ifi->opt_lineno_orig;
   yylineno = ifi->prev_lineno;
   ifi_free( ifi );
@@ -542,7 +541,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
 
   include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );
   *ifi = (include_file_info_t){
-    .prev_orig_path = print_params.config_path,
+    .prev_orig_path = cdecl_input_path,
     .curr_real_path = real_path,
     .opt_lineno_orig = opt_lineno,
     .prev_lineno = yylineno
@@ -553,7 +552,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
 
   yyin = include_file;
   yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
-  print_params.config_path = check_strdup( we.we_wordv[0] );
+  cdecl_input_path = check_strdup( we.we_wordv[0] );
   yylineno = 1;
   newline();
 
