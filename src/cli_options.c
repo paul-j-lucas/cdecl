@@ -662,6 +662,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   );
 
   opt_check_mutually_exclusive( COPT(DIGRAPHS), SOPT(TRIGRAPHS) );
+  opt_check_mutually_exclusive( COPT(FILE), SOPT(LINENO) );
 
   if ( strcmp( opt_file, "-" ) != 0 && !freopen( opt_file, "r", stdin ) )
     fatal_error( EX_NOINPUT, "\"%s\": %s\n", opt_file, STRERROR() );

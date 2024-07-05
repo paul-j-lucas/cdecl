@@ -124,17 +124,14 @@ int main( int argc, char const *argv[] ) {
   // uses the parser.
   c_typedefs_init();
 
-  lexer_reset( /*hard_reset=*/true );
-  yylineno = 1;
-
   if ( opt_read_conf )
     config_init();
+
   cdecl_initialized = true;
-  //
-  // Note that cli_options_init() adjusts argv such that argv[0] becomes the
-  // first argument, if any, and no longer the program name.
-  //
-  exit( cdecl_parse_cli( STATIC_CAST( size_t, argc ), argv ) );
+
+  // cli_options_init() makes argv[0] be the first argument, if any, and no
+  // longer the program name.
+  return cdecl_parse_cli( STATIC_CAST( size_t, argc ), argv );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

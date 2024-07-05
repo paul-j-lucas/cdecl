@@ -128,8 +128,8 @@ static bool no_infer_command( char const *s ) {
 NODISCARD
 static int cdecl_parse_command( char const *command, size_t cli_count,
                                 char const *const cli_value[const] ) {
-  if ( command == NULL && cli_count == 0 ) // invoked as just cdecl or c++decl
-    return cdecl_parse_stdin();
+  if ( command == NULL && cli_count == 0 )
+    return cdecl_parse_stdin();         // invoked as just cdecl, no arguments
 
   strbuf_t sbuf;
   bool space;
@@ -141,6 +141,17 @@ static int cdecl_parse_command( char const *command, size_t cli_count,
   // Concatenate arguments, if any, into a single string.
   for ( size_t i = 0; i < cli_count; ++i )
     strbuf_sepc_puts( &sbuf, ' ', &space, cli_value[i] );
+
+  //
+  // At this point, we know we're not running interactively.
+  //
+  //  + If opt_lineno is 0, just reset yylineno = 1 as usual.
+  //
+  //  + If opt_line > 0, we need to make all line numbers we print relative to
+  //    $LINENO (the presumed argument of the line number in the script cdecl
+  //    is being called from), so yylineno must start off = 0.
+  //
+  yylineno = opt_lineno == 0;
 
   int const status = cdecl_parse_string( sbuf.str, sbuf.len );
   strbuf_cleanup( &sbuf );
@@ -163,6 +174,8 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
   strbuf_t sbuf;
   strbuf_init( &sbuf );
   int status = EX_OK;
+
+  yylineno = 1;                         // reset before reading any file
 
   while ( strbuf_read_line( &sbuf, fin, cdecl_prompt, &yylineno ) ) {
     // We don't just call yyrestart( fin ) and yyparse() directly because
