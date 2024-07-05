@@ -102,7 +102,7 @@ args: a comma separated list of [<name> as] <english>
 C-type: auto | _BitInt(<number>) | bool | char[{8|16|32}_t] | wchar_t | int |
         float | double | void
 cv-qual: _Atomic | const | restrict | volatile
-modifier: short | long | signed | unsigned | <cv-qual>
+modifier: complex | imaginary | short | long | signed | unsigned | <cv-qual>
 name: a C identifier
 number: a binary, octal, decimal, or hexadecimal integer
 store: constexpr | extern | register | static | thread_local | typedef
@@ -569,7 +569,7 @@ ar-qual: non-empty | const | restrict | volatile
 args: a comma separated list of <name>, <english>, or <name> as <english>
 C-type: _Bool | char | wchar_t | int | float | double | void
 cv-qual: const | restrict | volatile
-modifier: short | long | signed | unsigned | <cv-qual>
+modifier: complex | imaginary | short | long | signed | unsigned | <cv-qual>
 name: a C identifier
 number: a binary, octal, decimal, or hexadecimal integer
 store: auto | extern | register | static | typedef
@@ -690,7 +690,7 @@ ar-qual: non-empty | const | restrict | volatile
 args: a comma separated list of <name>, <english>, or <name> as <english>
 C-type: _Bool | char[{16|32}_t] | wchar_t | int | float | double | void
 cv-qual: _Atomic | const | restrict | volatile
-modifier: short | long | signed | unsigned | <cv-qual>
+modifier: complex | imaginary | short | long | signed | unsigned | <cv-qual>
 name: a C identifier
 number: a binary, octal, decimal, or hexadecimal integer
 store: auto | extern | register | static | _Thread_local | typedef
@@ -811,7 +811,7 @@ ar-qual: non-empty | const | restrict | volatile
 args: a comma separated list of <name>, <english>, or <name> as <english>
 C-type: _Bool | char[{16|32}_t] | wchar_t | int | float | double | void
 cv-qual: _Atomic | const | restrict | volatile
-modifier: short | long | signed | unsigned | <cv-qual>
+modifier: complex | imaginary | short | long | signed | unsigned | <cv-qual>
 name: a C identifier
 number: a binary, octal, decimal, or hexadecimal integer
 store: auto | extern | register | static | _Thread_local | typedef

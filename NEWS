@@ -43,6 +43,9 @@ debugger to attach.
 If set to an "affirmative" value (one of 1, t, true, y, or yes, case-
 insensitive), then **cdecl** be in "testing mode" (see man page for details).
 
+** `complex` & `imaginary` help
+Adding these missing modifiers to the help.
+
 ** Constructor & pre-C99 function qualifiers
 `const`, `volatile`, `__restrict`, `final`, and `override` qualifiers are now
 syntactically allowed on constructors and pre-c99 functions even though they

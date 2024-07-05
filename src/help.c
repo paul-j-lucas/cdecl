@@ -486,6 +486,8 @@ static void print_help_english( void ) {
     }
 
     print_h( "modifier:" );
+    if ( OPT_LANG_IS( _Complex ) )
+      print_h( " complex | imaginary |" );
     print_h( " short | long" );
     if ( OPT_LANG_IS( signed ) )
       print_h( " | signed" );
