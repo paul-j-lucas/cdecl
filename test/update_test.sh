@@ -47,9 +47,9 @@ END
 
 ########## Begin ##############################################################
 
-ME=`local_basename "$0"`
+ME=$(local_basename "$0")
 
-[ -n "$LINENO" ] || {
+[ "$LINENO" ] || {
   echo "$ME: shell's \$LINENO not set" >&2
   exit 3
 }
@@ -59,29 +59,29 @@ ME=`local_basename "$0"`
 while getopts s: opt
 do
   case $opt in
-  s) BUILD_SRC=$OPTARG ;;
+  s) BUILD_SRC="$OPTARG" ;;
   ?) usage ;;
   esac
 done
-shift `expr $OPTIND - 1`
+shift $(( OPTIND - 1 ))
 
 [ $# -ge 1 ] || usage
 
 ########## Initialize #########################################################
 
-[ -n "$BUILD_SRC" ] || {
+[ "$BUILD_SRC" ] || {
   echo "$ME: \$BUILD_SRC not set" >&2
   exit 2
 }
 
-[ -n "$TMPDIR" ] || TMPDIR=/tmp
+[ "$TMPDIR" ] || TMPDIR=/tmp
 trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
 ##
 # The automake framework sets $srcdir. If it's empty, it means this script was
 # called by hand, so set it ourselves.
 ##
-[ -n "$srcdir" ] || srcdir="."
+[ "$srcdir" ] || srcdir="."
 
 DATA_DIR="$srcdir/data"
 EXPECTED_DIR="$srcdir/expected"
@@ -108,11 +108,12 @@ ulimit -c 0
 
 update_cdecl_test() {
   TEST_PATH="$1"
-  TEST_NAME=`local_basename "$TEST_PATH"`
-  EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
+  TEST_NAME=$(local_basename "$TEST_PATH")
+  EXPECTED_OUTPUT="$EXPECTED_DIR/$(echo $TEST_NAME | sed s/test$/out/)"
 
   echo $TEST_NAME
 
+  # Dot-execute the test so we get its value of EXPECTED_EXIT.
   . $TEST > $ACTUAL_OUTPUT 2>&1
 
   ACTUAL_EXIT=$?

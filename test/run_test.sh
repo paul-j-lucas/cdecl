@@ -71,7 +71,7 @@ print_result() {
 }
 
 usage() {
-  [ -n "$1" ] && { echo "$ME: $*" >&2; usage; }
+  [ "$1" ] && { echo "$ME: $*" >&2; usage; }
   cat >&2 <<END
 usage: $ME --log-file=PATH --trs-file=PATH [options] TEST-FILE
 options:
@@ -85,14 +85,14 @@ END
 
 ########## Begin ##############################################################
 
-ME=`local_basename "$0"`
+ME=$(local_basename "$0")
 
-[ -n "$BUILD_SRC" ] || {
+[ "$BUILD_SRC" ] || {
   echo "$ME: \$BUILD_SRC not set" >&2
   exit 2
 }
 
-[ -n "$LINENO" ] || {
+[ "$LINENO" ] || {
   echo "$ME: shell's \$LINENO not set" >&2
   exit 3
 }
@@ -106,19 +106,19 @@ do
     COLOR_TESTS=$2; shift
     ;;
   --color-tests=*)
-    COLOR_TESTS=`expr "x$1" : 'x--color-tests=\(.*\)'`
+    COLOR_TESTS=$(expr "x$1" : 'x--color-tests=\(.*\)')
     ;;
   --enable-hard-errors)
     ENABLE_HARD_ERRORS=$2; shift
     ;;
   --enable-hard-errors=*)
-    ENABLE_HARD_ERRORS=`expr "x$1" : 'x--enable-hard-errors=\(.*\)'`
+    ENABLE_HARD_ERRORS=$(expr "x$1" : 'x--enable-hard-errors=\(.*\)')
     ;;
   --expect-failure)
     EXPECT_FAILURE=$2; shift
     ;;
   --expect-failure=*)
-    EXPECT_FAILURE=`expr "x$1" : 'x--expect-failure=\(.*\)'`
+    EXPECT_FAILURE=$(expr "x$1" : 'x--expect-failure=\(.*\)')
     ;;
   --help)
     usage
@@ -127,19 +127,19 @@ do
     LOG_FILE=$2; shift
     ;;
   --log-file=*)
-    LOG_FILE=`expr "x$1" : 'x--log-file=\(.*\)'`
+    LOG_FILE=$(expr "x$1" : 'x--log-file=\(.*\)')
     ;;
   --test-name)
     TEST_NAME=$2; shift
     ;;
   --test-name=*)
-    TEST_NAME=`expr "x$1" : 'x--test-name=\(.*\)'`
+    TEST_NAME=$(expr "x$1" : 'x--test-name=\(.*\)')
     ;;
   --trs-file)
     TRS_FILE=$2; shift
     ;;
   --trs-file=*)
-    TRS_FILE=`expr "x$1" : 'x--trs-file=\(.*\)'`
+    TRS_FILE=$(expr "x$1" : 'x--trs-file=\(.*\)')
     ;;
   --)
     shift
@@ -161,7 +161,7 @@ TEST=$1
 [ "$TRS_FILE"  ] || usage "required --trs-file not given"
 [ $# -ge 1     ] || usage "required test-file not given"
 
-TEST_NAME=`local_basename "$TEST_NAME"`
+TEST_NAME=$(local_basename "$TEST_NAME")
 
 ########## Initialize #########################################################
 
@@ -203,8 +203,7 @@ DIFF_FILE="$TMPDIR/cdecl_diff_$$_"
 ##
 # Ensure cdecl knows it's being tested.
 ##
-CDECL_TEST=true
-export CDECL_TEST
+export CDECL_TEST=true
 
 ##
 # Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
@@ -220,7 +219,7 @@ ulimit -c 0
 ########## Run test ###########################################################
 
 run_cdecl_test() {
-  EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
+  EXPECTED_OUTPUT="$EXPECTED_DIR/$(echo $TEST_NAME | sed s/test$/out/)"
   assert_exists "$EXPECTED_OUTPUT"
 
   # Dot-execute the test so we get its value of EXPECTED_EXIT.
