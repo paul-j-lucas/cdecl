@@ -1,3 +1,10 @@
+2024-07-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, cli_options.c, parse.c, print.c, explain_int_error-5.cdeclrc,
+     explain-error.out, explain-error.test: Now printing line numbers whenever
+     not interactive; --file and --lineno are now mutually exclusive.
+   * cdecl_term.c, explain.out, explain.test: More tests.
+
 2024-07-04  Paul J. Lucas <paul@lucasmail.org>
 
    * help.c, help.out: Added `complex` & `imaginary` to help.
