@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 17.1
+* Changes in Cdecl 18.0
 
 ** Allowing blocks & user-defined literals in multi-declarations
 Apple blocks and C++ user-defined literals are now correctly allowed in multi-
