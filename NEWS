@@ -41,8 +41,7 @@ debugger to attach.
 
 ** `CDECL_TEST` environment variable
 If set to an "affirmative" value (one of 1, t, true, y, or yes, case-
-insensitive), then **cdecl** will show constant values for the `__DATE__` and
-`__TIME__` macros to facilitate testing.
+insensitive), then **cdecl** be in "testing mode" (see man page for details).
 
 ** Constructor & pre-C99 function qualifiers
 `const`, `volatile`, `__restrict`, `final`, and `override` qualifiers are now
