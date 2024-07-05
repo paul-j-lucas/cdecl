@@ -303,8 +303,8 @@ for which there are four factors to consider:
    | Hansen's   | Lines | Lucas's    | Lines | %     |
    | :--------- | ----: | :--------- | ----: | ----: |
    | `cdgram.y` |  855  | `parser.y` |  9589 |  8.9% |
-   | `cdlex.l`  |   75  | `lexer.l`  |  1842 |  4.1% |
-   | `cdecl.c`  | 1014  | `*.[ch]`   | 42398 |  2.4% |
+   | `cdlex.l`  |   75  | `lexer.l`  |  1841 |  4.1% |
+   | `cdecl.c`  | 1014  | `*.[ch]`   | 42399 |  2.4% |
    | **Total**  | 1944  |            | 53829 |  3.6% |
 
    Hansen's version of **cdecl** accounts for only 3.6%
