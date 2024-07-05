@@ -33,7 +33,6 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <stdlib.h>                     /* for getenv(3) */
 #ifdef ENABLE_TERM_SIZE
 # include <fcntl.h>                     /* for open(2) */
 # define _BOOL /* nothing */            /* prevent bool clash on AIX/Solaris */
@@ -42,6 +41,7 @@
 # elif defined(HAVE_NCURSES_H)
 #   include <ncurses.h>
 # endif
+# include <stdlib.h>                    /* for getenv(3) */
 # include <term.h>                      /* for setupterm(3) */
 # undef _BOOL
 # include <unistd.h>                    /* for close() */
