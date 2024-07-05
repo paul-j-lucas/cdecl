@@ -46,7 +46,7 @@ insensitive), then **cdecl** be in "testing mode" (see man page for details).
 ** Constructor & pre-C99 function qualifiers
 `const`, `volatile`, `__restrict`, `final`, and `override` qualifiers are now
 syntactically allowed on constructors and pre-c99 functions even though they
-are still sematically illegal to give better error messages.
+are still semantically illegal to give better error messages.
 
 ** Digraph & trigraph preprocessor support
 Digraphs & trigraphs are now supported by the preprocessor:
