@@ -1,5 +1,9 @@
 2024-07-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * help.c, help.out: Added `complex` & `imaginary` to help.
+   * configure.ac: Upped version.
+   * c_typedef.c, cdecl.c, cdecl.h, config_file.c, lexer.l, parse.c, print.c,
+     print.h: s/print_params.config_path/cdecl_input_path/
    * share/man/man1/cdecl.1, cdecl_term.c, run_test.sh: CDECL_TEST now always
      uses 80 for the number of columns.
    * run_test.sh, update_test.sh: Insisting on bash for $LINENO.
