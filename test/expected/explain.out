@@ -872,3 +872,8 @@ c++decl> explain ~C() throw()
                ^
 430,7: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 declare C as non-throwing destructor
+cdecl> explain int x
+declare x as integer
+warning: can't get terminal columns: TERM environment variable not set
+cdecl> explain int x
+declare x as integer
