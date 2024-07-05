@@ -1,9 +1,9 @@
 cdecl> cast x into
                   ^
-data/cast_error.cdeclrc:1,12: syntax error: "as", "into", or "to" expected
+data/cast-error.cdeclrc:1,12: syntax error: "as", "into", or "to" expected
 cdecl> declare x int
                  ^
-data/declare_int_error.cdeclrc:1,11: syntax error: "int": "as" expected ("int" is a keyword)
+data/declare-error.cdeclrc:1,11: syntax error: "int": "as" expected ("int" is a keyword)
 cdecl> explain int
                   ^
-data/explain_int_error.cdeclrc:1,12: error: declaration expected
+data/explain-error.cdeclrc:1,12: error: declaration expected
