@@ -1,4 +1,4 @@
 EXPECTED_EXIT=65
-cdecl -bE --file=data/cast_x.cdecl
+cdecl -bE --file=data/cast_error.cdeclrc
 cdecl -bE --file=data/declare_int_error.cdeclrc
 cdecl -bE --file=data/explain_int_error.cdeclrc
