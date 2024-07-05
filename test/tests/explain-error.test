@@ -294,6 +294,6 @@ END
 cdecl -L$LINENO explain int
 
 # Test that error is reported on correct line in file.
-cdecl -f data/explain_int_error-5.cdeclrc
+cdecl -f data/explain-error-5.cdeclrc
 
 # vim:set syntax=sh:

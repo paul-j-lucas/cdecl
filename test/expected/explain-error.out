@@ -791,4 +791,4 @@ explain int
 294,12: error: declaration expected
 explain int
            ^
-data/explain_int_error-5.cdeclrc:5,12: error: declaration expected
+data/explain-error-5.cdeclrc:5,12: error: declaration expected
