@@ -24,7 +24,7 @@ PROJECT_BRIEF           = "Compose and decipher C (or C++) type declarations or 
 INPUT                   = README.md src
 EXTENSION_MAPPING       = l=C y=C
 FILE_PATTERNS           = *.c *.h *.l *.md *.y
-FILTER_PATTERNS         = "*.h=sed s/[A-Z][A-Z_]*[A-Z]_H_INLINE/inline/"
+FILTER_PATTERNS         = "*.h=sed -f Doxygen.sed"
 PREDEFINED              = __GNUC__ \
                           ENABLE_BISON_DEBUG \
                           ENABLE_FLEX_DEBUG \
