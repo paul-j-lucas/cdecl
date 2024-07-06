@@ -173,7 +173,8 @@ void strbuf_puts( strbuf_t *sbuf, char const *s ) {
  * buffer if necessary.
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
- * @param quote The quote character to use, either `'` or `"`.
+ * @param quote The quote character to use, either <code>&apos;</code> or
+ * <code>&quot;</code>.
  * @param s The string to put.
  */
 void strbuf_puts_quoted( strbuf_t *sbuf, char quote, char const *s );
