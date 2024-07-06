@@ -153,9 +153,8 @@ static unsigned get_columns_via_tigetnum( void ) {
 error:
   if ( likely( cterm_fd != -1 ) )
     close( cterm_fd );
-  if ( unlikely( reason != NULL ) ) {
+  if ( unlikely( reason != NULL ) )
     print_warning( /*loc=*/NULL, "can't get terminal columns: %s\n", reason );
-  }
 
   return rv;
 }
