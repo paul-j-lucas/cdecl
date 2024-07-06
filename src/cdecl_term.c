@@ -95,8 +95,8 @@ static unsigned get_columns_via_tigetnum( void ) {
     goto error;
   }
 
-  char const *const cterm_path = ctermid( NULL );
-  if ( unlikely( cterm_path == NULL || *cterm_path == '\0' ) ) {
+  char const *const cterm_path = null_if_empty( ctermid( /*buf=*/NULL ) );
+  if ( unlikely( cterm_path == NULL ) ) {
     // LCOV_EXCL_START
     reason = "ctermid(3) failed to get controlling terminal";
     goto error;
