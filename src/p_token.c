@@ -688,8 +688,7 @@ char const* p_token_str( p_token_t const *token ) {
   switch ( token->kind ) {
     case P_CHAR_LIT:
       strbuf_reset( &sbuf );
-      strbuf_puts_quoted( &sbuf, '\'', token->lit.value );
-      return sbuf.str;
+      return strbuf_puts_quoted( &sbuf, '\'', token->lit.value );
     case P_CONCAT:
       return other_token_c( "##" );
     case P_IDENTIFIER:
@@ -709,8 +708,7 @@ char const* p_token_str( p_token_t const *token ) {
       return other_token_c( "#" );
     case P_STR_LIT:
       strbuf_reset( &sbuf );
-      strbuf_puts_quoted( &sbuf, '"', token->lit.value );
-      return sbuf.str;
+      return strbuf_puts_quoted( &sbuf, '"', token->lit.value );
     case P___VA_ARGS__:
       return L_PRE___VA_ARGS__;
     case P___VA_OPT__:

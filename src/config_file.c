@@ -95,8 +95,7 @@ void config_init( void ) {
     char const *const home = home_dir();
     if ( home != NULL ) {
       strbuf_puts( &sbuf, home );
-      strbuf_paths( &sbuf, CONF_FILE_NAME_DEFAULT );
-      config_path = sbuf.str;
+      config_path = strbuf_paths( &sbuf, CONF_FILE_NAME_DEFAULT );
     }
     // LCOV_EXCL_STOP
   }

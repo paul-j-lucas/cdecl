@@ -541,8 +541,7 @@ static char const* macro_flmwa_key( p_macro_t const *curr_macro,
 
   static strbuf_t sbuf;
   strbuf_reset( &sbuf );
-  strbuf_printf( &sbuf, "%s-%s", curr_macro->name, warn_macro->name );
-  return sbuf.str;
+  return strbuf_printf( &sbuf, "%s-%s", curr_macro->name, warn_macro->name );
 }
 
 /**

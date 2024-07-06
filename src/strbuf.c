@@ -70,13 +70,13 @@ void strbuf_cleanup( strbuf_t *sbuf ) {
   strbuf_init( sbuf );
 }
 
-void strbuf_paths( strbuf_t *sbuf, char const *component ) {
+char* strbuf_paths( strbuf_t *sbuf, char const *component ) {
   assert( sbuf != NULL );
   assert( component != NULL );
 
   size_t comp_len = strlen( component );
   if ( comp_len == 0 )
-    return;
+    return sbuf->str;
 
   if ( sbuf->len > 0 ) {
     if ( sbuf->str[ sbuf->len - 1 ] == '/' ) {
@@ -92,10 +92,10 @@ void strbuf_paths( strbuf_t *sbuf, char const *component ) {
     }
   }
 
-  strbuf_putsn( sbuf, component, comp_len );
+  return strbuf_putsn( sbuf, component, comp_len );
 }
 
-void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
+char* strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   assert( sbuf != NULL );
   assert( format != NULL );
 
@@ -144,9 +144,10 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   }
 
   sbuf->len += args_len;
+  return sbuf->str;
 }
 
-void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
+char* strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
   assert( s != NULL );
   strbuf_reserve( sbuf, s_len );
 
@@ -156,9 +157,10 @@ void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
 
   sbuf->len += s_len;
   sbuf->str[ sbuf->len ] = '\0';
+  return sbuf->str;
 }
 
-void strbuf_puts_quoted( strbuf_t *sbuf, char quote, char const *s ) {
+char* strbuf_puts_quoted( strbuf_t *sbuf, char quote, char const *s ) {
   assert( sbuf != NULL );
   assert( quote == '\'' || quote == '"' );
   assert( s != NULL );
@@ -197,6 +199,8 @@ void strbuf_puts_quoted( strbuf_t *sbuf, char quote, char const *s ) {
     strbuf_putc( sbuf, *s );
   } // for
   strbuf_putc( sbuf, quote );
+
+  return sbuf->str;
 }
 
 bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {

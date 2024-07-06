@@ -98,12 +98,14 @@ void strbuf_init( strbuf_t *sbuf ) {
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param component The component to append.
+ * @return Returns \ref strbuf::str "sbuf->str".
  *
  * @sa strbuf_printf()
  * @sa strbuf_puts()
  * @sa strbuf_putsn()
  */
-void strbuf_paths( strbuf_t *sbuf, char const *component );
+PJL_DISCARD
+char* strbuf_paths( strbuf_t *sbuf, char const *component );
 
 /**
  * Using \a format, appends the `printf`-style arguments onto the end of \a
@@ -112,14 +114,15 @@ void strbuf_paths( strbuf_t *sbuf, char const *component );
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
+ * @return Returns \ref strbuf::str "sbuf->str".
  *
  * @sa strbuf_paths()
  * @sa strbuf_putc()
  * @sa strbuf_puts()
  * @sa strbuf_putsn()
  */
-PJL_PRINTF_LIKE_FUNC(2)
-void strbuf_printf( strbuf_t *sbuf, char const *format, ... );
+PJL_DISCARD PJL_PRINTF_LIKE_FUNC(2)
+char* strbuf_printf( strbuf_t *sbuf, char const *format, ... );
 
 /**
  * Appends \a s_len bytes of \a s onto the end of \a sbuf growing the buffer if
@@ -128,27 +131,30 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... );
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param s The string to append.
  * @param s_len The number of bytes of \a s to append.
+ * @return Returns \ref strbuf::str "sbuf->str".
  *
  * @sa strbuf_paths()
  * @sa strbuf_putc()
  * @sa strbuf_printf()
  * @sa strbuf_puts()
  */
-void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len );
+PJL_DISCARD
+char* strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len );
 
 /**
  * Appends \a c onto the end of \a sbuf growing the buffer if necessary.
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param c The character to append.
+ * @return Returns \ref strbuf::str "sbuf->str".
  *
  * @sa strbuf_printf()
  * @sa strbuf_puts()
  * @sa strbuf_putsn()
  */
-STRBUF_H_INLINE
-void strbuf_putc( strbuf_t *sbuf, char c ) {
-  strbuf_putsn( sbuf, &c, 1 );
+PJL_DISCARD STRBUF_H_INLINE
+char* strbuf_putc( strbuf_t *sbuf, char c ) {
+  return strbuf_putsn( sbuf, &c, 1 );
 }
 
 /**
@@ -156,15 +162,16 @@ void strbuf_putc( strbuf_t *sbuf, char c ) {
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param s The string to append.
+ * @return Returns \ref strbuf::str "sbuf->str".
  *
  * @sa strbuf_paths()
  * @sa strbuf_putc()
  * @sa strbuf_printf()
  * @sa strbuf_putsn()
  */
-STRBUF_H_INLINE
-void strbuf_puts( strbuf_t *sbuf, char const *s ) {
-  strbuf_putsn( sbuf, s, strlen( s ) );
+PJL_DISCARD STRBUF_H_INLINE
+char* strbuf_puts( strbuf_t *sbuf, char const *s ) {
+  return strbuf_putsn( sbuf, s, strlen( s ) );
 }
 
 /**
@@ -176,8 +183,10 @@ void strbuf_puts( strbuf_t *sbuf, char const *s ) {
  * @param quote The quote character to use, either <code>&apos;</code> or
  * <code>&quot;</code>.
  * @param s The string to put.
+ * @return Returns \ref strbuf::str "sbuf->str".
  */
-void strbuf_puts_quoted( strbuf_t *sbuf, char quote, char const *s );
+PJL_DISCARD
+char* strbuf_puts_quoted( strbuf_t *sbuf, char quote, char const *s );
 
 /**
  * Ensures at least \a res_len additional bytes of capacity exist in \a sbuf.

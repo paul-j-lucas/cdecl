@@ -338,14 +338,13 @@ static char const* opt_format( char short_opt ) {
   strbuf_reset( sbuf );
 
   char const *const long_opt = opt_get_long( short_opt );
-  strbuf_printf(
+  return strbuf_printf(
     sbuf, "%s%s%s-%c",
     long_opt[0] != '\0' ? "--" : "",
     long_opt,
     long_opt[0] != '\0' ? "/" : "",
     short_opt
   );
-  return sbuf->str;
 }
 
 /**

@@ -221,8 +221,7 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
     }
   }
 
-  strbuf_puts( &sbuf, c_lang_name( which_lang_id ) );
-  return sbuf.str;
+  return strbuf_puts( &sbuf, c_lang_name( which_lang_id ) );
 }
 
 c_lang_id_t is_reserved_name( char const *name ) {

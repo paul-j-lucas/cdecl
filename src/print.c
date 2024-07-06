@@ -106,8 +106,7 @@ static char const* fput_list_dym_gets( void const **ppelt ) {
 
   strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
   strbuf_reset( sbuf );
-  strbuf_printf( sbuf, "\"%s\"", dym->literal );
-  return sbuf->str;
+  return strbuf_printf( sbuf, "\"%s\"", dym->literal );
 }
 
 /**
