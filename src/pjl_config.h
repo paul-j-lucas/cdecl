@@ -65,6 +65,9 @@
 
 #endif /* HAVE___ATTRIBUTE__ */
 
+/**
+ * Define %PJL_TYPEOF to the supported `typeof` keyword, if any.
+ */
 #if defined HAVE_TYPEOF
 # define PJL_TYPEOF               typeof
 #elif defined HAVE___TYPEOF__
