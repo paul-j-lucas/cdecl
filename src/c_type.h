@@ -1243,7 +1243,7 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
  * @param tpid The \ref c_tpid_t to check against.
  * @return Returns \a tids.
  */
-C_TYPE_H_INLINE PJL_DISCARD
+PJL_DISCARD C_TYPE_H_INLINE
 c_tid_t c_tid_check( c_tid_t tids, c_tpid_t tpid ) {
   assert( (tids & TX_MASK_TPID) == tpid );
 #ifdef NDEBUG
