@@ -1,5 +1,8 @@
 2024-07-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_lang.c, cli_options.c, config_file.c, p_macro.c, p_token.c, print.c,
+     strbuf.c, strbuf.h: Several strbuf functions now return strbuf::str.
+   * Doxyfile, Doxygen.sed: Now using file for sed.
    * cdecl_term.c: Using null_if_empty().
    * cdecl_term.c: Added missing `void`.
 
