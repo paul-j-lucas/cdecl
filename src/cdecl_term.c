@@ -55,7 +55,9 @@
 static unsigned const COLUMNS_DEFAULT = 80;
 
 // local variables
-static unsigned (*get_columns_fn)();    ///< Columns-getting function.
+
+/// Columns-getting function.
+static unsigned (*get_columns_fn)( void );
 
 /**
  * @addtogroup terminal-group
