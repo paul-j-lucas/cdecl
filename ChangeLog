@@ -1,5 +1,6 @@
 2024-07-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl_term.c: Using null_if_empty().
    * cdecl_term.c: Added missing `void`.
 
 2024-07-05  Paul J. Lucas <paul@lucasmail.org>
