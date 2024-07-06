@@ -1,3 +1,7 @@
+2024-07-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_term.c: Added missing `void`.
+
 2024-07-05  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c, cli_options.c, parse.c, print.c, explain_int_error-5.cdeclrc,
