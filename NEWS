@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** `CDECL_TEST=false` tests
 Fixed these tests.
 
+** `CDECL_TEST=true` & `--no-config`
+Specifying the `--no-config` option now always works even when testing.
+
 
 * Changes in Cdecl 18.0
 

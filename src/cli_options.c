@@ -456,6 +456,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   bool              opt_buffer_stdout = true;
   bool              opt_commands = false;
   bool              opt_help = false;
+  bool              opt_no_config = false;
   bool              opt_options = false;
   unsigned          opt_version = 0;
   char const *const short_opts = make_short_opts( CLI_OPTIONS );
@@ -493,8 +494,6 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         if ( *SKIP_WS( optarg ) == '\0' )
           goto missing_arg;
         opt_config_path = optarg;
-        if ( cdecl_is_testing )
-          opt_read_config = true;
         break;
       case COPT(DIGRAPHS):
         opt_graph = C_GRAPH_DI;
@@ -551,7 +550,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         opt_buffer_stdout = false;
         break;
       case COPT(NO_CONFIG):
-        opt_read_config = false;
+        opt_no_config = true;
         break;
       case COPT(NO_ENGLISH_TYPES):
         opt_english_types = false;
@@ -679,6 +678,11 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
 
   if ( opt_help )
     print_usage( *pargc > 0 ? EX_USAGE : EX_OK );
+
+  if ( opt_no_config )
+    opt_read_config = false;
+  else if ( opt_config_path != NULL )
+    opt_read_config = true;
 
   if ( opt_options ) {
     print_options();
