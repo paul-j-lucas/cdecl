@@ -63,7 +63,7 @@ bool                opt_infer_command;
 c_lang_id_t         opt_lang_id;
 unsigned            opt_lineno;
 bool                opt_prompt = true;
-bool                opt_read_conf = true;
+bool                opt_read_config = true;
 bool                opt_semicolon = true;
 bool                opt_trailing_ret;
 bool                opt_typedefs = true;

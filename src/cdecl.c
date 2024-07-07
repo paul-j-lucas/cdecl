@@ -124,7 +124,7 @@ int main( int argc, char const *argv[] ) {
   // uses the parser.
   c_typedefs_init();
 
-  if ( opt_read_conf )
+  if ( opt_read_config )
     config_init();
 
   cdecl_initialized = true;

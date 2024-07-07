@@ -494,7 +494,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
           goto missing_arg;
         opt_config_path = optarg;
         if ( cdecl_is_testing )
-          opt_read_conf = true;
+          opt_read_config = true;
         break;
       case COPT(DIGRAPHS):
         opt_graph = C_GRAPH_DI;
@@ -551,7 +551,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         opt_buffer_stdout = false;
         break;
       case COPT(NO_CONFIG):
-        opt_read_conf = false;
+        opt_read_config = false;
         break;
       case COPT(NO_ENGLISH_TYPES):
         opt_english_types = false;
@@ -898,7 +898,7 @@ void cli_options_init( int *pargc, char const **pargv[const] ) {
     //
     // Don't read the cdeclrc by default since it'll interfere with testing.
     //
-    opt_read_conf = false;
+    opt_read_config = false;
   }
 
   parse_options( pargc, pargv );
