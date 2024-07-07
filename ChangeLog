@@ -1,3 +1,9 @@
+2024-07-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Specifying the `--no-config` option now always works even
+     when testing.
+   * configure.ac, explain.test: Fixed CDECL_TEST=false tests.
+
 2024-07-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_lang.c, cli_options.c, config_file.c, p_macro.c, p_token.c, print.c,
