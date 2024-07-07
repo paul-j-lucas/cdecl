@@ -896,7 +896,8 @@ void cli_options_init( int *pargc, char const **pargv[const] ) {
 
   if ( cdecl_is_testing ) {
     //
-    // Don't read the cdeclrc by default since it'll interfere with testing.
+    // Don't read user's ~/.cdeclrc, if any, by default since it'll interfere
+    // with testing.
     //
     opt_read_config = false;
   }
