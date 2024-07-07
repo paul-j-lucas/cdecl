@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.0.1
+
+** `CDECL_TEST=false` tests
+Fixed these tests.
+
+
 * Changes in Cdecl 18.0
 
 ** Allowing blocks & user-defined literals in multi-declarations

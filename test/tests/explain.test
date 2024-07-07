@@ -430,19 +430,23 @@ explain register int x
 explain ~C() throw()
 END
 
-# Do a test without CDECL_TEST set to exercise more code in cdecl_term.c.
-unset CDECL_TEST
-cdecl -bEL$LINENO <<END
+###############################################################################
+
+# Do some tests without CDECL_TEST set to exercise more code in cdecl_term.c,
+# but we must pass --no-config explicitly.
+CDECL_TEST=false
+
+cdecl -bEL$LINENO --no-config <<END
 explain int x
 END
 
 # Do a test without TERM set to exercise more code in cdecl_term.c.
 ORIG_TERM=$TERM
 unset TERM
-cdecl -bEL$LINENO <<END
+cdecl -bEL$LINENO --no-config <<END
 explain int x
 END
 export TERM=$ORIG_TERM
 
-export CDECL_TEST=true
+CDECL_TEST=true
 # vim:set syntax=sh:
