@@ -419,8 +419,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
 
     case Y_FLOAT_LIT:
     case Y_INT_LIT:
-      token =
-        p_token_new_loc( P_NUM_LIT, &yylloc, check_strdup( yytext ) );
+      token = p_token_new_loc( P_NUM_LIT, &yylloc, check_strdup( yytext ) );
       break;
 
     case Y_NAME:
