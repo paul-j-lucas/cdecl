@@ -207,7 +207,7 @@
  *          // The "WINAPI" literal is always a synonym for the "__stdcall"
  *          // literal.
  *          { L_MSC_WINAPI,
- *            LANG_MSC_EXTENSIONS,
+ *            LANG_MSC_CALL_CONVS,
  *            SYNONYM( ALWAYS_FIND, L_MSC___stdcall ),
  *            ...
  *          }
@@ -1665,7 +1665,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   // Microsoft extensions
   { L_MSC_cdecl,
-    LANG_MSC_EXTENSIONS,
+    LANG_MSC_CALL_CONVS,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___cdecl ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
@@ -1674,7 +1674,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   },
 
   { L_MSC_clrcall,
-    LANG_MSC_EXTENSIONS,
+    LANG_MSC_CALL_CONVS,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___clrcall ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
@@ -1683,7 +1683,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   },
 
   { L_MSC_fastcall,
-    LANG_MSC_EXTENSIONS,
+    LANG_MSC_CALL_CONVS,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___fastcall ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
@@ -1692,7 +1692,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   },
 
   { L_MSC_stdcall,
-    LANG_MSC_EXTENSIONS,
+    LANG_MSC_CALL_CONVS,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___stdcall ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
@@ -1701,7 +1701,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   },
 
   { L_MSC_thiscall,
-    LANG_MSC_EXTENSIONS,
+    LANG_MSC_CALL_CONVS,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___thiscall ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
@@ -1710,7 +1710,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   },
 
   { L_MSC_vectorcall,
-    LANG_MSC_EXTENSIONS,
+    LANG_MSC_CALL_CONVS,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___vectorcall ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
@@ -1719,7 +1719,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   },
 
   { L_MSC_WINAPI,
-    LANG_MSC_EXTENSIONS,
+    LANG_MSC_CALL_CONVS,
     SYNONYM( ALWAYS_FIND, L_MSC___stdcall ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,

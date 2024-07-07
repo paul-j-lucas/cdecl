@@ -875,9 +875,9 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_MEMBER_FUNCTIONS           LANG_CPP_ANY
 
 /**
- * Languages Microsoft extensions are supported in.
+ * Languages Microsoft calling conventions are supported in.
  */
-#define LANG_MSC_EXTENSIONS             LANG_MIN(C_89)
+#define LANG_MSC_CALL_CONVS             LANG_MIN(C_89)
 
 /**
  * Languages the `mutable` keyword is supported in.

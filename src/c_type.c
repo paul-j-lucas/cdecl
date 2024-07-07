@@ -167,22 +167,22 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
     C_LANG_LIT( { LANG_ANY, L_unsequenced } ) },
 
   // Microsoft extensions
-  { TA_MSC___cdecl, LANG_MSC_EXTENSIONS, L_MSC_cdecl,
+  { TA_MSC___cdecl, LANG_MSC_CALL_CONVS, L_MSC_cdecl,
     C_LANG_LIT( { LANG_ANY, L_MSC___cdecl } ) },
 
-  { TA_MSC___clrcall, LANG_MSC_EXTENSIONS, L_MSC_clrcall,
+  { TA_MSC___clrcall, LANG_MSC_CALL_CONVS, L_MSC_clrcall,
     C_LANG_LIT( { LANG_ANY, L_MSC___clrcall } ) },
 
-  { TA_MSC___fastcall, LANG_MSC_EXTENSIONS, L_MSC_fastcall,
+  { TA_MSC___fastcall, LANG_MSC_CALL_CONVS, L_MSC_fastcall,
     C_LANG_LIT( { LANG_ANY, L_MSC___fastcall } ) },
 
-  { TA_MSC___stdcall, LANG_MSC_EXTENSIONS, L_MSC_stdcall,
+  { TA_MSC___stdcall, LANG_MSC_CALL_CONVS, L_MSC_stdcall,
     C_LANG_LIT( { LANG_ANY, L_MSC___stdcall } ) },
 
-  { TA_MSC___thiscall, LANG_MSC_EXTENSIONS, L_MSC_thiscall,
+  { TA_MSC___thiscall, LANG_MSC_CALL_CONVS, L_MSC_thiscall,
     C_LANG_LIT( { LANG_ANY, L_MSC___thiscall } ) },
 
-  { TA_MSC___vectorcall, LANG_MSC_EXTENSIONS, L_MSC_vectorcall,
+  { TA_MSC___vectorcall, LANG_MSC_CALL_CONVS, L_MSC_vectorcall,
     C_LANG_LIT( { LANG_ANY, L_MSC___vectorcall } ) },
 };
 
