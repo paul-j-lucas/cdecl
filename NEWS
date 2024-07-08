@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 18.0.1
+* Changes in Cdecl 18.1
 
 ** `CDECL_TEST=false` tests
 Fixed these tests.
