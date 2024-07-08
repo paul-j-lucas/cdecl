@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 5, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 7, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -565,7 +565,9 @@ like:
 .RE
 .IP
 where \f(CW$LINENO\fP
-(the line number of the script
+(the shell environment variable
+containing the current the line number of the script,
+in this case, the one
 .B cdecl
 is called on \(em in this example: 2)
 is given.
