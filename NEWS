@@ -21,6 +21,17 @@ Specifying the `--no-config` option now always works even when testing.
 ** Glob help
 Fixed glob help.
 
+** `show ::FILE`
+Fixed a crash.
+
+** `show` fixed glob
+Now, showing a specific glob (one having no `*`s in it) like:
+
+    c++decl> show ::FILE
+
+will show the definition of `FILE` even though it's predefined and not the
+default of user-defined.
+
 
 * Changes in Cdecl 18.0
 

@@ -13,6 +13,7 @@ show predefined
 show predefined typedef
 show user
 show user typedef
+show FILE
 
 show __FILE__
 show __LINE__
@@ -48,6 +49,7 @@ show predefined
 show predefined typedef
 show predefined using
 show predefined macros
+show ::FILE
 
 typedef int (*const CPF)(const char *const s)
 typedef int *const CPI

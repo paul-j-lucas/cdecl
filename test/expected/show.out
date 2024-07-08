@@ -2688,6 +2688,8 @@ cdecl> show user
 typedef int Int;
 cdecl> show user typedef
 typedef int Int;
+cdecl> show FILE
+typedef struct _iobuf FILE;
 cdecl> 
 cdecl> show __FILE__
 #define __FILE__ "example.c"
@@ -5326,6 +5328,8 @@ c++decl> show predefined macros
 #define __LINE__ 42
 #define __TIME__ "12:34:56"
 #define __cplusplus 202302L
+c++decl> show ::FILE
+typedef struct _iobuf FILE;
 c++decl> 
 c++decl> typedef int (*const CPF)(const char *const s)
 c++decl> typedef int *const CPI

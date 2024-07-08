@@ -56,20 +56,26 @@ void c_sglob_parse( char const *s, c_sglob_t *rv_sglob ) {
   if ( s == NULL )
     return;
   SKIP_WS( s );
-  if ( s[0] == '\0' )
-    return;                             // LCOV_EXCL_LINE
 
-  //
-  // Special case: if the scoped glob starts with `**`, match in any scope.
-  //
-  rv_sglob->match_in_any_scope = s[0] == '*' && s[1] == '*';
-  if ( rv_sglob->match_in_any_scope ) {
-    s += 2 /* "**" */;
-    SKIP_WS( s );
-    assert( s[0] == ':' && s[1] == ':' );
-    s += 2 /* "::" */;
-    SKIP_WS( s );
-  }
+  switch ( s[0] ) {
+    case '\0':
+      return;                           // LCOV_EXCL_LINE
+    case '*':
+      if ( s[1] == '*' ) {              // starts with "**": match in any scope
+        s += 2 /* "**" */;
+        SKIP_WS( s );
+        assert( s[0] == ':' && s[1] == ':' );
+        s += 2 /* "::" */;
+        SKIP_WS( s );
+        rv_sglob->match_in_any_scope = true;
+      }
+      break;
+    case ':':
+      assert( s[1] == ':' );            // starts with "::": global scope
+      s += 2 /* "::" */;
+      SKIP_WS( s );
+      break;
+  } // switch
 
   //
   // Scan through the scoped glob to count the number of scopes which is the
