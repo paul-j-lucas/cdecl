@@ -18,6 +18,9 @@ Fixed these tests.
 ** `CDECL_TEST=true` & `--no-config`
 Specifying the `--no-config` option now always works even when testing.
 
+** Glob help
+Fixed glob help.
+
 
 * Changes in Cdecl 18.0
 

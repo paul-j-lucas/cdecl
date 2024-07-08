@@ -370,7 +370,7 @@ static void print_help_command( cdecl_command_t const *command ) {
     if ( OPT_LANG_IS( C_ANY ) )
       print_h( "a <name> containing zero or more literal *\n" );
     else
-      print_h( "a [[*]::]<name>[::<name>]* containing zero or more literal *\n" );
+      print_h( "a [\\*\\*::]<name>[::<name>]* containing zero or more literal \\*\n" );
     print_help_name_number();
   }
 

@@ -866,7 +866,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -902,7 +902,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -935,7 +935,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1070,7 +1070,7 @@ command:
   #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1098,7 +1098,7 @@ command:
   #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1126,7 +1126,7 @@ command:
   #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1205,7 +1205,7 @@ command:
   #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1233,7 +1233,7 @@ command:
   #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1261,7 +1261,7 @@ command:
   #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1345,7 +1345,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1378,7 +1378,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1411,7 +1411,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1500,7 +1500,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1533,7 +1533,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1566,7 +1566,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1655,7 +1655,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1688,7 +1688,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1721,7 +1721,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1811,7 +1811,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1844,7 +1844,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
@@ -1877,7 +1877,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
-glob: a [[*]::]<name>[::<name>]* containing zero or more literal *
+glob: a [**::]<name>[::<name>]* containing zero or more literal *
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
