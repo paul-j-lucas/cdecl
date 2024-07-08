@@ -1,3 +1,9 @@
+2024-07-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sglob.c, show.c, show.out, show.test: Fixed a crash of `show ::FILE`;
+     now showing predefined specific globs if no user-defined glob was shown.
+   * help.c, help.out: Fixed glob help.
+
 2024-07-07  Paul J. Lucas <paul@lucasmail.org>
 
    * share/man/man1/cdecl.1: Explained $LINENO more.
