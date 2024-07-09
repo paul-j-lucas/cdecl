@@ -77,7 +77,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa c_sname_global_data()
  * @sa c_sname_local_data()
  */
-#define c_scope_data(SCOPE)       STATIC_CAST( c_scope_data_t*, (SCOPE)->data )
+#define c_scope_data(SCOPE)       POINTER_CAST( c_scope_data_t*, (SCOPE)->data )
 
 /**
  * Gets the global scope data of \a SNAME (which is the data of the outermost
