@@ -678,7 +678,8 @@ c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
 NODISCARD C_AST_UTIL_H_INLINE
 bool c_ast_op_mbr_matches( c_ast_t const *ast, c_operator_t const *op ) {
   return  ast->oper.member == C_FUNC_UNSPECIFIED ||
-          (TO_UNSIGNED( ast->oper.member ) & TO_UNSIGNED( op->overload )) != 0;
+          (STATIC_CAST( unsigned, ast->oper.member ) &
+           STATIC_CAST( unsigned, op->overload     )) != 0;
 }
 
 /**

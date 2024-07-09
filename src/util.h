@@ -976,15 +976,6 @@ _GL_INLINE_HEADER_BEGIN
 #define STRTOULL_ERROR            STATIC_CAST( unsigned long long, -1 )
 
 /**
- * Converts \a N to an unsigned integral type that's the same size as
- * <code>sizeof(</code>\a N<code>)</code>.
- *
- * @param N The presumed signed integral expression to convert.
- * @return Returns \a N converted to an unsigned type.
- */
-#define TO_UNSIGNED(N)            ((N) + 0u)
-
-/**
  * Converts \a P to a pointer to `void` preserving `const`-ness.
  *
  * @param P A pointer.
