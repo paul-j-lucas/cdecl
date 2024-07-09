@@ -1,3 +1,7 @@
+2024-07-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c, p_token.c: Now using ARRAY_SIZE( "..." ) for char arrays.
+
 2024-07-08  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.h, show.c, util.h: Revert "Added TO_UNSIGNED() macro."
