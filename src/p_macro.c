@@ -497,7 +497,7 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
 static char const* get___DATE___str( void ) {
   if ( cdecl_is_testing )
     return "Sep 09 1941";
-  static char buf[ sizeof( "MMM DD YYYY" ) ];
+  static char buf[ ARRAY_SIZE( "MMM DD YYYY" ) ];
   time_t const now = time( /*tloc=*/NULL );
   STRFTIME( buf, sizeof buf, "%b %e %Y", localtime( &now ) );
   return buf;
@@ -515,7 +515,7 @@ static char const* get___DATE___str( void ) {
 static char const* get___TIME___str( void ) {
   if ( cdecl_is_testing )
     return "12:34:56";
-  static char buf[ sizeof( "hh:mm:ss" ) ];
+  static char buf[ ARRAY_SIZE( "hh:mm:ss" ) ];
   time_t const now = time( /*tloc=*/NULL );
   STRFTIME( buf, sizeof buf, "%H:%M:%S", localtime( &now ) );
   return buf;
@@ -567,7 +567,7 @@ static bool mex_append_args( mex_state_t *mex ) {
   unsigned arg_index = 0;
   bool comma = false;
   FOREACH_SLIST_NODE( arg_node, mex->arg_list ) {
-    char arg_name[8];                   // arg_NNN0
+    char arg_name[ ARRAY_SIZE( "arg_NNN" ) ];
     check_snprintf( arg_name, sizeof arg_name, "arg_%u", ++arg_index );
 
     mex_state_t arg_mex;

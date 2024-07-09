@@ -102,7 +102,7 @@ static void avoid_paste( p_token_list_t *token_list, p_token_t const *token ) {
   // It's large enough to hold two of the longest operators of `->*`, `<<=`,
   // `<=>`, or `>>=`, consecutively, plus a terminating `\0`.
   //
-  char paste_buf[7];                    // 1112220
+  char paste_buf[ ARRAY_SIZE( "op1op2" ) ];
 
   check_snprintf( paste_buf, sizeof paste_buf, "%s%s", s1, s2 );
   if ( is_multi_char_punctuator( paste_buf ) )
@@ -681,7 +681,7 @@ p_token_node_t const* (p_token_node_not)( p_token_node_t const *token_node,
 char const* p_token_str( p_token_t const *token ) {
   assert( token != NULL );
 
-  static char other_str[2];
+  static char other_str[ ARRAY_SIZE( "?" ) ];
   static strbuf_t sbuf;
 
   switch ( token->kind ) {
