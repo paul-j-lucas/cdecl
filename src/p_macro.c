@@ -483,8 +483,6 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
   return true;
 }
 
-// LCOV_EXCL_START -- can't test these since expected value always changes
-
 /**
  * Gets the current value of the `__DATE__` macro.
  *
@@ -497,10 +495,12 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
 static char const* get___DATE___str( void ) {
   if ( cdecl_is_testing )
     return "Sep 09 1941";
+  // LCOV_EXCL_START
   static char buf[ ARRAY_SIZE( "MMM DD YYYY" ) ];
   time_t const now = time( /*tloc=*/NULL );
   STRFTIME( buf, sizeof buf, "%b %e %Y", localtime( &now ) );
   return buf;
+  // LCOV_EXCL_STOP
 }
 
 /**
@@ -515,13 +515,13 @@ static char const* get___DATE___str( void ) {
 static char const* get___TIME___str( void ) {
   if ( cdecl_is_testing )
     return "12:34:56";
+  // LCOV_EXCL_START
   static char buf[ ARRAY_SIZE( "hh:mm:ss" ) ];
   time_t const now = time( /*tloc=*/NULL );
   STRFTIME( buf, sizeof buf, "%H:%M:%S", localtime( &now ) );
   return buf;
+  // LCOV_EXCL_STOP
 }
-
-// LCOV_EXCL_STOP
 
 /**
  * Generates a key for function-like macros that won't expand for the \ref
@@ -630,9 +630,7 @@ static c_lang_id_t macro_dyn___cplusplus( p_token_t **ptoken ) {
 static c_lang_id_t macro_dyn___DATE__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     *ptoken = !OPT_LANG_IS( __DATE__ ) ? NULL :
-      // LCOV_EXCL_START
       p_token_new( P_STR_LIT, check_strdup( get___DATE___str() ) );
-      // LCOV_EXCL_STOP
   }
   return LANG___DATE__;
 }
@@ -728,9 +726,7 @@ static c_lang_id_t macro_dyn___STDC_VERSION__( p_token_t **ptoken ) {
 static c_lang_id_t macro_dyn___TIME__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     *ptoken = !OPT_LANG_IS( __TIME__ ) ? NULL :
-      // LCOV_EXCL_START
       p_token_new( P_STR_LIT, check_strdup( get___TIME___str() ) );
-      // LCOV_EXCL_STOP
   }
   return LANG___TIME__;
 }
