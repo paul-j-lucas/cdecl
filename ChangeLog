@@ -1,5 +1,6 @@
 2024-07-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c: Adjusted LCOV_EXCL lines.
    * p_macro.c, p_token.c: Now using ARRAY_SIZE( "..." ) for char arrays.
 
 2024-07-08  Paul J. Lucas <paul@lucasmail.org>
