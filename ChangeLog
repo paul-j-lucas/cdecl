@@ -1,5 +1,7 @@
 2024-07-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sname.h, dam_lev.c: s/STATIC_CAST/POINTER_CAST/
+   * c_ast_util.h, show.c, util.h: Added TO_UNSIGNED() macro.
    * c_sglob.c, show.c, show.out, show.test: Fixed a crash of `show ::FILE`;
      now showing predefined specific globs if no user-defined glob was shown.
    * help.c, help.out: Fixed glob help.
