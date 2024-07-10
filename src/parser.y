@@ -2332,17 +2332,29 @@ alignas_or_width_decl_english_ast
   ;
 
 alignas_specifier_english
-  : aligned_english uint_lit[width] bytes_opt
+  : aligned_english uint_lit[bytes] bytes_opt
     {
+      DUMP_START( "alignas_specifier_english", "ALIGNAS uint_lit [BYTES]" );
+      DUMP_INT( "uint_lit", $bytes );
+
       $$.kind = C_ALIGNAS_BYTES;
       $$.loc = @1;
-      $$.bytes = $width;
+      $$.bytes = $bytes;
+
+      DUMP_ALIGN( "$$_align", $$ );
+      DUMP_END();
     }
   | aligned_english decl_english_ast[decl_ast]
     {
+      DUMP_START( "alignas_specifier_english", "ALIGNAS decl_english_ast" );
+      DUMP_AST( "decl_english_ast", $decl_ast );
+
       $$.kind = C_ALIGNAS_TYPE;
       $$.loc = @1;
       $$.type_ast = $decl_ast;
+
+      DUMP_ALIGN( "$$_align", $$ );
+      DUMP_END();
     }
   | aligned_english error
     {
