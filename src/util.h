@@ -556,7 +556,7 @@ _GL_INLINE_HEADER_BEGIN
 # define IS_ARRAY(A)              \
     _Generic( &(A),               \
       PJL_TYPEOF(*(A)) (*)[]: 1,  \
-      default             : 0     \
+      default               : 0   \
     )
 #else
 # define IS_ARRAY(A)              1
