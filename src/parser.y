@@ -1296,7 +1296,6 @@ static void yyerror( char const *msg ) {
 %token              Y_declare
 %token              Y_define
 %token              Y_dynamic         // cast
-//                  Y_exit            // mapped to Y_quit by lexer
 %token              Y_explain
 //                  Y_inline          // covered in C99
 //                  Y_namespace       // covered in C++
