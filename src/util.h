@@ -976,6 +976,24 @@ _GL_INLINE_HEADER_BEGIN
 #define STRTOULL_ERROR            STATIC_CAST( unsigned long long, -1 )
 
 /**
+ * Casts the result of \a N to an unsigned type whose size is
+ * <code>sizeof(</code>\a N<code>)</code>.
+ *
+ * @param N An integral expression.
+ * @return Returns \a N cast to an unsigned type.
+ */
+#define TO_UNSIGNED(N)                    \
+  STATIC_IF( sizeof(N) == sizeof(char),   \
+    (unsigned char)(N),                   \
+  STATIC_IF( sizeof(N) == sizeof(short),  \
+    (unsigned short)(N),                  \
+  STATIC_IF( sizeof(N) == sizeof(int),    \
+    (unsigned int)(N),                    \
+  STATIC_IF( sizeof(N) == sizeof(long),   \
+    (unsigned long)(N),                   \
+    (unsigned long long)(N) ) ) ) )
+
+/**
  * Converts \a P to a pointer to `void` preserving `const`-ness.
  *
  * @param P A pointer.
