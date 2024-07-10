@@ -1,5 +1,6 @@
 2024-07-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: -Wsign-conversion is already enabled via -Wconversion.
    * c_ast_util.c, c_sname.c, c_sname.h, lexer.l, slist.h: Replaced:
      s/SLIST_VAR_INIT/SLIST_LIT/, s/SNAME_VAR_INIT/C_SNAME_LIT/.
    * c_ast.c: Added NODISCARD.
