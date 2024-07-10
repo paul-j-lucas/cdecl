@@ -1,5 +1,10 @@
 2024-07-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, debug.out: Now using complete location information for alignas.
+   * c_ast.c, c_ast_check.c, dump.c, english.c, gibberish.c, parser.y, types.h,
+     debug.out, declare.out, debug.test, declare.test: Can now alignas a scoped
+     name.
+   * parser.y: Added DUMP_*() macros to alignas_specifier_english.
    * c_ast_util.h, show.c, util.h: Added TO_UNSIGNED().
 
 2024-07-09  Paul J. Lucas <paul@lucasmail.org>
