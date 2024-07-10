@@ -292,9 +292,7 @@ void c_sname_cleanup( c_sname_t *sname ) {
 int c_sname_cmp_name( c_sname_t const *sname, char const *name ) {
   assert( sname != NULL );
   assert( name != NULL );
-
-  SNAME_VAR_INIT_NAME( name_sname, name );
-  return c_sname_cmp( sname, &name_sname );
+  return c_sname_cmp( sname, &C_SNAME_LIT( name ) );
 }
 
 bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc ) {

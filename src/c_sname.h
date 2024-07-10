@@ -95,6 +95,17 @@ _GL_INLINE_HEADER_BEGIN
   c_scope_data( (SNAME)->head )
 
 /**
+ * Creates a scoped name literal with a local name of \a NAME.
+ *
+ * @param NAME The local name.
+ * @return Returns said scoped name.
+ *
+ * @warning c_sname_cleanup() must _not_ be called on the returned value.
+ */
+#define C_SNAME_LIT(NAME) \
+  SLIST_LIT( (&(c_scope_data_t){ (NAME), T_NONE }) )
+
+/**
  * Gets the local scope data of \a SNAME (which is the data of the innermost
  * scope).
  *
@@ -107,17 +118,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa c_sname_global_data()
  */
 #define c_sname_local_data(SNAME) c_scope_data( (SNAME)->tail )
-
-/**
- * Creates a scoped name variable \a VAR on the stack having a local \a NAME.
- *
- * @param VAR The \ref c_sname_t variable.
- * @param NAME The name.
- *
- * @warning c_sname_cleanup() must _not_ be called on \a VAR.
- */
-#define SNAME_VAR_INIT_NAME(VAR,NAME) \
-  SLIST_VAR_INIT( VAR, (&(c_scope_data_t){ (NAME), T_NONE }) )
 
 /**
  * Convenience macro for iterating over all scopes of an sname.

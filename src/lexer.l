@@ -1115,9 +1115,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   //
                   // 2. See if it's a typedef'd type.
                   //
-                  SNAME_VAR_INIT_NAME( sname, yytext );
                   c_typedef_t const *const tdef =
-                    c_typedef_find_sname( &sname );
+                    c_typedef_find_sname( &C_SNAME_LIT( yytext ) );
                   if ( tdef != NULL ) {
                     yylval.tdef = tdef;
                     return Y_TYPEDEF_NAME_TDEF;
