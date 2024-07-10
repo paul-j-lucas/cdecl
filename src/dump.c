@@ -142,6 +142,9 @@ static void c_alignas_dump_impl( c_alignas_t const *align,
     case C_ALIGNAS_BYTES:
       DUMP_KEY( dump, "bytes: %u", align->bytes );
       break;
+    case C_ALIGNAS_SNAME:
+      DUMP_SNAME( dump, "sname", &align->sname );
+      break;
     case C_ALIGNAS_TYPE:
       DUMP_AST( dump, "type_ast", align->type_ast );
       break;

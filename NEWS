@@ -12,6 +12,14 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 18.1
 
+** `alignas` scoped names
+Alignments can now have names to denote the number of bytes, e.g.:
+
+    c++decl> explain alignas(N) char c
+    declare c as character aligned as N bytes
+
+where `N` is presumed to be an integer constant.
+
 ** `CDECL_TEST=false` tests
 Fixed these tests.
 

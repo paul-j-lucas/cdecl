@@ -170,6 +170,8 @@ cdecl> declare x as char aligned as 0 bytes
 alignas(0) char x;
 cdecl> declare x as char aligned as 8 bytes
 alignas(8) char x;
+cdecl> declare x as char aligned as N bytes
+alignas(N) char x;
 cdecl> declare x as char aligned as pointer to void
 alignas(void*) char x;
 cdecl> declare x as complex double
@@ -266,15 +268,15 @@ cdecl> declare _x as int
 int _x;
 cdecl> declare _X as int
                ^
-139,9: warning: "_X" is a reserved identifier
+140,9: warning: "_X" is a reserved identifier
 int _X;
 cdecl> declare __x as int
                ^
-140,9: warning: "__x" is a reserved identifier
+141,9: warning: "__x" is a reserved identifier
 int __x;
 cdecl> declare x__x as int
                ^
-141,9: warning: "x__x" is a reserved identifier in C++
+142,9: warning: "x__x" is a reserved identifier in C++
 int x__x;
 cdecl> 
 cdecl> set knr
@@ -294,13 +296,13 @@ cdecl> declare f as function (i as register) returning void
 void f(register int i);
 cdecl> declare p as pointer to function (x) returning int
                                          ^
-152,35: warning: missing type specifier; "int" assumed
+153,35: warning: missing type specifier; "int" assumed
 int (*p)(int x);
 cdecl> 
 cdecl> set c17
 cdecl> declare f as function (x) returning pointer to int
                               ^
-155,24: warning: missing type specifier; "int" assumed
+156,24: warning: missing type specifier; "int" assumed
 int* f(int x);
 cdecl> 
 cdecl> declare f as _Noreturn function (int) returning void
@@ -338,6 +340,8 @@ c++decl> declare c as char aligned as 0 bytes
 alignas(0) char c;
 c++decl> declare c as char aligned as 8 bytes
 alignas(8) char c;
+c++decl> declare x as char aligned as N of scope S bytes
+alignas(S::N) char x;
 c++decl> declare delete as operator (p as pointer to void) returning void
 void operator delete(void *p);
 c++decl> declare delete[] as operator (p as pointer to void) returning void
@@ -479,7 +483,7 @@ void f() final;
 c++decl> 
 c++decl> declare final as int
                        ^
-252,15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
+254,15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
 c++decl> 
 c++decl> declare T of namespace A of scope B as type int
 namespace B::A { using T = int; };
@@ -659,5 +663,5 @@ c++decl>
 c++decl> set c++14
 c++decl> declare f as throw function
                  ^
-347,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+349,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 void f() noexcept;

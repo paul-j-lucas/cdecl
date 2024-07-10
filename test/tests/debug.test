@@ -23,6 +23,7 @@ set k&rc
 explain int f(x)
 
 set c++
+explain alignas(S::N) int x
 explain C auto x
 class C
 explain auto [x, y]

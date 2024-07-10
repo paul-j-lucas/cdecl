@@ -279,6 +279,9 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
         return false;
       }
       break;
+    case C_ALIGNAS_SNAME:
+      // nothing to do
+      break;
     case C_ALIGNAS_TYPE:
       return c_ast_check( ast->align.type_ast );
   } // switch

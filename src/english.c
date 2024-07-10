@@ -598,6 +598,11 @@ void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *fout ) {
       if ( ast->align.bytes > 0 )
         FPRINTF( fout, " aligned as %u bytes", ast->align.bytes );
       break;
+    case C_ALIGNAS_SNAME:
+      FPUTS( " aligned as ", fout );
+      c_sname_english( &ast->align.sname, fout );
+      FPUTS( " bytes", fout );
+      break;
     case C_ALIGNAS_TYPE:
       FPUTS( " aligned as ", fout );
       c_ast_visit_english( ast->align.type_ast, &eng );

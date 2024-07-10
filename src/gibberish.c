@@ -1320,6 +1320,11 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *fout ) {
         case C_ALIGNAS_BYTES:
           FPRINTF( fout, "%s(%u) ", alignas_name(), ast->align.bytes );
           break;
+        case C_ALIGNAS_SNAME:
+          FPRINTF( fout,
+            "%s(%s) ", alignas_name(), c_sname_full_name( &ast->align.sname )
+          );
+          break;
         case C_ALIGNAS_TYPE:
           FPRINTF( fout, "%s(", alignas_name() );
           c_ast_gibberish( ast->align.type_ast, C_GIB_PRINT_DECL, fout );

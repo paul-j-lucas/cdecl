@@ -2344,14 +2344,20 @@ alignas_specifier_english
       DUMP_ALIGN( "$$_align", $$ );
       DUMP_END();
     }
-  | aligned_english decl_english_ast[decl_ast]
+  | aligned_english decl_english_ast[decl_ast] bytes_opt
     {
-      DUMP_START( "alignas_specifier_english", "ALIGNAS decl_english_ast" );
+      DUMP_START( "alignas_specifier_english",
+                  "ALIGNAS decl_english_ast [BYTES]" );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
-      $$.kind = C_ALIGNAS_TYPE;
+      if ( $decl_ast->kind == K_NAME ) {
+        $$.kind = C_ALIGNAS_SNAME;
+        $$.sname = c_sname_move( &$decl_ast->sname );
+      } else {
+        $$.kind = C_ALIGNAS_TYPE;
+        $$.type_ast = $decl_ast;
+      }
       $$.loc = @1;
-      $$.type_ast = $decl_ast;
 
       DUMP_ALIGN( "$$_align", $$ );
       DUMP_END();
@@ -3772,6 +3778,19 @@ alignas_specifier_c
       DUMP_END();
     }
 
+  | alignas lparen_exp sname_c[sname] rparen_exp
+    {
+      DUMP_START( "alignas_specifier_c", "ALIGNAS '(' sname_c ')'" );
+      DUMP_SNAME( "sname", $sname );
+
+      $$.kind = C_ALIGNAS_SNAME;
+      $$.loc = @$;
+      $$.sname = c_sname_move( &$sname );
+
+      DUMP_ALIGN( "$$_align", $$ );
+      DUMP_END();
+    }
+
   | alignas lparen_exp type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
     cast_c_astp_opt[cast_astp] rparen_exp
     {
@@ -4606,6 +4625,9 @@ decl_c
           break;
         case C_ALIGNAS_BYTES:
           DUMP_INT( "in_attr__alignas_bytes", in_attr.align.bytes );
+          break;
+        case C_ALIGNAS_SNAME:
+          DUMP_SNAME( "in_attr__alignas_sname", in_attr.align.sname );
           break;
         case C_ALIGNAS_TYPE:
           DUMP_AST( "in_attr__alignas_type_ast", in_attr.align.type_ast );

@@ -134,6 +134,17 @@ static size_t c_ast_count;              ///< ASTs allocated but not yet freed.
  */
 
 /**
+ * Cleans-up all memory associated with \a align but does _not_ free \a align
+ * itself.
+ *
+ * @param align The \ref c_alignas to clean up.  If NULL, does nothing.
+ */
+static void c_alignas_cleanup( c_alignas_t *align ) {
+  if ( align != NULL && align->kind == C_ALIGNAS_SNAME )
+    c_sname_cleanup( &align->sname );
+}
+
+/**
  * Checks whether two alignments are equal.
  *
  * @param i_align The first alignment.
@@ -156,6 +167,8 @@ static bool c_alignas_equal( c_alignas_t const *i_align,
       return true;
     case C_ALIGNAS_BYTES:
       return i_align->bytes == j_align->bytes;
+    case C_ALIGNAS_SNAME:
+      return c_sname_cmp( &i_align->sname, &j_align->sname ) == 0;
     case C_ALIGNAS_TYPE:
       return c_ast_equal( i_align->type_ast, j_align->type_ast );
   } // switch
@@ -461,6 +474,7 @@ void c_ast_free( c_ast_t *ast ) {
   if ( ast != NULL ) {
     assert( c_ast_count-- > 0 );        // side-effect is OK here
 
+    c_alignas_cleanup( &ast->align );
     c_sname_cleanup( &ast->sname );
     switch ( ast->kind ) {
       case K_ARRAY:

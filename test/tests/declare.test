@@ -87,6 +87,7 @@ declare x as bool
 declare x as boolean
 declare x as char aligned as 0 bytes
 declare x as char aligned as 8 bytes
+declare x as char aligned as N bytes
 declare x as char aligned as pointer to void
 declare x as complex double
 declare x as complex float
@@ -173,6 +174,7 @@ declare S::T::f as function
 declare S::f as function
 declare c as char aligned as 0 bytes
 declare c as char aligned as 8 bytes
+declare x as char aligned as N of scope S bytes
 declare delete as operator (p as pointer to void) returning void
 declare delete[] as operator (p as pointer to void) returning void
 declare f as carries-dependency function (x as carries-dependency int) returning int
