@@ -292,7 +292,7 @@ cdecl> explain alignas(8) int x
   uint_lit: 8,
   $$_align: {
     bytes: 8,
-    loc: { first_line: 4, first_column: 8, last_column: 14 }
+    loc: { first_line: 4, first_column: 8, last_column: 17 }
   }
 }
 
@@ -424,7 +424,7 @@ cdecl> explain alignas(8) int x
     depth: 0,
     align: {
       bytes: 8,
-      loc: { first_line: 4, first_column: 8, last_column: 14 }
+      loc: { first_line: 4, first_column: 8, last_column: 17 }
     },
     loc: { first_line: 4, first_column: 19, last_column: 21 },
     type: { btid: 0x0000000000004001, string: "int" },
@@ -447,7 +447,7 @@ cdecl> explain alignas(8) int x
       depth: 0,
       align: {
         bytes: 8,
-        loc: { first_line: 4, first_column: 8, last_column: 14 }
+        loc: { first_line: 4, first_column: 8, last_column: 17 }
       },
       loc: { first_line: 4, first_column: 19, last_column: 21 },
       type: { btid: 0x0000000000004001, string: "int" },
@@ -511,7 +511,7 @@ cdecl> explain alignas(long) int x
         bit_width: 0
       }
     },
-    loc: { first_line: 5, first_column: 8, last_column: 14 }
+    loc: { first_line: 5, first_column: 8, last_column: 20 }
   }
 }
 
@@ -663,7 +663,7 @@ cdecl> explain alignas(long) int x
           bit_width: 0
         }
       },
-      loc: { first_line: 5, first_column: 8, last_column: 14 }
+      loc: { first_line: 5, first_column: 8, last_column: 20 }
     },
     loc: { first_line: 5, first_column: 22, last_column: 24 },
     type: { btid: 0x0000000000004001, string: "int" },
@@ -696,7 +696,7 @@ cdecl> explain alignas(long) int x
             bit_width: 0
           }
         },
-        loc: { first_line: 5, first_column: 8, last_column: 14 }
+        loc: { first_line: 5, first_column: 8, last_column: 20 }
       },
       loc: { first_line: 5, first_column: 22, last_column: 24 },
       type: { btid: 0x0000000000004001, string: "int" },

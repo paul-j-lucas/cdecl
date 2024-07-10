@@ -2338,7 +2338,7 @@ alignas_specifier_english
       DUMP_INT( "uint_lit", $bytes );
 
       $$.kind = C_ALIGNAS_BYTES;
-      $$.loc = @1;
+      $$.loc = @$;
       $$.bytes = $bytes;
 
       DUMP_ALIGN( "$$_align", $$ );
@@ -2357,7 +2357,7 @@ alignas_specifier_english
         $$.kind = C_ALIGNAS_TYPE;
         $$.type_ast = $decl_ast;
       }
-      $$.loc = @1;
+      $$.loc = @$;
 
       DUMP_ALIGN( "$$_align", $$ );
       DUMP_END();
@@ -2365,7 +2365,7 @@ alignas_specifier_english
   | aligned_english error
     {
       $$ = (c_alignas_t){ 0 };
-      $$.loc = @1;
+      $$.loc = @$;
       elaborate_error( "integer or type expected" );
     }
   ;
@@ -3771,7 +3771,7 @@ alignas_specifier_c
       DUMP_INT( "uint_lit", $bytes );
 
       $$.kind = C_ALIGNAS_BYTES;
-      $$.loc = @alignas;
+      $$.loc = @$;
       $$.bytes = $bytes;
 
       DUMP_ALIGN( "$$_align", $$ );
@@ -3802,7 +3802,7 @@ alignas_specifier_c
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
       $$.kind = C_ALIGNAS_TYPE;
-      $$.loc = @alignas;
+      $$.loc = @$;
       $$.type_ast = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
 
       DUMP_ALIGN( "$$_align", $$ );
