@@ -1,5 +1,7 @@
 2024-07-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c, c_sname.c, c_sname.h, lexer.l, slist.h: Replaced:
+     s/SLIST_VAR_INIT/SLIST_LIT/, s/SNAME_VAR_INIT/C_SNAME_LIT/.
    * c_ast.c: Added NODISCARD.
    * c_ast.c: Added missing c_alignas_dup().
    * parser.y, debug.out: Now using complete location information for alignas.
