@@ -150,6 +150,7 @@ static void c_alignas_cleanup( c_alignas_t *align ) {
  * @param align The \ref c_alignas to duplicate; may be NULL.
  * @return Returns the duplicated alignment.
  */
+NODISCARD
 static c_alignas_t c_alignas_dup( c_alignas_t const *align ) {
   c_alignas_t dup_align = { 0 };
   if ( align != NULL ) {
