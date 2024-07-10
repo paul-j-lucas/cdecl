@@ -1008,8 +1008,12 @@ _GL_INLINE_HEADER_BEGIN
  * @sa perror_exit()
  * @sa #PERROR_EXIT_IF()
  */
-#define UNEXPECTED_INT_VALUE(EXPR) \
-  INTERNAL_ERROR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (unsigned long long)(EXPR) )
+#define UNEXPECTED_INT_VALUE(EXPR)                      \
+  INTERNAL_ERROR(                                       \
+    "%lld (0x%llX): unexpected value for " #EXPR "\n",  \
+    STATIC_CAST( long long, (EXPR) ),                   \
+    STATIC_CAST( unsigned long long, (EXPR) )           \
+  )
 
 /**
  * Pre-C23/C++20 substitution for `__VA_OPT__`, that is returns \a TOKENS only
