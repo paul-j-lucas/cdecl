@@ -1,3 +1,7 @@
+2024-07-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.h, show.c, util.h: Added TO_UNSIGNED().
+
 2024-07-09  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c: Adjusted LCOV_EXCL lines.
