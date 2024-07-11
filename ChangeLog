@@ -1,5 +1,17 @@
+2024-07-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_sname.c, c_sname.h, did_you_mean.c, dump.c, english.c,
+     gibberish.c, gibberish.h, parser.y, print.c:
+     s/c_sname_full_name()/c_sname_gibberish()/,
+     s/c_sname_scope_name()/c_sname_scope_gibberish()/; moved code to
+     gibberish.c.
+   * c_ast_check.c, gibberish.c: s/c_sname_full_name/c_sname_local_name/ when
+     possible.
+
 2024-07-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * english.c, english.h: Made c_sname_english() static.
+   * c_ast_check.c, c_sname.c, c_sname.h: Eliminated c_sname_cmp_name().
    * parser.y: Eliminated unused Y_exit.
    * configure.ac: -Wsign-conversion is already enabled via -Wconversion.
    * c_ast_util.c, c_sname.c, c_sname.h, lexer.l, slist.h: Replaced:
