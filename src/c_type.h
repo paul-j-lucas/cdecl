@@ -144,6 +144,15 @@ enum c_tpid {
 typedef enum c_tpid c_tpid_t;
 
 /**
+ * Convenience macro for specifying a type ID literal.
+ *
+ * @param TPID The \ref c_tpid without the `C_TPID_` prefix.
+ * @param BITS The high-order 60 bits of the type ID without the last `0`.
+ * @return Returns said type ID literal.
+ */
+#define C_TID_LIT(TPID,BITS)      (BITS ## 0ull | C_TPID_ ## TPID)
+
+/**
  * @defgroup c-type-literal-macros-group C/C++ Type Literal Macros
  * Convenience macros for specifying a type literal.
  *
@@ -214,7 +223,7 @@ typedef enum c_tpid c_tpid_t;
 
 /** @} */
 
-#define TX_NONE               0x0000000000000000ull /**< No type at all.      */
+#define TX_NONE                   0ull  /**< No type at all. */
 
 /**
  * @defgroup c-base-types-group C/C++ Base Types
@@ -226,21 +235,38 @@ typedef enum c_tpid c_tpid_t;
  * @{
  */
 
-#define TB_NONE               0x0000000000000001ull /**< No base type.        */
-#define TB_ANY                0xFFFFFFFFFFFFFFF1ull /**< Any base type.       */
-#define TB_void               0x0000000000000011ull /**< `void`               */
-#define TB_auto               0x0000000000000021ull /**< C23, C++11 `auto`.   */
-#define TB__BitInt            0x0000000000000041ull /**< `_BitInt`            */
-#define TB_bool               0x0000000000000081ull /**< `_Bool` or `bool`    */
-#define TB_char               0x0000000000000101ull /**< `char`               */
+/** No base type. */
+#define TB_NONE                   C_TID_LIT( BASE, 0x000000000000000 )
+
+/** Any base type. */
+#define TB_ANY                    C_TID_LIT( BASE, 0xFFFFFFFFFFFFFFF )
+
+/** `void`. */
+#define TB_void                   C_TID_LIT( BASE, 0x000000000000001 )
 
 /**
- * `char8_t`
+ * `auto` deduced type.
+ *
+ * @sa #TS_auto
+*/
+#define TB_auto                   C_TID_LIT( BASE, 0x000000000000002 )
+
+/** `_BitInt`. */
+#define TB__BitInt                C_TID_LIT( BASE, 0x000000000000004 )
+
+/** `_Bool` or `bool`. */
+#define TB_bool                   C_TID_LIT( BASE, 0x000000000000008 )
+
+/** `char`. */
+#define TB_char                   C_TID_LIT( BASE, 0x000000000000010 )
+
+/**
+ * `char8_t`.
  *
  * @remarks While this is a distinct type in C++20, it's just a `typedef` in
  * C23.  It's simpler to treat it as a distinct type in C also.
  */
-#define TB_char8_t            0x0000000000000201ull
+#define TB_char8_t                C_TID_LIT( BASE, 0x000000000000020 )
 
 /**
  * `char16_t`
@@ -248,47 +274,74 @@ typedef enum c_tpid c_tpid_t;
  * @remarks While this is a distinct type in C++11, it's just a `typedef` in
  * C11.  It's simpler to treat it as a distinct type in C also.
  */
-#define TB_char16_t           0x0000000000000401ull
+#define TB_char16_t               C_TID_LIT( BASE, 0x000000000000040 )
 
 /**
- * `char32_t`
+ * `char32_t`.
  *
  * @remarks While this is a distinct type in C++11, it's just a `typedef` in
  * C11.  It's simpler to treat it as a distinct type in C also.
  */
-#define TB_char32_t           0x0000000000000801ull
+#define TB_char32_t               C_TID_LIT( BASE, 0x000000000000080 )
 
 /**
- * `wchar_t`
+ * `wchar_t`.
  *
  * @remarks While this is a distinct type in C++, it's just a `typedef` in C.
  * It's simpler to treat it as a distinct type in C also.
  */
-#define TB_wchar_t            0x0000000000001001ull
+#define TB_wchar_t                C_TID_LIT( BASE, 0x000000000000100 )
 
-#define TB_short              0x0000000000002001ull /**< `short`              */
-#define TB_int                0x0000000000004001ull /**< `int`                */
-#define TB_long               0x0000000000008001ull /**< `long`               */
-#define TB_long_long          0x0000000000010001ull /**< `long long`          */
-#define TB_signed             0x0000000000020001ull /**< `signed`             */
-#define TB_unsigned           0x0000000000040001ull /**< `unsigned`           */
-#define TB_float              0x0000000000080001ull /**< `float`              */
-#define TB_double             0x0000000000100001ull /**< `double`             */
-#define TB__Complex           0x0000000000200001ull /**< `_Complex`           */
-#define TB__Imaginary         0x0000000000400001ull /**< `_Imaginary`         */
-#define TB_enum               0x0000000000800001ull /**< `enum`               */
-#define TB_struct             0x0000000001000001ull /**< `struct`             */
-#define TB_union              0x0000000002000001ull /**< `union`              */
-#define TB_class              0x0000000004000001ull /**< `class`              */
+/** `short`. */
+#define TB_short                  C_TID_LIT( BASE, 0x000000000000200 )
+
+/** `int`. */
+#define TB_int                    C_TID_LIT( BASE, 0x000000000000400 )
+
+/** `long`. */
+#define TB_long                   C_TID_LIT( BASE, 0x000000000000800 )
+
+/** `long long`. */
+#define TB_long_long              C_TID_LIT( BASE, 0x000000000001000 )
+
+/** `signed`. */
+#define TB_signed                 C_TID_LIT( BASE, 0x000000000002000 )
+
+/** `unsigned`. */
+#define TB_unsigned               C_TID_LIT( BASE, 0x000000000004000 )
+
+/** `float`. */
+#define TB_float                  C_TID_LIT( BASE, 0x000000000008000 )
+
+/** `double`. */
+#define TB_double                 C_TID_LIT( BASE, 0x000000000010000 )
+
+/** `_Complex`. */
+#define TB__Complex               C_TID_LIT( BASE, 0x000000000020000 )
+
+/** `_Imaginary`. */
+#define TB__Imaginary             C_TID_LIT( BASE, 0x000000000040000 )
+
+/** `enum`. */
+#define TB_enum                   C_TID_LIT( BASE, 0x000000000080000 )
+
+/** `struct`. */
+#define TB_struct                 C_TID_LIT( BASE, 0x000000000100000 )
+
+/** `union`. */
+#define TB_union                  C_TID_LIT( BASE, 0x000000000200000 )
+
+/** `class`. */
+#define TB_class                  C_TID_LIT( BASE, 0x000000000400000 )
 
 /**
- * `namespace`
+ * `namespace`.
  *
  * @remarks Even though a namespace isn't a type, it's simpler to store the
  * fact that a name is a namespace as the scope of another name just like
  * #TB_class, #TB_enum, #TB_struct, and #TB_union.
  */
-#define TB_namespace          0x0000000008000001ull
+#define TB_namespace              C_TID_LIT( BASE, 0x000000000800000 )
 
 /**
  * A generic scope when the specific type of scope is unknown.
@@ -305,7 +358,7 @@ typedef enum c_tpid c_tpid_t;
  * one, so it uses the generic `scope` instead.
  * @endparblock
  */
-#define TB_SCOPE              0x0000000010000001ull
+#define TB_SCOPE                  C_TID_LIT( BASE, 0x000000001000000 )
 
 /**
  * A `typedef`'d type, e.g., `size_t`.
@@ -325,7 +378,7 @@ typedef enum c_tpid c_tpid_t;
  *
  * @sa #TS_typedef
  */
-#define TB_typedef            0x0000000020000001ull
+#define TB_typedef                C_TID_LIT( BASE, 0x000000002000000 )
 
 /** @} */
 
@@ -340,9 +393,15 @@ typedef enum c_tpid c_tpid_t;
  * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
  * @{
  */
-#define TB_EMC__Accum         0x0000000040000001ull /**< `_Accum`             */
-#define TB_EMC__Fract         0x0000000080000001ull /**< `_Fract`             */
-#define TB_EMC__Sat           0x0000000100000001ull /**< `_Sat`               */
+
+/** Embedded C `_Accum`. */
+#define TB_EMC__Accum             C_TID_LIT( BASE, 0x000000004000000 )
+
+/** Embedded C `_Fract`. */
+#define TB_EMC__Fract             C_TID_LIT( BASE, 0x000000008000000 )
+
+/** Embedded C `_Sat`. */
+#define TB_EMC__Sat               C_TID_LIT( BASE, 0x000000010000000 )
 
 /** @} */
 
@@ -356,24 +415,93 @@ typedef enum c_tpid c_tpid_t;
  *
  * @{
  */
-#define TS_NONE               0x0000000000000002ull /**< No storage type.     */
-#define TS_ANY                0xFFFFFFFFFFFFFFF2ull /**< Any storage type.    */
-#define TS_auto               0x0000000000000012ull /**< C's `auto`.          */
+
+/** No storage type. */
+#define TS_NONE                   C_TID_LIT( STORE, 0x000000000000000 )
+
+/** Any storage type. */
+#define TS_ANY                    C_TID_LIT( STORE, 0xFFFFFFFFFFFFFFF )
 
 /**
- * Block storage class.
+ * `auto` storage class.
+ *
+ * @sa #TS_APPLE___block
+ * @sa #TB_auto
+ * @sa #TS_extern
+ * @sa #TS_register
+ * @sa #TS_static
+ * @sa #TS_thread_local
+ */
+#define TS_auto                   C_TID_LIT( STORE, 0x000000000000001 )
+
+/**
+ * `__block` storage class.
  *
  * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
  * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
+ *
+ * @sa #TS_auto
+ * @sa #TS_extern
+ * @sa #TS_register
+ * @sa #TS_static
+ * @sa #TS_thread_local
  */
-#define TS_APPLE___block      0x0000000000000022ull
+#define TS_APPLE___block          C_TID_LIT( STORE, 0x000000000000002 )
 
-#define TS_extern             0x0000000000000042ull /**< `extern`             */
-#define TS_extern_C           0x0000000000000082ull /**< `extern "C"`         */
-#define TS_mutable            0x0000000000000102ull /**< `mutable`            */
-#define TS_register           0x0000000000000202ull /**< `register`           */
-#define TS_static             0x0000000000000402ull /**< `static`             */
-#define TS_thread_local       0x0000000000000802ull /**< `thread_local`       */
+/**
+ * `extern`.
+ *
+ * @sa #TS_APPLE___block
+ * @sa #TS_auto
+ * @sa #TS_extern
+ * @sa #TS_extern_C
+ * @sa #TS_register
+ * @sa #TS_thread_local
+ */
+#define TS_extern                 C_TID_LIT( STORE, 0x000000000000004 )
+
+/**
+ * `extern "C"`.
+ *
+ * @sa #TS_extern
+ */
+#define TS_extern_C               C_TID_LIT( STORE, 0x000000000000008 )
+
+/** `mutable`. */
+#define TS_mutable                C_TID_LIT( STORE, 0x000000000000010 )
+
+/**
+ * `register` storage class.
+ *
+ * @sa #TS_APPLE___block
+ * @sa #TS_auto
+ * @sa #TS_extern
+ * @sa #TS_static
+ * @sa #TS_thread_local
+ */
+#define TS_register               C_TID_LIT( STORE, 0x000000000000020 )
+
+/**
+ * `static` storage class.
+ *
+ * @sa #TS_APPLE___block
+ * @sa #TS_auto
+ * @sa #TS_extern
+ * @sa #TS_register
+ * @sa #TS_thread_local
+ */
+#define TS_static                 C_TID_LIT( STORE, 0x000000000000040 )
+
+/**
+ * `_Thread_local` or `thread_local` storage class.
+ *
+ * @sa #TS_APPLE___block
+ * @sa #TS_auto
+ * @sa #TS_extern
+ * @sa #TS_register
+ * @sa #TS_static
+ */
+#define TS_thread_local           C_TID_LIT( STORE, 0x000000000000080 )
 
 /**
  * `typedef` "storage class" in a declaration like:
@@ -394,10 +522,11 @@ typedef enum c_tpid c_tpid_t;
  * @endparblock
  *
  * @sa #TB_typedef
+ *
  * @note C++ `using` declarations are stored as their equivalent `typedef`
  * declarations.
  */
-#define TS_typedef            0x0000000000001002ull
+#define TS_typedef                C_TID_LIT( STORE, 0x000000000000100 )
 
 /** @} */
 
@@ -411,22 +540,62 @@ typedef enum c_tpid c_tpid_t;
  *
  * @{
  */
-#define TS_consteval          0x0000000000002002ull /**< `consteval`          */
-#define TS_constexpr          0x0000000000004002ull /**< `constexpr`          */
-#define TS_constinit          0x0000000000008002ull /**< `constinit`          */
-#define TS_default            0x0000000000010002ull /**< `= default`          */
-#define TS_delete             0x0000000000020002ull /**< `= delete`           */
-#define TS_explicit           0x0000000000040002ull /**< `explicit`           */
-#define TS_export             0x0000000000080002ull /**< `export`             */
-#define TS_final              0x0000000000100002ull /**< `final`              */
-#define TS_friend             0x0000000000200002ull /**< `friend`             */
-#define TS_inline             0x0000000000400002ull /**< `inline`             */
-#define TS_noexcept           0x0000000000800002ull /**< `noexcept`           */
-#define TS_override           0x0000000001000002ull /**< `override`           */
-#define TS_PURE_virtual       0x0000000002000002ull /**< `= 0`                */
-#define TS_this               0x0000000004000002ull /**< `this`               */
-#define TS_throw              0x0000000008000002ull /**< `throw()`            */
-#define TS_virtual            0x0000000010000002ull /**< `virtual`            */
+
+/** `consteval`. */
+#define TS_consteval              C_TID_LIT( STORE, 0x000000000000200 )
+
+/** `constexpr`. */
+#define TS_constexpr              C_TID_LIT( STORE, 0x000000000000400 )
+
+/** `constinit`. */
+#define TS_constinit              C_TID_LIT( STORE, 0x000000000000800 )
+
+/** `= default`. */
+#define TS_default                C_TID_LIT( STORE, 0x000000000001000 )
+
+/** `= delete`. */
+#define TS_delete                 C_TID_LIT( STORE, 0x000000000002000 )
+
+/** `explicit`. */
+#define TS_explicit               C_TID_LIT( STORE, 0x000000000004000 )
+
+/** `export`. */
+#define TS_export                 C_TID_LIT( STORE, 0x000000000008000 )
+
+/** `final`. */
+#define TS_final                  C_TID_LIT( STORE, 0x000000000010000 )
+
+/** `friend`. */
+#define TS_friend                 C_TID_LIT( STORE, 0x000000000020000 )
+
+/** `inline`. */
+#define TS_inline                 C_TID_LIT( STORE, 0x000000000040000 )
+
+/** `noexcept`. */
+#define TS_noexcept               C_TID_LIT( STORE, 0x000000000080000 )
+
+/** `override`. */
+#define TS_override               C_TID_LIT( STORE, 0x000000000100000 )
+
+/**
+ * `= 0`.
+ *
+ * @sa #TS_virtual
+ */
+#define TS_PURE_virtual           C_TID_LIT( STORE, 0x000000000200000 )
+
+/** Explicit `this` parameter. */
+#define TS_this                   C_TID_LIT( STORE, 0x000000000400000 )
+
+/** `throw()`. */
+#define TS_throw                  C_TID_LIT( STORE, 0x000000000800000 )
+
+/**
+ * `virtual`.
+ *
+ * @sa #TS_PURE_virtual
+ */
+#define TS_virtual                C_TID_LIT( STORE, 0x000000001000000 )
 
 /** @} */
 
@@ -438,10 +607,18 @@ typedef enum c_tpid c_tpid_t;
  * inside c_type_name_impl().
  * @{
  */
-#define TS__Atomic            0x0000000100000002ull /**< `_Atomic`            */
-#define TS_const              0x0000000200000002ull /**< `const`              */
-#define TS_restrict           0x0000000400000002ull /**< `restrict`           */
-#define TS_volatile           0x0000000800000002ull /**< `volatile`           */
+
+/** `_Atomic`. */
+#define TS__Atomic                C_TID_LIT( STORE, 0x000000010000000 )
+
+/** `const`. */
+#define TS_const                  C_TID_LIT( STORE, 0x000000020000000 )
+
+/** `restrict` (C) or `__restrict` (GNU C++). */
+#define TS_restrict               C_TID_LIT( STORE, 0x000000040000000 )
+
+/** `volatile`. */
+#define TS_volatile               C_TID_LIT( STORE, 0x000000080000000 )
 
 /**
  * C99 adds yet another use for `static`: to make function parameters using
@@ -467,7 +644,7 @@ typedef enum c_tpid c_tpid_t;
  *      cdecl> explain int x[static 4]
  *      declare x as non-empty array 4 of integer
  */
-#define TS_NON_EMPTY_ARRAY    0x0000001000000002ull
+#define TS_NON_EMPTY_ARRAY        C_TID_LIT( STORE, 0x000000100000000 )
 
 /** @} */
 
@@ -482,9 +659,15 @@ typedef enum c_tpid c_tpid_t;
  * @sa [Unified Parallel C](http://upc-lang.org/)
  * @{
  */
-#define TS_UPC_relaxed        0x0000002000000002ull /**< `relaxed`            */
-#define TS_UPC_shared         0x0000004000000002ull /**< `shared`             */
-#define TS_UPC_strict         0x0000008000000002ull /**< `strict`             */
+
+/** Unified Parallel C `relaxed` qualifier. */
+#define TS_UPC_relaxed            C_TID_LIT( STORE, 0x000000200000000 )
+
+/** Unified Parallel C `shared` qualifier. */
+#define TS_UPC_shared             C_TID_LIT( STORE, 0x000000400000000 )
+
+/** Unified Parallel C `strict` qualifier. */
+#define TS_UPC_strict             C_TID_LIT( STORE, 0x000000800000000 )
 
 /** @} */
 
@@ -496,8 +679,12 @@ typedef enum c_tpid c_tpid_t;
  * inside c_type_name_impl().
  * @{
  */
-#define TS_REFERENCE          0x0000010000000002ull /**< `void f() &`         */
-#define TS_RVALUE_REFERENCE   0x0000020000000002ull /**< `void f() &&`        */
+
+/** E.g., `void f() &`. */
+#define TS_REFERENCE              C_TID_LIT( STORE, 0x000001000000000 )
+
+/** E.g., `void f() &&`. */
+#define TS_RVALUE_REFERENCE       C_TID_LIT( STORE, 0x000002000000000 )
 
 /** @} */
 
@@ -509,16 +696,36 @@ typedef enum c_tpid c_tpid_t;
  * inside c_type_name_impl().
  * @{
  */
-#define TA_NONE               0x0000000000000004ull /**< No attribute.        */
-#define TA_ANY                0xFFFFFFFFFFFFFFF4ull /**< Any attribute.       */
-#define TA_carries_dependency 0x0000000000000014ull /**< `carries_dependency` */
-#define TA_deprecated         0x0000000000000024ull /**< `deprecated`         */
-#define TA_maybe_unused       0x0000000000000044ull /**< `maybe_unused`       */
-#define TA_nodiscard          0x0000000000000084ull /**< `nodiscard`          */
-#define TA_noreturn           0x0000000000000104ull /**< `noreturn`           */
-#define TA_no_unique_address  0x0000000000000204ull /**< `no_unique_address`  */
-#define TA_reproducible       0x0000000000000404ull /**< `reproducible`       */
-#define TA_unsequenced        0x0000000000000804ull /**< `unsequenced`        */
+
+/** No attribute. */
+#define TA_NONE                   C_TID_LIT( ATTR, 0x000000000000000 )
+
+/** Any attribute. */
+#define TA_ANY                    C_TID_LIT( ATTR, 0xFFFFFFFFFFFFFFF )
+
+/** `carries_dependency`. */
+#define TA_carries_dependency     C_TID_LIT( ATTR, 0x000000000000001 )
+
+/** `deprecated`. */
+#define TA_deprecated             C_TID_LIT( ATTR, 0x000000000000002 )
+
+/** `maybe_unused`. */
+#define TA_maybe_unused           C_TID_LIT( ATTR, 0x000000000000004 )
+
+/** `nodiscard`. */
+#define TA_nodiscard              C_TID_LIT( ATTR, 0x000000000000008 )
+
+/** `noreturn`. */
+#define TA_noreturn               C_TID_LIT( ATTR, 0x000000000000010 )
+
+/** `no_unique_address`. */
+#define TA_no_unique_address      C_TID_LIT( ATTR, 0x000000000000020 )
+
+/** `reproducible`. */
+#define TA_reproducible           C_TID_LIT( ATTR, 0x000000000000040 )
+
+/** `unsequenced`. */
+#define TA_unsequenced            C_TID_LIT( ATTR, 0x000000000000080 )
 
 /** @} */
 
@@ -532,12 +739,24 @@ typedef enum c_tpid c_tpid_t;
  * @sa [Microsoft Windows calling conventions](https://docs.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions)
  * @{
  */
-#define TA_MSC___cdecl        0x0000000000001004ull /**< `__cdecl`            */
-#define TA_MSC___clrcall      0x0000000000002004ull /**< `__clrcall`          */
-#define TA_MSC___fastcall     0x0000000000004004ull /**< `__fastcall`         */
-#define TA_MSC___stdcall      0x0000000000008004ull /**< `__stdcall`          */
-#define TA_MSC___thiscall     0x0000000000010004ull /**< `__thiscall`         */
-#define TA_MSC___vectorcall   0x0000000000020004ull /**< `__vectorcall`       */
+
+/** Microsoft Windows calling convention `__cdecl`. */
+#define TA_MSC___cdecl            C_TID_LIT( ATTR, 0x000000000000100 )
+
+/** Microsoft Windows calling convention `__clrcall`. */
+#define TA_MSC___clrcall          C_TID_LIT( ATTR, 0x000000000000200 )
+
+/** Microsoft Windows calling convention `__fastcall`. */
+#define TA_MSC___fastcall         C_TID_LIT( ATTR, 0x000000000000400 )
+
+/** Microsoft Windows calling convention `__stdcall`. */
+#define TA_MSC___stdcall          C_TID_LIT( ATTR, 0x000000000000800 )
+
+/** Microsoft Windows calling convention `__thiscall`. */
+#define TA_MSC___thiscall         C_TID_LIT( ATTR, 0x000000000001000 )
+
+/** Microsoft Windows calling convention `__vectorcall`. */
+#define TA_MSC___vectorcall       C_TID_LIT( ATTR, 0x000000000002000 )
 
 /** @} */
 
@@ -546,7 +765,7 @@ typedef enum c_tpid c_tpid_t;
  *
  * @sa c_tpid
  */
-#define TX_TPID_MASK          0x000000000000000Full
+#define TX_TPID_MASK              0xFull
 
 ////////// shorthands /////////////////////////////////////////////////////////
 
