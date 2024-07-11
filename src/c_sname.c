@@ -289,12 +289,6 @@ void c_sname_cleanup( c_sname_t *sname ) {
   slist_cleanup( sname, POINTER_CAST( slist_free_fn_t, &c_scope_data_free ) );
 }
 
-int c_sname_cmp_name( c_sname_t const *sname, char const *name ) {
-  assert( sname != NULL );
-  assert( name != NULL );
-  return c_sname_cmp( sname, &C_SNAME_LIT( name ) );
-}
-
 bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   assert( sname != NULL );
   assert( sname_loc != NULL );

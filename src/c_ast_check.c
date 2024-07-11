@@ -849,7 +849,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
 
   if ( ast->kind == K_FUNCTION &&
-       c_sname_cmp_name( &ast->sname, "main" ) == 0 &&
+       c_sname_cmp( &ast->sname, &C_SNAME_LIT( "main" ) ) == 0 &&
       ( //
         // Perform extra checks on a function named "main" if either:
         //
