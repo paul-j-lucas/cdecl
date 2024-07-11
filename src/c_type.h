@@ -165,11 +165,8 @@ typedef enum c_tpid c_tpid_t;
  * @return Returns said literal.
  *
  * @sa #C_TYPE_LIT_A()
- * @sa #C_TYPE_LIT_A_ANY()
  * @sa #C_TYPE_LIT_B()
- * @sa #C_TYPE_LIT_B_ANY()
  * @sa #C_TYPE_LIT_S()
- * @sa #C_TYPE_LIT_S_ANY()
  */
 #define C_TYPE_LIT(BTID,STID,ATID) \
   (c_type_t const){ (BTID), (STID), (ATID) }
@@ -181,31 +178,11 @@ typedef enum c_tpid c_tpid_t;
  * @return Returns said literal.
  *
  * @sa #C_TYPE_LIT()
- * @sa #C_TYPE_LIT_A_ANY()
  * @sa #C_TYPE_LIT_B()
- * @sa #C_TYPE_LIT_B_ANY()
  * @sa #C_TYPE_LIT_S()
- * @sa #C_TYPE_LIT_S_ANY()
  */
 #define C_TYPE_LIT_A(ATID) \
   C_TYPE_LIT( TB_NONE, TS_NONE, (ATID) )
-
-/**
- * Convenience macro for specifying a \ref c_type literal from #TB_ANY,
- * #TS_ANY, and \a ATID.
- *
- * @param ATID The attribute(s) \ref c_tid_t.
- * @return Returns said literal.
- *
- * @sa #C_TYPE_LIT()
- * @sa #C_TYPE_LIT_A()
- * @sa #C_TYPE_LIT_B()
- * @sa #C_TYPE_LIT_B_ANY()
- * @sa #C_TYPE_LIT_S()
- * @sa #C_TYPE_LIT_S_ANY()
- */
-#define C_TYPE_LIT_A_ANY(ATID) \
-  C_TYPE_LIT( TB_ANY, TS_ANY, (ATID) )
 
 /**
  * Convenience macro for specifying a \ref c_type literal from \a BTID.
@@ -221,23 +198,6 @@ typedef enum c_tpid c_tpid_t;
   C_TYPE_LIT( (BTID), TS_NONE, TA_NONE )
 
 /**
- * Convenience macro for specifying a \ref c_type literal from \a BTID,
- * #TS_ANY, and #TA_ANY.
- *
- * @param BTID The base \ref c_tid_t.
- * @return Returns said literal.
- *
- * @sa #C_TYPE_LIT()
- * @sa #C_TYPE_LIT_A()
- * @sa #C_TYPE_LIT_A_ANY()
- * @sa #C_TYPE_LIT_B()
- * @sa #C_TYPE_LIT_S()
- * @sa #C_TYPE_LIT_S_ANY()
- */
-#define C_TYPE_LIT_B_ANY(BTID) \
-  C_TYPE_LIT( (BTID), TS_ANY, TA_ANY )
-
-/**
  * Convenience macro for specifying a \ref c_type literal from \a STID.
  *
  * @param STID The storage \ref c_tid_t.
@@ -245,30 +205,10 @@ typedef enum c_tpid c_tpid_t;
  *
  * @sa #C_TYPE_LIT()
  * @sa #C_TYPE_LIT_A()
- * @sa #C_TYPE_LIT_A_ANY()
  * @sa #C_TYPE_LIT_B()
- * @sa #C_TYPE_LIT_B_ANY()
- * @sa #C_TYPE_LIT_S_ANY()
  */
 #define C_TYPE_LIT_S(STID) \
   C_TYPE_LIT( TB_NONE, (STID), TA_NONE )
-
-/**
- * Convenience macro for specifying a \ref c_type literal from #TB_ANY, \a
- * STID, and #TA_ANY.
- *
- * @param STID The storage \ref c_tid_t.
- * @return Returns said literal.
- *
- * @sa #C_TYPE_LIT()
- * @sa #C_TYPE_LIT_A()
- * @sa #C_TYPE_LIT_A_ANY()
- * @sa #C_TYPE_LIT_B()
- * @sa #C_TYPE_LIT_B_ANY()
- * @sa #C_TYPE_LIT_S()
- */
-#define C_TYPE_LIT_S_ANY(STID) \
-  C_TYPE_LIT( TB_ANY, (STID), TA_ANY )
 
 /** @} */
 

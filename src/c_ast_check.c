@@ -1194,7 +1194,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
     case K_ARRAY:                       // char *argv[]
     case K_POINTER:                     // char **argv
       if ( !c_ast_is_ptr_to_type_any( param_ast->parent.of_ast,
-              &C_TYPE_LIT_S_ANY( c_tid_compl( TS_const ) ),
+              &C_TYPE_LIT( TB_ANY, c_tid_compl( TS_const ), TA_ANY ),
               &C_TYPE_LIT_B( TB_char ) ) ) {
         print_error( &param_ast->loc, "invalid main() parameter type " );
         print_ast_type_aka( param_ast, stderr );
