@@ -237,7 +237,7 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *fout ) {
   FPUTS( local_name, fout );
   if ( scope_name[0] != '\0' ) {
     assert( !c_type_is_none( scope_type ) );
-    FPRINTF( fout, " of %s %s", c_type_name_english( scope_type ), scope_name );
+    FPRINTF( fout, " of %s %s", c_type_english( scope_type ), scope_name );
   }
 }
 
@@ -353,10 +353,10 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
         c_type_t type = ast->type;
         assert( type.btids == TB_auto );
         type.btids = TB_NONE;
-        fputs_sp( c_type_name_english( &type ), eng->fout );
+        fputs_sp( c_type_english( &type ), eng->fout );
         FPUTS( "parameter pack", eng->fout );
       } else {
-        FPUTS( c_type_name_english( &ast->type ), eng->fout );
+        FPUTS( c_type_english( &ast->type ), eng->fout );
         if ( c_ast_is_tid_any( ast, TB__BitInt ) )
           FPRINTF( eng->fout, " width %u bits", ast->builtin.BitInt.width );
         c_ast_bit_width_english( ast, eng->fout );
@@ -380,12 +380,12 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_CLASS_STRUCT_UNION:
-      FPRINTF( eng->fout, "%s ", c_type_name_english( &ast->type ) );
+      FPRINTF( eng->fout, "%s ", c_type_english( &ast->type ) );
       c_sname_english( &ast->csu.csu_sname, eng->fout );
       break;
 
     case K_CONCEPT:
-      fputs_sp( c_type_name_english( &ast->type ), eng->fout );
+      fputs_sp( c_type_english( &ast->type ), eng->fout );
       FPUTS( "concept ", eng->fout );
       c_sname_english( &ast->concept.concept_sname, eng->fout );
       if ( c_ast_root( ast )->is_param_pack )
@@ -393,7 +393,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_ENUM:
-      FPRINTF( eng->fout, "%s ", c_type_name_english( &ast->type ) );
+      FPRINTF( eng->fout, "%s ", c_type_english( &ast->type ) );
       c_sname_english( &ast->enum_.enum_sname, eng->fout );
       if ( ast->enum_.of_ast != NULL )
         FPUTS( " of type ", eng->fout );
@@ -403,7 +403,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
 
     case K_LAMBDA:
       if ( !c_type_is_none( &ast->type ) )
-        FPRINTF( eng->fout, "%s ", c_type_name_english( &ast->type ) );
+        FPRINTF( eng->fout, "%s ", c_type_english( &ast->type ) );
       FPUTS( L_lambda, eng->fout );
       if ( !slist_empty( &ast->lambda.capture_ast_list ) ) {
         FPUTS( " capturing ", eng->fout );
@@ -433,13 +433,13 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
     case K_POINTER_TO_MEMBER:
       c_type_name_nobase_english( &ast->type, eng->fout );
       FPRINTF( eng->fout, "%s of ", c_kind_name( ast->kind ) );
-      fputs_sp( c_tid_name_english( ast->type.btids ), eng->fout );
+      fputs_sp( c_tid_english( ast->type.btids ), eng->fout );
       c_sname_english( &ast->ptr_mbr.class_sname, eng->fout );
       FPUTC( ' ', eng->fout );
       break;
 
     case K_STRUCTURED_BINDING:
-      fputs_sp( c_tid_name_english( ast->type.stids ), eng->fout );
+      fputs_sp( c_tid_english( ast->type.stids ), eng->fout );
       if ( c_tid_is_any( ast->type.stids, TS_ANY_REFERENCE ) )
         FPUTS( "to ", eng->fout );
       FPUTS( c_kind_name( ast->kind ), eng->fout );
@@ -455,17 +455,17 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
         print_type = true;
       }
       if ( print_type )
-        FPRINTF( eng->fout, "%s ", c_type_name_english( &type ) );
+        FPRINTF( eng->fout, "%s ", c_type_english( &type ) );
       c_sname_english( &ast->tdef.for_ast->sname, eng->fout );
       c_ast_bit_width_english( ast, eng->fout );
       break;
 
     case K_UDEF_CONV:
-      fputs_sp( c_type_name_english( &ast->type ), eng->fout );
+      fputs_sp( c_type_english( &ast->type ), eng->fout );
       FPUTS( c_kind_name( ast->kind ), eng->fout );
       if ( !c_sname_empty( &ast->sname ) ) {
         FPRINTF( eng->fout,
-          " of %s ", c_type_name_english( c_sname_local_type( &ast->sname ) )
+          " of %s ", c_type_english( c_sname_local_type( &ast->sname ) )
         );
         c_sname_english( &ast->sname, eng->fout );
       }
@@ -498,9 +498,7 @@ static void c_scope_english( c_scope_t const *scope, FILE *fout ) {
   if ( scope->next != NULL ) {
     c_scope_english( scope->next, fout );
     c_scope_data_t const *const data = c_scope_data( scope );
-    FPRINTF( fout,
-      " of %s %s", c_type_name_english( &data->type ), data->name
-    );
+    FPRINTF( fout, " of %s %s", c_type_english( &data->type ), data->name );
   }
 }
 
@@ -536,7 +534,7 @@ static void c_type_name_nobase_english( c_type_t const *type, FILE *fout ) {
   assert( fout != NULL );
 
   c_type_t const nobase_type = { TB_NONE, type->stids, type->atids };
-  fputs_sp( c_type_name_english( &nobase_type ), fout );
+  fputs_sp( c_type_english( &nobase_type ), fout );
 }
 
 /**

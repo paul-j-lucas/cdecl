@@ -3857,7 +3857,7 @@ class_struct_union_declaration_c
         if ( strcmp( mbr_name, cur_name ) == 0 ) {
           print_error( &@sname,
             "\"%s\": member has the same name as its enclosing %s\n",
-            mbr_name, c_type_name_c( cur_type )
+            mbr_name, c_type_gibberish( cur_type )
           );
           c_sname_cleanup( &$sname );
           PARSE_ABORT();
@@ -5223,7 +5223,7 @@ pc99_func_or_constructor_declaration_c
           //
           print_error( &@name,
             "implicit \"%s\" functions are illegal%s",
-            c_tid_name_error( TB_int ),
+            c_tid_error( TB_int ),
             C_LANG_WHICH( IMPLICIT_int )
           );
           print_error_token_is_a( $name );
@@ -5407,7 +5407,7 @@ trailing_return_type_c_ast_opt
       if ( ret_ast->type.btids != TB_auto ) {
         print_error( &ret_ast->loc,
           "function with trailing return type must only specify \"%s\"\n",
-          c_tid_name_error( TB_auto )
+          c_tid_error( TB_auto )
         );
         PARSE_ABORT();
       }
@@ -5729,7 +5729,7 @@ pc99_pointer_type_c_ast
         //
         print_error( &@star,
           "implicit \"%s\" is illegal%s\n",
-          c_tid_name_error( TB_int ),
+          c_tid_error( TB_int ),
           C_LANG_WHICH( IMPLICIT_int )
         );
         PARSE_ABORT();
@@ -6668,8 +6668,8 @@ atomic_specifier_type_c_ast
         c_type_t const error_type = c_type_and( &$$->type, &TSA_ANY );
         print_error( &@type_ast,
           "\"%s\" can not be of \"%s\"\n",
-          c_tid_name_error( TS__Atomic ),
-          c_type_name_c( &error_type )
+          c_tid_error( TS__Atomic ),
+          c_type_gibberish( &error_type )
         );
         PARSE_ABORT();
       }
@@ -6933,7 +6933,7 @@ class_struct_union_c_ast
     any_sname_c_opt[sname] '{'[brace]
     {
       UNSUPPORTED( &@brace,
-        "explaining %s declarations", c_tid_name_c( $csu_btid )
+        "explaining %s declarations", c_tid_gibberish( $csu_btid )
       );
       c_sname_cleanup( &$sname );
       PARSE_ABORT();
@@ -6967,7 +6967,7 @@ enum_c_ast
     {
       c_sname_cleanup( &$sname );
       UNSUPPORTED( &@brace,
-        "explaining %s declarations", c_tid_name_c( $enum_btids )
+        "explaining %s declarations", c_tid_gibberish( $enum_btids )
       );
       PARSE_ABORT();
     }

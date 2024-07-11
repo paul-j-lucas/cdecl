@@ -876,10 +876,10 @@ static char const* c_type_literal( c_type_info_t const *ti,
  * `printf()` statement.
  *
  * @sa c_tid_nosigned()
- * @sa c_type_name_c()
+ * @sa c_type_english()
+ * @sa c_type_error()
+ * @sa c_type_gibberish()
  * @sa c_type_name_ecsu()
- * @sa c_type_name_english()
- * @sa c_type_name_error()
  */
 NODISCARD
 static char const* c_type_name_impl( c_type_t const *type,
@@ -1060,9 +1060,10 @@ static char const* c_type_name_impl( c_type_t const *type,
     // kind is K_ENUM and its "of" type is not NULL -- but we don't have access
     // to the AST here.
     //
-    // To fix this, gibberish.c has a special case that calls c_type_name_c()
-    // (which sets apply_explicit_ecsu to false) instead of c_type_name_ecsu()
-    // when the AST's kind is K_ENUM and its "of" type is not NULL.
+    // To fix this, gibberish.c has a special case that calls
+    // c_type_gibberish() (which sets apply_explicit_ecsu to false) instead of
+    // c_type_name_ecsu() when the AST's kind is K_ENUM and its "of" type is
+    // not NULL.
     //
     btids &= opt_explicit_ecsu_btids;
   }
@@ -1262,7 +1263,8 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tids, c_loc_t const *new_loc ) {
   if ( !c_tid_is_none( *dst_tids & new_tids ) ) {
     print_error( new_loc,
       "\"%s\" can not be combined with \"%s\"\n",
-       c_tid_name_error( new_tids ), c_tid_name_error( *dst_tids )
+       c_tid_error( new_tids ),
+       c_tid_error( *dst_tids )
     );
     return false;
   }
@@ -1271,16 +1273,7 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tids, c_loc_t const *new_loc ) {
   return true;
 }
 
-char const* c_tid_name_c( c_tid_t tids ) {
-  c_type_t const type = c_tid_to_type( tids );
-  return c_type_name_impl( &type,
-    /*apply_explicit_ecsu=*/false,
-    /*in_english=*/false,
-    /*is_error=*/false
-  );
-}
-
-char const* c_tid_name_english( c_tid_t tids ) {
+char const* c_tid_english( c_tid_t tids ) {
   c_type_t const type = c_tid_to_type( tids );
   return c_type_name_impl( &type,
     /*apply_explicit_ecsu=*/false,
@@ -1289,8 +1282,7 @@ char const* c_tid_name_english( c_tid_t tids ) {
   );
 }
 
-
-char const* c_tid_name_error( c_tid_t tids ) {
+char const* c_tid_error( c_tid_t tids ) {
   c_type_t const type = c_tid_to_type( tids );
   // When giving an error message, return the type name in pseudo-English if
   // we're parsing pseudo-English or in C/C++ if we're parsing C/C++.
@@ -1298,6 +1290,15 @@ char const* c_tid_name_error( c_tid_t tids ) {
     /*apply_explicit_ecsu=*/false,
     /*in_english=*/is_english_to_gibberish(),
     /*is_error=*/true
+  );
+}
+
+char const* c_tid_gibberish( c_tid_t tids ) {
+  c_type_t const type = c_tid_to_type( tids );
+  return c_type_name_impl( &type,
+    /*apply_explicit_ecsu=*/false,
+    /*in_english=*/false,
+    /*is_error=*/false
   );
 }
 
@@ -1365,7 +1366,24 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
   return (i_btids & j_btids) != TB_NONE;
 }
 
-char const* c_type_name_c( c_type_t const *type ) {
+char const* c_type_english( c_type_t const *type ) {
+  return c_type_name_impl( type,
+    /*apply_explicit_ecsu=*/false,
+    /*in_english=*/true,
+    /*is_error=*/false
+  );
+}
+
+char const* c_type_error( c_type_t const *type ) {
+  // See comment in c_tid_error().
+  return c_type_name_impl( type,
+    /*apply_explicit_ecsu=*/false,
+    /*in_english=*/is_english_to_gibberish(),
+    /*is_error=*/true
+  );
+}
+
+char const* c_type_gibberish( c_type_t const *type ) {
   return c_type_name_impl( type,
     /*apply_explicit_ecsu=*/false,
     /*in_english=*/false,
@@ -1378,23 +1396,6 @@ char const* c_type_name_ecsu( c_type_t const *type ) {
     /*apply_explicit_ecsu=*/true,
     /*in_english=*/false,
     /*is_error=*/false
-  );
-}
-
-char const* c_type_name_english( c_type_t const *type ) {
-  return c_type_name_impl( type,
-    /*apply_explicit_ecsu=*/false,
-    /*in_english=*/true,
-    /*is_error=*/false
-  );
-}
-
-char const* c_type_name_error( c_type_t const *type ) {
-  // See comment in c_tid_name_error().
-  return c_type_name_impl( type,
-    /*apply_explicit_ecsu=*/false,
-    /*in_english=*/is_english_to_gibberish(),
-    /*is_error=*/true
   );
 }
 

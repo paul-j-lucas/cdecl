@@ -909,23 +909,6 @@ NODISCARD
 bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tids, c_loc_t const *new_loc );
 
 /**
- * Gets the C/C++ name of \a tids.
- *
- * @param tids The \ref c_tid_t to get the name of.
- * @return Returns said name.
- *
- * @warning The pointer returned is to one of a small number of static buffers,
- * so you can't do something like call this more than three times in the same
- * `printf()` statement.
- *
- * @sa c_tid_name_english()
- * @sa c_tid_name_error()
- * @sa c_type_name_c()
- */
-NODISCARD
-char const* c_tid_name_c( c_tid_t tids );
-
-/**
  * Gets the pseudo-English name of \a tids, if available; the C/C++ name if
  * not.
  *
@@ -936,12 +919,12 @@ char const* c_tid_name_c( c_tid_t tids );
  * so you can't do something like call this more than three times in the same
  * `printf()` statement.
  *
- * @sa c_tid_name_c()
- * @sa c_tid_name_error()
- * @sa c_type_name_english()
+ * @sa c_tid_error()
+ * @sa c_tid_gibberish()
+ * @sa c_type_english()
  */
 NODISCARD
-char const* c_tid_name_english( c_tid_t tids );
+char const* c_tid_english( c_tid_t tids );
 
 /**
  * Gets the name of \a tids for part of an error message.  If translating from
@@ -955,12 +938,29 @@ char const* c_tid_name_english( c_tid_t tids );
  * so you can't do something like call this more than three times in the same
  * `printf()` statement.
  *
- * @sa c_tid_name_c()
- * @sa c_tid_name_english()
- * @sa c_type_name_error()
+ * @sa c_tid_english()
+ * @sa c_tid_gibberish()
+ * @sa c_type_error()
  */
 NODISCARD
-char const* c_tid_name_error( c_tid_t tids );
+char const* c_tid_error( c_tid_t tids );
+
+/**
+ * Gets the C/C++ name of \a tids.
+ *
+ * @param tids The \ref c_tid_t to get the name of.
+ * @return Returns said name.
+ *
+ * @warning The pointer returned is to one of a small number of static buffers,
+ * so you can't do something like call this more than three times in the same
+ * `printf()` statement.
+ *
+ * @sa c_tid_english()
+ * @sa c_tid_error()
+ * @sa c_type_gibberish()
+ */
+NODISCARD
+char const* c_tid_gibberish( c_tid_t tids );
 
 /**
  * "Normalize" \a tids:
@@ -1092,6 +1092,24 @@ NODISCARD
 c_lang_id_t c_type_check( c_type_t const *type );
 
 /**
+ * Gets the pseudo-English name of \a type, if available; the C/C++ name if
+ * not.
+ *
+ * @param type The type to get the name for.
+ * @return Returns said name.
+ *
+ * @warning The pointer returned is to one of a small number of static buffers,
+ * so you can't do something like call this more than three times in the same
+ * `printf()` statement.
+ *
+ * @sa c_type_error()
+ * @sa c_type_gibberish()
+ * @sa c_type_name_ecsu()
+ */
+NODISCARD
+char const* c_type_english( c_type_t const *type );
+
+/**
  * Checks whether \a i_type and \a j_type are equivalent (not bitwise
  * identical).  Specifically, the base types are normalized prior to
  * comparison.
@@ -1120,6 +1138,24 @@ NODISCARD
 c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tids );
 
 /**
+ * Gets the C/C++ name of \a type.
+ *
+ * @param type The type to get the name for.
+ * @return Returns said name.
+ *
+ * @warning The pointer returned is to one of a small number of static buffers,
+ * so you can't do something like call this more than three times in the same
+ * `printf()` statement.
+ *
+ * @sa c_tid_gibberish()
+ * @sa c_type_english()
+ * @sa c_type_error()
+ * @sa c_type_name_ecsu()
+ */
+NODISCARD
+char const* c_type_gibberish( c_type_t const *type );
+
+/**
  * For all type part IDs of \a j_type that are not none, gets whether the
  * corresponding type part ID of \a i_type is any of them.
  *
@@ -1133,24 +1169,6 @@ NODISCARD
 bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
- * Gets the C/C++ name of \a type.
- *
- * @param type The type to get the name for.
- * @return Returns said name.
- *
- * @warning The pointer returned is to one of a small number of static buffers,
- * so you can't do something like call this more than three times in the same
- * `printf()` statement.
- *
- * @sa c_tid_name_c()
- * @sa c_type_name_ecsu()
- * @sa c_type_name_english()
- * @sa c_type_name_error()
- */
-NODISCARD
-char const* c_type_name_c( c_type_t const *type );
-
-/**
  * Gets the the C/C++ name for an `enum`, `struct`, `class`, or `union`.
  *
  * @param type The type to get the name for.
@@ -1160,30 +1178,12 @@ char const* c_type_name_c( c_type_t const *type );
  * so you can't do something like call this more than three times in the same
  * `printf()` statement.
  *
- * @sa c_type_name_c()
- * @sa c_type_name_english()
- * @sa c_type_name_error()
+ * @sa c_type_english()
+ * @sa c_type_error()
+ * @sa c_type_gibberish()
  */
 NODISCARD
 char const* c_type_name_ecsu( c_type_t const *type );
-
-/**
- * Gets the pseudo-English name of \a type, if available; the C/C++ name if
- * not.
- *
- * @param type The type to get the name for.
- * @return Returns said name.
- *
- * @warning The pointer returned is to one of a small number of static buffers,
- * so you can't do something like call this more than three times in the same
- * `printf()` statement.
- *
- * @sa c_type_name_c()
- * @sa c_type_name_ecsu()
- * @sa c_type_name_error()
- */
-NODISCARD
-char const* c_type_name_english( c_type_t const *type );
 
 /**
  * Gets the name of \a type for part of an error message.  If translating
@@ -1197,13 +1197,13 @@ char const* c_type_name_english( c_type_t const *type );
  * so you can't do something like call this more than three times in the same
  * `printf()` statement.
  *
- * @sa c_tid_name_error()
- * @sa c_type_name_c()
+ * @sa c_tid_error()
+ * @sa c_type_english()
+ * @sa c_type_gibberish()
  * @sa c_type_name_ecsu()
- * @sa c_type_name_english()
  */
 NODISCARD
-char const* c_type_name_error( c_type_t const *type );
+char const* c_type_error( c_type_t const *type );
 
 /**
  * Performs the bitwise-or of \a i_type and \a j_type.

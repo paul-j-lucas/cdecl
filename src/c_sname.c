@@ -184,7 +184,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     if ( is_inline_namespace ) {
       print_error( sname_loc,
         "nested namespace can not be %s\n",
-        c_tid_name_error( TS_inline )
+        c_tid_error( TS_inline )
       );
       return false;
     }
@@ -221,7 +221,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
           print_error( sname_loc,
             "\"%s\" was previously declared as \"%s\" (\"",
             c_sname_local_name( sname ),
-            c_type_name_error( tdef_type )
+            c_type_error( tdef_type )
           );
           print_type_decl( tdef, tdef->decl_flags, stderr );
           EPUTS( "\")\n" );
@@ -242,8 +242,8 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     if ( !c_tid_scope_order_ok( prev_btids, scope_type->btids ) ) {
       print_error( sname_loc,
         "%s can not nest inside %s\n",
-        c_tid_name_error( scope_type->btids ),
-        c_tid_name_error( prev_btids )
+        c_tid_error( scope_type->btids ),
+        c_tid_error( prev_btids )
       );
       return false;
     }

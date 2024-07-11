@@ -180,7 +180,7 @@ static void c_ast_array_size_gibberish( c_ast_t const *ast,
 
   bool const is_qual = c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER );
   if ( is_qual )
-    FPUTS( c_type_name_c( &ast->type ), gib->fout );
+    FPUTS( c_type_gibberish( &ast->type ), gib->fout );
 
   switch ( ast->array.kind ) {
     case C_ARRAY_SIZE_NONE:
@@ -317,7 +317,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
     case K_ARRAY:
       if ( ast->kind != K_ARRAY ||
            ( !c_tid_is_any( type.stids, TS_ANY_ARRAY_QUALIFIER ) ) ) {
-        fputs_sp( c_type_name_c( &type ), gib->fout );
+        fputs_sp( c_type_gibberish( &type ), gib->fout );
       }
       if ( ast->kind == K_UDEF_CONV ) {
         if ( !c_sname_empty( &ast->sname ) )
@@ -340,14 +340,14 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         // (Pointers to such functions are handled in
         // c_ast_postfix_gibberish().)
         //
-        FPRINTF( gib->fout, " %s", c_tid_name_c( msc_call_atids ) );
+        FPRINTF( gib->fout, " %s", c_tid_gibberish( msc_call_atids ) );
       }
       if ( false_set( &gib->is_postfix ) ) {
         if ( (gib->gib_flags & (C_GIB_PRINT_CAST | C_GIB_USING)) == 0 )
           gib_print_space_once( gib );
         c_ast_postfix_gibberish( ast, gib );
       }
-      fputsp_s( c_tid_name_c( cv_qual_stids ), gib->fout );
+      fputsp_s( c_tid_gibberish( cv_qual_stids ), gib->fout );
       if ( ref_qual_stids != TS_NONE ) {
         FPRINTF( gib->fout, " %s",
           other_token_c(
@@ -387,7 +387,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
 
     case K_BUILTIN:
       if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 )
-        FPUTS( c_type_name_c( &type ), gib->fout );
+        FPUTS( c_type_gibberish( &type ), gib->fout );
       if ( c_ast_is_tid_any( ast, TB__BitInt ) )
         FPRINTF( gib->fout, "(%u)", ast->builtin.BitInt.width );
       c_ast_space_name_gibberish( ast, gib );
@@ -459,7 +459,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         //
         !is_fixed_enum ?
           c_type_name_ecsu( &type ) :
-          c_type_name_c( &type );
+          c_type_gibberish( &type );
 
       FPUTS( type_name, gib->fout );
 
@@ -511,7 +511,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_gibberish_impl( ast->enum_.of_ast, gib );
       }
 
-      fputsp_s( c_tid_name_c( cv_qual_stids ), gib->fout );
+      fputsp_s( c_tid_gibberish( cv_qual_stids ), gib->fout );
 
       if ( !printed_name )
         c_ast_space_name_gibberish( ast, gib );
@@ -525,12 +525,12 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         cv_qual_stids = type.stids & TS_CV;
         type.stids &= c_tid_compl( TS_CV );
       }
-      fputs_sp( c_type_name_c( &type ), gib->fout );
+      fputs_sp( c_type_gibberish( &type ), gib->fout );
       FPRINTF( gib->fout,
         "%s %s",
         c_sname_gibberish( &ast->concept.concept_sname ), L_auto
       );
-      fputsp_s( c_tid_name_c( cv_qual_stids ), gib->fout );
+      fputsp_s( c_tid_gibberish( cv_qual_stids ), gib->fout );
       c_ast_space_name_gibberish( ast, gib );
       break;
 
@@ -543,8 +543,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_list_gibberish( &ast->lambda.param_ast_list, gib );
         FPUTC( ')', gib->fout );
       }
-      fputsp_s( c_tid_name_c( type.stids ), gib->fout );
-      fputsp_s( c_tid_name_c( type.atids ), gib->fout );
+      fputsp_s( c_tid_gibberish( type.stids ), gib->fout );
+      fputsp_s( c_tid_gibberish( type.atids ), gib->fout );
 
       if ( ast->lambda.ret_ast != NULL &&
            !c_ast_is_builtin_any( ast->lambda.ret_ast, TB_auto | TB_void ) ) {
@@ -574,7 +574,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 )
-        fputs_sp( c_tid_name_c( type.stids & TS_ANY_STORAGE ), gib->fout );
+        fputs_sp( c_tid_gibberish( type.stids & TS_ANY_STORAGE ), gib->fout );
       c_ast_gibberish_impl( ast->ptr_ref.to_ast, gib );
       if ( c_ast_space_before_ptr_ref( ast, gib ) )
         gib_print_space_once( gib );
@@ -602,7 +602,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         bool const is_more_than_plain_typedef = type.stids != TS_NONE;
 
         if ( is_more_than_plain_typedef && !opt_east_const )
-          FPUTS( c_type_name_c( &type ), gib->fout );
+          FPUTS( c_type_gibberish( &type ), gib->fout );
 
         //
         // Special case: C++23 adds an _Atomic(T) macro for compatibility with
@@ -640,7 +640,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         if ( print_parens_for_Atomic )
           FPUTC( ')', gib->fout );
         if ( is_more_than_plain_typedef && opt_east_const )
-          FPRINTF( gib->fout, " %s", c_type_name_c( &type ) );
+          FPRINTF( gib->fout, " %s", c_type_gibberish( &type ) );
       }
 
       c_ast_space_name_gibberish( ast, gib );
@@ -762,7 +762,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
               //      void (__stdcall *pf)(int, int)
               //
               c_tid_t const msc_call_atids = ast->type.atids & TA_ANY_MSC_CALL;
-              FPRINTF( gib->fout, "%s ", c_tid_name_c( msc_call_atids ) );
+              FPRINTF( gib->fout, "%s ", c_tid_gibberish( msc_call_atids ) );
             }
             break;
 
@@ -951,7 +951,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   } // switch
 
   if ( qual_stids != TS_NONE ) {
-    FPUTS( c_tid_name_c( qual_stids ), gib->fout );
+    FPUTS( c_tid_gibberish( qual_stids ), gib->fout );
 
     if ( (gib->gib_flags & (C_GIB_PRINT_DECL | C_GIB_TYPEDEF)) != 0 ) {
       //
@@ -1157,7 +1157,7 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
     c_scope_data_t const *const data = c_scope_data( scope );
     if ( data->type.stids != TS_NONE ) {
       // For nested inline namespaces, e.g., namespace A::inline B::C.
-      strbuf_printf( sbuf, "%s ", c_tid_name_c( data->type.stids ) );
+      strbuf_printf( sbuf, "%s ", c_tid_gibberish( data->type.stids ) );
     }
     strbuf_puts( sbuf, data->name );
   } // for
@@ -1192,11 +1192,11 @@ static void c_struct_bind_ast_gibberish( c_ast_t const *ast,
     type.stids &= c_tid_compl( TS_CV );
   }
 
-  fputs_sp( c_type_name_c( &type ), gib->fout );
+  fputs_sp( c_type_gibberish( &type ), gib->fout );
   if ( !opt_east_const )
-    fputs_sp( c_tid_name_c( cv_qual_stids ), gib->fout );
+    fputs_sp( c_tid_gibberish( cv_qual_stids ), gib->fout );
   FPUTS( L_auto, gib->fout );
-  fputsp_s( c_tid_name_c( cv_qual_stids ), gib->fout );
+  fputsp_s( c_tid_gibberish( cv_qual_stids ), gib->fout );
 
   if ( ref_qual_stid == TS_NONE ) {
     FPUTC( ' ', gib->fout );
@@ -1544,7 +1544,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
 
       FPRINTF( fout,
         "%s %s %s ",
-        c_type_name_c( &scope_type ), c_sname_scope_gibberish( sname ),
+        c_type_gibberish( &scope_type ), c_sname_scope_gibberish( sname ),
         other_token_c( "{" )
       );
       scope_close_braces_to_print = 1;
@@ -1559,7 +1559,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
         scope_type = c_scope_data( scope )->type;
         FPRINTF( fout,
           "%s %s %s ",
-          c_type_name_c( &scope_type ), c_scope_data( scope )->name,
+          c_type_gibberish( &scope_type ), c_scope_data( scope )->name,
           other_token_c( "{" )
         );
       } // for
@@ -1606,7 +1606,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
   else if ( print_using ) {
     FPRINTF( fout, "using %s ", c_sname_local_name( sname ) );
     if ( tdef->ast->type.atids != TA_NONE )
-      FPRINTF( fout, "%s ", c_tid_name_c( tdef->ast->type.atids ) );
+      FPRINTF( fout, "%s ", c_tid_gibberish( tdef->ast->type.atids ) );
     FPUTS( "= ", fout );
   }
 

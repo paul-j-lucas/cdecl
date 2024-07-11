@@ -778,7 +778,7 @@ void c_sname_dump( c_sname_t const *sname, FILE *fout ) {
   FOREACH_SNAME_SCOPE( scope, sname ) {
     fput_sep( "::", &colon2, fout );
     c_type_t const *const t = &c_scope_data( scope )->type;
-    FPUTS( c_type_is_none( t ) ? "none" : c_type_name_c( t ), fout );
+    FPUTS( c_type_is_none( t ) ? "none" : c_type_gibberish( t ), fout );
   } // for
 
   FPUTS( "\" }", fout );
@@ -815,7 +815,7 @@ void c_tid_dump( c_tid_t tid, FILE *fout ) {
   FPRINTF( fout,
     "%sstring: \"%s\" }",
     dump.comma ? ", " : "",
-    c_tid_is_none( tid ) ? "none" : c_tid_name_c( tid )
+    c_tid_is_none( tid ) ? "none" : c_tid_gibberish( tid )
   );
 }
 
@@ -835,7 +835,7 @@ void c_type_dump( c_type_t const *type, FILE *fout ) {
   if ( type->atids != TA_NONE )
     c_tid_dump_impl( type->atids, &dump );
 
-  char const *const type_name = c_type_name_c( type );
+  char const *const type_name = c_type_gibberish( type );
   FPRINTF( fout,
     "%sstring: \"%s\" }",
     dump.comma ? ", " : "",
