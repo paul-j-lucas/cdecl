@@ -407,7 +407,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
             FPUTC( ' ', gib->fout );
           FALLTHROUGH;
         case C_CAPTURE_VARIABLE:
-          FPUTS( c_sname_full_name( &ast->sname ), gib->fout );
+          FPUTS( c_sname_local_name( &ast->sname ), gib->fout );
           break;
         case C_CAPTURE_STAR_THIS:
           FPUTC( '*', gib->fout );

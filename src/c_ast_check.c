@@ -2508,7 +2508,7 @@ static bool c_ast_check_structured_binding( c_ast_t const *ast ) {
       if ( c_sname_cmp( sname, prev_sname ) == 0 ) {
         print_error( &ast->loc,
           "\"%s\": redefinition of structured binding\n",
-          c_sname_full_name( prev_sname )
+          c_sname_local_name( prev_sname )
         );
         return false;
       }
