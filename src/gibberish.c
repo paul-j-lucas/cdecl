@@ -321,7 +321,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       }
       if ( ast->kind == K_UDEF_CONV ) {
         if ( !c_sname_empty( &ast->sname ) )
-          FPRINTF( gib->fout, "%s::", c_sname_full_name( &ast->sname ) );
+          FPRINTF( gib->fout, "%s::", c_sname_gibberish( &ast->sname ) );
         FPUTS( "operator ", gib->fout );
       }
       if ( ast->parent.of_ast != NULL ) {
@@ -424,11 +424,11 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       if ( ast->cast.kind == C_CAST_C ) {
         FPUTC( '(', gib->fout );
         c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
-        FPRINTF( gib->fout, ")%s\n", c_sname_full_name( &ast->sname ) );
+        FPRINTF( gib->fout, ")%s\n", c_sname_gibberish( &ast->sname ) );
       } else {
         FPRINTF( gib->fout, "%s<", c_cast_gibberish( ast->cast.kind ) );
         c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
-        FPRINTF( gib->fout, ">(%s)\n", c_sname_full_name( &ast->sname ) );
+        FPRINTF( gib->fout, ">(%s)\n", c_sname_gibberish( &ast->sname ) );
       }
       break;
 
@@ -483,7 +483,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         FPRINTF( gib->fout,
           "%s%s",
           type_name[0] != '\0' ? " " : "",
-          c_sname_full_name( &ast->csu.csu_sname )
+          c_sname_gibberish( &ast->csu.csu_sname )
         );
       }
 
@@ -528,7 +528,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       fputs_sp( c_type_name_c( &type ), gib->fout );
       FPRINTF( gib->fout,
         "%s %s",
-        c_sname_full_name( &ast->concept.concept_sname ), L_auto
+        c_sname_gibberish( &ast->concept.concept_sname ), L_auto
       );
       fputsp_s( c_tid_name_c( cv_qual_stids ), gib->fout );
       c_ast_space_name_gibberish( ast, gib );
@@ -697,7 +697,7 @@ static void c_ast_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     // If we're in a nested scope, just print the local name.
     //
     gib->is_nested_scope ?
-      c_sname_local_name( &ast->sname ) : c_sname_full_name( &ast->sname ),
+      c_sname_local_name( &ast->sname ) : c_sname_gibberish( &ast->sname ),
     gib->fout
   );
 }
@@ -919,7 +919,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 
     case K_POINTER_TO_MEMBER:
       FPRINTF( gib->fout,
-        "%s::*", c_sname_full_name( &ast->ptr_mbr.class_sname )
+        "%s::*", c_sname_gibberish( &ast->ptr_mbr.class_sname )
       );
       c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
       gib->printed_space =
@@ -1093,12 +1093,12 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_CONSTRUCTOR:
-      FPUTS( c_sname_full_name( &ast->sname ), gib->fout );
+      FPUTS( c_sname_gibberish( &ast->sname ), gib->fout );
       break;
 
     case K_DESTRUCTOR:
       if ( c_sname_count( &ast->sname ) > 1 )
-        FPRINTF( gib->fout, "%s::", c_sname_scope_name( &ast->sname ) );
+        FPRINTF( gib->fout, "%s::", c_sname_scope_gibberish( &ast->sname ) );
       if ( opt_alt_tokens )
         FPUTS( "compl ", gib->fout );
       else
@@ -1109,7 +1109,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_OPERATOR:
       gib_print_space_once( gib );
       if ( !c_sname_empty( &ast->sname ) )
-        FPRINTF( gib->fout, "%s::", c_sname_full_name( &ast->sname ) );
+        FPRINTF( gib->fout, "%s::", c_sname_gibberish( &ast->sname ) );
       char const *const token = c_op_token_c( ast->oper.operator->op_id );
       FPRINTF( gib->fout,
         "operator%s%s", isalpha( token[0] ) ? " " : "", token
@@ -1119,7 +1119,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_UDEF_LIT:
       gib_print_space_once( gib );
       if ( c_sname_count( &ast->sname ) > 1 )
-        FPRINTF( gib->fout, "%s::", c_sname_scope_name( &ast->sname ) );
+        FPRINTF( gib->fout, "%s::", c_sname_scope_gibberish( &ast->sname ) );
       FPRINTF( gib->fout,
         "operator\"\" %s", c_sname_local_name( &ast->sname )
       );
@@ -1130,6 +1130,39 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_PLACEHOLDER:
       UNEXPECTED_INT_VALUE( ast->kind );
   } // switch
+}
+
+/**
+ * Helper function for c_sname_gibberish() and c_sname_scope_gibberish() that
+ * writes the scope names from outermost to innermost separated by `::` into a
+ * buffer.
+ *
+ * @param sbuf The buffer to write into.
+ * @param sname The scoped name to write.
+ * @param end_scope The scope to stop before or NULL for all scopes.
+ * @return If not NULL, returns \a sbuf&ndash;>str; otherwise returns the empty
+ * string.
+ */
+NODISCARD
+static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
+                                      c_scope_t const *end_scope ) {
+  assert( sbuf != NULL );
+  assert( sname != NULL );
+
+  strbuf_reset( sbuf );
+  bool colon2 = false;
+
+  FOREACH_SNAME_SCOPE_UNTIL( scope, sname, end_scope ) {
+    strbuf_sepsn( sbuf, "::", 2, &colon2 );
+    c_scope_data_t const *const data = c_scope_data( scope );
+    if ( data->type.stids != TS_NONE ) {
+      // For nested inline namespaces, e.g., namespace A::inline B::C.
+      strbuf_printf( sbuf, "%s ", c_tid_name_c( data->type.stids ) );
+    }
+    strbuf_puts( sbuf, data->name );
+  } // for
+
+  return empty_if_null( sbuf->str );
 }
 
 /**
@@ -1322,7 +1355,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *fout ) {
           break;
         case C_ALIGNAS_SNAME:
           FPRINTF( fout,
-            "%s(%s) ", alignas_name(), c_sname_full_name( &ast->align.sname )
+            "%s(%s) ", alignas_name(), c_sname_gibberish( &ast->align.sname )
           );
           break;
         case C_ALIGNAS_TYPE:
@@ -1410,6 +1443,17 @@ char const* c_cast_gibberish( c_cast_kind_t kind ) {
     case C_CAST_STATIC      : return L_static_cast;
   } // switch
   UNEXPECTED_INT_VALUE( kind );
+}
+
+char const* c_sname_gibberish( c_sname_t const *sname ) {
+  static strbuf_t sbuf;
+  return sname != NULL ?
+    c_sname_name_impl( &sbuf, sname, /*end_scope=*/NULL ) : "";
+}
+
+char const* c_sname_scope_gibberish( c_sname_t const *sname ) {
+  static strbuf_t sbuf;
+  return sname != NULL ? c_sname_name_impl( &sbuf, sname, sname->tail ) : "";
 }
 
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
@@ -1500,7 +1544,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
 
       FPRINTF( fout,
         "%s %s %s ",
-        c_type_name_c( &scope_type ), c_sname_scope_name( sname ),
+        c_type_name_c( &scope_type ), c_sname_scope_gibberish( sname ),
         other_token_c( "{" )
       );
       scope_close_braces_to_print = 1;

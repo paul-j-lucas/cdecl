@@ -32,6 +32,7 @@
 #include "c_type.h"
 #include "cdecl.h"
 #include "english.h"
+#include "gibberish.h"
 #include "literals.h"
 #include "p_macro.h"
 #include "p_token.h"
@@ -771,7 +772,7 @@ void c_sname_dump( c_sname_t const *sname, FILE *fout ) {
     return;
   }
 
-  FPRINTF( fout, "{ string: \"%s\", scopes: \"", c_sname_full_name( sname ) );
+  FPRINTF( fout, "{ string: \"%s\", scopes: \"", c_sname_gibberish( sname ) );
 
   bool colon2 = false;
   FOREACH_SNAME_SCOPE( scope, sname ) {

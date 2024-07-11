@@ -29,12 +29,12 @@
 #include "did_you_mean.h"
 #include "c_keyword.h"
 #include "c_lang.h"
-#include "c_sname.h"
 #include "c_typedef.h"
 #include "cdecl_command.h"
 #include "cdecl_keyword.h"
 #include "cli_options.h"
 #include "dam_lev.h"
+#include "gibberish.h"
 #include "help.h"
 #include "lexer.h"
 #include "p_macro.h"
@@ -303,7 +303,7 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
     if ( drvd->pdym == NULL ) {
       ++drvd->count;
     } else {
-      char const *const name = c_sname_full_name( &tdef->ast->sname );
+      char const *const name = c_sname_gibberish( &tdef->ast->sname );
       (*drvd->pdym)++->literal = check_strdup( name );
     }
   }

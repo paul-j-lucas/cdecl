@@ -339,33 +339,16 @@ void c_sname_fill_in_namespace_types( c_sname_t *sname );
 void c_sname_free( c_sname_t *sname );
 
 /**
- * Gets the fully scoped name of \a sname.
- *
- * @param sname The scoped name to get the full name of; may be NULL.
- * @return Returns said name or the empty string if \a sname is empty or NULL.
- *
- * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same `printf()` statement.
- *
- * @sa c_sname_local_name()
- * @sa c_sname_name_atr()
- * @sa c_sname_scope_name()
- * @sa c_sname_scope_sname()
- */
-NODISCARD
-char const* c_sname_full_name( c_sname_t const *sname );
-
-/**
  * Gets the global name of \a sname (which is the name of the first scope), for
  * example the global name of `S::T::x` is `S`.
  *
  * @param sname The scoped name to get the global name of; may be NULL.
  * @return Returns said name or the empty string if \a sname is empty or NULL.
  *
- * @sa c_sname_full_name()
+ * @sa c_sname_gibberish()
  * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
- * @sa c_sname_scope_name()
+ * @sa c_sname_scope_gibberish()
  * @sa c_sname_scope_sname()
  */
 NODISCARD
@@ -453,10 +436,10 @@ void c_sname_list_cleanup( slist_t *list );
  * @param sname The scoped name to get the local name of; may be NULL.
  * @return Returns said name or the empty string if \a sname is empty or NULL.
  *
- * @sa c_sname_full_name()
+ * @sa c_sname_gibberish()
  * @sa c_sname_global_name()
  * @sa c_sname_name_atr()
- * @sa c_sname_scope_name()
+ * @sa c_sname_scope_gibberish()
  * @sa c_sname_scope_sname()
  */
 NODISCARD
@@ -538,10 +521,10 @@ c_sname_t c_sname_move( c_sname_t *sname ) {
  * @return Returns the name at \a roffset or the empty string if \a roffset
  * &ge; c_sname_count().
  *
- * @sa c_sname_full_name()
+ * @sa c_sname_gibberish()
  * @sa c_sname_global_name()
  * @sa c_sname_local_name()
- * @sa c_sname_scope_name()
+ * @sa c_sname_scope_gibberish()
  * @sa c_sname_scope_sname()
  */
 NODISCARD C_SNAME_H_INLINE
@@ -591,28 +574,6 @@ void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
 }
 
 /**
- * Gets just the scope name of \a sname.
- * Examples:
- *  + For `a::b::c`, returns `a::b`.
- *  + For `c`, returns the empty string.
- *
- * @param sname The scoped name to get the scope name of; may be NULL.
- * @return Returns said name or the empty string if \a sname is empty, NULL, or
- * not within a scope.
- *
- * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same `printf()` statement.
- *
- * @sa c_sname_full_name()
- * @sa c_sname_global_name()
- * @sa c_sname_local_name()
- * @sa c_sname_name_atr()
- * @sa c_sname_scope_sname()
- */
-NODISCARD
-char const* c_sname_scope_name( c_sname_t const *sname );
-
-/**
  * Gets just the scope sname of \a sname.
  * Examples:
  *  + For `a::b::c`, returns `a::b`.
@@ -622,11 +583,11 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  * @return Returns said scoped name or an empty scoped name if \a sname is
  * empty, NULL, or not within a scope.
  *
- * @sa c_sname_full_name()
+ * @sa c_sname_gibberish()
  * @sa c_sname_global_name()
  * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
- * @sa c_sname_scope_name()
+ * @sa c_sname_scope_gibberish()
  */
 NODISCARD
 c_sname_t c_sname_scope_sname( c_sname_t const *sname );

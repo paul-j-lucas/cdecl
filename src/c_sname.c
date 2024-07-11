@@ -56,38 +56,6 @@
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for c_sname_full_name() and c_sname_scope_name() that writes
- * the scope names from outermost to innermost separated by `::` into a buffer.
- *
- * @param sbuf The buffer to write into.
- * @param sname The scoped name to write.
- * @param end_scope The scope to stop before or NULL for all scopes.
- * @return If not NULL, returns \a sbuf&ndash;>str; otherwise returns the empty
- * string.
- */
-NODISCARD
-static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
-                                      c_scope_t const *end_scope ) {
-  assert( sbuf != NULL );
-  assert( sname != NULL );
-
-  strbuf_reset( sbuf );
-  bool colon2 = false;
-
-  FOREACH_SNAME_SCOPE_UNTIL( scope, sname, end_scope ) {
-    strbuf_sepsn( sbuf, "::", 2, &colon2 );
-    c_scope_data_t const *const data = c_scope_data( scope );
-    if ( data->type.stids != TS_NONE ) {
-      // For nested inline namespaces, e.g., namespace A::inline B::C.
-      strbuf_printf( sbuf, "%s ", c_tid_name_c( data->type.stids ) );
-    }
-    strbuf_puts( sbuf, data->name );
-  } // for
-
-  return empty_if_null( sbuf->str );
-}
-
-/**
  * Helper function for c_sname_parse() and c_sname_parse_dtor().
  *
  * @param s The string to parse.
@@ -326,12 +294,6 @@ void c_sname_free( c_sname_t *sname ) {
   free( sname );
 }
 
-char const* c_sname_full_name( c_sname_t const *sname ) {
-  static strbuf_t sbuf;
-  return sname != NULL ?
-    c_sname_name_impl( &sbuf, sname, /*end_scope=*/NULL ) : "";
-}
-
 char const* c_sname_global_name( c_sname_t const *sname ) {
   if ( sname != NULL ) {
     c_scope_data_t const *const global_data = c_sname_global_data( sname );
@@ -422,11 +384,6 @@ size_t c_sname_parse( char const *s, c_sname_t *rv_sname ) {
 
 bool c_sname_parse_dtor( char const *s, c_sname_t *rv_sname ) {
   return c_sname_parse_impl( s, rv_sname, /*is_dtor=*/true ) > 0;
-}
-
-char const* c_sname_scope_name( c_sname_t const *sname ) {
-  static strbuf_t sbuf;
-  return sname != NULL ? c_sname_name_impl( &sbuf, sname, sname->tail ) : "";
 }
 
 c_sname_t c_sname_scope_sname( c_sname_t const *sname ) {

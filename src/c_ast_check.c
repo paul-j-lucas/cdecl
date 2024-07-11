@@ -31,6 +31,7 @@
 #include "c_keyword.h"
 #include "c_lang.h"
 #include "c_operator.h"
+#include "c_sname.h"
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
@@ -412,7 +413,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
       } else {
         print_hint( "(%s%s)[]",
           other_token_c( raw_of_ast->kind == K_REFERENCE ? "&" : "&&" ),
-          c_sname_full_name( c_ast_find_name( ast, C_VISIT_DOWN ) )
+          c_sname_gibberish( c_ast_find_name( ast, C_VISIT_DOWN ) )
         );
       }
       return false;
@@ -678,7 +679,7 @@ static bool c_ast_check_concept( c_ast_t const *ast ) {
         "concept \"%s\" may only be within a namespace; "
         "\"%s\" was previously declared as \"%s\"\n",
         c_sname_local_name( concept_sname ),
-        c_sname_full_name( &scope_sname ),
+        c_sname_gibberish( &scope_sname ),
         c_tid_name_error( scope_type->btids )
       );
       c_sname_cleanup( &scope_sname );
@@ -1059,7 +1060,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     if ( c_sname_count( &ast->sname ) > 1 ) {
       print_error( &ast->loc,
         "\"%s\": \"%s\" can not be used in file-scoped %ss\n",
-        c_sname_full_name( &ast->sname ),
+        c_sname_gibberish( &ast->sname ),
         c_tid_name_error( TS_virtual ),
         c_kind_name( ast->kind )
       );
@@ -1459,7 +1460,7 @@ static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
       if ( c_sname_cmp( &param_ast->sname, &prev_param_ast->sname ) == 0 ) {
         print_error( &param_ast->loc,
           "\"%s\": redefinition of parameter\n",
-          c_sname_full_name( &param_ast->sname )
+          c_sname_gibberish( &param_ast->sname )
         );
         return false;
       }
@@ -1602,7 +1603,7 @@ static bool c_ast_check_lambda_captures_redef( c_ast_t const *ast ) {
       if ( c_sname_cmp( &capture_ast->sname, &prev_capture_ast->sname ) == 0 ) {
         print_error( &capture_ast->loc,
           "\"%s\" previously captured\n",
-          c_sname_full_name( &capture_ast->sname )
+          c_sname_gibberish( &capture_ast->sname )
         );
         return false;
       }
@@ -2498,7 +2499,7 @@ static bool c_ast_check_structured_binding( c_ast_t const *ast ) {
     if ( c_sname_count( sname ) > 1 ) {
       print_error( &ast->loc,
         "\"%s\": structured binding names may not be scoped\n",
-        c_sname_full_name( sname )
+        c_sname_gibberish( sname )
       );
       return false;
     }
@@ -3327,14 +3328,14 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
         if ( !OPT_LANG_IS( TENTATIVE_DEFS ) ) {
           print_error( &ast->loc,
             "\"%s\": redefinition\n",
-            c_sname_full_name( &ast->sname )
+            c_sname_gibberish( &ast->sname )
           );
           return false;
         }
         if ( !c_ast_equal( ast, prev_ast ) ) {
           print_error( &ast->loc,
             "\"%s\": redefinition with different type\n",
-            c_sname_full_name( &ast->sname )
+            c_sname_gibberish( &ast->sname )
           );
           return false;
         }

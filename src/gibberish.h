@@ -107,6 +107,45 @@ NODISCARD
 char const* c_cast_gibberish( c_cast_kind_t kind );
 
 /**
+ * Gets the fully scoped name of \a sname.
+ *
+ * @param sname The scoped name to get the full name of; may be NULL.
+ * @return Returns said name or the empty string if \a sname is empty or NULL.
+ *
+ * @warning The pointer returned is to a static buffer, so you can't do
+ * something like call this twice in the same `printf()` statement.
+ *
+ * @sa c_sname_local_name()
+ * @sa c_sname_name_atr()
+ * @sa c_sname_scope_gibberish()
+ * @sa c_sname_scope_sname()
+ */
+NODISCARD
+char const* c_sname_gibberish( c_sname_t const *sname );
+
+/**
+ * Gets just the scope name of \a sname.
+ * Examples:
+ *  + For `a::b::c`, returns `a::b`.
+ *  + For `c`, returns the empty string.
+ *
+ * @param sname The scoped name to get the scope name of; may be NULL.
+ * @return Returns said name or the empty string if \a sname is empty, NULL, or
+ * not within a scope.
+ *
+ * @warning The pointer returned is to a static buffer, so you can't do
+ * something like call this twice in the same `printf()` statement.
+ *
+ * @sa c_sname_gibberish()
+ * @sa c_sname_global_name()
+ * @sa c_sname_local_name()
+ * @sa c_sname_name_atr()
+ * @sa c_sname_scope_sname()
+ */
+NODISCARD
+char const* c_sname_scope_gibberish( c_sname_t const *sname );
+
+/**
  * Prints \a tdef as a C/C++ type declaration.
  *
  * @param tdef The type to print.

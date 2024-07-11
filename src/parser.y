@@ -873,7 +873,7 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
   if ( tdef->is_predefined ) {
     print_error( &type_ast->loc,
       "\"%s\" is a predefined type starting in %s\n",
-      c_sname_full_name( &type_ast->sname ),
+      c_sname_gibberish( &type_ast->sname ),
       c_lang_name( c_lang_oldest( tdef->lang_ids ) )
     );
   } else {
@@ -910,13 +910,13 @@ static bool fl_sname_is_type( char const *file, int line,
   if ( tdef->is_predefined ) {
     fl_print_error( file, line, loc,
       "\"%s\" is a predefined type starting in %s\n",
-      c_sname_full_name( sname ),
+      c_sname_gibberish( sname ),
       c_lang_name( c_lang_oldest( tdef->lang_ids ) )
     );
   } else {
     fl_print_error( file, line, loc,
       "\"%s\": previously declared as type \"",
-      c_sname_full_name( sname )
+      c_sname_gibberish( sname )
     );
     print_type_ast( tdef, stderr );
     EPUTS( "\"\n" );
@@ -4384,7 +4384,7 @@ typedef_decl_c
         print_error( &@decl_astp,
           "typedef names can not be scoped; "
           "use: namespace %s { typedef ... }\n",
-          c_sname_scope_name( &typedef_ast->sname )
+          c_sname_scope_gibberish( &typedef_ast->sname )
         );
         PARSE_ABORT();
       }
@@ -7352,7 +7352,7 @@ attribute_c_atid_exp
     {
       if ( c_sname_count( &$sname ) > 1 ) {
         IGNORING( &@sname,
-          "\"%s\": namespaced attributes", c_sname_full_name( &$sname )
+          "\"%s\": namespaced attributes", c_sname_gibberish( &$sname )
         );
       }
       else {

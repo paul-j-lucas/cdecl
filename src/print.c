@@ -162,7 +162,7 @@ static void print_ast_name_aka( c_ast_t const *ast, FILE *fout ) {
   assert( !c_sname_empty( &ast->sname ) );
   assert( fout != NULL );
 
-  FPRINTF( fout, "\"%s\" (aka, \"", c_sname_full_name( &ast->sname ) );
+  FPRINTF( fout, "\"%s\" (aka, \"", c_sname_gibberish( &ast->sname ) );
   // Look-up the type so we can print it how it was originally defined.
   c_typedef_t const *const tdef = c_typedef_find_sname( &ast->sname );
   assert( tdef != NULL );
@@ -384,8 +384,8 @@ void fl_print_error_unknown_name( char const *file, int line,
 
   dym_kind_t dym_kind = DYM_NONE;
 
-  // Must dup this since c_sname_full_name() returns a temporary buffer.
-  char const *const name = check_strdup( c_sname_full_name( sname ) );
+  // Must dup this since c_sname_gibberish() returns a temporary buffer.
+  char const *const name = check_strdup( c_sname_gibberish( sname ) );
 
   c_keyword_t const *const ck =
     c_keyword_find( name, LANG_ANY, C_KW_CTX_DEFAULT );

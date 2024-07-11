@@ -29,8 +29,10 @@
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_operator.h"
+#include "c_sname.h"
 #include "c_typedef.h"
 #include "decl_flags.h"
+#include "gibberish.h"
 #include "literals.h"
 #include "slist.h"
 #include "util.h"
@@ -220,14 +222,14 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *fout ) {
   if ( ast->kind == K_OPERATOR ) {
     local_name = c_op_token_c( ast->oper.operator->op_id );
     if ( found_sname != NULL ) {
-      scope_name = c_sname_full_name( found_sname );
+      scope_name = c_sname_gibberish( found_sname );
       scope_type = c_sname_local_type( found_sname );
     }
   } else {
     assert( found_sname != NULL );
     assert( !c_sname_empty( found_sname ) );
     local_name = c_sname_local_name( found_sname );
-    scope_name = c_sname_scope_name( found_sname );
+    scope_name = c_sname_scope_gibberish( found_sname );
     scope_type = c_sname_scope_type( found_sname );
   }
 
@@ -510,7 +512,7 @@ static void c_scope_english( c_scope_t const *scope, FILE *fout ) {
  *
  * @note A newline is _not_ printed.
  *
- * @sa c_sname_full_name()
+ * @sa c_sname_gibberish()
  */
 static void c_sname_english( c_sname_t const *sname, FILE *fout ) {
   assert( sname != NULL );
