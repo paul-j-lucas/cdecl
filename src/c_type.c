@@ -1343,7 +1343,7 @@ c_tpid_t c_tid_tpid( c_tid_t tids ) {
   //
   if ( c_tid_is_compl( tids ) )
     tids = ~tids;
-  tids &= TX_MASK_TPID;
+  tids &= TX_TPID_MASK;
   assert( tids <= C_TPID_ATTR );
   return STATIC_CAST( c_tpid_t, tids );
 }

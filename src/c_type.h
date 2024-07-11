@@ -105,6 +105,8 @@ struct c_type {
  * than 64 bits.
  * @remarks Type part IDs start at 1 so we know a \ref c_tid_t value has been
  * initialized properly as opposed to it being 0 by default.
+ *
+ * @sa #TX_TPID_MASK
  */
 enum c_tpid {
   /**
@@ -539,8 +541,12 @@ typedef enum c_tpid c_tpid_t;
 
 /** @} */
 
-// bit masks
-#define TX_MASK_TPID          0x000000000000000Full /**< Type part ID bitmask.*/
+/**
+ * Type part ID bitmask.
+ *
+ * @sa c_tpid
+ */
+#define TX_TPID_MASK          0x000000000000000Full
 
 ////////// shorthands /////////////////////////////////////////////////////////
 
@@ -1185,7 +1191,7 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
  */
 PJL_DISCARD C_TYPE_H_INLINE
 c_tid_t c_tid_check( c_tid_t tids, c_tpid_t tpid ) {
-  assert( (tids & TX_MASK_TPID) == tpid );
+  assert( (tids & TX_TPID_MASK) == tpid );
 #ifdef NDEBUG
   (void)tpid;
 #endif /* NDEBUG */
@@ -1225,7 +1231,7 @@ bool c_tid_is_compl( c_tid_t tids ) {
 NODISCARD C_TYPE_H_INLINE
 c_tid_t c_tid_compl( c_tid_t tids ) {
   assert( !c_tid_is_compl( tids ) );
-  return ~tids ^ TX_MASK_TPID;
+  return ~tids ^ TX_TPID_MASK;
 }
 
 /**
@@ -1253,7 +1259,7 @@ bool c_tid_is_except_any( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
  */
 NODISCARD C_TYPE_H_INLINE
 c_tid_t c_tid_no_tpid( c_tid_t tids ) {
-  return tids & ~TX_MASK_TPID;
+  return tids & ~TX_TPID_MASK;
 }
 
 /**
