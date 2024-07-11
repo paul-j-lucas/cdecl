@@ -63,6 +63,7 @@ typedef struct eng_state eng_state_t;
 NODISCARD
 static bool c_ast_visitor_english( c_ast_t const*, user_data_t );
 
+static void c_sname_english( c_sname_t const*, FILE* );
 static void c_type_name_nobase_english( c_type_t const*, FILE* );
 static void eng_init( eng_state_t*, FILE* );
 
@@ -502,6 +503,26 @@ static void c_scope_english( c_scope_t const *scope, FILE *fout ) {
 }
 
 /**
+ * Prints \a sname in pseudo-English.
+ *
+ * @param sname The name to print.
+ * @param fout The `FILE` to print to.
+ *
+ * @note A newline is _not_ printed.
+ *
+ * @sa c_sname_full_name()
+ */
+static void c_sname_english( c_sname_t const *sname, FILE *fout ) {
+  assert( sname != NULL );
+  assert( fout != NULL );
+
+  if ( !c_sname_empty( sname ) ) {
+    FPUTS( c_sname_local_name( sname ), fout );
+    c_scope_english( sname->head, fout );
+  }
+}
+
+/**
  * Prints the non-base (attribute(s), storage class, qualifier(s), etc.) parts
  * of \a type, if any.
  *
@@ -736,16 +757,6 @@ char const* c_cast_english( c_cast_kind_t kind ) {
     case C_CAST_STATIC      : return L_static;
   } // switch
   UNEXPECTED_INT_VALUE( kind );
-}
-
-void c_sname_english( c_sname_t const *sname, FILE *fout ) {
-  assert( sname != NULL );
-  assert( fout != NULL );
-
-  if ( !c_sname_empty( sname ) ) {
-    FPUTS( c_sname_local_name( sname ), fout );
-    c_scope_english( sname->head, fout );
-  }
 }
 
 void c_typedef_english( c_typedef_t const *tdef, FILE *fout ) {

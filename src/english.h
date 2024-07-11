@@ -88,18 +88,6 @@ NODISCARD
 char const* c_cast_english( c_cast_kind_t kind );
 
 /**
- * Prints \a sname in pseudo-English.
- *
- * @param sname The name to print.
- * @param fout The `FILE` to print to.
- *
- * @note A newline is _not_ printed.
- *
- * @sa c_sname_full_name()
- */
-void c_sname_english( c_sname_t const *sname, FILE *fout );
-
-/**
  * Explains \a tdef as a type in pseudo-English.
  *
  * @param tdef The type to explain.
