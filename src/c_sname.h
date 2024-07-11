@@ -347,7 +347,6 @@ void c_sname_free( c_sname_t *sname );
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
- * @sa c_sname_english()
  * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name()
@@ -637,8 +636,8 @@ c_sname_t c_sname_scope_sname( c_sname_t const *sname );
  * innermost scope).
  *
  * @param sname The scoped name to get the scope scope-type of.
- * @return Returns the scope-type #T_NONE if \a sname is empty or not within a
- * scope.
+ * @return Returns the scope scope-type or \a sname or #T_NONE if \a sname is
+ * empty or not within a scope.
  *
  * @sa c_sname_global_type()
  * @sa c_sname_local_type()
