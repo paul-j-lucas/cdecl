@@ -1,5 +1,11 @@
 2024-07-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_type.h: Added C_TID_LIT().
+   * c_type.c, c_type.h: s/TX_MASK_TPID/TX_TPID_MASK/
+   * c_ast_check.c, c_ast_util.h, c_type.h: Eliminated C_TYPE_LIT_*_ANY()
+     macros.
+   * c_ast_check.c, c_sname.c, c_type.c, c_type.h, dump.c, english.c,
+     gibberish.c, parser.y: c_tid_*(), c_type_*() renaming.
    * c_ast_check.c, c_sname.c, c_sname.h, did_you_mean.c, dump.c, english.c,
      gibberish.c, gibberish.h, parser.y, print.c:
      s/c_sname_full_name()/c_sname_gibberish()/,
