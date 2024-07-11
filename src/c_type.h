@@ -945,7 +945,7 @@ char const* c_tid_name_english( c_tid_t tids );
 
 /**
  * Gets the name of \a tids for part of an error message.  If translating from
- * pseudo-English to gibberish and the type has an pseudo-English alias, return
+ * pseudo-English to gibberish and the type has a pseudo-English alias, return
  * the alias, e.g., `non-returning` rather than `noreturn`.
  *
  * @param tids The \ref c_tid_t to get the name of.
