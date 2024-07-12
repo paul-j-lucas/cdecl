@@ -420,7 +420,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
     case K_NAME:
       if ( OPT_LANG_IS( PROTOTYPES ) ) {
         //
-        // A name can occur only as an untyped K&R C function parameter.  In
+        // A name can occur as an untyped K&R C function parameter.  In
         // C89-C17, it's implicitly int:
         //
         //      cdecl> explain char f(x)
