@@ -158,6 +158,8 @@ cdecl> declare x as atomic pointer to int
 int *_Atomic x;
 cdecl> declare x as bit precise integer 4
 _BitInt(4) x;
+cdecl> declare x, y as bit precise integer 4
+_BitInt(4) x, y;
 cdecl> declare x as bit-precise integer 4
 _BitInt(4) x;
 cdecl> declare x as block (x as int, y as int) returning double
@@ -268,15 +270,15 @@ cdecl> declare _x as int
 int _x;
 cdecl> declare _X as int
                ^
-140,9: warning: "_X" is a reserved identifier
+141,9: warning: "_X" is a reserved identifier
 int _X;
 cdecl> declare __x as int
                ^
-141,9: warning: "__x" is a reserved identifier
+142,9: warning: "__x" is a reserved identifier
 int __x;
 cdecl> declare x__x as int
                ^
-142,9: warning: "x__x" is a reserved identifier in C++
+143,9: warning: "x__x" is a reserved identifier in C++
 int x__x;
 cdecl> 
 cdecl> set knr
@@ -296,13 +298,13 @@ cdecl> declare f as function (i as register) returning void
 void f(register int i);
 cdecl> declare p as pointer to function (x) returning int
                                          ^
-153,35: warning: missing type specifier; "int" assumed
+154,35: warning: missing type specifier; "int" assumed
 int (*p)(int x);
 cdecl> 
 cdecl> set c17
 cdecl> declare f as function (x) returning pointer to int
                               ^
-156,24: warning: missing type specifier; "int" assumed
+157,24: warning: missing type specifier; "int" assumed
 int* f(int x);
 cdecl> 
 cdecl> declare f as _Noreturn function (int) returning void
@@ -483,7 +485,7 @@ void f() final;
 c++decl> 
 c++decl> declare final as int
                        ^
-254,15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
+255,15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
 c++decl> 
 c++decl> declare T of namespace A of scope B as type int
 namespace B::A { using T = int; };
@@ -663,5 +665,5 @@ c++decl>
 c++decl> set c++14
 c++decl> declare f as throw function
                  ^
-349,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+350,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 void f() noexcept;

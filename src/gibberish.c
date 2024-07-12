@@ -386,10 +386,11 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_BUILTIN:
-      if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 )
+      if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 ) {
         FPUTS( c_type_gibberish( &type ), gib->fout );
-      if ( c_ast_is_tid_any( ast, TB__BitInt ) )
-        FPRINTF( gib->fout, "(%u)", ast->builtin.BitInt.width );
+        if ( c_ast_is_tid_any( ast, TB__BitInt ) )
+          FPRINTF( gib->fout, "(%u)", ast->builtin.BitInt.width );
+      }
       c_ast_space_name_gibberish( ast, gib );
       c_ast_bit_width_gibberish( ast, gib );
       break;
@@ -987,7 +988,11 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 
 /**
  * Determine whether we should print a space before the `*`, `&`, or `&&` in a
- * declaration.  By default, for all kinds _except_ function-like ASTs, we want
+ * declaration.
+ *
+ * @remarks
+ * @parblock
+ * By default, for all kinds _except_ function-like ASTs, we want
  * the output to be like:
  *
  *      type *var
@@ -1014,6 +1019,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
  *      type& (*f)(), &(*g)()
  *
  * because the latter looks inconsistent (even though it's correct).
+ * @endparblock
  *
  * @param ast The current AST node.
  * @param gib The gib_state to use.

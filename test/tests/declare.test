@@ -81,6 +81,7 @@ declare x as _BitInt(4)
 declare x as atomic int
 declare x as atomic pointer to int
 declare x as bit precise integer 4
+declare x, y as bit precise integer 4
 declare x as bit-precise integer 4
 declare x as block (x as int, y as int) returning double
 declare x as bool

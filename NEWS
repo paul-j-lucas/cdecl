@@ -20,6 +20,13 @@ Alignments can now have names to denote the number of bytes, e.g.:
 
 where `N` is presumed to be an integer constant.
 
+** `_BitInt` multi-declarations
+Declarations like:
+
+    declare x, y as bit precise integer 4
+
+are now correct.
+
 ** `CDECL_TEST=false` tests
 Fixed these tests.
 
