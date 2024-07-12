@@ -50,8 +50,8 @@
 #define C_ENG_DECL                (1u << 0)
 
 /**
- * Flag for c_ast_english() to omit the `declare` _name_ `as` part and print
- * only the type in pseudo-English.
+ * Flag for c_ast_english() to omit the &quot;<code>declare</code> _name_
+ * <code>as</code>&quot; part and print only the type in pseudo-English.
  *
  * @sa c_ast_english()
  */
