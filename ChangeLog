@@ -1,5 +1,7 @@
 2024-07-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * english.c, explain.out: Now printing "as integer" in English for K&R C
+     typeless function parameter in C89-C17.
    * gibberish.c, declare.out, declare.test: Fixed multi-declaration of
      _BitInt.
    * c_typedef.c, c_typedef.h, decl_flags.h, english.c, english.h, gibberish.c,
