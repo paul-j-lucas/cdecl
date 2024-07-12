@@ -268,7 +268,7 @@ typedef struct c_loc              c_loc_t;
  */
 typedef short                     c_loc_num_t;
 
-typedef struct c_named_ast        c_named_ast_t;
+typedef struct c_name_ast         c_name_ast_t;
 typedef enum   c_op_id            c_op_id_t;
 typedef struct c_operator         c_operator_t;
 typedef struct c_operator_ast     c_operator_ast_t;

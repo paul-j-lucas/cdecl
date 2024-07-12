@@ -305,7 +305,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  *
  * @sa #K_ANY_OBJECT
  */
-#define K_ANY_NAMED               ( K_ANY_ECSU | K_CONCEPT \
+#define K_ANY_NAME                ( K_ANY_ECSU | K_CONCEPT \
                                   | K_POINTER_TO_MEMBER )
 
 /**
@@ -314,7 +314,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  * or references: #K_ARRAY, #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_CONCEPT,
  * #K_ENUM, #K_NAME, or #K_TYPEDEF.
  *
- * @sa #K_ANY_NAMED
+ * @sa #K_ANY_NAME
  * @sa #K_ANY_OBJECT
  */
 #define K_ANY_NON_PTR_REF_OBJECT  ( K_ANY_ECSU | K_ARRAY | K_BUILTIN \
@@ -326,7 +326,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  * #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_ENUM, #K_POINTER,
  * #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE, or #K_TYPEDEF.
  *
- * @sa #K_ANY_NAMED
+ * @sa #K_ANY_NAME
  * @sa #K_ANY_NON_PTR_REF_OBJECT
  */
 #define K_ANY_OBJECT              ( K_ANY_NON_PTR_REF_OBJECT | K_ANY_POINTER \
