@@ -53,7 +53,7 @@
  */
 
 /**
- * Used by copy_typedefs() and copy_typedef_visitor() to pass and return data.
+ * Used by visitor functions to pass and return data.
  */
 struct dym_rb_visit_data {
   /// Pointer to a pointer to a candidate list or NULL to just get the count.
