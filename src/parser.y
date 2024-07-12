@@ -2565,8 +2565,6 @@ define_command
       DUMP_SNAME( "sname_english_exp", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
-      c_sname_set( &$decl_ast->sname, &$sname );
-
       if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
         assert( !c_sname_empty( &$decl_ast->sname ) );
         print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
@@ -2593,6 +2591,7 @@ define_command
       PARSE_ASSERT( c_ast_check( $decl_ast ) );
       PJL_DISCARD_RV( c_ast_take_type_any( $decl_ast, &T_TS_typedef ) );
 
+      c_sname_set( &$decl_ast->sname, &$sname );
       if ( c_tid_is_any( $decl_ast->type.btids, TB_ANY_SCOPE ) )
         c_sname_local_data( &$decl_ast->sname )->type = $decl_ast->type;
       c_sname_fill_in_namespace_types( &$decl_ast->sname );
