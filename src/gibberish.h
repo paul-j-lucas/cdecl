@@ -164,7 +164,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
 /**
  * Gets either the altertative or "graph" token, if any, of \a token.
  *
- * @param token The C++ token to get the other token for.
+ * @param token The C or C++ token to get the other token for.
  * @return
  *  + If \ref opt_alt_tokens is `true`, returns the alternative token of \a
  *    token, if any; or:
