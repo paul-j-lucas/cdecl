@@ -627,11 +627,15 @@ static void print_help_set_options( void ) {
 #ifdef ENABLE_BISON_DEBUG
   print_h( "  [no]bison-debug\n" );
 #endif /* ENABLE_BISON_DEBUG */
-  print_h( "  [no]debug[={u|\\*|-}]\n" );
+  print_h( "  [no]debug[={{" );
+              PUTS( OPT_CDECL_DEBUG_ALL );
+              print_h( "}+|\\*|-}]\n" );
   print_h( "  [no]east-const\n" );
   print_h( "  [no]echo-commands\n" );
   print_h( "  [no]english-types\n" );
-  print_h( "  [no]explicit-ecsu[={{e|c|s|u}+|\\*|-}]\n" );
+  print_h( "  [no]explicit-ecsu[={{" );
+              PUTS( OPT_ECSU_ALL );
+              print_h( "}+|\\*|-}]\n" );
   print_h( "  [no]explicit-int[={<types>|\\*|-}]\n" );
 #ifdef ENABLE_FLEX_DEBUG
   print_h( "  [no]flex-debug\n" );
@@ -644,7 +648,9 @@ static void print_help_set_options( void ) {
   print_h( "  [no]semicolon\n" );
   print_h( "  [no]trailing-return\n" );
   print_h( "  [no]using\n" );
-  print_h( "  [no]west-decl[={{b|f|l|o|r|s|t}+|\\*|-}]\n" );
+  print_h( "  [no]west-decl[={{" );
+              PUTS( OPT_WEST_DECL_ALL );
+              print_h( "r}+|\\*|-}]\n" );
   print_h( "lang:\n" );
   print_h( "  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C\\+\\+[98|03|11|14|17|20|23]\n" );
   print_h( "types:\n" );
