@@ -852,7 +852,7 @@ typedef enum c_tpid c_tpid_t;
 
 /// @ingroup c-storage-types-group
 /// Shorthand for any storage.
-#define TS_ANY_STORAGE        0x00000000FFFFFFF2ull
+#define TS_ANY_STORAGE        C_TID_LIT( STORE, 0x00000000FFFFFFF )
 
 /// @ingroup c-upc-qualifiers-group
 /// Shorthand for any UPC qualifier.
