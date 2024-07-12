@@ -418,7 +418,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_NAME:
-      if ( OPT_LANG_IS( PROTOTYPES ) ) {
+      if ( OPT_LANG_IS( PROTOTYPES ) && ast->param_of_ast != NULL ) {
         //
         // A name can occur as an untyped K&R C function parameter.  In
         // C89-C17, it's implicitly int:
