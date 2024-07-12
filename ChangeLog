@@ -1,5 +1,7 @@
 2024-07-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c, c_kind.c, c_lang.c, c_operator.c, c_sname.c, dump.c, p_macro.c:
+     #include clean-up.
    * c_type.h: Make TS_ANY_STORAGE use C_TID_LIT().
    * autocomplete.c, c_type.h, p_macro.h, set_options.c: #include clean-up.
    * c_ast_check.c, c_operator.c, c_operator.h: Moved c_op_is_new_delete().
