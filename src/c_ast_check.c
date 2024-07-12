@@ -2286,6 +2286,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
       return false;
 
     case K_CONCEPT:
+    case K_NAME:
       // nothing to do
       break;
 
@@ -2294,7 +2295,6 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_LAMBDA:
-    case K_NAME:
     case K_OPERATOR:
     case K_PLACEHOLDER:
     case K_UDEF_CONV:
