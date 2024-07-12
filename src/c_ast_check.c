@@ -419,6 +419,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
     case K_CLASS_STRUCT_UNION:
     case K_CONCEPT:
     case K_ENUM:
+    case K_NAME:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
       // nothing to do
@@ -429,7 +430,6 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_LAMBDA:
-    case K_NAME:
     case K_OPERATOR:
     case K_PLACEHOLDER:
     case K_STRUCTURED_BINDING:
@@ -3204,7 +3204,14 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_NAME:
-      if ( OPT_LANG_IS( PROTOTYPES ) ) {
+      if ( OPT_LANG_IS( PROTOTYPES ) && ast->param_of_ast != NULL ) {
+        //
+        // A name can occur as an untyped K&R C function parameter.  In
+        // C89-C17, it's implicitly int:
+        //
+        //      cdecl> declare f as function (x) returning char
+        //      char f(int x)
+        //
         print_warning( &ast->loc,
           "missing type specifier; \"%s\" assumed\n",
           c_tid_error( TB_int )

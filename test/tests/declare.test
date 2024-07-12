@@ -271,6 +271,7 @@ declare p as pointer to member of class C function returning pointer to struct S
 declare p as pointer to member of class C int
 declare p as restricted pointer to int
 declare r as reference to array 3 of int
+declare x as array 4 of T of scope S
 declare x as auto
 declare x as bool
 declare x as class C

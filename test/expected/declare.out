@@ -519,6 +519,8 @@ c++decl> declare p as restricted pointer to int
 int *__restrict p;
 c++decl> declare r as reference to array 3 of int
 int (&r)[3];
+c++decl> declare x as array 4 of T of scope S
+S::T x[4];
 c++decl> declare x as auto
 auto x;
 c++decl> declare x as bool
@@ -665,5 +667,5 @@ c++decl>
 c++decl> set c++14
 c++decl> declare f as throw function
                  ^
-350,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+351,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 void f() noexcept;
