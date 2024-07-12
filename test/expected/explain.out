@@ -509,7 +509,7 @@ cdecl> set c18
 cdecl> explain int* f(x)
                       ^
 251,16: warning: missing type specifier; "int" assumed
-declare f as function (x) returning pointer to integer
+declare f as function (x as integer) returning pointer to integer
 cdecl> 
 cdecl> set c++
 c++decl> struct S

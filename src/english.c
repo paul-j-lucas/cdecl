@@ -129,26 +129,26 @@ static void c_ast_func_params_english( c_ast_t const *ast,
     c_ast_t const *const param_ast = c_param_ast( param );
     c_sname_t const *const sname = c_ast_find_name( param_ast, C_VISIT_DOWN );
     if ( sname != NULL ) {
+      c_sname_english( sname, eng->fout );
       //
       // For all kinds except K_NAME, we have to print:
       //
       //      <name> as <english>
       //
-      // For K_NAME, e.g.:
+      // For K_NAME in K&R C, e.g.:
       //
-      //      void f(x)                 // untyped K&R C function parameter
+      //      char f(x)                 // untyped K&R C function parameter
       //
       // there's no "as <english>" part.
       //
-      c_sname_english( sname, eng->fout );
-      if ( param_ast->kind != K_NAME )
+      if ( param_ast->kind != K_NAME || OPT_LANG_IS( PROTOTYPES ) )
         FPUTS( " as ", eng->fout );
     }
     else {
       //
       // If there's no name, it's an unnamed parameter, e.g.:
       //
-      //      void f(int)
+      //      char f(int)
       //
       // so there's no "<name> as" part.
       //
@@ -418,9 +418,16 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_NAME:
-      // A K_NAME can occur only as an untyped K&R C function parameter.  The
-      // name was printed in c_ast_func_params_english() so we don't have to do
-      // anything here.
+      if ( OPT_LANG_IS( PROTOTYPES ) ) {
+        //
+        // A name can occur only as an untyped K&R C function parameter.  In
+        // C89-C17, it's implicitly int:
+        //
+        //      cdecl> explain char f(x)
+        //      declare f as function (x as integer) returning char
+        //
+        FPUTS( c_tid_english( TB_int ), eng->fout );
+      }
       break;
 
     case K_POINTER:

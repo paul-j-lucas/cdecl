@@ -36,6 +36,14 @@ Specifying the `--no-config` option now always works even when testing.
 ** Glob help
 Fixed glob help.
 
+** K&R C typeless parameters in English
+To match gibberish output, K&R C typeless parameters now print `as integer` in
+pseudo-English:
+
+    cdecl> set c17
+    cdecl> explain char f(x)
+    declare f as function (x as integer) returning character
+
 ** `show ::FILE`
 Fixed a crash.
 
