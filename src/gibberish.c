@@ -557,7 +557,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
     case K_NAME:
       if ( OPT_LANG_IS( PROTOTYPES ) ) {
         //
-        // In C89-C17, just a name for a function parameter is implicitly int:
+        // A name can occur only as an untyped K&R C function parameter.  In
+        // C89-C17, it's implicitly int:
         //
         //      cdecl> declare f as function (x) returning double
         //      double f(int x)
