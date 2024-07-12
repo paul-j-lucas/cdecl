@@ -268,7 +268,7 @@ static void print_help_command( cdecl_command_t const *command ) {
 
   if ( command_is_any( command, L_cast, L_const, L_dynamic, L_reinterpret,
                        L_static ) ) {
-    print_h( "  " );
+    PUTS( "  " );
     if ( command == NULL ) {
       if ( OPT_LANG_IS( NEW_STYLE_CASTS ) )
         print_h( "[const | dynamic | reinterpret | static] " );
@@ -328,7 +328,7 @@ static void print_help_command( cdecl_command_t const *command ) {
   if ( OPT_LANG_IS( SCOPED_NAMES ) &&
        command_is_any( command, L_class, L_inline, L_namespace, L_struct,
                        L_union ) ) {
-    print_h( "  " );
+    PUTS( "  " );
     if ( command == NULL ) {
       print_h( "<scope-c>" );
     } else {
@@ -343,7 +343,7 @@ static void print_help_command( cdecl_command_t const *command ) {
         print_h( " | <using>" );
       print_h( " } ;]* \\}]" );
     }
-    print_h( "\n" );
+    PUTC( '\n' );
   }
 
   if ( command_is( command, L_PRE_P_undef ) )
@@ -469,11 +469,11 @@ static void print_help_english( void ) {
       print_h( " | wchar_t" );
     print_h( " | int |" );
     if ( OPT_LANG_IS( auto_TYPE ) || OPT_LANG_IS( _BitInt ) )
-      print_h( "\n       " );
+      PUTS( "\n       " );
     print_h( " float | double" );
     if ( OPT_LANG_IS( void ) )
       print_h( " | void" );
-    print_h( "\n" );
+    PUTC( '\n' );
 
     if ( OPT_LANG_IS( const ) ) {
       print_h( "cv-qual:" );
@@ -494,7 +494,7 @@ static void print_help_english( void ) {
     print_h( " | unsigned" );
     if ( OPT_LANG_IS( const ) )
       print_h( " | <cv-qual>" );
-    print_h( "\n" );
+    PUTC( '\n' );
 
     print_help_name_number();
 
@@ -509,7 +509,7 @@ static void print_help_english( void ) {
     else if ( OPT_LANG_IS( _Thread_local ) )
       print_h( " | _Thread_local" );
     print_h( " | typedef" );
-    print_h( "\n" );
+    PUTC( '\n' );
   }
   else /* C++ */ {
     print_h( "  <store>*" );
@@ -552,7 +552,7 @@ static void print_help_english( void ) {
     }
     print_h( " | wchar_t | int | float | double |" );
     if ( OPT_LANG_IS( char8_t ) && OPT_LANG_IS( auto_TYPE ) )
-      print_h( "\n         " );
+      PUTS( "\n         " );
     if ( OPT_LANG_IS( PARAMETER_PACKS ) )
       print_h( " parameter pack |" );
     print_h( " void\n" );
@@ -562,7 +562,7 @@ static void print_help_english( void ) {
     print_h( "fn-qual: <cv-qual>" );
     if ( OPT_LANG_IS( RVALUE_REFERENCES ) )
       print_h( " | [rvalue] reference" );
-    print_h( "\n" );
+    PUTC( '\n' );
 
     print_h( "modifier: short | long | signed | unsigned | <cv-qual>\n" );
     print_help_name_number();
