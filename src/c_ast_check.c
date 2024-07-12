@@ -166,7 +166,8 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_upc( c_ast_t const* ),
                     c_ast_check_visitor( c_ast_t const*, c_ast_visit_fn_t ),
                     c_ast_visitor_error( c_ast_t const*, user_data_t ),
-                    c_ast_visitor_type( c_ast_t const*, user_data_t );
+                    c_ast_visitor_type( c_ast_t const*, user_data_t ),
+                    c_op_is_new_delete( c_op_id_t );
 
 static void         c_ast_warn_name( c_ast_t const* );
 
@@ -3252,6 +3253,25 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
   c_sname_warn( &ast->sname, &ast->loc );
   if ( (ast->kind & K_ANY_NAMED) != 0 )
     c_sname_warn( &ast->named.sname, &ast->loc );
+}
+
+/**
+ * Checks whether \a op_id is one of #C_OP_NEW, #C_OP_NEW_ARRAY, #C_OP_DELETE,
+ * or #C_OP_DELETE_ARRAY.
+ *
+ * @param op_id The ID of the c_operator to check.
+ * @return Returns `true` only of \a op_id is one of said operators.
+ */
+bool c_op_is_new_delete( c_op_id_t op_id ) {
+  switch ( op_id ) {
+    case C_OP_NEW:
+    case C_OP_NEW_ARRAY:
+    case C_OP_DELETE:
+    case C_OP_DELETE_ARRAY:
+      return true;
+    default:
+      return false;
+  } // switch
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

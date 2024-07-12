@@ -150,16 +150,6 @@ bool c_op_is_ambiguous( c_operator_t const *op ) {
 }
 
 /**
- * Checks whether \a op_id is one of #C_OP_NEW, #C_OP_NEW_ARRAY, #C_OP_DELETE,
- * or #C_OP_DELETE_ARRAY.
- *
- * @param op_id The ID of the c_operator to check.
- * @return Returns `true` only of \a op_id is one of said operators.
- */
-NODISCARD
-bool c_op_is_new_delete( c_op_id_t op_id );
-
-/**
  * Gets the C++ token for the operator having \a op_id.
  *
  * @param op_id The ID of the c_operator to get the token for.

@@ -147,18 +147,6 @@ c_operator_t const* c_op_get( c_op_id_t op_id ) {
   return best_op;
 }
 
-bool c_op_is_new_delete( c_op_id_t op_id ) {
-  switch ( op_id ) {
-    case C_OP_NEW:
-    case C_OP_NEW_ARRAY:
-    case C_OP_DELETE:
-    case C_OP_DELETE_ARRAY:
-      return true;
-    default:
-      return false;
-  } // switch
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
