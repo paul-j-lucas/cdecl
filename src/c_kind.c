@@ -27,7 +27,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "c_kind.h"
 #include "c_lang.h"
-#include "cdecl.h"
 #include "options.h"
 #include "util.h"
 
@@ -35,8 +34,6 @@
 
 // standard
 #include <assert.h>
-#include <stdlib.h>
-#include <sysexits.h>
 
 /// @endcond
 

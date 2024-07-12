@@ -34,7 +34,6 @@
 #include "c_sglob.h"
 #include "c_type.h"
 #include "c_typedef.h"
-#include "color.h"
 #include "literals.h"
 #include "options.h"
 #include "p_macro.h"

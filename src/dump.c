@@ -30,7 +30,6 @@
 #include "c_ast_util.h"
 #include "c_operator.h"
 #include "c_type.h"
-#include "cdecl.h"
 #include "english.h"
 #include "gibberish.h"
 #include "literals.h"

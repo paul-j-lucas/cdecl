@@ -29,7 +29,6 @@
 #define C_OPERATOR_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_operator.h"
-#include "c_ast.h"
 #include "c_lang.h"
 #include "literals.h"
 #include "util.h"

@@ -33,7 +33,6 @@
 #include "options.h"
 #include "p_token.h"
 #include "print.h"
-#include "prompt.h"
 #include "red_black.h"
 #include "show.h"
 #include "util.h"
