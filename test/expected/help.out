@@ -119,7 +119,7 @@ command:
 cdecl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -245,7 +245,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -355,7 +355,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -465,7 +465,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -577,7 +577,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -698,7 +698,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -819,7 +819,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -1009,7 +1009,7 @@ command:
 c++decl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -1163,7 +1163,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -1298,7 +1298,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -1453,7 +1453,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -1608,7 +1608,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -1764,7 +1764,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
@@ -1921,7 +1921,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help options
 option:
   [no]alt-tokens
-  [no]debug[={u|*|-}]
+  [no]debug[={{u}+|*|-}]
   [no]east-const
   [no]echo-commands
   [no]english-types
