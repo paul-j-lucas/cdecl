@@ -28,6 +28,7 @@
 #include "autocomplete.h"
 #include "c_keyword.h"
 #include "c_lang.h"
+#include "cdecl.h"
 #include "cdecl_command.h"
 #include "cdecl_keyword.h"
 #include "help.h"

@@ -28,9 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "slist.h"
 #include "types.h"
-#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
