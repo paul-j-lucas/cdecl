@@ -1,5 +1,8 @@
 2024-07-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_type.h: Make TS_ANY_STORAGE use C_TID_LIT().
+   * autocomplete.c, c_type.h, p_macro.h, set_options.c: #include clean-up.
+   * c_ast_check.c, c_operator.c, c_operator.h: Moved c_op_is_new_delete().
    * c_type.h: Added C_TID_LIT().
    * c_type.c, c_type.h: s/TX_MASK_TPID/TX_TPID_MASK/
    * c_ast_check.c, c_ast_util.h, c_type.h: Eliminated C_TYPE_LIT_*_ANY()
