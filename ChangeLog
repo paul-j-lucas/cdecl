@@ -1,3 +1,12 @@
+2024-07-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c, declare.out, declare.test: Fixed multi-declaration of
+     _BitInt.
+   * c_typedef.c, c_typedef.h, decl_flags.h, english.c, english.h, gibberish.c,
+     gibberish.h, parser.y, print.c, print.h, show.c, show.h, types.h: Added
+     decl_flags_t.
+   * help.out: Now using *_ALL constants, part 2.
+
 2024-07-11  Paul J. Lucas <paul@lucasmail.org>
 
    * help.c, help.out: Now using *_ALL constants.
