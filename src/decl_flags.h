@@ -33,7 +33,8 @@
 /**
  * @ingroup printing-english-group
  * @defgroup english-flags English Flags
- * Flags for c_ast_english() that control how pseudo-English is printed.
+ * Flags for c_ast_english() that control how pseudo-English is printed
+ * comprising part of \ref decl_flags_t.
  *
  * @sa \ref gibberish-flags
  * @{
@@ -71,7 +72,7 @@
  * @ingroup printing-gibberish-group
  * @defgroup gibberish-flags Gibberish Flags
  * Flags for c_ast_gibberish() and c_typedef_gibberish() that control how
- * gibberish is printed.
+ * gibberish is printed comprising part of \ref decl_flags_t.
  *
  * @sa \ref english-flags
  * @{

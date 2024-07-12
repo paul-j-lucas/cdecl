@@ -60,7 +60,7 @@
  * @sa print_type_decl()
  * @sa show_type()
  */
-void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *fout );
+void c_ast_english( c_ast_t const *ast, decl_flags_t eng_flags, FILE *fout );
 
 /**
  * Explains \a ast_list in pseudo-English.

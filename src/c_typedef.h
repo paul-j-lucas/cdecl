@@ -63,7 +63,7 @@
 struct c_typedef {
   c_ast_t const  *ast;                  ///< AST representing the type.
   c_lang_id_t     lang_ids;             ///< Language(s) available in.
-  unsigned        decl_flags;           ///< How was the type defined?
+  decl_flags_t    decl_flags;           ///< How was the type defined?
   bool            is_predefined;        ///< Was the type predefined?
 };
 
@@ -96,7 +96,7 @@ typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
  * @sa c_typedef_remove()
  */
 NODISCARD
-rb_node_t* c_typedef_add( c_ast_t const *type_ast, unsigned decl_flags );
+rb_node_t* c_typedef_add( c_ast_t const *type_ast, decl_flags_t decl_flags );
 
 /**
  * Gets the \ref c_typedef for \a name.

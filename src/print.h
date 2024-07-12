@@ -385,7 +385,7 @@ void print_type_ast( c_typedef_t const *tdef, FILE *fout );
  * @sa print_type_ast()
  * @sa show_type()
  */
-void print_type_decl( c_typedef_t const *tdef, unsigned decl_flags,
+void print_type_decl( c_typedef_t const *tdef, decl_flags_t decl_flags,
                       FILE *fout );
 
 ///////////////////////////////////////////////////////////////////////////////

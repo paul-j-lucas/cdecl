@@ -575,7 +575,7 @@ void print_type_ast( c_typedef_t const *tdef, FILE *fout ) {
     c_ast_gibberish( tdef->ast, C_GIB_USING, fout );
 }
 
-void print_type_decl( c_typedef_t const *tdef, unsigned decl_flags,
+void print_type_decl( c_typedef_t const *tdef, decl_flags_t decl_flags,
                       FILE *fout ) {
   assert( tdef != NULL );
   assert( is_1_bit_in_set( decl_flags, C_TYPE_DECL_ANY ) );

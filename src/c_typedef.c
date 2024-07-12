@@ -1012,7 +1012,8 @@ static int c_typedef_cmp( c_typedef_t const *i_tdef,
  * @return Returns said \ref c_typedef.
  */
 NODISCARD
-static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned decl_flags ) {
+static c_typedef_t* c_typedef_new( c_ast_t const *ast,
+                                   decl_flags_t decl_flags ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( decl_flags, C_TYPE_DECL_ANY ) );
 
@@ -1092,7 +1093,7 @@ static bool rb_visitor( void *node_data, void *v_data ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-rb_node_t* c_typedef_add( c_ast_t const *ast, unsigned decl_flags ) {
+rb_node_t* c_typedef_add( c_ast_t const *ast, decl_flags_t decl_flags ) {
   assert( ast != NULL );
   assert( !c_sname_empty( &ast->sname ) );
 

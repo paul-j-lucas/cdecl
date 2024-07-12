@@ -824,7 +824,7 @@ static bool c_ast_set_bit_field_width( c_ast_t *ast, unsigned bit_width ) {
  * name.
  */
 NODISCARD
-static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
+static bool define_type( c_ast_t const *type_ast, decl_flags_t decl_flags ) {
   assert( type_ast != NULL );
   assert( is_1_bit_only_in_set( decl_flags, C_TYPE_DECL_ANY ) );
 
@@ -2125,7 +2125,7 @@ declare_command
 
       if ( ok ) {
         if ( $decl_ast->kind == K_STRUCTURED_BINDING ) {
-          unsigned decl_flags = C_GIB_PRINT_DECL;
+          decl_flags_t decl_flags = C_GIB_PRINT_DECL;
           if ( opt_semicolon )
             decl_flags |= C_GIB_OPT_SEMICOLON;
           c_ast_gibberish( $decl_ast, decl_flags, stdout );
@@ -2197,7 +2197,7 @@ declare_command
       c_ast_set_parent( $ret_ast, oper_ast );
 
       PARSE_ASSERT( c_ast_check( oper_ast ) );
-      unsigned decl_flags = C_GIB_PRINT_DECL;
+      decl_flags_t decl_flags = C_GIB_PRINT_DECL;
       if ( opt_semicolon )
         decl_flags |= C_GIB_OPT_SEMICOLON;
       c_ast_gibberish( oper_ast, decl_flags, stdout );
@@ -2267,7 +2267,7 @@ declare_command
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( udc_ast ) );
-      unsigned decl_flags = C_GIB_PRINT_DECL;
+      decl_flags_t decl_flags = C_GIB_PRINT_DECL;
       if ( opt_semicolon )
         decl_flags |= C_GIB_OPT_SEMICOLON;
       c_ast_gibberish( udc_ast, decl_flags, stdout );

@@ -68,7 +68,7 @@ typedef struct show_macros_info show_macros_info_t;
 struct show_types_info {
   cdecl_show_t  show;                   ///< Which types to show.
   c_sglob_t     sglob;                  ///< Scoped glob to match, if any.
-  unsigned      decl_flags;             ///< Declaration flags.
+  decl_flags_t  decl_flags;             ///< Declaration flags.
   FILE         *fout;                   ///< Where to print the types.
   bool          showed_any;             ///< Did we actually show any?
 };
@@ -207,7 +207,7 @@ void show_macros( cdecl_show_t show, FILE *fout ) {
   p_macro_visit( &show_macro_visitor, &smi );
 }
 
-void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *fout ) {
+void show_type( c_typedef_t const *tdef, decl_flags_t decl_flags, FILE *fout ) {
   assert( tdef != NULL );
   assert( fout != NULL );
 
@@ -221,7 +221,7 @@ void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *fout ) {
   FPUTC( '\n', fout );
 }
 
-bool show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
+bool show_types( cdecl_show_t show, char const *glob, decl_flags_t decl_flags,
                  FILE *fout ) {
   assert( fout != NULL );
 

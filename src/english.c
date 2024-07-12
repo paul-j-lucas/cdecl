@@ -554,7 +554,7 @@ static void eng_init( eng_state_t *eng, FILE *fout ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *fout ) {
+void c_ast_english( c_ast_t const *ast, decl_flags_t eng_flags, FILE *fout ) {
   assert( ast != NULL );
   assert( is_1n_bit_only_in_set( eng_flags, C_ENG_ANY ) );
   assert( (eng_flags & C_ENG_DECL) != 0 );

@@ -83,7 +83,7 @@ void show_macros( cdecl_show_t show, FILE *fout );
  * @sa print_type_decl()
  * @sa show_types()
  */
-void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *fout );
+void show_type( c_typedef_t const *tdef, decl_flags_t decl_flags, FILE *fout );
 
 /**
  * Shows (prints) the definition of defined types matching \a glob, if any.
@@ -97,7 +97,7 @@ void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *fout );
  * @sa print_type_decl()
  * @sa show_type()
  */
-bool show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
+bool show_types( cdecl_show_t show, char const *glob, decl_flags_t decl_flags,
                  FILE *fout );
 
 ///////////////////////////////////////////////////////////////////////////////

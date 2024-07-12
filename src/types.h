@@ -306,6 +306,17 @@ typedef enum   cdecl_debug        cdecl_debug_t;
 typedef enum   cdecl_show         cdecl_show_t;
 
 /**
+ * Declaration flags for:
+ *
+ *  + How a declaration was originally declared; and:
+ *  + How to print a declaration.
+ *
+ * @sa \ref english-flags
+ * @sa \ref gibberish-flags
+ */
+typedef uint16_t                  decl_flags_t;
+
+/**
  * C preprocessor macro argument list.
  *
  * @remarks

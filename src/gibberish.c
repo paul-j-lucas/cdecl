@@ -59,12 +59,12 @@
  * arguments otherwise).
  */
 struct gib_state {
-  unsigned  gib_flags;                  ///< Gibberish printing flags.
-  FILE     *fout;                       ///< Where to print the gibberish.
-  bool      is_nested_scope;            ///< Within `{` ... `}`?
-  bool      is_postfix;                 ///< Doing postfix gibberish?
-  bool      printed_space;              ///< Printed a space yet?
-  bool      printed_typedef;            ///< Printed `typedef`?
+  decl_flags_t  gib_flags;              ///< Gibberish printing flags.
+  FILE         *fout;                   ///< Where to print the gibberish.
+  bool          is_nested_scope;        ///< Within `{` ... `}`?
+  bool          is_postfix;             ///< Doing postfix gibberish?
+  bool          printed_space;          ///< Printed a space yet?
+  bool          printed_typedef;        ///< Printed `typedef`?
 };
 typedef struct gib_state gib_state_t;
 
@@ -75,7 +75,7 @@ static void c_ast_postfix_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_qual_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_space_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_struct_bind_ast_gibberish( c_ast_t const*, gib_state_t* );
-static void gib_init( gib_state_t*, unsigned, FILE* );
+static void gib_init( gib_state_t*, decl_flags_t, FILE* );
 
 NODISCARD
 static bool c_ast_space_before_ptr_ref( c_ast_t const*, gib_state_t const* );
@@ -633,7 +633,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         //      c++decl> show foo_t as using
         //      using foo_t = int32_t;
         //
-        unsigned const orig_flags = gib->gib_flags;
+        decl_flags_t const orig_flags = gib->gib_flags;
         gib->gib_flags &= ~C_GIB_USING;
         c_ast_name_gibberish( ast->tdef.for_ast, gib );
         gib->gib_flags = orig_flags;
@@ -1232,7 +1232,7 @@ static void c_struct_bind_ast_gibberish( c_ast_t const *ast,
  * @param gib_flags The gibberish flags to use.
  * @param fout The `FILE` to print to.
  */
-static void gib_init( gib_state_t *gib, unsigned gib_flags, FILE *fout ) {
+static void gib_init( gib_state_t *gib, decl_flags_t gib_flags, FILE *fout ) {
   assert( gib != NULL );
   assert( is_1n_bit_only_in_set( gib_flags, C_GIB_ANY ) );
   assert( fout != NULL );
@@ -1313,7 +1313,7 @@ static char const* graph_token_c( char const *token ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *fout ) {
+void c_ast_gibberish( c_ast_t const *ast, decl_flags_t gib_flags, FILE *fout ) {
   assert( ast != NULL );
   assert( is_1n_bit_only_in_set( gib_flags, C_GIB_ANY ) );
   assert(
@@ -1381,7 +1381,7 @@ void c_ast_sname_list_gibberish( c_ast_t *ast, slist_t const *sname_list,
   assert( sname_list != NULL );
   assert( fout != NULL );
 
-  unsigned decl_flags = C_GIB_PRINT_DECL;
+  decl_flags_t decl_flags = C_GIB_PRINT_DECL;
   if ( slist_len( sname_list ) > 1 )
     decl_flags |= C_GIB_OPT_MULTI_DECL;
   bool const print_as_using = c_ast_print_as_using( ast );
@@ -1456,7 +1456,7 @@ char const* c_sname_scope_gibberish( c_sname_t const *sname ) {
   return sname != NULL ? c_sname_name_impl( &sbuf, sname, sname->tail ) : "";
 }
 
-void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
+void c_typedef_gibberish( c_typedef_t const *tdef, decl_flags_t gib_flags,
                           FILE *fout ) {
   assert( tdef != NULL );
   assert( is_1_bit_in_set( gib_flags, C_GIB_DECL_ANY ) );

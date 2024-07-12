@@ -60,7 +60,7 @@
  * @sa print_type_decl()
  * @sa show_type()
  */
-void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *fout );
+void c_ast_gibberish( c_ast_t const *ast, decl_flags_t gib_flags, FILE *fout );
 
 /**
  * Prints the names in \a sname_list as gibberish, aka, C/C++ declarations.
@@ -158,7 +158,7 @@ char const* c_sname_scope_gibberish( c_sname_t const *sname );
  * @sa print_type_decl()
  * @sa show_type()
  */
-void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
+void c_typedef_gibberish( c_typedef_t const *tdef, decl_flags_t gib_flags,
                           FILE *fout );
 
 /**
