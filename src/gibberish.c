@@ -560,8 +560,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         // A name can occur only as an untyped K&R C function parameter.  In
         // C89-C17, it's implicitly int:
         //
-        //      cdecl> declare f as function (x) returning double
-        //      double f(int x)
+        //      cdecl> declare f as function (x) returning char
+        //      char f(int x)
         //
         FPUTS( L_int, gib->fout );
       }
