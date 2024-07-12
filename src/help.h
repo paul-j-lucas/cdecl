@@ -81,8 +81,8 @@ char const* const* help_option_next( char const *const *opt );
  * current language, an error message is printed.
  * @endparblock
  * @param what_loc The location of \a what.
- * @return Returns `true` only if \a what is valid and help was printed or
- * `false` otherwise.
+ * @return Returns `true` only if \a what is either NULL or valid and help was
+ * printed or `false` otherwise.
  */
 NODISCARD
 bool print_help( char const *what, c_loc_t const *what_loc );
