@@ -1,3 +1,7 @@
+2024-07-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Made TO_UNSIGNED() check for an integral expression.
+
 2024-07-12  Paul J. Lucas <paul@lucasmail.org>
 
    * c_sname.c, c_sname.h: c_sname now uses non-const char* since it takes
