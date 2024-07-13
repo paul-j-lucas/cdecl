@@ -103,11 +103,11 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @cond DOXYGEN_IGNORE
 #define ARG_WITHIN_PARENS(...)    ,
-#define NAME5(A,B,C,D,E)          NAME5_HELPER( A, B, C, D, E )
-#define NAME5_HELPER(A,B,C,D,E)   A ## B ## C ## D ## E
 #define ARGS_IS_EMPTY_HELPER(_1,_2,_3,_4) \
   ARGS_HAS_COMMA( ARGS_5( ARGS_IS_EMPTY_RESULT_, _1, _2, _3, _4 ) )
 #define ARGS_IS_EMPTY_RESULT_0001 ,
+#define NAME5(A,B,C,D,E)          NAME5_HELPER( A, B, C, D, E )
+#define NAME5_HELPER(A,B,C,D,E)   A ## B ## C ## D ## E
 /// @endcond
 
 /**
