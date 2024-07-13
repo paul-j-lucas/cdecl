@@ -55,6 +55,12 @@ Now, showing a specific glob (one having no `*`s in it) like:
 will show the definition of `FILE` even though it's predefined and not the
 default of user-defined.
 
+** `typedef` modifiers
+Attempting to use modifiers with `typedef`s is now correctly forbidden, e.g.:
+
+    typedef int T
+    explain unsigned T                  // error
+
 
 * Changes in Cdecl 18.0
 

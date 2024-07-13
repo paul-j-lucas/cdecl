@@ -102,6 +102,7 @@ explain unsigned float x
 explain unsigned void x
 explain unsigned wchar_t x
 explain unsigned *x : 3
+explain unsigned S
 explain using f = void (*)(int)
 explain virtual void f()
 explain virtual void f() override final

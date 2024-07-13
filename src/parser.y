@@ -1089,7 +1089,30 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   type_ast = ia_type_spec_ast( type_ast );
   c_type_t type = c_ast_take_type_any( type_ast, &T_TS_typedef );
 
-  if ( c_tid_is_any( type.stids, TS_typedef ) && decl_ast->kind == K_TYPEDEF ) {
+  //
+  // This is for a case like:
+  //
+  //      explain typedef ...
+  //
+  bool const is_explain_typedef = c_tid_is_any( type.stids, TS_typedef );
+
+  if ( !is_explain_typedef &&
+       type_ast->kind == K_BUILTIN && decl_ast->kind == K_BUILTIN &&
+       sname_is_type( &decl_ast->sname, &decl_ast->loc ) ) {
+    //
+    // This checks for a case like:
+    //
+    //      typedef int T
+    //      explain unsigned T          // error
+    //
+    // This check has to be done now in the parser rather than later in the
+    // AST because once type_ast and decl_ast are joined, the fact that
+    // decl_ast was a typedef is lost.
+    //
+    return NULL;
+  }
+
+  if ( is_explain_typedef && decl_ast->kind == K_TYPEDEF ) {
     //
     // This is for a case like:
     //
