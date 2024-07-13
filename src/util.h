@@ -578,6 +578,26 @@ _GL_INLINE_HEADER_BEGIN
   )
 
 /**
+ * Checks (at compile-time) whether the `char` type is signed or unsigned.
+ *
+ * @return Returns 1 (true) only if `char` is signed; 0 (false) otherwise.
+ */
+#define IS_CHAR_SIGNED            STATIC_IF( (char)-1 < 0, 1, 0 )
+
+/**
+ * Checks (at compile-time) whether the type of the expression \a T is an
+ * integral type.
+ *
+ * @param T An expression.
+ * @return Returns 1 (true) only if \a T is an integral type; 0 (false)
+ * otherwise.
+ *
+ * @sa #IS_SIGNED()
+ * @sa #IS_UNSIGNED()
+ */
+#define IS_INTEGRAL(T)            (IS_SIGNED(T) || IS_UNSIGNED(T))
+
+/**
  * Checks (at compile-time) whether \a P is a pointer to `const`.
  *
  * @param P A pointer.
@@ -588,6 +608,49 @@ _GL_INLINE_HEADER_BEGIN
   _Generic( TO_VOID_PTR( (P) ), \
     void const* : 1,            \
     default     : 0             \
+  )
+
+/**
+ * Checks (at compile-time) whether the type of the expression \a T is a signed
+ * integral type.
+ *
+ * @param T An expression.
+ * @return Returns 1 (true) only if \a T is a signed integral type; 0 (false)
+ * otherwise.
+ *
+ * @sa #IS_UNSIGNED()
+ */
+#define IS_SIGNED(T)                      \
+  _Generic( (T),                          \
+    char       : IS_CHAR_SIGNED,          \
+    signed char: 1,                       \
+    short      : 1,                       \
+    int        : 1,                       \
+    long       : 1,                       \
+    long long  : 1,                       \
+    default    : 0                        \
+  )
+
+/**
+ * Checks (at compile-time) whether the type of the expression \a T is an
+ * unsigned integral type.
+ *
+ * @param T An expression.
+ * @return Returns 1 (true) only if \a T is an unsigned integral type; 0
+ * (false) otherwise.
+ *
+ * @sa #IS_SIGNED()
+ */
+#define IS_UNSIGNED(T)                    \
+  _Generic( (T),                          \
+    _Bool             : 1,                \
+    char              : !IS_CHAR_SIGNED,  \
+    unsigned char     : 1,                \
+    unsigned short    : 1,                \
+    unsigned int      : 1,                \
+    unsigned long     : 1,                \
+    unsigned long long: 1,                \
+    default           : 0                 \
   )
 
 #ifdef HAVE___BUILTIN_EXPECT
@@ -982,16 +1045,17 @@ _GL_INLINE_HEADER_BEGIN
  * @param N An integral expression.
  * @return Returns \a N cast to an unsigned type.
  */
-#define TO_UNSIGNED(N)                    \
-  STATIC_IF( sizeof(N) == sizeof(char),   \
-    (unsigned char)(N),                   \
-  STATIC_IF( sizeof(N) == sizeof(short),  \
-    (unsigned short)(N),                  \
-  STATIC_IF( sizeof(N) == sizeof(int),    \
-    (unsigned int)(N),                    \
-  STATIC_IF( sizeof(N) == sizeof(long),   \
-    (unsigned long)(N),                   \
-    (unsigned long long)(N) ) ) ) )
+#define TO_UNSIGNED(N) (                                              \
+  STATIC_ASSERT_EXPR( IS_INTEGRAL( (N) ), #N " must be integral" ) *  \
+  STATIC_IF( sizeof(N) == sizeof(char),                               \
+    (unsigned char)(N),                                               \
+  STATIC_IF( sizeof(N) == sizeof(short),                              \
+    (unsigned short)(N),                                              \
+  STATIC_IF( sizeof(N) == sizeof(int),                                \
+    (unsigned int)(N),                                                \
+  STATIC_IF( sizeof(N) == sizeof(long),                               \
+    (unsigned long)(N),                                               \
+    (unsigned long long)(N) ) ) ) ) )
 
 /**
  * Converts \a P to a pointer to `void` preserving `const`-ness.
