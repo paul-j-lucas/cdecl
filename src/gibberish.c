@@ -243,7 +243,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
   bool    is_delete       = false;
   bool    is_final        = false;
   bool    is_fixed_enum   = false;
-  bool    is_implicit_int = false;
   bool    is_noexcept     = false;
   bool    is_override     = false;
   bool    is_pure_virtual = false;
@@ -556,8 +555,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_NAME:
-      is_implicit_int = OPT_LANG_IS( PROTOTYPES ) && ast->param_of_ast != NULL;
-      if ( is_implicit_int ) {
+      NO_OP;
+      bool printed_type = false;
+      if ( OPT_LANG_IS( PROTOTYPES ) && ast->param_of_ast != NULL ) {
         //
         // A name can occur as an untyped K&R C function parameter.  In
         // C89-C17, it's implicitly int:
@@ -566,9 +566,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         //      char f(int x)
         //
         FPUTS( L_int, gib->fout );
+        printed_type = true;
       }
       if ( (gib->gib_flags & C_GIB_PRINT_CAST) == 0 ) {
-        if ( is_implicit_int )
+        if ( printed_type )
           FPUTC( ' ', gib->fout );
         c_ast_name_gibberish( ast, gib );
       }
