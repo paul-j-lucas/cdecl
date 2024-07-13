@@ -83,13 +83,13 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
   char const *prev_name = "";
 
   while ( (end = parse_identifier( s )) != NULL ) {
-    char const *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
+    char *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
 
     // Ensure that the name is NOT a keyword.
     c_keyword_t const *const ck =
       c_keyword_find( name, opt_lang_id, C_KW_CTX_DEFAULT );
     if ( ck != NULL ) {
-      FREE( name );
+      free( name );
       // ck->literal is set to L_* so == is OK
       if ( is_dtor && ck->literal == L_compl ) {
         char const *const t = s + strlen( L_compl );
@@ -156,12 +156,12 @@ c_scope_data_t* c_scope_data_dup( c_scope_data_t const *src ) {
 
 void c_scope_data_free( c_scope_data_t *data ) {
   if ( data != NULL ) {
-    FREE( data->name );
+    free( data->name );
     free( data );
   }
 }
 
-void c_sname_append_name( c_sname_t *sname, char const *name ) {
+void c_sname_append_name( c_sname_t *sname, char *name ) {
   assert( sname != NULL );
   assert( name != NULL );
   c_scope_data_t *const data = MALLOC( c_scope_data_t, 1 );

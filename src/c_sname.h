@@ -103,7 +103,7 @@ _GL_INLINE_HEADER_BEGIN
  * @warning c_sname_cleanup() must _not_ be called on the returned value.
  */
 #define C_SNAME_LIT(NAME) \
-  SLIST_LIT( (&(c_scope_data_t){ (NAME), T_NONE }) )
+  SLIST_LIT( (&(c_scope_data_t){ CONST_CAST( char*, (NAME) ), T_NONE }) )
 
 /**
  * Gets the local scope data of \a SNAME (which is the data of the innermost
@@ -152,7 +152,7 @@ struct c_scope_data {
   /**
    * The scope's name.
    */
-  char const *name;
+  char *name;
 
   /**
    * The scope's type, one of: #TB_class, #TB_struct, #TB_union, [#TS_inline]
@@ -205,7 +205,7 @@ void c_scope_data_free( c_scope_data_t *data );
  * @sa c_sname_prepend_sname()
  * @sa c_sname_set()
  */
-void c_sname_append_name( c_sname_t *sname, char const *name );
+void c_sname_append_name( c_sname_t *sname, char *name );
 
 /**
  * Appends \a src onto the end of \a dst.
@@ -398,7 +398,7 @@ void c_sname_init( c_sname_t *sname ) {
  * @sa c_sname_init()
  */
 C_SNAME_H_INLINE
-void c_sname_init_name( c_sname_t *sname, char const *name ) {
+void c_sname_init_name( c_sname_t *sname, char *name ) {
   slist_init( sname );
   c_sname_append_name( sname, name );
 }
