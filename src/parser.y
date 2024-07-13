@@ -1086,6 +1086,7 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   if ( in_attr.is_typename && !c_ast_is_typename_ok( type_ast ) )
     return NULL;
 
+  type_ast = ia_type_spec_ast( type_ast );
   c_type_t type = c_ast_take_type_any( type_ast, &T_TS_typedef );
 
   if ( c_tid_is_any( type.stids, TS_typedef ) && decl_ast->kind == K_TYPEDEF ) {
@@ -4635,7 +4636,7 @@ decl_c
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
-      $$ = join_type_decl( ia_type_spec_ast( type_ast ), $decl_astp.ast );
+      $$ = join_type_decl( type_ast, $decl_astp.ast );
       PARSE_ASSERT( $$ != NULL );
 
       DUMP_AST( "$$_ast", $$ );
