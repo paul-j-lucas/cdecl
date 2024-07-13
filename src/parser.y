@@ -1142,7 +1142,9 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     // Because the raw_decl_ast for the existing type is about to be combined
     // with type_ast, duplicate raw_decl_ast first.
     //
+    c_loc_t const *const orig_loc = &decl_ast->loc;
     decl_ast = c_ast_dup_gc( raw_decl_ast );
+    decl_ast->loc = *orig_loc;
   }
 
   c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
@@ -6893,7 +6895,9 @@ typeof_type_c_ast
           // so we need to dup _that_ type before un-ACVR-qualifying it because
           // we don't want to modify it.
           //
+          c_loc_t const *const orig_loc = &$type_ast->loc;
           $type_ast = c_ast_dup_gc( raw_ast );
+          $type_ast->loc = *orig_loc;
         }
         $type_ast->type.stids &= c_tid_compl( TS__Atomic | TS_CVR );
       }
