@@ -1,5 +1,14 @@
 2024-07-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sname.c, c_sname.h: c_sname now uses non-const char* since it takes
+     ownership.
+   * gibberish.c: s/is_implicit_int/printed_type/
+   * parser.y: In define_command, Moved c_sname_set() later to get original
+     name in error message.
+   * english.c: Added: ast->param_of_ast != NULL
+   * c_ast_check.c: No longer asserting on K_NAME.
+   * c_ast_check.c, gibberish.c, declare.out, declare.test: Can now do: declare
+     a as array 5 of T of struct S
    * english.c, explain.out: Now printing "as integer" in English for K&R C
      typeless function parameter in C89-C17.
    * gibberish.c, declare.out, declare.test: Fixed multi-declaration of
