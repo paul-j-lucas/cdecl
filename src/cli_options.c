@@ -173,7 +173,7 @@ static struct option const CLI_OPTIONS[] = {
  * @note It is indexed by short option characters.
  *
  * @sa CLI_OPTIONS
- * @sa opt_help()
+ * @sa opt_get_help()
  */
 static char const *const CLI_OPTIONS_HELP[] = {
   [ COPT(ALT_TOKENS) ] = "Print alternative tokens",
@@ -348,6 +348,21 @@ static char const* opt_format( char short_opt ) {
 }
 
 /**
+ * Gets the help message for \a opt.
+ *
+ * @param opt The option to get the help for.
+ * @return Returns said help message.
+ */
+NODISCARD
+static char const* opt_get_help( int opt ) {
+  unsigned const uopt = STATIC_CAST( unsigned, opt );
+  assert( uopt < ARRAY_SIZE( CLI_OPTIONS_HELP ) );
+  char const *const help = CLI_OPTIONS_HELP[ uopt ];
+  assert( help != NULL );
+  return help;
+}
+
+/**
  * Gets the corresponding name of the long option for \a short_opt.
  *
  * @param short_opt The short option to get the corresponding long option for.
@@ -360,21 +375,6 @@ static char const* opt_get_long( char short_opt ) {
       return opt->name;
   } // for
   return "";                            // LCOV_EXCL_LINE
-}
-
-/**
- * Gets the help message for \a opt.
- *
- * @param opt The option to get the help for.
- * @return Returns said help message.
- */
-NODISCARD
-static char const* opt_help( int opt ) {
-  unsigned const uopt = STATIC_CAST( unsigned, opt );
-  assert( uopt < ARRAY_SIZE( CLI_OPTIONS_HELP ) );
-  char const *const help = CLI_OPTIONS_HELP[ uopt ];
-  assert( help != NULL );
-  return help;
 }
 
 /**
@@ -754,7 +754,7 @@ static void print_commands( void ) {
  */
 static void print_options( void ) {
   FOREACH_CLI_OPTION( opt )
-    PRINTF( "--%s -%c %s\n", opt->name, opt->val, opt_help( opt->val ) );
+    PRINTF( "--%s -%c %s\n", opt->name, opt->val, opt_get_help( opt->val ) );
 }
 
 /**
@@ -801,7 +801,7 @@ static void print_usage( int status ) {
     } // switch
     assert( opt_len <= longest_opt_len );
     FPUTNSP( longest_opt_len - opt_len, fout );
-    FPRINTF( fout, " (-%c) %s.\n", opt->val, opt_help( opt->val ) );
+    FPRINTF( fout, " (-%c) %s.\n", opt->val, opt_get_help( opt->val ) );
   } // for
 
   FPUTS(
