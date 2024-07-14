@@ -112,7 +112,7 @@
 #define OPT_INVALID_VALUE(OPT,VALUE,FORMAT,...)                     \
   fatal_error( EX_USAGE,                                            \
     "\"%s\": invalid value for %s; must be " FORMAT "\n",           \
-    (VALUE), opt_get_format( COPT(OPT) ) VA_OPT( (,), __VA_ARGS__ ) \
+    (VALUE), get_opt_format( COPT(OPT) ) VA_OPT( (,), __VA_ARGS__ ) \
   )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -173,7 +173,7 @@ static struct option const CLI_OPTIONS[] = {
  * @note It is indexed by short option characters.
  *
  * @sa CLI_OPTIONS
- * @sa opt_get_help()
+ * @sa get_opt_help()
  */
 static char const *const CLI_OPTIONS_HELP[] = {
   [ COPT(ALT_TOKENS) ] = "Print alternative tokens",
@@ -217,18 +217,77 @@ static bool         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
 NODISCARD
-static char const*  opt_get_format( char ),
-                 *  opt_get_long( char );
+static char const*  get_opt_long( char );
 
 static void         print_commands( void );
+static void         print_options( void );
 
 _Noreturn
 static void         print_usage( int );
 
-static void         print_options( void );
 static void         print_version( bool );
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Formats an option as `[--%%s/]-%%c` where `%%s` is the long option (if any)
+ * and `%%c` is the short option.
+ *
+ * @param short_opt The short option (along with its corresponding long option,
+ * if any) to format.
+ * @return Returns said formatted string.
+ *
+ * @warning The pointer returned is to one of a small number of static buffers,
+ * so you can't do something like call this more than twice in the same
+ * `printf()` statement.
+ */
+NODISCARD
+static char const* get_opt_format( char short_opt ) {
+  static strbuf_t sbufs[2];
+  static unsigned buf_index;
+
+  strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
+  strbuf_reset( sbuf );
+
+  char const *const long_opt = get_opt_long( short_opt );
+  return strbuf_printf(
+    sbuf, "%s%s%s-%c",
+    long_opt[0] != '\0' ? "--" : "",
+    long_opt,
+    long_opt[0] != '\0' ? "/" : "",
+    short_opt
+  );
+}
+
+/**
+ * Gets the help message for \a opt.
+ *
+ * @param opt The option to get the help for.
+ * @return Returns said help message.
+ */
+NODISCARD
+static char const* get_opt_help( int opt ) {
+  unsigned const uopt = STATIC_CAST( unsigned, opt );
+  assert( uopt < ARRAY_SIZE( CLI_OPTIONS_HELP ) );
+  char const *const help = CLI_OPTIONS_HELP[ uopt ];
+  assert( help != NULL );
+  return help;
+}
+
+/**
+ * Gets the corresponding name of the long option for \a short_opt.
+ *
+ * @param short_opt The short option to get the corresponding long option for.
+ * @return Returns said name or the empty string if none.
+ */
+NODISCARD
+static char const* get_opt_long( char short_opt ) {
+  FOREACH_CLI_OPTION( opt ) {
+    if ( opt->val == short_opt )
+      return opt->name;
+  } // for
+  return "";                            // LCOV_EXCL_LINE
+}
 
 /**
  * Makes the `optstring` (short option) equivalent of \a opts for the third
@@ -286,7 +345,7 @@ static void opt_check_exclusive( char opt ) {
     if ( opts_given[ STATIC_CAST( unsigned, curr_opt ) ] ) {
       fatal_error( EX_USAGE,
         "%s can be given only by itself\n",
-        opt_get_format( opt )
+        get_opt_format( opt )
       );
     }
   } // for
@@ -310,71 +369,11 @@ static void opt_check_mutually_exclusive( char opt, char const *opts ) {
     if ( opts_given[ STATIC_CAST( unsigned, *opts ) ] ) {
       fatal_error( EX_USAGE,
         "%s and %s are mutually exclusive\n",
-        opt_get_format( opt ),
-        opt_get_format( *opts )
+        get_opt_format( opt ),
+        get_opt_format( *opts )
       );
     }
   } // for
-}
-
-/**
- * Formats an option as `[--%%s/]-%%c` where `%%s` is the long option (if any)
- * and `%%c` is the short option.
- *
- * @param short_opt The short option (along with its corresponding long option,
- * if any) to format.
- * @return Returns said formatted string.
- *
- * @warning The pointer returned is to one of a small number of static buffers,
- * so you can't do something like call this more than twice in the same
- * `printf()` statement.
- */
-NODISCARD
-static char const* opt_get_format( char short_opt ) {
-  static strbuf_t sbufs[2];
-  static unsigned buf_index;
-
-  strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
-  strbuf_reset( sbuf );
-
-  char const *const long_opt = opt_get_long( short_opt );
-  return strbuf_printf(
-    sbuf, "%s%s%s-%c",
-    long_opt[0] != '\0' ? "--" : "",
-    long_opt,
-    long_opt[0] != '\0' ? "/" : "",
-    short_opt
-  );
-}
-
-/**
- * Gets the help message for \a opt.
- *
- * @param opt The option to get the help for.
- * @return Returns said help message.
- */
-NODISCARD
-static char const* opt_get_help( int opt ) {
-  unsigned const uopt = STATIC_CAST( unsigned, opt );
-  assert( uopt < ARRAY_SIZE( CLI_OPTIONS_HELP ) );
-  char const *const help = CLI_OPTIONS_HELP[ uopt ];
-  assert( help != NULL );
-  return help;
-}
-
-/**
- * Gets the corresponding name of the long option for \a short_opt.
- *
- * @param short_opt The short option to get the corresponding long option for.
- * @return Returns said name or the empty string if none.
- */
-NODISCARD
-static char const* opt_get_long( char short_opt ) {
-  FOREACH_CLI_OPTION( opt ) {
-    if ( opt->val == short_opt )
-      return opt->name;
-  } // for
-  return "";                            // LCOV_EXCL_LINE
 }
 
 /**
@@ -540,7 +539,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         if ( n == STRTOULL_ERROR ) {
           fatal_error( EX_USAGE,
             "\"%s\": invalid value for %s; must be in range 1-%u\n",
-            optarg, opt_get_format( COPT(LINENO) ),
+            optarg, get_opt_format( COPT(LINENO) ),
             STATIC_CAST( unsigned, USHRT_MAX )
           );
         }
@@ -721,7 +720,7 @@ use_help:
 missing_arg:
   fatal_error( EX_USAGE,
     "\"%s\" requires an argument\n",
-    opt_get_format( STATIC_CAST( char, opt == ':' ? optopt : opt ) )
+    get_opt_format( STATIC_CAST( char, opt == ':' ? optopt : opt ) )
   );
 }
 
@@ -754,7 +753,7 @@ static void print_commands( void ) {
  */
 static void print_options( void ) {
   FOREACH_CLI_OPTION( opt )
-    PRINTF( "--%s -%c %s\n", opt->name, opt->val, opt_get_help( opt->val ) );
+    PRINTF( "--%s -%c %s\n", opt->name, opt->val, get_opt_help( opt->val ) );
 }
 
 /**
@@ -801,7 +800,7 @@ static void print_usage( int status ) {
     } // switch
     assert( opt_len <= longest_opt_len );
     FPUTNSP( longest_opt_len - opt_len, fout );
-    FPRINTF( fout, " (-%c) %s.\n", opt->val, opt_get_help( opt->val ) );
+    FPRINTF( fout, " (-%c) %s.\n", opt->val, get_opt_help( opt->val ) );
   } // for
 
   FPUTS(
