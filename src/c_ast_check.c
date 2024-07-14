@@ -3258,6 +3258,8 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   c_sname_warn( &ast->sname, &ast->loc );
+  if ( ast->align.kind == C_ALIGNAS_SNAME )
+    c_sname_warn( &ast->align.sname, &ast->align.loc );
   if ( (ast->kind & K_ANY_NAME) != 0 )
     c_sname_warn( &ast->name.sname, &ast->loc );
 }

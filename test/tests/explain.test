@@ -5,6 +5,7 @@ explain [[reproducible]] void f()
 explain [[unsequenced]] void f()
 explain _Alignas(0) char c
 explain _Alignas(8) char c
+explain _Alignas(class) char c
 explain _Alignas(void*) char c
 explain _Atomic int *x
 explain _Atomic int x
