@@ -898,6 +898,7 @@ static bool define_type( c_ast_t const *type_ast, decl_flags_t decl_flags ) {
  * @return Returns `true` only if \a sname is a type (and prints an error
  * message); otherwise `false` (and does nothing).
  */
+NODISCARD
 static bool fl_sname_is_type( char const *file, int line,
                               c_sname_t const *sname, c_loc_t const *loc ) {
   assert( sname != NULL );
