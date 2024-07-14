@@ -1,5 +1,9 @@
 2024-07-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, explain.out, explain.test: Now calling c_sname_warn() on
+     c_align::sname.
+   * parser.y: Removed "file" parameter from static functions.
+   * parser.y: Added missing NODISCARD.
    * parser.y: Added another missing c_sname_cleanup().
    * parser.y, declare-error.out, declare-error.test: Now checking for unknown
      names in pointer-to-member and reference declarations.
