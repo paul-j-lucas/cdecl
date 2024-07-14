@@ -1,0 +1,2 @@
+EXPECTED_EXIT=65
+cdecl 'struct S; explain unsigned int'

@@ -284,8 +284,9 @@ int cdecl_parse_file( FILE *fin ) {
 int cdecl_parse_string( char const *s, size_t s_len ) {
   assert( s != NULL );
 
-  char const *const orig_s = s;
-  size_t const orig_s_len = s_len;
+  // The code in print.c relies on command_line being set, so set it.
+  print_params.command_line = s;
+  print_params.command_line_len = s_len;
 
   strbuf_t sbuf;
   bool const infer_command = opt_infer_command &&
@@ -330,9 +331,12 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     // been inserted) without a trailing newline (if any) so we can always
     // print a newline ourselves -- but don't touch the original command line.
     //
-    size_t echo_len = orig_s_len;
-    strn_rtrim( orig_s, &echo_len );
-    PRINTF( "%s%.*s\n", cdecl_prompt[0], STATIC_CAST( int, echo_len ), orig_s );
+    size_t echo_len = print_params.command_line_len;
+    strn_rtrim( print_params.command_line, &echo_len );
+    PRINTF(
+      "%s%.*s\n",
+      cdecl_prompt[0], STATIC_CAST( int, echo_len ), print_params.command_line
+    );
     FFLUSH( stdout );
   }
 

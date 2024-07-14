@@ -1,0 +1,3 @@
+struct S; explain unsigned int
+                             ^
+1,30: error: declaration expected

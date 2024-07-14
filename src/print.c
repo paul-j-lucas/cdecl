@@ -119,12 +119,16 @@ NODISCARD
 static char const* get_input_line( size_t *rv_len ) {
   char const *input_line = lexer_input_line( rv_len );
   assert( input_line != NULL );
-  assert( *rv_len > 0 );
-
+  if ( *rv_len == 0 ) {                 // no input? try command line
+    input_line = print_params.command_line;
+    assert( input_line != NULL );
+    *rv_len = print_params.command_line_len;
+  }
   if ( *rv_len >= print_params.inserted_len ) {
     input_line += print_params.inserted_len;
     *rv_len -= print_params.inserted_len;
   }
+  assert( *rv_len > 0 );
 
   //
   // Chop off whitespace (if any) so we can always print a newline ourselves.
