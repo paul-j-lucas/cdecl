@@ -1,5 +1,6 @@
 2024-07-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Added another missing c_sname_cleanup().
    * parser.y, declare-error.out, declare-error.test: Now checking for unknown
      names in pointer-to-member and reference declarations.
    * parser.y: Added missing c_sname_cleanup().
