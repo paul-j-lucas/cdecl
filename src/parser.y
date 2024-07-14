@@ -1120,7 +1120,7 @@ static void l_keyword_expected( int line, char const *keyword ) {
  * @note This function isn't normally called directly; use the
  * #is_nested_type_ok() macro instead.
  *
- * @param line The line number within \a file where this function was called
+ * @param line The line number within this file where this function was called
  * from.
  * @param type_loc The location of the type declaration.
  * @return Returns `true` only if the type currently being declared is either
@@ -1158,7 +1158,7 @@ static bool l_is_nested_type_ok( int line, c_loc_t const *type_loc ) {
  * @note This function isn't normally called directly; use the
  * #punct_expected() macro instead.
  *
- * @param line The line number within \a file where this function was called
+ * @param line The line number within this file where this function was called
  * from.
  * @param punct The punctuation character that was expected.
  *
@@ -9580,7 +9580,7 @@ virtual_stid_opt
  * @note This function isn't normally called directly; use the
  * #elaborate_error() or #elaborate_error_dym() macros instead.
  *
- * @param line The line number within \a file where this function was called
+ * @param line The line number within this file where this function was called
  * from.
  * @param dym_kinds The bitwise-or of the kind(s) of things possibly meant.
  * @param format A `printf()` style format string.  It _must not_ end in a
