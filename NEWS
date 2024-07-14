@@ -61,6 +61,9 @@ Attempting to use modifiers with `typedef`s is now correctly forbidden, e.g.:
     typedef int T
     explain unsigned T                  // error
 
+** Unknown names
+Now checking for unknown names in pointer-to-member and reference declarations.
+
 
 * Changes in Cdecl 18.0
 

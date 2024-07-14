@@ -96,8 +96,9 @@ cdecl> declare p as pointer to function (x) returning int
 cdecl> declare p as pointer to register int
                ^
 36,9: error: pointer to "register" is illegal
-cdecl> declare p as pointer to S
-S *p;
+cdecl> declare p as pointer to X
+                               ^
+37,25: error: "X": unknown name
 cdecl> declare S as int
                ^
 38,9: error: "S": previously declared as type "struct S"
@@ -312,79 +313,88 @@ c++decl> declare f of scope S as virtual function
 c++decl> declare new as operator (size_t) returning int
                                                     ^
 114,44: error: invalid operator "new" return type "integer"; must be "pointer to void"
+c++decl> declare p as pointer to member of class C X
+                                                   ^
+115,43: error: "X": unknown name
 c++decl> declare p as pointer to structured binding
                                  ^
-115,25: error: pointer to structured binding is illegal
+116,25: error: pointer to structured binding is illegal
+c++decl> declare r as reference to X
+                                   ^
+117,27: error: "X": unknown name
 c++decl> declare S::x as structured binding
                  ^
-116,9: error: "S::x": structured binding names may not be scoped
+118,9: error: "S::x": structured binding names may not be scoped
 c++decl> declare x, x as structured binding
                  ^
-117,9: error: "x": redefinition of structured binding
+119,9: error: "x": redefinition of structured binding
 c++decl> declare r as const reference to int
                  ^
-118,9: error: reference can not be "const"; did you mean "reference to const"?
+120,9: error: reference can not be "const"; did you mean "reference to const"?
+c++decl> declare r as reference to X
+                                   ^
+121,27: error: "X": unknown name
 c++decl> declare r as volatile reference to int
                  ^
-119,9: error: reference can not be "volatile"; did you mean "reference to volatile"?
+122,9: error: reference can not be "volatile"; did you mean "reference to volatile"?
 c++decl> declare x as array of reference to int
                  ^
-120,9: error: array of reference is illegal; did you mean reference to array?
+123,9: error: array of reference is illegal; did you mean reference to array?
 c++decl> declare x as auto int
 auto x;
                            ^
-121,19: syntax error: "int": unexpected token ("int" is a keyword)
+124,19: syntax error: "int": unexpected token ("int" is a keyword)
 c++decl> declare x as consteval int
                  ^
-122,9: error: only functions can be "consteval"
+125,9: error: only functions can be "consteval"
 c++decl> declare x as exported static int x
                  ^
-123,9: error: "export static int" is illegal for built-in type
+126,9: error: "export static int" is illegal for built-in type
 c++decl> declare x as long char8_t
                  ^
-124,9: error: "long char8_t" is illegal for built-in type
+127,9: error: "long char8_t" is illegal for built-in type
 c++decl> declare x as pointer to member of C reference to int
                                            ^
-125,35: syntax error: "C": "class", "struct", or "union" expected
+128,35: syntax error: "C": "class", "struct", or "union" expected
 c++decl> declare x as pointer to reference to int
                  ^
-126,9: error: pointer to reference is illegal; did you mean "reference to pointer"?
+129,9: error: pointer to reference is illegal; did you mean "reference to pointer"?
 c++decl> declare x as reference to register int
                                    ^
-127,27: error: "register int" is illegal for built-in type since C++17
+130,27: error: "register int" is illegal for built-in type since C++17
 c++decl> declare x as reference to void
                  ^
-128,9: error: reference to "void" is illegal; did you mean "pointer to void"?
+131,9: error: reference to "void" is illegal; did you mean "pointer to void"?
 c++decl> declare x as short char8_t
                  ^
-129,9: error: "short char8_t" is illegal for built-in type
+132,9: error: "short char8_t" is illegal for built-in type
 c++decl> declare x as signed char8_t
                  ^
-130,9: error: "signed char8_t" is illegal for built-in type
+133,9: error: "signed char8_t" is illegal for built-in type
 c++decl> declare x as static mutable int
                  ^
-131,9: error: "mutable static int" is illegal for built-in type
+134,9: error: "mutable static int" is illegal for built-in type
 c++decl> declare x as unsigned char8_t
                  ^
-132,9: error: "unsigned char8_t" is illegal for built-in type
+135,9: error: "unsigned char8_t" is illegal for built-in type
 c++decl> declare _x as user-defined literal (int)
                                              ^
-133,37: error: invalid user-defined literal parameter type "integer"; must be "unsigned long long int", "long double", "char", "pointer to const char", "char8_t", "char16_t", "char32_t", or "wchar_t"
+136,37: error: invalid user-defined literal parameter type "integer"; must be "unsigned long long int", "long double", "char", "pointer to const char", "char8_t", "char16_t", "char32_t", or "wchar_t"
 c++decl> 
 c++decl> set c++03
 c++decl> declare x as char16_t
                       ^
-136,14: error: "char16_t": unsupported type until C++11; did you mean "wchar_t"?
+139,14: error: "char16_t": unsupported type until C++11; did you mean "wchar_t"?
 c++decl> declare x as char32_t
                       ^
-137,14: error: "char32_t": unsupported type until C++11; did you mean "wchar_t"?
+140,14: error: "char32_t": unsupported type until C++11; did you mean "wchar_t"?
 c++decl> 
 c++decl> set c++17
 c++decl> declare x as char8_t
                       ^
-140,14: error: "char8_t": unsupported type until C++20; did you mean "char16_t", "char32_t", or "wchar_t"?
+143,14: error: "char8_t": unsupported type until C++20; did you mean "char16_t", "char32_t", or "wchar_t"?
 c++decl> 
 c++decl> set c++20
 c++decl> declare x as atomic int
                       ^
-143,14: error: "_Atomic": unsupported keyword until C++23
+146,14: error: "_Atomic": unsupported keyword until C++23

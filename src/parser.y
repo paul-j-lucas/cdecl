@@ -8055,6 +8055,12 @@ pointer_decl_english_ast
       DUMP_SNAME( "sname_english_exp", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
+      if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
+        assert( !c_sname_empty( &$decl_ast->sname ) );
+        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
+        PARSE_ABORT();
+      }
+
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
       $$->ptr_mbr.class_sname = c_sname_move( &$sname );
       c_ast_set_parent( $decl_ast, $$ );
@@ -8083,6 +8089,12 @@ reference_decl_english_ast
                   "reference_english_ast TO decl_english_ast" );
       DUMP_AST( "reference_english_ast", $ref_ast );
       DUMP_AST( "decl_english_ast", $decl_ast );
+
+      if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
+        assert( !c_sname_empty( &$decl_ast->sname ) );
+        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
+        PARSE_ABORT();
+      }
 
       $$ = $ref_ast;
       $$->loc = @$;
