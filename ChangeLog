@@ -1,5 +1,14 @@
 2024-07-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * parse.c, print.c, print.h, test/Makefile.am, command_line-error.out,
+     command_line-error.test: Revert "Eliminated
+     print_params.{command_line,command_line_len} -- apparently no longer
+     needed."
+   * parser.y: Better hanling of loc after c_ast_dup_gc().
+   * parser.y, explain-error.out, explain-error.test: Attempting to use
+     modifiers with `typedef`s is now correctly forbidden.
+   * parser.y: In decl_c, moved ia_type_spec_ast() call inside
+     join_type_decl().
    * util.h: Made TO_UNSIGNED() check for an integral expression.
 
 2024-07-12  Paul J. Lucas <paul@lucasmail.org>
