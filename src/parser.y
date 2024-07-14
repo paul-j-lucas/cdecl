@@ -2594,6 +2594,7 @@ define_command
       if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
         assert( !c_sname_empty( &$decl_ast->sname ) );
         print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
+        c_sname_cleanup( &$sname );
         PARSE_ABORT();
       }
 
