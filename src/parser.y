@@ -94,6 +94,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Checks whether \a SNAME is a type.
+ *
+ * @param SNAME The scoped name to check.
+ * @param LOC The location of \a SNAME.
+ * @return Returns `true` only if \a SNAME is a type (and prints an error
+ * message); otherwise `false` (and does nothing).
+ */
+#define c_sname_is_type(SNAME,LOC) \
+  fl_c_sname_is_type( __FILE__, __LINE__, (SNAME), (LOC) )
+
+/**
  * @defgroup parser-group Parser
  * Helper macros, data structures, variables, functions, and the grammar for
  * C/C++ declarations.
@@ -103,7 +114,7 @@
 /**
  * Calls #elaborate_error_dym() with #DYM_NONE.
  *
- * @param ... Arguments passed to fl_elaborate_error().
+ * @param ... Arguments passed to l_elaborate_error().
  *
  * @note This must be used _only_ after an `error` token, e.g.:
  * ```
@@ -122,10 +133,10 @@
   elaborate_error_dym( DYM_NONE, __VA_ARGS__ )
 
 /**
- * Calls fl_elaborate_error() followed by #PARSE_ABORT().
+ * Calls l_elaborate_error() followed by #PARSE_ABORT().
  *
  * @param DYM_KINDS The bitwise-or of \ref dym_kind_t things possibly meant.
- * @param ... Arguments passed to fl_elaborate_error().
+ * @param ... Arguments passed to l_elaborate_error().
  *
  * @note This must be used _only_ after an `error` token, e.g.:
  * ```
@@ -141,7 +152,7 @@
  * @sa punct_expected()
  */
 #define elaborate_error_dym(DYM_KINDS,...) BLOCK( \
-  fl_elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
+  l_elaborate_error( __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
 
 /**
  * Executes the given statements only if \ref opt_cdecl_debug `!=`
@@ -185,10 +196,10 @@
  * @return Returns `true` only if the type currently being declared is either
  * not nested or the current language is C++.
  *
- * @sa fl_is_nested_type_ok()
+ * @sa l_is_nested_type_ok()
  */
 #define is_nested_type_ok(TYPE_LOC) \
-  fl_is_nested_type_ok( __FILE__, __LINE__, (TYPE_LOC) )
+  l_is_nested_type_ok( __LINE__, (TYPE_LOC) )
 
 /**
  * Checks whether \ref opt_lang_id is among the bitwise-or of languages
@@ -206,7 +217,7 @@
   ( !cdecl_initialized || OPT_LANG_IS( LANG_MACRO ) )
 
 /**
- * Calls fl_keyword_expected() followed by #PARSE_ABORT().
+ * Calls l_keyword_expected() followed by #PARSE_ABORT().
  *
  * @param KEYWORD A keyword literal.
  *
@@ -224,7 +235,7 @@
  * @sa punct_expected()
  */
 #define keyword_expected(KEYWORD) BLOCK ( \
-  fl_keyword_expected( __FILE__, __LINE__, (KEYWORD) ); PARSE_ABORT(); )
+  l_keyword_expected( __LINE__, (KEYWORD) ); PARSE_ABORT(); )
 
 /**
  * Aborts the current parse after an error message has been printed.
@@ -242,7 +253,7 @@
 #define PARSE_ASSERT(EXPR)        BLOCK( if ( !(EXPR) ) PARSE_ABORT(); )
 
 /**
- * Calls fl_punct_expected() followed by #PARSE_ABORT().
+ * Calls l_punct_expected() followed by #PARSE_ABORT().
  *
  * @param PUNCT The punctuation character that was expected.
  *
@@ -260,18 +271,7 @@
  * @sa keyword_expected()
  */
 #define punct_expected(PUNCT) BLOCK( \
-  fl_punct_expected( __FILE__, __LINE__, (PUNCT) ); PARSE_ABORT(); )
-
-/**
- * Checks whether \a SNAME is a type.
- *
- * @param SNAME The scoped name to check.
- * @param LOC The location of \a SNAME.
- * @return Returns `true` only if \a SNAME is a type (and prints an error
- * message); otherwise `false` (and does nothing).
- */
-#define sname_is_type(SNAME,LOC) \
-  fl_sname_is_type( __FILE__, __LINE__, (SNAME), (LOC) )
+  l_punct_expected( __LINE__, (PUNCT) ); PARSE_ABORT(); )
 
 /**
  * Prints that a particular language feature is not supported by **cdecl** and
@@ -583,9 +583,9 @@ struct in_attr {
 typedef struct in_attr in_attr_t;
 
 // local functions
-PJL_PRINTF_LIKE_FUNC(4)
-static void fl_elaborate_error( char const*, int, dym_kind_t, char const*,
-                                ... );
+PJL_PRINTF_LIKE_FUNC(3)
+static void l_elaborate_error( int, dym_kind_t, char const*, ... );
+
 PJL_DISCARD
 static bool print_error_token( char const* );
 
@@ -899,8 +899,8 @@ static bool define_type( c_ast_t const *type_ast, decl_flags_t decl_flags ) {
  * message); otherwise `false` (and does nothing).
  */
 NODISCARD
-static bool fl_sname_is_type( char const *file, int line,
-                              c_sname_t const *sname, c_loc_t const *loc ) {
+static bool fl_c_sname_is_type( char const *file, int line,
+                                c_sname_t const *sname, c_loc_t const *loc ) {
   assert( sname != NULL );
   assert( loc != NULL );
 
@@ -924,141 +924,6 @@ static bool fl_sname_is_type( char const *file, int line,
   }
 
   return true;
-}
-
-/**
- * Checks whether the type currently being declared (`enum`, `struct`,
- * `typedef`, or `union`) is nested within some other type (`struct` or
- * `union`) and whether the current language is C: if not, prints an error
- * message.
- *
- * @note It is unnecessary to check either when a `class` is being declared or
- * when a type is being declared within a `namespace` since those are not legal
- * in C anyway.
- *
- * @note This function isn't normally called directly; use the
- * #is_nested_type_ok() macro instead.
- *
- * @param file The name of the file where this function was called from.
- * @param line The line number within \a file where this function was called
- * from.
- * @param type_loc The location of the type declaration.
- * @return Returns `true` only if the type currently being declared is either
- * not nested or the current language is C++.
- */
-NODISCARD
-static bool fl_is_nested_type_ok( char const *file, int line,
-                                  c_loc_t const *type_loc ) {
-  assert( type_loc != NULL );
-  if ( !c_sname_empty( &in_attr.scope_sname ) &&
-       !OPT_LANG_IS( NESTED_TYPES ) ) {
-    fl_print_error( file, line, type_loc,
-      "nested types not supported%s\n",
-      C_LANG_WHICH( NESTED_TYPES )
-    );
-    return false;
-  }
-  return true;
-}
-
-/**
- * A special case of fl_elaborate_error() that prevents oddly worded error
- * messages where a C/C++ keyword is expected, but that keyword isn't a keyword
- * either until a later version of the language or in a different language;
- * hence, the lexer will return the keyword as the `Y_NAME` token instead of
- * the keyword token.
- *
- * For example, if fl_elaborate_error() were used for the following \b cdecl
- * command when the current language is C, you'd get the following:
- * ```
- * declare f as virtual function returning void
- *              ^
- * 14: syntax error: "virtual": "virtual" expected; not a keyword until C++98
- * ```
- * because it's really this:
- * ```
- * ... "virtual" [the name]": "virtual" [the token] expected ...
- * ```
- * and that looks odd.
- *
- * @note This function isn't normally called directly; use the
- * #keyword_expected() macro instead.
- *
- * @param file The name of the file where this function was called from.
- * @param line The line number within \a file where this function was called
- * from.
- * @param keyword A keyword literal.
- *
- * @sa fl_elaborate_error()
- * @sa fl_punct_expected()
- * @sa yyerror()
- */
-static void fl_keyword_expected( char const *file, int line,
-                                 char const *keyword ) {
-  assert( keyword != NULL );
-
-  dym_kind_t dym_kinds = DYM_NONE;
-
-  char const *const error_token = printable_yytext();
-  if ( error_token != NULL ) {
-    if ( strcmp( error_token, keyword ) == 0 ) {
-      //
-      // The error token is the expected keyword which means the lexer returned
-      // it as a name and not the token which likely means it's not a C/C++
-      // keyword until a later version of the current language.
-      //
-      c_keyword_t const *const ck =
-        c_keyword_find( keyword, LANG_ANY, C_KW_CTX_DEFAULT );
-      if ( ck != NULL ) {
-        char const *const which_lang = c_lang_which( ck->lang_ids );
-        if ( which_lang[0] != '\0' ) {
-          EPUTS( ": " );
-          print_debug_file_line( file, line );
-          EPRINTF( "\"%s\" not supported%s\n", keyword, which_lang );
-          return;
-        }
-      }
-    }
-
-    dym_kinds = is_english_to_gibberish() ? DYM_CDECL_KEYWORDS : DYM_C_KEYWORDS;
-  }
-
-  fl_elaborate_error( file, line, dym_kinds, "\"%s\" expected", keyword );
-}
-
-/**
- * A special case of fl_elaborate_error() that prevents oddly worded error
- * messages when a punctuation character is expected by not doing keyword look-
- * ups of the error token.
-
- * For example, if fl_elaborate_error() were used for the following \b cdecl
- * command, you'd get the following:
- * ```
- * explain void f(int g const)
- *                      ^
- * 29: syntax error: "const": ',' expected ("const" is a keyword)
- * ```
- * and that looks odd since, if a punctuation character was expected, it seems
- * silly to point out that the encountered token is a keyword.
- *
- * @note This function isn't normally called directly; use the
- * #punct_expected() macro instead.
- *
- * @param file The name of the file where this function was called from.
- * @param line The line number within \a file where this function was called
- * from.
- * @param punct The punctuation character that was expected.
- *
- * @sa fl_elaborate_error()
- * @sa fl_keyword_expected()
- * @sa yyerror()
- */
-static void fl_punct_expected( char const *file, int line, char punct ) {
-  EPUTS( ": " );
-  print_debug_file_line( file, line );
-  if ( print_error_token( printable_yytext() ) )
-    EPUTS( ": " );
-  EPRINTF( "'%c' expected\n", punct );
 }
 
 /**
@@ -1099,7 +964,7 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 
   if ( !is_explain_typedef &&
        type_ast->kind == K_BUILTIN && decl_ast->kind == K_BUILTIN &&
-       sname_is_type( &decl_ast->sname, &decl_ast->loc ) ) {
+       c_sname_is_type( &decl_ast->sname, &decl_ast->loc ) ) {
     //
     // This checks for a case like:
     //
@@ -1180,6 +1045,136 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 }
 
 /**
+ * A special case of l_elaborate_error() that prevents oddly worded error
+ * messages where a C/C++ keyword is expected, but that keyword isn't a keyword
+ * either until a later version of the language or in a different language;
+ * hence, the lexer will return the keyword as the `Y_NAME` token instead of
+ * the keyword token.
+ *
+ * For example, if l_elaborate_error() were used for the following \b cdecl
+ * command when the current language is C, you'd get the following:
+ * ```
+ * declare f as virtual function returning void
+ *              ^
+ * 14: syntax error: "virtual": "virtual" expected; not a keyword until C++98
+ * ```
+ * because it's really this:
+ * ```
+ * ... "virtual" [the name]": "virtual" [the token] expected ...
+ * ```
+ * and that looks odd.
+ *
+ * @note This function isn't normally called directly; use the
+ * #keyword_expected() macro instead.
+ *
+ * @param line The line number within this file where this function was called
+ * from.
+ * @param keyword A keyword literal.
+ *
+ * @sa l_elaborate_error()
+ * @sa l_punct_expected()
+ * @sa yyerror()
+ */
+static void l_keyword_expected( int line, char const *keyword ) {
+  assert( keyword != NULL );
+
+  dym_kind_t dym_kinds = DYM_NONE;
+
+  char const *const error_token = printable_yytext();
+  if ( error_token != NULL ) {
+    if ( strcmp( error_token, keyword ) == 0 ) {
+      //
+      // The error token is the expected keyword which means the lexer returned
+      // it as a name and not the token which likely means it's not a C/C++
+      // keyword until a later version of the current language.
+      //
+      c_keyword_t const *const ck =
+        c_keyword_find( keyword, LANG_ANY, C_KW_CTX_DEFAULT );
+      if ( ck != NULL ) {
+        char const *const which_lang = c_lang_which( ck->lang_ids );
+        if ( which_lang[0] != '\0' ) {
+          EPUTS( ": " );
+          print_debug_file_line( __FILE__, line );
+          EPRINTF( "\"%s\" not supported%s\n", keyword, which_lang );
+          return;
+        }
+      }
+    }
+
+    dym_kinds = is_english_to_gibberish() ? DYM_CDECL_KEYWORDS : DYM_C_KEYWORDS;
+  }
+
+  l_elaborate_error( line, dym_kinds, "\"%s\" expected", keyword );
+}
+
+/**
+ * Checks whether the type currently being declared (`enum`, `struct`,
+ * `typedef`, or `union`) is nested within some other type (`struct` or
+ * `union`) and whether the current language is C: if not, prints an error
+ * message.
+ *
+ * @note It is unnecessary to check either when a `class` is being declared or
+ * when a type is being declared within a `namespace` since those are not legal
+ * in C anyway.
+ *
+ * @note This function isn't normally called directly; use the
+ * #is_nested_type_ok() macro instead.
+ *
+ * @param line The line number within \a file where this function was called
+ * from.
+ * @param type_loc The location of the type declaration.
+ * @return Returns `true` only if the type currently being declared is either
+ * not nested or the current language is C++.
+ */
+NODISCARD
+static bool l_is_nested_type_ok( int line, c_loc_t const *type_loc ) {
+  assert( type_loc != NULL );
+  if ( !c_sname_empty( &in_attr.scope_sname ) &&
+       !OPT_LANG_IS( NESTED_TYPES ) ) {
+    fl_print_error( __FILE__, line, type_loc,
+      "nested types not supported%s\n",
+      C_LANG_WHICH( NESTED_TYPES )
+    );
+    return false;
+  }
+  return true;
+}
+
+/**
+ * A special case of l_elaborate_error() that prevents oddly worded error
+ * messages when a punctuation character is expected by not doing keyword look-
+ * ups of the error token.
+ *
+ * For example, if l_elaborate_error() were used for the following \b cdecl
+ * command, you'd get the following:
+ * ```
+ * explain void f(int g const)
+ *                      ^
+ * 29: syntax error: "const": ',' expected ("const" is a keyword)
+ * ```
+ * and that looks odd since, if a punctuation character was expected, it seems
+ * silly to point out that the encountered token is a keyword.
+ *
+ * @note This function isn't normally called directly; use the
+ * #punct_expected() macro instead.
+ *
+ * @param line The line number within \a file where this function was called
+ * from.
+ * @param punct The punctuation character that was expected.
+ *
+ * @sa l_elaborate_error()
+ * @sa l_keyword_expected()
+ * @sa yyerror()
+ */
+static void l_punct_expected( int line, char punct ) {
+  EPUTS( ": " );
+  print_debug_file_line( __FILE__, line );
+  if ( print_error_token( printable_yytext() ) )
+    EPUTS( ": " );
+  EPRINTF( "'%c' expected\n", punct );
+}
+
+/**
  * Cleans up individial parse data after each parse.
  *
  * @param fatal_error Must be `true` only if a fatal semantic error has
@@ -1235,22 +1230,22 @@ static p_token_list_t* p_token_list_new_placemarker( void ) {
  * message to print.
  *
  * @note A newline is _not_ printed since the error message will be appended to
- * by fl_elaborate_error().  For example, the parts of an error message are
+ * by l_elaborate_error().  For example, the parts of an error message are
  * printed by the functions shown:
  *
  *      42: syntax error: "int": "into" expected
  *      |--||----------||----------------------|
  *      |   |           |
- *      |   yyerror()   fl_elaborate_error()
+ *      |   yyerror()   l_elaborate_error()
  *      |
  *      print_loc()
  *
  * @param msg The error message to print.  Bison invariably passes `syntax
  * error`.
  *
- * @sa fl_elaborate_error()
- * @sa fl_keyword_expected()
- * @sa fl_punct_expected()
+ * @sa l_elaborate_error()
+ * @sa l_keyword_expected()
+ * @sa l_punct_expected()
  * @sa print_loc()
  */
 static void yyerror( char const *msg ) {
@@ -2137,7 +2132,7 @@ declare_command
       //
       FOREACH_SLIST_NODE( sname_node, sname_list ) {
         c_sname_t const *const sname = sname_node->data;
-        if ( sname_is_type( sname, &$decl_ast->loc ) ) {
+        if ( c_sname_is_type( sname, &$decl_ast->loc ) ) {
           ok = false;
           break;
         }
@@ -5970,7 +5965,9 @@ typedef_type_decl_c_ast
         //
         // but that name isn't of a previously declared type, so it's OK.
         //
-        PARSE_ASSERT( !sname_is_type( &raw_tdef_ast->sname, &$tdef_ast->loc ) );
+        PARSE_ASSERT(
+          !c_sname_is_type( &raw_tdef_ast->sname, &$tdef_ast->loc )
+        );
 
         //
         // We have to duplicate the type to set the current location.
@@ -9583,7 +9580,6 @@ virtual_stid_opt
  * @note This function isn't normally called directly; use the
  * #elaborate_error() or #elaborate_error_dym() macros instead.
  *
- * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
  * from.
  * @param dym_kinds The bitwise-or of the kind(s) of things possibly meant.
@@ -9593,18 +9589,17 @@ virtual_stid_opt
  *
  * @sa #elaborate_error()
  * @sa #elaborate_error_dym()
- * @sa fl_keyword_expected()
- * @sa fl_punct_expected()
+ * @sa l_keyword_expected()
+ * @sa l_punct_expected()
  * @sa yyerror()
  */
-PJL_PRINTF_LIKE_FUNC(4)
-static void fl_elaborate_error( char const *file, int line,
-                                dym_kind_t dym_kinds, char const *format,
-                                ... ) {
+PJL_PRINTF_LIKE_FUNC(3)
+static void l_elaborate_error( int line, dym_kind_t dym_kinds,
+                               char const *format, ... ) {
   assert( format != NULL );
 
   EPUTS( ": " );
-  print_debug_file_line( file, line );
+  print_debug_file_line( __FILE__, line );
 
   char const *const error_token = printable_yytext();
   if ( print_error_token( error_token ) )
