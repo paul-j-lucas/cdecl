@@ -109,10 +109,10 @@
  * @param FORMAT The `printf()` format string literal to use.
  * @param ... The `printf()` arguments.
  */
-#define OPT_INVALID_VALUE(OPT,VALUE,FORMAT,...)                 \
-  fatal_error( EX_USAGE,                                        \
-    "\"%s\": invalid value for %s; must be " FORMAT "\n",       \
-    (VALUE), opt_format( COPT(OPT) ) VA_OPT( (,), __VA_ARGS__ ) \
+#define OPT_INVALID_VALUE(OPT,VALUE,FORMAT,...)                     \
+  fatal_error( EX_USAGE,                                            \
+    "\"%s\": invalid value for %s; must be " FORMAT "\n",           \
+    (VALUE), opt_get_format( COPT(OPT) ) VA_OPT( (,), __VA_ARGS__ ) \
   )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -217,7 +217,7 @@ static bool         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
 NODISCARD
-static char const*  opt_format( char ),
+static char const*  opt_get_format( char ),
                  *  opt_get_long( char );
 
 static void         print_commands( void );
@@ -286,7 +286,7 @@ static void opt_check_exclusive( char opt ) {
     if ( opts_given[ STATIC_CAST( unsigned, curr_opt ) ] ) {
       fatal_error( EX_USAGE,
         "%s can be given only by itself\n",
-        opt_format( opt )
+        opt_get_format( opt )
       );
     }
   } // for
@@ -310,8 +310,8 @@ static void opt_check_mutually_exclusive( char opt, char const *opts ) {
     if ( opts_given[ STATIC_CAST( unsigned, *opts ) ] ) {
       fatal_error( EX_USAGE,
         "%s and %s are mutually exclusive\n",
-        opt_format( opt ),
-        opt_format( *opts )
+        opt_get_format( opt ),
+        opt_get_format( *opts )
       );
     }
   } // for
@@ -330,7 +330,7 @@ static void opt_check_mutually_exclusive( char opt, char const *opts ) {
  * `printf()` statement.
  */
 NODISCARD
-static char const* opt_format( char short_opt ) {
+static char const* opt_get_format( char short_opt ) {
   static strbuf_t sbufs[2];
   static unsigned buf_index;
 
@@ -540,7 +540,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         if ( n == STRTOULL_ERROR ) {
           fatal_error( EX_USAGE,
             "\"%s\": invalid value for %s; must be in range 1-%u\n",
-            optarg, opt_format( COPT(LINENO) ),
+            optarg, opt_get_format( COPT(LINENO) ),
             STATIC_CAST( unsigned, USHRT_MAX )
           );
         }
@@ -721,7 +721,7 @@ use_help:
 missing_arg:
   fatal_error( EX_USAGE,
     "\"%s\" requires an argument\n",
-    opt_format( STATIC_CAST( char, opt == ':' ? optopt : opt ) )
+    opt_get_format( STATIC_CAST( char, opt == ':' ? optopt : opt ) )
   );
 }
 
