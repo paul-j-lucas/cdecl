@@ -8712,11 +8712,10 @@ sname_c_ast
       DUMP_SNAME( "sname_c", $sname );
       DUMP_INT( "bit_field_c_uint_opt", $bit_width );
 
-      type_ast = ia_type_spec_ast( type_ast );
-      c_sname_set( &type_ast->sname, &$sname );
-      PARSE_ASSERT( c_ast_set_bit_field_width( type_ast, $bit_width ) );
+      $$ = ia_type_spec_ast( type_ast );
+      c_sname_set( &$$->sname, &$sname );
+      PARSE_ASSERT( c_ast_set_bit_field_width( $$, $bit_width ) );
 
-      $$ = type_ast;
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
     }
