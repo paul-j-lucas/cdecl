@@ -1,5 +1,10 @@
 2024-07-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c, c_ast.h, c_kind.h, parser.y, debug.out, explain.out,
+     explain.test: Fixed multi-declarations of enum, class, struct, union, and
+     typedef.
+   * c_ast.c: Added != NULL check now that c_ast_dup() no longer accepts NULL.
+   * parser.y: Added assert().
    * c_ast.c, c_ast.h: c_ast_dup() no longer allows ast == NULL.
    * parser.y: Name handling in class_struct_union_declaration_c is now more
      consistent with that in enum_declaration_c.
