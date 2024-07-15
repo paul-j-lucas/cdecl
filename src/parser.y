@@ -2504,7 +2504,7 @@ capture_decl_english_ast
   | Y_reference Y_to name_exp[name]
     {
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
-      c_sname_append_name( &$$->sname, $name );
+      c_sname_init_name( &$$->sname, $name );
       $$->capture.kind = C_CAPTURE_REFERENCE;
     }
   | capture_decl_c_ast
@@ -4293,7 +4293,7 @@ capture_decl_c_ast
   | '&' Y_NAME[name]
     {
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
-      c_sname_append_name( &$$->sname, $name );
+      c_sname_init_name( &$$->sname, $name );
       $$->capture.kind = C_CAPTURE_REFERENCE;
     }
   | '='
@@ -4304,7 +4304,7 @@ capture_decl_c_ast
   | Y_NAME[name]
     {
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
-      c_sname_append_name( &$$->sname, $name );
+      c_sname_init_name( &$$->sname, $name );
     }
   | Y_this
     {
@@ -4941,7 +4941,7 @@ destructor_declaration_c
       DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
 
       c_ast_t *const dtor_ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      c_sname_append_name( &dtor_ast->sname, $name );
+      c_sname_init_name( &dtor_ast->sname, $name );
       dtor_ast->type.stids = c_tid_check(
         $virtual_stid | $qual_stids | $noexcept_stid | $equals_stid,
         C_TPID_STORE
@@ -8618,7 +8618,7 @@ name_ast
       DUMP_STR( "NAME", $name );
 
       $$ = c_ast_new_gc( K_NAME, &@$ );
-      c_sname_append_name( &$$->sname, $name );
+      c_sname_init_name( &$$->sname, $name );
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
@@ -8808,7 +8808,7 @@ sname_english_ast
         c_sname_cleanup( &sname );
       } else {
         $$ = c_ast_new_gc( K_NAME, &@$ );
-        c_sname_set( &$$->sname, &sname );
+        $$->sname = sname;
       }
 
       DUMP_AST( "$$_ast", $$ );
