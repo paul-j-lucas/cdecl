@@ -715,6 +715,7 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
  */
 NODISCARD
 static inline c_ast_t* ia_type_spec_ast( c_ast_t *type_ast ) {
+  assert( type_ast != NULL );
   // Yes, == is correct here: we mean the same AST node.
   return type_ast == in_attr.type_spec_ast ?
     c_ast_dup_gc( type_ast ) : type_ast;
