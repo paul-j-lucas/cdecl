@@ -3975,9 +3975,9 @@ enum_declaration_c
       enum_ast->sname = enum_sname;
       enum_ast->type.btids = c_tid_check( $enum_btids, C_TPID_BASE );
       c_ast_set_parent( $fixed_type_ast, enum_ast );
-      c_sname_append_name(
+      c_sname_init_name(
         &enum_ast->enum_.enum_sname,
-        check_strdup( c_sname_local_name( &enum_sname ) )
+        check_strdup( c_sname_local_name( &enum_ast->sname ) )
       );
 
       DUMP_AST( "$$_ast", enum_ast );
