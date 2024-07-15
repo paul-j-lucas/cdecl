@@ -8705,7 +8705,7 @@ sname_c_ast
   : // in_attr: type_c_ast
     sname_c[sname] bit_field_c_uint_opt[bit_width]
     {
-      c_ast_t *type_ast = ia_type_ast_peek();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "sname_c_ast", "sname_c" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
