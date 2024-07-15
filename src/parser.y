@@ -699,7 +699,9 @@ static inline c_ast_t* ia_type_ast_pop( void ) {
 static inline void ia_type_ast_push( c_ast_t *ast ) {
   assert( ast != NULL );
   slist_push_front( &in_attr.type_ast_stack, ast );
-  if ( in_attr.type_spec_ast == NULL && ast->kind == K_BUILTIN )
+  if ( in_attr.type_spec_ast != NULL )
+    return;
+  if ( (ast->kind & K_BUILTIN) != 0 )
     in_attr.type_spec_ast = ast;
 }
 
