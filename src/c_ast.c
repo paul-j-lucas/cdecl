@@ -374,7 +374,8 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
 
   if ( c_ast_is_referrer( ast ) ) {
     c_ast_t *const child_ast = ast->parent.of_ast;
-    c_ast_set_parent( c_ast_dup( child_ast, node_list ), dup_ast );
+    if ( child_ast != NULL )
+      c_ast_set_parent( c_ast_dup( child_ast, node_list ), dup_ast );
   }
 
   return dup_ast;
