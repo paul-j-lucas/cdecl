@@ -3928,13 +3928,17 @@ class_struct_union_declaration_c
         C_TYPE_LIT_B( $csu_btid );
       PARSE_ASSERT( c_sname_check( &in_attr.scope_sname, &@sname ) );
 
+      c_sname_t csu_sname = c_sname_dup( &in_attr.scope_sname );
+      c_sname_append_sname( &csu_sname, &$sname );
+      c_sname_set_std_namespace( &csu_sname );
+
       c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@sname );
-      csu_ast->sname = c_sname_dup( &in_attr.scope_sname );
-      c_sname_append_name(
-        &csu_ast->csu.csu_sname,
-        check_strdup( c_sname_local_name( &in_attr.scope_sname ) )
-      );
+      csu_ast->sname = csu_sname;
       csu_ast->type.btids = c_tid_check( $csu_btid, C_TPID_BASE );
+      c_sname_init_name(
+        &csu_ast->csu.csu_sname,
+        check_strdup( c_sname_local_name( &csu_ast->sname ) )
+      );
 
       DUMP_AST( "$$_ast", csu_ast );
       DUMP_END();
