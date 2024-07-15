@@ -670,7 +670,9 @@ static inline c_ast_t* ia_type_ast_peek( void ) {
  */
 PJL_DISCARD
 static inline c_ast_t* ia_type_ast_pop( void ) {
-  return slist_pop_front( &in_attr.type_ast_stack );
+  c_ast_t *const ast = slist_pop_front( &in_attr.type_ast_stack );
+  assert( ast != NULL );
+  return ast;
 }
 
 /**
@@ -687,6 +689,7 @@ static inline c_ast_t* ia_type_ast_pop( void ) {
  * @sa ia_type_ast_pop()
  */
 static inline void ia_type_ast_push( c_ast_t *ast ) {
+  assert( ast != NULL );
   slist_push_front( &in_attr.type_ast_stack, ast );
   if ( in_attr.type_spec_ast == NULL && ast->kind == K_BUILTIN )
     in_attr.type_spec_ast = ast;
