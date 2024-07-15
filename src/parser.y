@@ -94,6 +94,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Checks whether \a AST is a #K_NAME and therefore an error.
+ *
+ * @param AST The AST to check.
+ * @return Returns `true` only if \a ast is a #K_NAME and therefore an error.
+ */
+#define c_ast_is_name_error(AST)  l_c_ast_is_name_error( __LINE__, (AST) )
+
+/**
  * Checks whether \a SNAME is a type.
  *
  * @param SNAME The scoped name to check.
@@ -1045,6 +1053,27 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   }
 
   return ast;
+}
+
+/**
+ * Checks whether \a ast is a #K_NAME and therefore an error.
+ *
+ * @note This function isn't normally called directly; use the
+ * #c_ast_is_name_error() macro instead.
+ *
+ * @param line The line number within this file where this function was called
+ * from.
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast is a #K_NAME and therefore an error.
+ */
+NODISCARD
+static bool l_c_ast_is_name_error( int line, c_ast_t const *ast ) {
+  assert( ast != NULL );
+  if ( ast->kind != K_NAME )
+    return false;
+  assert( !c_sname_empty( &ast->sname ) );
+  fl_print_error_unknown_name( __FILE__, line, &ast->loc, &ast->sname );
+  return true;
 }
 
 /**
@@ -2060,7 +2089,7 @@ declare_command
   : Y_declare sname_list_english[sname_list] as_exp
     alignas_or_width_decl_english_ast[decl_ast]
     {
-      if ( $decl_ast->kind == K_NAME ) {
+      if ( c_ast_is_name_error( $decl_ast ) ) {
         //
         // This checks for a case like:
         //
@@ -2074,8 +2103,6 @@ declare_command
         // name, but the AST node is itself a name and overwriting it would
         // lose information.
         //
-        assert( !c_sname_empty( &$decl_ast->sname ) );
-        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
         c_sname_list_cleanup( &$sname_list );
         PARSE_ABORT();
       }
@@ -2590,9 +2617,8 @@ define_command
       DUMP_SNAME( "sname_english_exp", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
-      if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
-        assert( !c_sname_empty( &$decl_ast->sname ) );
-        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
+      // see the comment in "declare_command"
+      if ( c_ast_is_name_error( $decl_ast ) ) {
         c_sname_cleanup( &$sname );
         PARSE_ABORT();
       }
@@ -8028,11 +8054,8 @@ pointer_decl_english_ast
       DUMP_START( "pointer_decl_english_ast", "POINTER TO decl_english_ast" );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
-      if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
-        assert( !c_sname_empty( &$decl_ast->sname ) );
-        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
-        PARSE_ABORT();
-      }
+      // see the comment in "declare_command"
+      PARSE_ASSERT( !c_ast_is_name_error( $decl_ast ) );
 
       $$ = c_ast_new_gc( K_POINTER, &@$ );
       c_ast_set_parent( $decl_ast, $$ );
@@ -8056,9 +8079,8 @@ pointer_decl_english_ast
       DUMP_SNAME( "sname_english_exp", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
-      if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
-        assert( !c_sname_empty( &$decl_ast->sname ) );
-        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
+      // see the comment in "declare_command"
+      if ( c_ast_is_name_error( $decl_ast ) ) {
         c_sname_cleanup( &$sname );
         PARSE_ABORT();
       }
@@ -8092,11 +8114,8 @@ reference_decl_english_ast
       DUMP_AST( "reference_english_ast", $ref_ast );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
-      if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
-        assert( !c_sname_empty( &$decl_ast->sname ) );
-        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
-        PARSE_ABORT();
-      }
+      // see the comment in "declare_command"
+      PARSE_ASSERT( !c_ast_is_name_error( $decl_ast ) );
 
       $$ = $ref_ast;
       $$->loc = @$;
@@ -8178,9 +8197,8 @@ var_decl_english_ast
       DUMP_SNAME( "sname_c", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
-      if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
-        assert( !c_sname_empty( &$decl_ast->sname ) );
-        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
+      // see the comment in "declare_command"
+      if ( c_ast_is_name_error( $decl_ast ) ) {
         c_sname_cleanup( &$sname );
         PARSE_ABORT();
       }
