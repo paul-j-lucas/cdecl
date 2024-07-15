@@ -33,6 +33,13 @@ Fixed these tests.
 ** `CDECL_TEST=true` & `--no-config`
 Specifying the `--no-config` option now always works even when testing.
 
+** `enum`, `class`, `struct`, & `union` multi-declarations
+Explaining these is now correct, e.g.:
+
+    cdecl> explain enum E x, y, f()
+    declare x, y as enumeration E
+    declare f as function returning enumeration E
+
 ** Glob help
 Fixed glob help.
 

@@ -374,8 +374,19 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
 
   if ( c_ast_is_referrer( ast ) ) {
     c_ast_t *const child_ast = ast->parent.of_ast;
-    if ( child_ast != NULL )
-      c_ast_set_parent( c_ast_dup( child_ast, node_list ), dup_ast );
+    if ( child_ast != NULL ) {
+      if ( c_ast_is_parent( ast ) ) {
+        c_ast_set_parent( c_ast_dup( child_ast, node_list ), dup_ast );
+      } else {
+        //
+        // A non-parent referrer (e.g., K_TYPEDEF) merely refers to another
+        // AST, but is _not_ the "parent" of it and the "child" (referred to)
+        // AST's parent must be NULL.
+        //
+        dup_ast->parent.of_ast = child_ast;
+        assert( child_ast->parent_ast == NULL );
+      }
+    }
   }
 
   return dup_ast;
@@ -607,7 +618,7 @@ void c_ast_set_parameter_pack( c_ast_t *ast ) {
 
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   if ( parent_ast != NULL ) {
-    assert( c_ast_is_referrer( parent_ast ) );
+    assert( c_ast_is_parent( parent_ast ) );
     parent_ast->parent.of_ast = child_ast;
   }
   if ( child_ast == NULL )

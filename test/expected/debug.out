@@ -931,7 +931,7 @@ cdecl> explain enum E : int x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
+    sname: null,
     is_param_pack: false,
     kind: { value: 0x400, string: "enumeration" },
     depth: 0,
@@ -1142,7 +1142,7 @@ cdecl> explain enum E x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
+    sname: null,
     is_param_pack: false,
     kind: { value: 0x400, string: "enumeration" },
     depth: 0,
@@ -2290,7 +2290,7 @@ cdecl> explain size_t x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
+    sname: null,
     is_param_pack: false,
     kind: { value: 0x40, string: "typedef" },
     depth: 0,
@@ -2500,7 +2500,7 @@ cdecl> explain struct S x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
+    sname: null,
     is_param_pack: false,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
@@ -10315,15 +10315,14 @@ c++decl> explain enum E x : 4
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
+    sname: null,
     is_param_pack: false,
     kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_line: 48, first_column: 8, last_column: 13 },
     type: { btid: 0x0000000000800001, string: "enum" },
     enum: {
-      enum_sname: { string: "E", scopes: "none" },
-      bit_width: 4
+      enum_sname: { string: "E", scopes: "none" }
     }
   },
   decl_c_astp: {

@@ -66,6 +66,9 @@ cdecl> explain enum E : int x
 declare x as enumeration E of type integer
 cdecl> explain enum E x
 declare x as enumeration E
+cdecl> explain enum E x, y, f(), z
+declare x, y, z as enumeration E
+declare f as function returning enumeration E
 cdecl> explain extern int x[2]
 declare x as external array 2 of integer
 cdecl> explain extern void v
@@ -142,7 +145,7 @@ cdecl> explain int WINAPI f()
 declare f as stdcall function returning integer
 cdecl> explain int _A
                ^
-73,9: warning: "_A" is a reserved identifier
+74,9: warning: "_A" is a reserved identifier
 declare _A as integer
 cdecl> explain int __cdecl f()
 declare f as cdecl function returning integer
@@ -178,7 +181,7 @@ cdecl> explain int a[*]
 declare a as variable length array of integer
 cdecl> explain int a__a
                ^
-90,9: warning: "a__a" is a reserved identifier in C++
+91,9: warning: "a__a" is a reserved identifier in C++
 declare a__a as integer
 cdecl> explain int const x
 declare x as constant integer
@@ -273,7 +276,7 @@ cdecl> explain long long x
 declare x as long long integer
 cdecl> explain noreturn void f(int)
                ^
-132,9: warning: "noreturn" is deprecated since C23; did you mean [[noreturn]]?
+133,9: warning: "noreturn" is deprecated since C23; did you mean [[noreturn]]?
 declare f as non-returning function (integer) returning void
 cdecl> explain register int x
 declare x as register integer
@@ -289,6 +292,9 @@ cdecl> explain signed main()
 declare main as function returning integer
 cdecl> explain size_t x
 declare x as size_t
+cdecl> explain size_t x, y, f(), z
+declare x, y, z as size_t
+declare f as function returning size_t
 cdecl> explain size_t x : 3
 declare x as size_t width 3 bits
 cdecl> explain ssize_t x
@@ -303,6 +309,9 @@ cdecl> explain struct S
 define S as structure S
 cdecl> explain struct S x
 declare x as structure S
+cdecl> explain struct S x, y, f(), z
+declare x, y, z as structure S
+declare f as function returning structure S
 cdecl> explain thread_local int x
 declare x as thread local integer
 cdecl> explain typedef int (*x)(char)
@@ -316,28 +325,28 @@ declare size_t as type unsigned long integer
 cdecl> 
 cdecl> explain int _Accum
                ^
-153,9: warning: "_Accum" is a keyword in C99 (with Embedded C extensions)
+156,9: warning: "_Accum" is a keyword in C99 (with Embedded C extensions)
 declare _Accum as integer
 cdecl> explain int _Fract
                ^
-154,9: warning: "_Fract" is a keyword in C99 (with Embedded C extensions)
+157,9: warning: "_Fract" is a keyword in C99 (with Embedded C extensions)
 declare _Fract as integer
 cdecl> explain int _Sat
                ^
-155,9: warning: "_Sat" is a keyword in C99 (with Embedded C extensions)
+158,9: warning: "_Sat" is a keyword in C99 (with Embedded C extensions)
 declare _Sat as integer
 cdecl> 
 cdecl> explain int relaxed
                ^
-157,9: warning: "relaxed" is a keyword in C99 (with Unified Parallel C extensions)
+160,9: warning: "relaxed" is a keyword in C99 (with Unified Parallel C extensions)
 declare relaxed as integer
 cdecl> explain int shared
                ^
-158,9: warning: "shared" is a keyword in C99 (with Unified Parallel C extensions)
+161,9: warning: "shared" is a keyword in C99 (with Unified Parallel C extensions)
 declare shared as integer
 cdecl> explain int strict
                ^
-159,9: warning: "strict" is a keyword in C99 (with Unified Parallel C extensions)
+162,9: warning: "strict" is a keyword in C99 (with Unified Parallel C extensions)
 declare strict as integer
 cdecl> 
 cdecl> explain typeof(int) x
@@ -512,7 +521,7 @@ cdecl>
 cdecl> set c18
 cdecl> explain int* f(x)
                       ^
-252,16: warning: missing type specifier; "int" assumed
+255,16: warning: missing type specifier; "int" assumed
 declare f as function (x as integer) returning pointer to integer
 cdecl> 
 cdecl> set c++
@@ -569,13 +578,13 @@ c++decl> explain [[no_unique_address]] struct S x
 declare x as non-unique-address structure S
 c++decl> explain [[nodiscard]] void f()
                  ^
-282,9: warning: "nodiscard" functions must return a value
+285,9: warning: "nodiscard" functions must return a value
 declare f as non-discardable function returning void
 c++decl> explain [[noreturn]] void f(int)
 declare f as non-returning function (integer) returning void
 c++decl> explain [[using foo : maybe_unused]] int i
                    ^
-284,11: warning: "using" in attributes not supported by cdecl (ignoring)
+287,11: warning: "using" in attributes not supported by cdecl (ignoring)
 declare i as maybe unused integer
 c++decl> explain alignas(0) char c
 declare c as character
@@ -597,7 +606,7 @@ c++decl> explain auto const [x, y]
 declare x, y as constant structured binding
 c++decl> explain volatile auto [x, y]
                  ^
-294,9: warning: "volatile" structured bindings are deprecated since C++20
+297,9: warning: "volatile" structured bindings are deprecated since C++20
 declare x, y as volatile structured binding
 c++decl> explain static auto [x, y]
 declare x, y as static structured binding
@@ -815,15 +824,15 @@ c++decl> explain void f(auto)
 declare f as function (automatic) returning void
 c++decl> explain void f(volatile int x)
                         ^
-402,16: warning: "volatile" parameter types are deprecated since C++20
+405,16: warning: "volatile" parameter types are deprecated since C++20
 declare f as function (x as volatile integer) returning void
 c++decl> explain volatile int f()
                  ^
-403,9: warning: "volatile" return types are deprecated since C++20
+406,9: warning: "volatile" return types are deprecated since C++20
 declare f as function returning volatile integer
 c++decl> explain vint f()
                  ^
-404,9: warning: "volatile" return types are deprecated since C++20
+407,9: warning: "volatile" return types are deprecated since C++20
 declare f as function returning vint
 c++decl> explain ~C()
 declare C as destructor
@@ -870,11 +879,11 @@ c++decl>
 c++decl> set c++11
 c++decl> explain register int x
                  ^
-430,9: warning: "register" is deprecated since C++11
+433,9: warning: "register" is deprecated since C++11
 declare x as register integer
 c++decl> explain ~C() throw()
                ^
-431,7: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+434,7: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 declare C as non-throwing destructor
 cdecl> explain int x
 declare x as integer

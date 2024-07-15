@@ -317,7 +317,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  * @sa #K_ANY_NAME
  * @sa #K_ANY_OBJECT
  */
-#define K_ANY_NON_PTR_REF_OBJECT  ( K_ANY_ECSU | K_ARRAY | K_BUILTIN \
+#define K_ANY_NON_PTR_REF_OBJECT  ( K_ANY_TYPE_SPECIFIER | K_ARRAY \
                                   | K_CONCEPT | K_NAME | K_TYPEDEF )
 
 /**
@@ -386,6 +386,13 @@ typedef enum c_ast_kind c_ast_kind_t;
  * @sa #K_ANY_FUNCTION_RETURN
  */
 #define K_ANY_TRAILING_RETURN     ( K_FUNCTION | K_LAMBDA | K_OPERATOR )
+
+/**
+ * Shorthand for any kind that can be a "type specifier" in a declaration, that
+ * is the type on the left-hand side: #K_BUILTIN, #K_CLASS_STRUCT_UNION, or
+ * #K_ENUM.
+ */
+#define K_ANY_TYPE_SPECIFIER      ( K_BUILTIN | K_ANY_ECSU | K_TYPEDEF )
 
 ////////// extern functions ///////////////////////////////////////////////////
 

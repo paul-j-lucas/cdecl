@@ -33,6 +33,7 @@ explain double (^x)(int x, int y)
 explain double f( int (*g)(char c) )
 explain enum E : int x
 explain enum E x
+explain enum E x, y, f(), z
 explain extern int x[2]
 explain extern void v
 explain imaginary double x
@@ -137,6 +138,7 @@ explain signed _BitInt(4) x
 explain signed char x
 explain signed main()
 explain size_t x
+explain size_t x, y, f(), z
 explain size_t x : 3
 explain ssize_t x
 explain static int x
@@ -144,6 +146,7 @@ explain static int x[2]
 explain static void f()
 explain struct S
 explain struct S x
+explain struct S x, y, f(), z
 explain thread_local int x
 explain typedef int (*x)(char)
 explain typedef int int32_t

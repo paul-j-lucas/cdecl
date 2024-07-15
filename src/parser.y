@@ -684,28 +684,6 @@ static inline c_ast_t* ia_type_ast_pop( void ) {
 }
 
 /**
- * Pushes a type AST onto the
- * \ref in_attr.type_ast_stack "type AST inherited attribute  stack".
- *
- * @remarks Additionally, if \a ast is #K_BUILTIN and \ref
- * in_attr::type_spec_ast "type_spec_ast" is NULL, sets \ref
- * in_attr::type_spec_ast "type_spec_ast" to \a ast.
- *
- * @param ast The AST to push.
- *
- * @sa ia_type_ast_peek()
- * @sa ia_type_ast_pop()
- */
-static inline void ia_type_ast_push( c_ast_t *ast ) {
-  assert( ast != NULL );
-  slist_push_front( &in_attr.type_ast_stack, ast );
-  if ( in_attr.type_spec_ast != NULL )
-    return;
-  if ( (ast->kind & K_BUILTIN) != 0 )
-    in_attr.type_spec_ast = ast;
-}
-
-/**
  * Given an AST for a type that is the "of type", return type, or "to type" of
  * a declaration, returns a duplicate of \a type_ast if necessary.
  *
@@ -949,6 +927,28 @@ static void ia_cleanup( void ) {
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
   slist_cleanup( &in_attr.type_ast_stack, /*free_fn=*/NULL );
   in_attr = (in_attr_t){ 0 };
+}
+
+/**
+ * Pushes a type AST onto the
+ * \ref in_attr.type_ast_stack "type AST inherited attribute  stack".
+ *
+ * @remarks Additionally, if \a ast is #K_BUILTIN and \ref
+ * in_attr::type_spec_ast "type_spec_ast" is NULL, sets \ref
+ * in_attr::type_spec_ast "type_spec_ast" to \a ast.
+ *
+ * @param ast The AST to push.
+ *
+ * @sa ia_type_ast_peek()
+ * @sa ia_type_ast_pop()
+ */
+static void ia_type_ast_push( c_ast_t *ast ) {
+  assert( ast != NULL );
+  slist_push_front( &in_attr.type_ast_stack, ast );
+  if ( in_attr.type_spec_ast != NULL )
+    return;
+  if ( (ast->kind & K_ANY_TYPE_SPECIFIER) != 0 )
+    in_attr.type_spec_ast = ast;
 }
 
 /**
@@ -4407,7 +4407,7 @@ typedef_decl_c
       c_ast_t *typedef_ast;
       c_sname_t temp_sname;
 
-      if ( decl_ast->kind == K_TYPEDEF ) {
+      if ( decl_ast->kind == K_TYPEDEF && c_sname_empty( &decl_ast->sname ) ) {
         //
         // This is for either of the following cases:
         //
