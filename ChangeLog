@@ -1,5 +1,15 @@
+2024-07-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h: c_ast_dup() no longer allows ast == NULL.
+   * parser.y: Name handling in class_struct_union_declaration_c is now more
+     consistent with that in enum_declaration_c.
+   * parser.y: s/c_sname_append_name()/c_sname_init_name()/ in some cases.
+   * parser.y: Added c_ast_is_name_error().
+   * parser.y: Added "const".
+
 2024-07-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Added assert()s.
    * c_ast_check.c, explain.out, explain.test: Now calling c_sname_warn() on
      c_align::sname.
    * parser.y: Removed "file" parameter from static functions.
