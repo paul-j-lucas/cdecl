@@ -933,7 +933,7 @@ static void ia_cleanup( void ) {
  * Pushes a type AST onto the
  * \ref in_attr.type_ast_stack "type AST inherited attribute  stack".
  *
- * @remarks Additionally, if \a ast is #K_BUILTIN and \ref
+ * @remarks Additionally, if \a ast is #K_ANY_TYPE_SPECIFIER and \ref
  * in_attr::type_spec_ast "type_spec_ast" is NULL, sets \ref
  * in_attr::type_spec_ast "type_spec_ast" to \a ast.
  *
