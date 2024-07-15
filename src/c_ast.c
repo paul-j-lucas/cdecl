@@ -146,29 +146,32 @@ static void c_alignas_cleanup( c_alignas_t *align ) {
 /**
  * Duplicates \a align.
  *
- * @param align The \ref c_alignas to duplicate; may be NULL.
+ * @param align The \ref c_alignas to duplicate.
  * @return Returns the duplicated alignment.
  */
 NODISCARD
 static c_alignas_t c_alignas_dup( c_alignas_t const *align ) {
-  c_alignas_t dup_align = { 0 };
-  if ( align != NULL ) {
-    dup_align.kind = align->kind;
-    dup_align.loc = align->loc;
-    switch ( align->kind ) {
-      case C_ALIGNAS_NONE:
-        break;                          // LCOV_EXCL_LINE
-      case C_ALIGNAS_BYTES:
-        dup_align.bytes = align->bytes;
-        break;
-      case C_ALIGNAS_SNAME:
-        dup_align.sname = c_sname_dup( &align->sname );
-        break;
-      case C_ALIGNAS_TYPE:
-        dup_align.type_ast = align->type_ast;
-        break;
-    } // switch
-  }
+  assert( align != NULL );
+
+  c_alignas_t dup_align = {
+    .kind = align->kind,
+    .loc = align->loc
+  };
+
+  switch ( align->kind ) {
+    case C_ALIGNAS_NONE:
+      break;                            // LCOV_EXCL_LINE
+    case C_ALIGNAS_BYTES:
+      dup_align.bytes = align->bytes;
+      break;
+    case C_ALIGNAS_SNAME:
+      dup_align.sname = c_sname_dup( &align->sname );
+      break;
+    case C_ALIGNAS_TYPE:
+      dup_align.type_ast = align->type_ast;
+      break;
+  } // switch
+
   return dup_align;
 }
 
@@ -276,8 +279,8 @@ void c_ast_cleanup( void ) {
 }
 
 c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
-  if ( ast == NULL )
-    return NULL;                        // LCOV_EXCL_LINE
+  assert( ast != NULL );
+
   c_ast_t *const dup_ast =
     c_ast_new( ast->kind, ast->depth, &ast->loc, node_list );
 

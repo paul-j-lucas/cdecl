@@ -579,7 +579,7 @@ void c_ast_cleanup( void );
 /**
  * Duplicates \a ast.
  *
- * @param ast The AST to duplicate; may be NULL.
+ * @param ast The AST to duplicate.
  * @param node_list The list to append the duplicated AST nodes onto.
  * @return Returns the duplicated AST or NULL only if \a ast is NULL.
  *
