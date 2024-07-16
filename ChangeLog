@@ -1,5 +1,6 @@
 2024-07-16  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c, prompt.c, set_options.c: Using STRLITLEN() more.
    * parser.y, explain.out: In C89, implicit `int` is now warned about in more
      cases.
    * c_ast_check.c, ntu.out, ntu.test: Defining types that are keywords in
