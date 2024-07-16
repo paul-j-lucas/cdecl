@@ -500,6 +500,8 @@ declare a as array 4 of pointer to integer
 cdecl> explain *f()
 declare f as function returning pointer to integer
 cdecl> explain void f(register i)
+                      ^
+244,16: warning: missing type specifier; "int" assumed
 declare f as function (i as register integer) returning void
 cdecl> explain (*p)
 declare p as pointer to integer

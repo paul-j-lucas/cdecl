@@ -43,6 +43,15 @@ Explaining these is now correct, e.g.:
 ** Glob help
 Fixed glob help.
 
+** Implicit `int` warnings
+In C89, implicit `int` is now warned about in more cases, e.g.:
+
+    cdecl> set c89
+    cdecl> explain static x
+                   ^
+    9: warning: missing type specifier; "int" assumed
+    declare x as static integer
+
 ** K&R C typeless parameters in English
 To match gibberish output, K&R C typeless parameters now print `as integer` in
 pseudo-English:

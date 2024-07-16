@@ -6548,6 +6548,23 @@ type_c_ast
 
       PARSE_ASSERT( c_type_add( &type, &$mod_list_type, &@mod_list_type ) );
 
+      if ( type.btids == TB_int ) {     // type is still the TB_int we added
+        //
+        // This check has to be done now in the parser rather than later in the
+        // AST since the AST has no memory that the "int" is implicit.
+        //
+        // Alternatively, we could _not_ set TB_int here, but then we'd need a
+        // new separate AST "fix-up" pass that would change TB_NONE to TB_int.
+        // Objectively, that's probably the better solution, but it's a lot of
+        // extra code that would currently only be needed to fix-up implicit
+        // int.
+        //
+        print_warning( &@mod_list_type,
+          "missing type specifier; \"%s\" assumed\n",
+          c_tid_error( TB_int )
+        );
+      }
+
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type = type;
 
