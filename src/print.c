@@ -545,7 +545,8 @@ void print_loc( c_loc_t const *loc ) {
     color_end( stderr, sgr_locus );
     EPUTC( ':' );
   }
-  if ( path != NULL || !cdecl_interactive || opt_lineno > 0 ) {
+  if ( path != NULL || opt_lineno > 0 ||
+       (!cdecl_interactive && print_params.command_line == NULL) ) {
     color_start( stderr, sgr_locus );
     EPRINTF( "%u", opt_lineno + STATIC_CAST( unsigned, loc->first_line ) );
     color_end( stderr, sgr_locus );
