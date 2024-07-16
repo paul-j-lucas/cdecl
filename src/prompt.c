@@ -166,7 +166,7 @@ size_t cdecl_prompt_len( void ) {
   if ( !opt_prompt )
     return 0;
   return (OPT_LANG_IS( C_ANY ) ? STRLITLEN( CDECL ) : STRLITLEN( CPPDECL ))
-          + 2/*> */;
+         + STRLITLEN( "> " );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

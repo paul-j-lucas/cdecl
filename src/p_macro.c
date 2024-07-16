@@ -2500,7 +2500,7 @@ static void mex_print_macro( mex_state_t const *mex,
 static void mex_relocate_expand_list( mex_state_t *mex ) {
   assert( mex != NULL );
 
-  size_t column = 2/*"| "*/ * mex->indent + strlen( mex->macro->name );
+  size_t column = STRLITLEN( "| " ) * mex->indent + strlen( mex->macro->name );
 
   if ( !mex->print_opt_omit_args && p_macro_is_func_like( mex->macro ) &&
        mex->arg_list != NULL ) {
@@ -2523,7 +2523,7 @@ static void mex_relocate_expand_list( mex_state_t *mex ) {
     ++column;                           // ')'
   }
 
-  column += 1/*space*/ + STRLITLEN( ARROW ) + 1/*space*/;
+  column += STRLITLEN( " " ) + STRLITLEN( ARROW ) + STRLITLEN( " " );
   PJL_DISCARD_RV( p_token_list_relocate( mex->expand_list, column ) );
 }
 
@@ -2804,7 +2804,7 @@ static void p_macro_relocate_params( p_macro_t *macro ) {
   assert( p_macro_is_func_like( macro ) );
 
   size_t column = strlen( other_token_c( "#" ) ) + STRLITLEN( "define " )
-    + strlen( macro->name ) + 1/*'('*/;
+    + strlen( macro->name ) + STRLITLEN( "(" );
 
   bool comma = false;
   FOREACH_SLIST_NODE( param_node, macro->param_list ) {

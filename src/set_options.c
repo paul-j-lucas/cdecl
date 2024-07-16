@@ -796,7 +796,7 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   char const *const orig_name = opt_name;
   bool const is_no = STRNCMPLIT( opt_name, "no" ) == 0;
   if ( is_no )
-    opt_name += 2/*no*/;
+    opt_name += STRLITLEN( "no" );
   size_t const opt_name_len = strlen( opt_name );
 
   slist_t found_opt_list;
