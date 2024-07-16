@@ -265,16 +265,6 @@ static set_option_t const SET_OPTIONS[] = {
   }
 };
 
-/**
- * Always-enabled `set_*()` arguments used when re-setting options.
- */
-static set_option_fn_args_t const enabled_args = {
-  .opt_enabled = true,
-  .opt_name_loc = NULL,
-  .opt_value = NULL,
-  .opt_value_loc = NULL
-};
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -611,21 +601,29 @@ static bool set_lang_impl( char const *name ) {
   c_lang_id_t const new_lang_id = c_lang_find( name );
   if ( new_lang_id == LANG_NONE )
     return false;
+
+  static set_option_fn_args_t const ENABLED_ARGS = {
+    .opt_enabled = true,
+    .opt_name_loc = NULL,
+    .opt_value = NULL,
+    .opt_value_loc = NULL
+  };
+
   c_lang_set( new_lang_id );
   //
   // Every time the language changes, re-set language-specific options so the
   // user is re-warned if the option is not supported in the current language.
   //
   if ( opt_alt_tokens )
-    PJL_DISCARD_RV( set_alt_tokens( &enabled_args ) );
+    PJL_DISCARD_RV( set_alt_tokens( &ENABLED_ARGS ) );
   switch ( opt_graph ) {
     case C_GRAPH_NONE:
       break;
     case C_GRAPH_DI:
-      PJL_DISCARD_RV( set_digraphs( &enabled_args ) );
+      PJL_DISCARD_RV( set_digraphs( &ENABLED_ARGS ) );
       break;
     case C_GRAPH_TRI:
-      PJL_DISCARD_RV( set_trigraphs( &enabled_args ) );
+      PJL_DISCARD_RV( set_trigraphs( &ENABLED_ARGS ) );
       break;
   } // switch
 
