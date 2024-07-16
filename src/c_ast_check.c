@@ -2698,6 +2698,8 @@ static bool c_ast_check_visitor( c_ast_t const *ast,
  * @param user_data The data to use.
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
+ *
+ * @sa c_type_ast_visitor_error()
  */
 NODISCARD
 static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
@@ -3216,11 +3218,15 @@ bool c_op_is_new_delete( c_op_id_t op_id ) {
 }
 
 /**
- * Performs additional checks on an AST for a type.
+ * Visitor function that checks a type AST for additional semantic errors.
  *
  * @param ast The AST of a type to check.
  * @param user_data Not used.
- * @return Returns `true` only if all checks passed.
+ * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
+ * \ref VISITOR_ERROR_NOT_FOUND if not.
+ *
+ * @sa c_ast_check_typedef()
+ * @sa c_ast_visitor_error()
  */
 NODISCARD
 static bool c_type_ast_visitor_error( c_ast_t const *ast,
