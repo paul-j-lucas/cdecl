@@ -832,8 +832,8 @@ NODISCARD
 static bool c_ast_check_errors( c_ast_t const *ast ) {
   assert( ast != NULL );
   // check in major-to-minor error order
-  return  c_ast_check_visitor( ast, c_ast_visitor_error ) &&
-          c_ast_check_visitor( ast, c_ast_visitor_type );
+  return  c_ast_check_visitor( ast, &c_ast_visitor_error ) &&
+          c_ast_check_visitor( ast, &c_ast_visitor_type );
 }
 
 /**
@@ -3023,7 +3023,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
  *
  * @param ast The AST to check.
  * @param user_data Not used.
- * @return Always returns `false`.
+ * @return Always returns \ref VISITOR_ERROR_NOT_FOUND.
  */
 NODISCARD
 static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
@@ -3113,7 +3113,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       FOREACH_AST_FUNC_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
         PJL_DISCARD_RV(
-          c_ast_check_visitor( param_ast, c_ast_visitor_warning )
+          c_ast_check_visitor( param_ast, &c_ast_visitor_warning )
         );
         if ( c_tid_is_any( param_ast->type.stids, TS_volatile ) &&
              !OPT_LANG_IS( volatile_PARAMS_NOT_DEPRECATED ) ) {
@@ -3180,7 +3180,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
   if ( cdecl_initialized )              // don't warn for predefined types
     c_ast_warn_name( ast );
 
-  return /*stop=*/false;
+  return VISITOR_ERROR_NOT_FOUND;
 }
 
 /**
@@ -3296,7 +3296,7 @@ bool c_ast_check( c_ast_t const *ast ) {
   assert( ast != NULL );
   if ( !c_ast_check_errors( ast ) )
     return false;
-  PJL_DISCARD_RV( c_ast_check_visitor( ast, c_ast_visitor_warning ) );
+  PJL_DISCARD_RV( c_ast_check_visitor( ast, &c_ast_visitor_warning ) );
   return true;
 }
 
