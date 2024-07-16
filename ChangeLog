@@ -1,3 +1,8 @@
+2024-07-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, ntu.out, ntu.test: Defining types that are keywords in
+     other languages are now warned about.
+
 2024-07-15  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_ast.h, c_kind.h, parser.y, debug.out, explain.out,
