@@ -62,6 +62,13 @@ Now, showing a specific glob (one having no `*`s in it) like:
 will show the definition of `FILE` even though it's predefined and not the
 default of user-defined.
 
+** Type name warnings
+Defining types that are keywords in other languages are now warned about, e.g.:
+
+    cdecl> struct friend
+                  ^
+    8: warning: "friend" is a keyword in C++98
+
 ** `typedef` modifiers
 Attempting to use modifiers with `typedef`s is now correctly forbidden, e.g.:
 

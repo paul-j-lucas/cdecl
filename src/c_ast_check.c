@@ -3227,6 +3227,7 @@ bool c_op_is_new_delete( c_op_id_t op_id ) {
  *
  * @sa c_ast_check_typedef()
  * @sa c_ast_visitor_error()
+ * @sa c_type_ast_visitor_warning()
  */
 NODISCARD
 static bool c_type_ast_visitor_error( c_ast_t const *ast,
@@ -3290,21 +3291,56 @@ static bool c_type_ast_visitor_error( c_ast_t const *ast,
   return VISITOR_ERROR_NOT_FOUND;
 }
 
+/**
+ * Performs additional checks on an AST for a type.
+ *
+ * @param ast The AST of a type to check.
+ * @param user_data Not used.
+ * @return Always returns \ref VISITOR_ERROR_NOT_FOUND.
+ *
+ * @sa c_ast_check_typedef()
+ * @sa c_ast_visitor_warning()
+ * @sa c_type_ast_visitor_error()
+ */
+NODISCARD
+static bool c_type_ast_visitor_warning( c_ast_t const *ast,
+                                        user_data_t user_data ) {
+  assert( ast != NULL );
+  (void)user_data;
+
+  if ( (ast->kind & K_ANY_NAME) != 0 )
+    c_sname_warn( &ast->name.sname, &ast->loc );
+
+  return VISITOR_ERROR_NOT_FOUND;
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool c_ast_check( c_ast_t const *ast ) {
   assert( ast != NULL );
+
   if ( !c_ast_check_errors( ast ) )
     return false;
-  PJL_DISCARD_RV( c_ast_check_visitor( ast, &c_ast_visitor_warning ) );
+
+  if ( cdecl_initialized )
+    PJL_DISCARD_RV( c_ast_check_visitor( ast, &c_ast_visitor_warning ) );
+
   return true;
 }
 
 bool c_ast_check_typedef( c_ast_t const *type_ast ) {
   assert( type_ast != NULL );
-  return NULL == c_ast_visit(
-    type_ast, C_VISIT_DOWN, &c_type_ast_visitor_error, USER_DATA_ZERO
-  );
+
+  if ( !c_ast_check_visitor( type_ast, &c_type_ast_visitor_error ) )
+    return false;
+
+  if ( cdecl_initialized ) {
+    PJL_DISCARD_RV(
+      c_ast_check_visitor( type_ast, &c_type_ast_visitor_warning )
+    );
+  }
+
+  return true;
 }
 
 bool c_ast_list_check( c_ast_list_t const *ast_list ) {
