@@ -1,5 +1,7 @@
 2024-07-16  Paul J. Lucas <paul@lucasmail.org>
 
+   * print.c, command_line-error.out: No longer printing "1," line number in
+     error/warning messages when command is from the command-line.
    * p_macro.c, prompt.c, set_options.c: Using STRLITLEN() more.
    * parser.y, explain.out: In C89, implicit `int` is now warned about in more
      cases.
