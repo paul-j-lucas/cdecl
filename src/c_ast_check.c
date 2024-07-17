@@ -591,7 +591,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   switch ( raw_to_ast->kind ) {
     case K_ARRAY:
       if ( !c_sname_empty( &ast->sname ) ) {
-        print_error( &ast->loc, "arithmetic or pointer type expected\n" );
+        print_error( &to_ast->loc, "arithmetic or pointer type expected\n" );
         return false;
       }
       break;

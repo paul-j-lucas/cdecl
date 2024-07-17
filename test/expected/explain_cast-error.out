@@ -8,14 +8,14 @@ cdecl> explain (extern int)x
                 ^
 5,10: error: can not cast into "extern"
 cdecl> explain (int[3][5][7])x
-               ^
-6,9: error: arithmetic or pointer type expected
+                   ^
+6,13: error: arithmetic or pointer type expected
 cdecl> explain (int[3][5])x
-               ^
-7,9: error: arithmetic or pointer type expected
+                   ^
+7,13: error: arithmetic or pointer type expected
 cdecl> explain (int[3])x
-               ^
-8,9: error: arithmetic or pointer type expected
+                   ^
+8,13: error: arithmetic or pointer type expected
 cdecl> explain (long long long)x
                           ^
 9,20: error: "long" can not be combined with "long long"

@@ -2037,7 +2037,7 @@ cast_command
       DUMP_SNAME( "sname_english_opt", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
-      c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
+      c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@sname );
       cast_ast->sname = c_sname_move( &$sname );
       cast_ast->cast.kind = C_CAST_C;
       cast_ast->cast.to_ast = $decl_ast;
@@ -2278,7 +2278,7 @@ declare_command
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
       DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
-      c_ast_t *const lambda_ast = c_ast_new_gc( K_LAMBDA, &@$ );
+      c_ast_t *const lambda_ast = c_ast_new_gc( K_LAMBDA, &@Y_lambda );
       lambda_ast->type = $store_type;
       c_ast_list_set_param_of( &$capture_ast_list, lambda_ast );
       lambda_ast->lambda.capture_ast_list = slist_move( &$capture_ast_list );
@@ -5801,7 +5801,7 @@ pc99_pointer_type_c_ast
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
       if ( type_ast == NULL ) {
-        type_ast = c_ast_new_gc( K_BUILTIN, &@star );
+        type_ast = c_ast_new_gc( K_BUILTIN, &@$ );
         type_ast->type.btids = TB_int;
         ia_type_ast_push( type_ast );
       }
@@ -6883,7 +6883,7 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
           // name used as a type. Just assume the T is some type, say int, and
           // create a name for it.
           //
-          type_ast = c_ast_new_gc( K_BUILTIN, &@sname );
+          type_ast = c_ast_new_gc( K_BUILTIN, &@$ );
           type_ast->type.btids = TB_int;
           c_sname_set( &type_ast->sname, &temp_sname );
           type_for_ast = type_ast;
@@ -7083,7 +7083,7 @@ enum_fixed_type_c_ast
                   "enum_fixed_type_modifier_list_btid" );
       DUMP_TID( "enum_fixed_type_modifier_list_btid", $btids );
 
-      $$ = c_ast_new_gc( K_BUILTIN, &@btids );
+      $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = c_tid_check( $btids, C_TPID_BASE );
 
       DUMP_AST( "$$_ast", $$ );

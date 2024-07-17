@@ -5,8 +5,8 @@ cdecl> cast p into pointer to function (x) returning int
                                         ^
 4,34: error: type specifier required since C23
 cdecl> cast x into array 3 of int
-       ^
-5,1: error: arithmetic or pointer type expected
+                   ^
+5,13: error: arithmetic or pointer type expected
 cdecl> cast x into register int
                    ^
 6,13: error: can not cast into "register"
