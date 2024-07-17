@@ -84,7 +84,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANGX_MASK
  * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
  */
-#define LANGX_EMC     1u
+#define LANGX_EMC     (1u << 0)
 
 /**
  * Language eXtensions for Unified Parallel C.
@@ -93,16 +93,15 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANGX_MASK
  * @sa [Unified Parallel C](http://upc-lang.org/)
  */
-#define LANGX_UPC     2u
+#define LANGX_UPC     (1u << 1)
 
 /**
  * Language eXtensions bitmask.
  *
  * @remarks The two currently supported language extensions, #LANGX_EMC and
- * #LANGX_UPC, together use two bits between the normal C and C++ language bits
- * within a \ref c_lang_id_t.  For many operations involving a \ref
- * c_lang_id_t, the language extensions _must_ be masked off first, for
- * example:
+ * #LANGX_UPC, together use two bits within a \ref c_lang_id_t.  For many
+ * operations involving a \ref c_lang_id_t, the language extensions _must_ be
+ * masked off first, for example:
  *
  *      lang_ids &= ~LANGX_MASK;
  *
