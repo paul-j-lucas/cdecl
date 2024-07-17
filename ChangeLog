@@ -1,3 +1,9 @@
+2024-07-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1, cli_options.c, cli_options-error.out,
+     cli_options.out: The short option for `--no-prompt` has been changed from
+     `-p` to `-P`.
+
 2024-07-16  Paul J. Lucas <paul@lucasmail.org>
 
    * print.c, command_line-error.out: No longer printing "1," line number in
