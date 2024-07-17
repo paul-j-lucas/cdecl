@@ -8830,7 +8830,8 @@ sname_english_ast
         $$->type.btids = TB_typedef;
         $$->tdef.for_ast = tdef->ast;
         c_sname_cleanup( &sname );
-      } else {
+      }
+      else {
         $$ = c_ast_new_gc( K_NAME, &@$ );
         $$->sname = sname;
       }
