@@ -117,33 +117,35 @@ TESTS+=	tests/emc.test \
 TESTS+=	tests/upc.test \
 	tests/upc-error.test
 
-# Miscellaneous tests
-TESTS+=	tests/__declspec.test \
-	tests/alt-tokens.test \
-	tests/debug.test \
-	tests/declare_synonyms.test \
+# Options tests
+TESTS+=	tests/alt-tokens.test \
 	tests/echo-commands.test \
 	tests/digraphs.test \
 	tests/east-const.test \
 	tests/english-types.test \
 	tests/explicit-ecsu.test \
 	tests/explicit-int.test \
-	tests/gnu_attributes.test \
-	tests/help.test \
-	tests/help-error.test \
 	tests/infer-command.test \
-	tests/integers.test \
 	tests/lang.test \
-	tests/misc-error-65.test \
 	tests/prompt.test \
 	tests/semicolon.test \
-	tests/set.test \
-	tests/set-error.test \
-	tests/symlinks.test \
 	tests/trailing-return.test \
 	tests/trigraphs.test \
 	tests/using.test \
 	tests/west-decl.test
+
+# Miscellaneous tests
+TESTS+=	tests/__declspec.test \
+	tests/debug.test \
+	tests/declare_synonyms.test \
+	tests/gnu_attributes.test \
+	tests/help.test \
+	tests/help-error.test \
+	tests/integers.test \
+	tests/misc-error-65.test \
+	tests/set.test \
+	tests/set-error.test \
+	tests/symlinks.test
 
 # C Preprocessor tests
 TESTS+=	tests/expand.test \
