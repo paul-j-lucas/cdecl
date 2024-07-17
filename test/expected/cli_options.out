@@ -93,7 +93,7 @@ options:
   --no-buffer-stdout  (-b) Set stdout to unbuffered.
   --no-config         (-C) Suppress reading configuration file.
   --no-english-types  (-T) Print types in C/C++, not English.
-  --no-prompt         (-p) Suppress printing prompts.
+  --no-prompt         (-P) Suppress printing prompts.
   --no-semicolon      (-s) Suppress printing final semicolon for declarations.
   --no-typedefs       (-t) Suppress predefining standard types.
   --no-using          (-u) Declare types with typedef, not using, in C++.
@@ -171,7 +171,7 @@ $ cdecl --options
 --no-buffer-stdout -b Set stdout to unbuffered
 --no-config -C Suppress reading configuration file
 --no-english-types -T Print types in C/C++, not English
---no-prompt -p Suppress printing prompts
+--no-prompt -P Suppress printing prompts
 --no-semicolon -s Suppress printing final semicolon for declarations
 --no-typedefs -t Suppress predefining standard types
 --no-using -u Declare types with typedef, not using, in C++

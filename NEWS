@@ -60,6 +60,9 @@ pseudo-English:
     cdecl> explain char f(x)
     declare f as function (x as integer) returning character
 
+** `--no-prompt` option short option
+The short option for `--no-prompt` has been changed from `-p` to `-P`.
+
 ** `show ::FILE`
 Fixed a crash.
 

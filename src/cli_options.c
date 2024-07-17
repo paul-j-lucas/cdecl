@@ -76,7 +76,7 @@
 #define OPT_LINENO            L
 #define OPT_OUTPUT            o
 #define OPT_OPTIONS           O
-#define OPT_NO_PROMPT         p
+#define OPT_NO_PROMPT         P
 #define OPT_TRAILING_RETURN   r
 #define OPT_NO_SEMICOLON      s
 #define OPT_EXPLICIT_ECSU     S
