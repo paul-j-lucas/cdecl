@@ -1,3 +1,9 @@
+2024-07-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, red_black_test.c, slist_test.c, unit_test.c, unit_test.h,
+     util_test.c: Unit test framework improvements and docs.
+   * print.c: Added missing c_lang_oldest().
+
 2024-07-17  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y, permissive-types.out, permissive-types.test: Now setting
