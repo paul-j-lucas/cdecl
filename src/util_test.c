@@ -42,66 +42,44 @@ static unsigned     test_failures;
 
 ////////// local functions ////////////////////////////////////////////////////
 
-static bool test_check_strdup_suffix( void ) {
-  TEST_FN_BEGIN();
-
-  char *rv = check_strdup_suffix( "hello", STRLIT_LEN( ", world" ) );
-  if ( TEST( rv != NULL ) ) {
-    TEST( strcmp( rv, "hello, world" ) == 0 );
-    free( rv );
+static void test_check_strdup_suffix( void ) {
+  char *const s = check_strdup_suffix( "hello", STRLIT_LEN( ", world" ) );
+  if ( TEST( s != NULL ) ) {
+    TEST( strcmp( s, "hello, world" ) == 0 );
+    free( s );
   }
-
-  TEST_FN_END();
 }
 
-static bool test_is_ident_prefix( void ) {
-  TEST_FN_BEGIN();
-
+static void test_is_ident_prefix( void ) {
   TEST( !is_ident_prefix( STRLIT_LEN( "HELLO" ), STRLIT_LEN( "HELL" ) ) );
   TEST( !is_ident_prefix( STRLIT_LEN( "HELLO" ), STRLIT_LEN( "HELLX" ) ) );
   TEST( is_ident_prefix( STRLIT_LEN( "HELLO" ), STRLIT_LEN( "HELLO" ) ) );
   TEST( is_ident_prefix( STRLIT_LEN( "HELLO" ), STRLIT_LEN( "HELLO()" ) ) );
-
-  TEST_FN_END();
 }
 
-static bool test_parse_identifier( void ) {
-  TEST_FN_BEGIN();
-
+static void test_parse_identifier( void ) {
   TEST( parse_identifier( "." ) == NULL );
   TEST( *parse_identifier( "A(" ) == '(' );
-
-  TEST_FN_END();
 }
 
-static bool test_strdup_tolower( void ) {
-  TEST_FN_BEGIN();
-
+static void test_strdup_tolower( void ) {
   TEST( check_strdup_tolower( NULL ) == NULL );
-  char *rv = check_strdup_tolower( "Hello" );
-  if ( TEST( rv != NULL ) ) {
-    TEST( strcmp( rv, "hello" ) == 0 );
-    free( rv );
+  char *const s = check_strdup_tolower( "Hello" );
+  if ( TEST( s != NULL ) ) {
+    TEST( strcmp( s, "hello" ) == 0 );
+    free( s );
   }
-
-  TEST_FN_END();
 }
 
-static bool test_str_is_prefix( void ) {
-  TEST_FN_BEGIN();
-
+static void test_str_is_prefix( void ) {
   TEST( !str_is_prefix( "", "HELLO" ) );
   TEST(  str_is_prefix( "HELL", "HELLO" ) );
   TEST(  str_is_prefix( "HELLO", "HELLO" ) );
   TEST( !str_is_prefix( "HELLX", "HELLO" ) );
   TEST( !str_is_prefix( "HELLOX", "HELLO" ) );
-
-  TEST_FN_END();
 }
 
-static bool test_strnspn( void ) {
-  TEST_FN_BEGIN();
-
+static void test_strnspn( void ) {
   TEST( strnspn( "", "AB", 0 ) == 0 );
 
   TEST( strnspn( "A",   "AB", 0 ) == 0 );
@@ -120,22 +98,16 @@ static bool test_strnspn( void ) {
 
   TEST( strnspn( "ABA", "AB", 2 ) == 2 );
   TEST( strnspn( "ABX", "AB", 2 ) == 2 );
-
-  TEST_FN_END();
 }
 
-static bool test_str_realloc_pcat( void ) {
-  TEST_FN_BEGIN();
-
+static void test_str_realloc_pcat( void ) {
   char *s = MALLOC( char, STRLITLEN( "FGHI" ) + 1 );
   strcpy( s, "FGHI" );
   s = str_realloc_pcat( "AB", "CDE", s );
   if ( TEST( s != NULL ) ) {
     TEST( strcmp( s, "ABCDEFGHI" ) == 0 );
+    free( s );
   }
-  free( s );
-
-  TEST_FN_END();
 }
 
 // LCOV_EXCL_START
