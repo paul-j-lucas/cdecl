@@ -8827,11 +8827,12 @@ sname_english_ast
       c_sname_t sname = c_sname_move( &$scope_sname );
       c_sname_append_name( &sname, $name );
 
-      //
-      // See if the full name is the name of a typedef'd type.
-      //
       c_typedef_t const *const tdef = c_typedef_find_sname( &sname );
       if ( tdef != NULL ) {
+        //
+        // The sname is the name of a typedef'd type: create a new K_TYPEDEF
+        // node and point it at the typedef's AST.
+        //
         $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
         $$->type.btids = TB_typedef;
         $$->tdef.for_ast = tdef->ast;
@@ -8840,10 +8841,14 @@ sname_english_ast
       else {
         $$ = c_ast_new_gc( K_NAME, &@$ );
         $$->sname = sname;
-        c_sname_init_name(
-          &$$->name.sname,
-          check_strdup( c_sname_local_name( &$$->sname ) )
-        );
+        if ( opt_permissive_types ) {
+          //
+          // Treat the name as a type which means we have to set the
+          // c_name_ast's sname also since it's the "type" name.
+          //
+          c_sname_t temp_sname = c_sname_dup( &$$->sname );
+          c_sname_set( &$$->name.sname, &temp_sname );
+        }
       }
 
       DUMP_AST( "$$_ast", $$ );
