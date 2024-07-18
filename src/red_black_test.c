@@ -47,9 +47,6 @@ struct rb_test_instruction {
 };
 typedef struct rb_test_instruction rb_test_instruction_t;
 
-// extern variables
-char const       *me;                   ///< Program name.
-
 // This sequence of instructions used to cause the tree's invariants to break,
 // so it's now a test.
 static rb_test_instruction_t const RB_TEST_SCRIPT[] = {
@@ -87,9 +84,6 @@ static rb_test_instruction_t const RB_TEST_SCRIPT[] = {
   { RB_TEST_DELETE, "CX_IMPL_NARG_HELPER1(CX_IMPL_HAS_COMMA( ), CX_IMPL_HAS_COMMA( CX_IMPL_COMMA () ), CX_IMPL_NARG_( , CX_IMPL_REV_SEQ_N ))" },
 };
 
-// local variables
-static unsigned   test_failures;
-
 ////////// local functions ////////////////////////////////////////////////////
 
 static void test_check_rb_node( rb_tree_t const *tree, rb_node_t const *node ) {
@@ -124,14 +118,6 @@ static bool test_rb_visitor( void *node_data, void *v_data ) {
   ++*letter_offset_ptr;
   return false;
 }
-
-// LCOV_EXCL_START
-_Noreturn
-static void usage( void ) {
-  EPRINTF( "usage: %s\n", me );
-  exit( EX_USAGE );
-}
-// LCOV_EXCL_STOP
 
 ////////// tests //////////////////////////////////////////////////////////////
 
@@ -202,9 +188,7 @@ static void test_script( void ) {
 ////////// main ///////////////////////////////////////////////////////////////
 
 int main( int argc, char const *argv[const] ) {
-  me = base_name( argv[0] );
-  if ( --argc != 0 )
-    usage();                            // LCOV_EXCL_LINE
+  test_prog_init( argc, argv );
 
   test_insert1_find_delete();
   test_insert2_find_delete();
@@ -255,9 +239,6 @@ int main( int argc, char const *argv[const] ) {
   TEST( rb_tree_empty( &tree ) );
 
   test_script();
-
-  printf( "%u failures\n", test_failures );
-  exit( test_failures > 0 ? EX_SOFTWARE : EX_OK );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

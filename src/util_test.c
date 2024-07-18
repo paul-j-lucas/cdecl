@@ -26,19 +26,9 @@
 // standard
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <sysexits.h>
 
 #define STRLIT_LEN(S)             (S), STRLITLEN( (S) )
-
-///////////////////////////////////////////////////////////////////////////////
-
-// extern variables
-char const          *me;                ///< Program name.
-
-// local variables
-static unsigned     test_failures;
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -110,20 +100,10 @@ static void test_str_realloc_pcat( void ) {
   }
 }
 
-// LCOV_EXCL_START
-_Noreturn
-static void usage( void ) {
-  EPRINTF( "usage: %s\n", me );
-  exit( EX_USAGE );
-}
-// LCOV_EXCL_STOP
-
 ////////// main ///////////////////////////////////////////////////////////////
 
 int main( int argc, char const *argv[const] ) {
-  me = base_name( argv[0] );
-  if ( --argc != 0 )
-    usage();                            // LCOV_EXCL_LINE
+  test_prog_init( argc, argv );
 
   test_check_strdup_suffix();
   test_is_ident_prefix();
@@ -132,9 +112,6 @@ int main( int argc, char const *argv[const] ) {
   test_str_is_prefix();
   test_strnspn();
   test_str_realloc_pcat();
-
-  printf( "%u failures\n", test_failures );
-  exit( test_failures > 0 ? EX_SOFTWARE : EX_OK );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

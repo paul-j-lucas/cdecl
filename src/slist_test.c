@@ -33,12 +33,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// extern variables
-char const          *me;                ///< Program name.
-
 // local variables
 static char const  *str_equal_to;
-static unsigned     test_failures;
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -301,7 +297,7 @@ static void test_slist_pop_front( void ) {
 }
 
 static bool test_slist_push_front( void ) {
-  TEST_FN_BEGIN();
+  TEST_FUNC_BEGIN();
 
   slist_t list;
   slist_init( &list );
@@ -320,7 +316,7 @@ static bool test_slist_push_front( void ) {
     TEST( *p == 'B' );
   slist_cleanup( &list, /*free_fn=*/NULL );
 
-  TEST_FN_END();
+  TEST_FUNC_END();
 }
 
 static void test_slist_push_list_front( void ) {
@@ -588,7 +584,7 @@ static void test_slist_push_list_back( void ) {
 }
 
 static bool test_slist_push_back( void ) {
-  TEST_FN_BEGIN();
+  TEST_FUNC_BEGIN();
   slist_t list;
   slist_init( &list );
   char *p;
@@ -609,23 +605,13 @@ static bool test_slist_push_back( void ) {
     TEST( *p == 'B' );
   slist_cleanup( &list, /*free_fn=*/NULL );
 
-  TEST_FN_END();
+  TEST_FUNC_END();
 }
-
-// LCOV_EXCL_START
-_Noreturn
-static void usage( void ) {
-  EPRINTF( "usage: %s\n", me );
-  exit( EX_USAGE );
-}
-// LCOV_EXCL_STOP
 
 ////////// main ///////////////////////////////////////////////////////////////
 
 int main( int argc, char const *argv[const] ) {
-  me = base_name( argv[0] );
-  if ( --argc != 0 )
-    usage();                            // LCOV_EXCL_LINE
+  test_prog_init( argc, argv );
 
   if ( test_slist_push_front() && test_slist_push_back() ) {
     test_slist_free_if();
@@ -637,9 +623,6 @@ int main( int argc, char const *argv[const] ) {
     test_slist_push_list_back();
     test_slist_pop_front();
   }
-
-  printf( "%u failures\n", test_failures );
-  exit( test_failures > 0 ? EX_SOFTWARE : EX_OK );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

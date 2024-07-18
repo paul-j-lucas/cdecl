@@ -25,16 +25,13 @@
 #pragma GCC diagnostic ignored "-Wunused-value"
 #endif /* __GNUC__ */
 
-///////////////////////////////////////////////////////////////////////////////
-
 /**
- * Prints that \a EXPR failed and increments the test failure count.
- *
- * @param EXPR The stringified expression that failed.
- * @return Always returns `false`.
+ * @defgroup unit-test-group Unit Tests
+ * Macros, variables, and functions for unit-test programs.
+ * @{
  */
-#define FAILED(EXPR) \
-  ( EPRINTF( "%s:%d: " EXPR "\n", me, __LINE__ ), !++test_failures )
+
+///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Tests \a EXPR and prints that it failed only if it failed.
@@ -42,7 +39,16 @@
  * @param EXPR The expression to evaluate.
  * @return Returns `true` only if \a EXPR is non-zero; `false` only if zero.
  */
-#define TEST(EXPR)                ( !!(EXPR) || FAILED( #EXPR ) )
+#define TEST(EXPR)                ( !!(EXPR) || TEST_FAILED( #EXPR ) )
+
+/**
+ * Prints that \a EXPR failed and increments the test failure count.
+ *
+ * @param EXPR The stringified expression that failed.
+ * @return Always returns `false`.
+ */
+#define TEST_FAILED(EXPR) \
+  ( EPRINTF( "%s:%d: " EXPR "\n", me, __LINE__ ), !++test_failures )
 
 /**
  * Begins a test function.
@@ -50,9 +56,9 @@
  * @remarks This should be the first thing inside a test function that must be
  * declared to return `bool`.
  *
- * @sa #TEST_FN_END()
+ * @sa #TEST_FUNC_END()
  */
-#define TEST_FN_BEGIN() \
+#define TEST_FUNC_BEGIN() \
   unsigned const test_failures_start = test_failures
 
 /**
@@ -60,12 +66,30 @@
  *
  * @remarks This should be the last thing inside a test function.
  *
- * @sa #TEST_FN_BEGIN()
+ * @sa #TEST_FUNC_BEGIN()
  */
-#define TEST_FN_END() \
+#define TEST_FUNC_END() \
   return test_failures == test_failures_start
 
 ///////////////////////////////////////////////////////////////////////////////
+
+// extern variables
+extern char const  *me;                 ///< Program name.
+extern unsigned     test_failures;      ///< Test failure count.
+
+/**
+ * Initializes a unit-test program.
+ *
+ * @note This function must be called exactly once.
+ *
+ * @param argc The command-line argument count.
+ * @param argv The command-line argument values.
+ */
+void test_prog_init( int argc, char const *argv[const] );
+
+///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_unit_test_H */
 /* vim:set et sw=2 ts=2: */

@@ -112,7 +112,7 @@ red_black_test_SOURCES = \
 		strbuf.c strbuf.h \
 		types.h \
 		util.c util.h \
-		unit_test.h
+		unit_test.c unit_test.h
 
 slist_test_SOURCES = \
 		cdecl.h \
@@ -122,7 +122,7 @@ slist_test_SOURCES = \
 		strbuf.c strbuf.h \
 		types.h \
 		util.c util.h \
-		unit_test.h
+		unit_test.c unit_test.h
 
 util_test_SOURCES = \
 		cdecl.h \
@@ -130,7 +130,7 @@ util_test_SOURCES = \
 		slist.c slist.h \
 		util.c util.h \
 		util_test.c \
-		unit_test.h
+		unit_test.c unit_test.h
 
 CDECL =		cdecl$(EXEEXT)
 CPPDECL =	c++decl$(EXEEXT)
