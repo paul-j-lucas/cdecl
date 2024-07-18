@@ -1,5 +1,15 @@
 2024-07-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * share/man/man1/cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_kind.h,
+     cli_options.c, dump.c, english.c, gibberish.c, options.c, options.h,
+     parser.y, set_options.c, test/Makefile.am, alt-tokens.out,
+     cli_options-error.out, cli_options.out, command_line.out, debug.out,
+     explicit-ecsu.out, explicit-int.out, infer-command.out, lang.out,
+     permissive-types.out, prompt.out, semicolon.out, set.out, symlinks.out,
+     trigraphs.out, using.out, west-decl.out, permissive-types.test: Added
+     --permissive-types option.
+   * share/man/man1/cdecl.1: Added ".SS main()".
+   * share/man/man1/cdecl.1: Added "or -{short option}" in a couple of places.
    * c_ast_check.c: Preventing double warning on same sname.
    * c_ast_check.c, parser.y, cast-error.out, explain_cast-error.out: Better
      locations.
