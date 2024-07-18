@@ -1329,7 +1329,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         break;
 
       case K_NAME:
-        if ( !OPT_LANG_IS( KNR_FUNC_DEFS ) ) {
+        if ( !OPT_LANG_IS( KNR_FUNC_DEFS ) && !opt_permissive_types ) {
           //
           // C23 finally forbids old-style K&R function definitions:
           //

@@ -94,7 +94,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Checks whether \a AST is a #K_NAME and therefore an error.
+ * Checks whether \a AST is a #K_NAME and therefore an error (if \ref
+ * opt_permissive_types is `false`) or merely a warning (if \ref
+ * opt_permissive_types is `true`).
  *
  * @param AST The AST to check.
  * @return Returns `true` only if \a ast is a #K_NAME and therefore an error.
@@ -1059,7 +1061,9 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 }
 
 /**
- * Checks whether \a ast is a #K_NAME and therefore an error.
+ * Checks whether \a ast is a #K_NAME and therefore an error (if \ref
+ * opt_permissive_types is `false`) or merely a warning (if \ref
+ * opt_permissive_types is `true`).
  *
  * @note This function isn't normally called directly; use the
  * #c_ast_is_name_error() macro instead.
@@ -1067,12 +1071,14 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
  * @param line The line number within this file where this function was called
  * from.
  * @param ast The AST to check.
- * @return Returns `true` only if \a ast is a #K_NAME and therefore an error.
+ * @return Returns `true` only if \a ast is a #K_NAME and an error.
  */
 NODISCARD
 static bool l_c_ast_is_name_error( int line, c_ast_t const *ast ) {
   assert( ast != NULL );
   if ( ast->kind != K_NAME )
+    return false;
+  if ( opt_permissive_types )
     return false;
   assert( !c_sname_empty( &ast->sname ) );
   fl_print_error_unknown_name( __FILE__, line, &ast->loc, &ast->sname );
@@ -8834,6 +8840,10 @@ sname_english_ast
       else {
         $$ = c_ast_new_gc( K_NAME, &@$ );
         $$->sname = sname;
+        c_sname_init_name(
+          &$$->name.sname,
+          check_strdup( c_sname_local_name( &$$->sname ) )
+        );
       }
 
       DUMP_AST( "$$_ast", $$ );

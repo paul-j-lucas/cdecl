@@ -343,6 +343,12 @@ dump_params:
       DUMP_AST_LIST( dump, "capture_ast_list", &ast->lambda.capture_ast_list );
       goto dump_params;
 
+    case K_NAME:
+      kind_json = json_object_begin( JSON_INIT, "name", dump );
+      DUMP_SNAME( dump, "sname", &ast->name.sname );
+      json_object_end( kind_json, dump );
+      break;
+
     case K_POINTER_TO_MEMBER:
       kind_json = json_object_begin( JSON_INIT, "ptr_mbr", dump );
       DUMP_SNAME( dump, "class_sname", &ast->ptr_mbr.class_sname );
@@ -366,7 +372,6 @@ dump_params:
       break;
 
     case K_DESTRUCTOR:
-    case K_NAME:
     case K_PLACEHOLDER:
     case K_VARIADIC:
       // nothing to do

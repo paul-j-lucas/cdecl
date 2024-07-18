@@ -1,0 +1,26 @@
+cdecl> declare x as T
+T x;
+cdecl> declare x as class
+               ^
+4,9: warning: "class" is a keyword in C++98
+class x;
+cdecl> declare p as pointer to T
+T *p;
+cdecl> declare p as pointer to class
+                               ^
+6,25: warning: "class" is a keyword in C++98
+class *p;
+cdecl> 
+cdecl> set c++
+c++decl> declare p as pointer to member of class C T
+T C::*p;
+c++decl> declare p as pointer to member of class C typeof
+                                                   ^
+10,43: warning: "typeof" is a keyword in C23
+typeof C::*p;
+c++decl> declare r as reference to T
+T &r;
+c++decl> declare r as reference to typeof
+                                   ^
+12,27: warning: "typeof" is a keyword in C23
+typeof &r;

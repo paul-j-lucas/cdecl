@@ -127,6 +127,7 @@ TESTS+=	tests/alt-tokens.test \
 	tests/explicit-int.test \
 	tests/infer-command.test \
 	tests/lang.test \
+	tests/permissive-types.test \
 	tests/prompt.test \
 	tests/semicolon.test \
 	tests/trailing-return.test \

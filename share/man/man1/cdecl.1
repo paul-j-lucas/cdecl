@@ -651,6 +651,36 @@ or
 Sends all non-error output to file
 .IR f .
 .TP
+.BR \-\-permissive-types " | " \-p
+Permits either unknown names
+or keywords in language versions other than the current language
+as types
+in pseudo-English.
+By default,
+a declaration like:
+.RS
+.cS
+declare p as pointer to T
+.cE 0
+.RE
+.IP
+where `T` is an unknown type
+would result in ``unknown type'' error.
+Similarly,
+a declaration in C like:
+.RS
+.cS
+declare p as pointer to class
+.cE 0
+.RE
+.IP
+would result in an ``unsupported type in C'' error
+even though \f(CWclass\fP
+would be a valid user-defined type in C.
+This option permits such declarations.
+(See
+.BR Permissive Types .)
+.TP
 .BR \-\-trigraphs " | " \-3
 Turns on trigraph token output.
 The trigraph tokens are:
@@ -1937,6 +1967,17 @@ Shorthand for
 .B options
 Prints the current value of all options.
 .TP
+.RB [ no ] permissive-types
+Turns [off] on permitting either unknown names
+or keywords in language versions other than the current language
+as types
+\(em default is off.
+(See the
+.B \-\-permissive-types
+or
+.B \-p
+option for details.)
+.TP
 .RB [ no ] prompt
 Turns [off] on the prompt
 \(em default is on.
@@ -2767,6 +2808,62 @@ nor
 \f(CWvolatile\fP.
 If it is so declared,
 it's assumed to be a member function.
+.SS Permissive Types
+Permissive types
+via the
+.B \-\-permissive-types
+or
+.B \-p
+option
+is not the default
+because always permitting either unknown names
+or keywords in language versions other than the current language
+as types
+can result in confusing errors.
+For example,
+if permissive types were the default,
+then you would get the following in C:
+.cS
+cdecl> declare D as virtual destructor
+                    ^
+14: warning: "virtual" is a keyword in C++
+virtual D;
+                            ^
+22: syntax error: "destructor": unexpected token ...
+.cE
+Here,
+\f(CWvirtual\fP,
+not being a keyword in C
+and therefore a valid name for a user-defined type,
+would be taken to be a type name,
+so
+.B cdecl
+would interpret that to mean
+you want to declare \f(CWD\fP
+as a variable of type \f(CWvirtual\fP
+\(em and
+.B cdecl
+would do so
+by printing \f(CWvirtual D\fP
+(but still warning that \f(CWvirtual\fP is a keyword in C++).
+But then \f(CWdestructor\fP would be unexpectedly encountered
+and generate an error.
+(It could easily be the case
+that you simply forgot to set the current language to C++
+instead of C.)
+.P
+With the default non-permissive behavior,
+you would instead get:
+.cS
+cdecl> declare D as virtual destructor
+                    ^
+14: error: "virtual": unsupported keyword in C
+.cE
+which is clearer,
+but at the cost of not permitting valid declarations
+that use either unknown names
+or keywords in language versions other than the current language
+as types.
 .SH CONFIGURATION FILES
 .SS cdeclrc
 The

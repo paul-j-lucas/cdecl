@@ -99,6 +99,7 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
             set_infer_command( set_option_fn_args_t const* ),
             set_lang( set_option_fn_args_t const* ),
             set_lang_impl( char const* ),
+            set_permissive_types( set_option_fn_args_t const* ),
             set_prompt( set_option_fn_args_t const* ),
             set_semicolon( set_option_fn_args_t const* ),
             set_trailing_return( set_option_fn_args_t const* ),
@@ -220,6 +221,12 @@ static set_option_t const SET_OPTIONS[] = {
     SET_OPTION_AFF_ONLY,
     .has_arg = required_argument,
     &set_lang
+  },
+
+  { "permissive-types",
+    SET_OPTION_TOGGLE,
+    .has_arg = no_argument,
+    &set_permissive_types
   },
 
   { "prompt",
@@ -361,6 +368,7 @@ static void print_options( void ) {
 
   print_option( "infer-command", po_bool_value( opt_infer_command ), LANG_ANY );
   print_option( "lang", c_lang_name( opt_lang_id ), LANG_ANY );
+  print_option( "permissive-types", po_bool_value( opt_permissive_types ), LANG_ANY );
   print_option( "prompt", po_bool_value( opt_prompt ), LANG_ANY );
   print_option( "semicolon", po_bool_value( opt_semicolon ), LANG_ANY );
   print_option( "trailing-return", po_bool_value( opt_trailing_ret ), LANG_TRAILING_RETURN_TYPES );
@@ -633,6 +641,18 @@ static bool set_lang_impl( char const *name ) {
   // set_using() isn't here since the feature is defined as printing types via
   // "using" declarations only in C++11 and later anyway.
 
+  return true;
+}
+
+/**
+ * Sets the `permissive-types` option.
+ *
+ * @param args The set option arguments.
+ * @return Always returns `true`.
+ */
+NODISCARD
+static bool set_permissive_types( set_option_fn_args_t const *args ) {
+  opt_permissive_types = args->opt_enabled;
   return true;
 }
 

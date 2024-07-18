@@ -305,7 +305,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  *
  * @sa #K_ANY_OBJECT
  */
-#define K_ANY_NAME                ( K_ANY_ECSU | K_CONCEPT \
+#define K_ANY_NAME                ( K_ANY_ECSU | K_CONCEPT | K_NAME \
                                   | K_POINTER_TO_MEMBER )
 
 /**
@@ -318,7 +318,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  * @sa #K_ANY_OBJECT
  */
 #define K_ANY_NON_PTR_REF_OBJECT  ( K_ANY_TYPE_SPECIFIER | K_ARRAY \
-                                  | K_CONCEPT | K_NAME | K_TYPEDEF )
+                                  | K_CONCEPT | K_TYPEDEF )
 
 /**
  * Shorthand for any kind of "object" that can be the type of a variable or
@@ -392,7 +392,8 @@ typedef enum c_ast_kind c_ast_kind_t;
  * is the type on the left-hand side: #K_BUILTIN, #K_CLASS_STRUCT_UNION, or
  * #K_ENUM.
  */
-#define K_ANY_TYPE_SPECIFIER      ( K_BUILTIN | K_ANY_ECSU | K_TYPEDEF )
+#define K_ANY_TYPE_SPECIFIER      ( K_BUILTIN | K_ANY_ECSU | K_NAME \
+                                  | K_TYPEDEF )
 
 ////////// extern functions ///////////////////////////////////////////////////
 

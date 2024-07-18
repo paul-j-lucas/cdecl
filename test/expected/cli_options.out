@@ -49,6 +49,7 @@ $ cdecl --explicit-ecsu=ecsu set
   nographs
   noinfer-command
     lang=C23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -66,6 +67,7 @@ $ cdecl --explicit-int=u set
   nographs
   noinfer-command
     lang=C23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -99,6 +101,7 @@ options:
   --no-using          (-u) Declare types with typedef, not using, in C++.
   --options           (-O) Print command-line options (for shell completion).
   --output=ARG        (-o) Write to file [default: stdout].
+  --permissive-types  (-p) Allow unknown names and keywords to be types.
   --trailing-return   (-r) Print trailing return type in C++.
   --trigraphs         (-3) Print trigraphs.
   --version           (-v) Print version and exit.
@@ -121,6 +124,7 @@ set
   nographs
   noinfer-command
     lang=C23
+  nopermissive-types
   noprompt
     semicolon
   notrailing-return
@@ -146,6 +150,7 @@ $ cdecl -xc++ --no-using set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -177,6 +182,7 @@ $ cdecl --options
 --no-using -u Declare types with typedef, not using, in C++
 --options -O Print command-line options (for shell completion)
 --output -o Write to file [default: stdout]
+--permissive-types -p Allow unknown names and keywords to be types
 --trailing-return -r Print trailing return type in C++
 --trigraphs -3 Print trigraphs
 --version -v Print version and exit
@@ -195,6 +201,7 @@ $ cdecl -xc++ --trailing-return set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
     trailing-return
@@ -212,6 +219,7 @@ $ cdecl --west-decl=t set
   nographs
   noinfer-command
     lang=C23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return

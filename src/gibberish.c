@@ -557,16 +557,22 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
     case K_NAME:
       NO_OP;
       bool printed_type = false;
-      if ( OPT_LANG_IS( PROTOTYPES ) && ast->param_of_ast != NULL ) {
-        //
-        // A name can occur as an untyped K&R C function parameter.  In
-        // C89-C17, it's implicitly int:
-        //
-        //      cdecl> declare f as function (x) returning char
-        //      char f(int x)
-        //
-        FPUTS( L_int, gib->fout );
-        printed_type = true;
+      if ( OPT_LANG_IS( PROTOTYPES ) ) {
+        if ( !opt_permissive_types && ast->param_of_ast != NULL ) {
+          //
+          // A name can occur as an untyped K&R C function parameter.  In
+          // C89-C17, it's implicitly int:
+          //
+          //      cdecl> declare f as function (x) returning char
+          //      char f(int x)
+          //
+          FPUTS( L_int, gib->fout );
+          printed_type = true;
+        }
+        else if ( ast->parent_ast == NULL ) {
+          FPUTS( c_sname_gibberish( &ast->name.sname ), gib->fout );
+          printed_type = true;
+        }
       }
       if ( (gib->gib_flags & C_GIB_PRINT_CAST) == 0 ) {
         if ( printed_type )

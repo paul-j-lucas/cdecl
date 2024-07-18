@@ -325,6 +325,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
       FALLTHROUGH;
     case K_CLASS_STRUCT_UNION:
     case K_CONCEPT:
+    case K_NAME:
     case K_POINTER_TO_MEMBER:
       dup_ast->name.sname = c_sname_dup( &ast->name.sname );
       break;
@@ -365,7 +366,6 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
     case K_UDEF_CONV:
       // of_ast duplicated by referrer code below
     case K_DESTRUCTOR:
-    case K_NAME:
     case K_PLACEHOLDER:
     case K_VARIADIC:
       // nothing to do
@@ -477,6 +477,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       FALLTHROUGH;
     case K_CLASS_STRUCT_UNION:
     case K_CONCEPT:
+    case K_NAME:
     case K_POINTER_TO_MEMBER:
       if ( c_sname_cmp( &i_ast->name.sname, &j_ast->name.sname ) != 0 )
         return false;
@@ -497,7 +498,6 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_UDEF_CONV:
       // checked by referrer code below
     case K_DESTRUCTOR:
-    case K_NAME:                        // names don't matter
     case K_PLACEHOLDER:
     case K_VARIADIC:
       // nothing to do
@@ -537,6 +537,7 @@ void c_ast_free( c_ast_t *ast ) {
       case K_CLASS_STRUCT_UNION:
       case K_CONCEPT:
       case K_ENUM:
+      case K_NAME:
       case K_POINTER_TO_MEMBER:
         c_sname_cleanup( &ast->name.sname );
         break;
@@ -548,7 +549,6 @@ void c_ast_free( c_ast_t *ast ) {
       case K_CAPTURE:
       case K_CAST:
       case K_DESTRUCTOR:
-      case K_NAME:
       case K_PLACEHOLDER:
       case K_POINTER:
       case K_REFERENCE:

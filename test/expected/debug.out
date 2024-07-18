@@ -9,6 +9,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -5510,7 +5511,10 @@ cdecl> explain int f(x)
     kind: { value: 0x20, string: "name" },
     depth: 0,
     loc: { first_line: 21, first_column: 14 },
-    type: { string: "none" }
+    type: { string: "none" },
+    name: {
+      sname: null
+    }
   }
 }
 
@@ -5525,7 +5529,10 @@ cdecl> explain int f(x)
     kind: { value: 0x20, string: "name" },
     depth: 0,
     loc: { first_line: 21, first_column: 14 },
-    type: { string: "none" }
+    type: { string: "none" },
+    name: {
+      sname: null
+    }
   },
   $$_ast_list: [
     {
@@ -5534,7 +5541,10 @@ cdecl> explain int f(x)
       kind: { value: 0x20, string: "name" },
       depth: 0,
       loc: { first_line: 21, first_column: 14 },
-      type: { string: "none" }
+      type: { string: "none" },
+      name: {
+        sname: null
+      }
     }
   ]
 }
@@ -5576,7 +5586,10 @@ cdecl> explain int f(x)
       kind: { value: 0x20, string: "name" },
       depth: 0,
       loc: { first_line: 21, first_column: 14 },
-      type: { string: "none" }
+      type: { string: "none" },
+      name: {
+        sname: null
+      }
     }
   ],
   func_qualifier_list_c_stid_opt: { string: "none" },
@@ -5601,7 +5614,10 @@ cdecl> explain int f(x)
             kind: { value: 0x20, string: "name" },
             depth: 0,
             loc: { first_line: 21, first_column: 14 },
-            type: { string: "none" }
+            type: { string: "none" },
+            name: {
+              sname: null
+            }
           }
         ],
         ret_ast: {
@@ -5665,7 +5681,10 @@ cdecl> explain int f(x)
             kind: { value: 0x20, string: "name" },
             depth: 0,
             loc: { first_line: 21, first_column: 14 },
-            type: { string: "none" }
+            type: { string: "none" },
+            name: {
+              sname: null
+            }
           }
         ],
         ret_ast: {
@@ -5709,7 +5728,10 @@ cdecl> explain int f(x)
           kind: { value: 0x20, string: "name" },
           depth: 0,
           loc: { first_line: 21, first_column: 14 },
-          type: { string: "none" }
+          type: { string: "none" },
+          name: {
+            sname: null
+          }
         }
       ],
       ret_ast: {
@@ -5749,7 +5771,10 @@ cdecl> explain int f(x)
             kind: { value: 0x20, string: "name" },
             depth: 0,
             loc: { first_line: 21, first_column: 14 },
-            type: { string: "none" }
+            type: { string: "none" },
+            name: {
+              sname: null
+            }
           }
         ],
         ret_ast: {
@@ -10790,6 +10815,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -10810,6 +10836,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return

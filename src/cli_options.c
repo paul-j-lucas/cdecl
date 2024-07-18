@@ -74,6 +74,7 @@
 #define OPT_COLOR             k
 #define OPT_COMMANDS          K
 #define OPT_LINENO            L
+#define OPT_PERMISSIVE_TYPES  p
 #define OPT_OUTPUT            o
 #define OPT_OPTIONS           O
 #define OPT_NO_PROMPT         P
@@ -160,6 +161,7 @@ static struct option const CLI_OPTIONS[] = {
   { "no-using",         no_argument,        NULL, COPT(NO_USING)          },
   { "options",          no_argument,        NULL, COPT(OPTIONS)           },
   { "output",           required_argument,  NULL, COPT(OUTPUT)            },
+  { "permissive-types", no_argument,        NULL, COPT(PERMISSIVE_TYPES)  },
   { "trailing-return",  no_argument,        NULL, COPT(TRAILING_RETURN)   },
   { "trigraphs",        no_argument,        NULL, COPT(TRIGRAPHS)         },
   { "version",          no_argument,        NULL, COPT(VERSION)           },
@@ -206,6 +208,7 @@ static char const *const CLI_OPTIONS_HELP[] = {
   [ COPT(NO_USING) ] = "Declare types with typedef, not using, in C++",
   [ COPT(OPTIONS) ] = "Print command-line options (for shell completion)",
   [ COPT(OUTPUT) ] = "Write to file [default: stdout]",
+  [ COPT(PERMISSIVE_TYPES) ] = "Allow unknown names and keywords to be types",
   [ COPT(TRAILING_RETURN) ] = "Print trailing return type in C++",
   [ COPT(TRIGRAPHS) ] = "Print trigraphs",
   [ COPT(VERSION) ] = "Print version and exit",
@@ -565,6 +568,9 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
       case COPT(NO_USING):
         opt_using = false;
+        break;
+      case COPT(PERMISSIVE_TYPES):
+        opt_permissive_types = true;
         break;
       case COPT(TRAILING_RETURN):
         opt_trailing_ret = true;

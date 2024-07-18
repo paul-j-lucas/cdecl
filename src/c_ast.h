@@ -360,7 +360,7 @@ struct c_lambda_ast {
 };
 
 /**
- * Generic AST node for a #K_ANY_NAME.
+ * AST node for a #K_NAME or generic node for #K_ANY_NAME.
  *
  * @sa c_concept_ast
  * @sa c_csu_ast
@@ -541,8 +541,7 @@ struct c_ast {
     c_enum_ast_t        enum_;      ///< #K_ENUM members.
     c_function_ast_t    func;       ///< #K_FUNCTION members.
     c_lambda_ast_t      lambda;     ///< #K_LAMBDA members.
-                    // nothing needed for K_NAME
-    c_name_ast_t        name;       ///< #K_ANY_NAME members.
+    c_name_ast_t        name;       ///< #K_NAME members.
     c_operator_ast_t    oper;       ///< #K_OPERATOR members.
                     // nothing needed for K_PLACEHOLDER
     c_ptr_mbr_ast_t     ptr_mbr;    ///< #K_POINTER_TO_MEMBER members.

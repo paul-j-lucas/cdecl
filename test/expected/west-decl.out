@@ -11,6 +11,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -183,6 +184,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -200,6 +202,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return

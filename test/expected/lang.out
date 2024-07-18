@@ -11,6 +11,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -28,6 +29,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -45,6 +47,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -62,6 +65,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -79,6 +83,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -96,6 +101,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -113,6 +119,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -130,6 +137,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -147,6 +155,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C89
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -164,6 +173,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C89
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -181,6 +191,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C95
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -198,6 +209,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C99
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -215,6 +227,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C11
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -232,6 +245,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C17
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -249,6 +263,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C17
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -266,6 +281,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -283,6 +299,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -300,6 +317,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++98
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -317,6 +335,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++03
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -334,6 +353,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++11
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -351,6 +371,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++14
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -368,6 +389,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++17
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -385,6 +407,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++20
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -402,6 +425,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -420,6 +444,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -437,6 +462,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -454,6 +480,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -471,6 +498,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -488,6 +516,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -505,6 +534,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -522,6 +552,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -539,6 +570,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=K&RC
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -556,6 +588,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C89
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -573,6 +606,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C89
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -590,6 +624,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C95
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -607,6 +642,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C99
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -624,6 +660,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C11
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -641,6 +678,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C17
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -658,6 +696,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C17
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -675,6 +714,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -692,6 +732,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -709,6 +750,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++98
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -726,6 +768,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++03
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -743,6 +786,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++11
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -760,6 +804,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++14
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -777,6 +822,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++17
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -794,6 +840,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++20
+  nopermissive-types
     prompt
     semicolon
   notrailing-return
@@ -811,6 +858,7 @@ c++decl> set
   nographs
   noinfer-command
     lang=C++23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return

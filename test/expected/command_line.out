@@ -57,6 +57,7 @@ cdecl> set
   nographs
   noinfer-command
     lang=C23
+  nopermissive-types
     prompt
     semicolon
   notrailing-return

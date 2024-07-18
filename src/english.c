@@ -141,8 +141,10 @@ static void c_ast_func_params_english( c_ast_t const *ast,
       //
       // there's no "as <english>" part.
       //
-      if ( param_ast->kind != K_NAME || OPT_LANG_IS( PROTOTYPES ) )
+      if ( param_ast->kind != K_NAME ||
+           (!opt_permissive_types && OPT_LANG_IS( PROTOTYPES )) ) {
         FPUTS( " as ", eng->fout );
+      }
     }
     else {
       //
@@ -418,7 +420,8 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_NAME:
-      if ( OPT_LANG_IS( PROTOTYPES ) && ast->param_of_ast != NULL ) {
+      if ( !opt_permissive_types && OPT_LANG_IS( PROTOTYPES ) &&
+           ast->param_of_ast != NULL ) {
         //
         // A name can occur as an untyped K&R C function parameter.  In
         // C89-C17, it's implicitly int:
@@ -427,6 +430,9 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
         //      declare f as function (x as integer) returning char
         //
         FPUTS( c_tid_english( TB_int ), eng->fout );
+      }
+      else {
+        c_sname_english( &ast->name.sname, eng->fout );
       }
       break;
 
