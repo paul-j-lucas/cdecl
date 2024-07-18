@@ -1,5 +1,7 @@
 2024-07-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, permissive-types.out, permissive-types.test: Now setting
+     c_name_ast::sname to full scoped name.
    * share/man/man1/cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_kind.h,
      cli_options.c, dump.c, english.c, gibberish.c, options.c, options.h,
      parser.y, set_options.c, test/Makefile.am, alt-tokens.out,
