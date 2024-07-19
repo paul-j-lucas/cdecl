@@ -648,7 +648,7 @@ union user_data {
 /**
  * Convenience macro for specifying a zero-initialized user_data literal.
  */
-#define USER_DATA_ZERO            ((user_data_t){ .i64 = 0 })
+#define USER_DATA_ZERO            ((user_data_t){ .ll = 0 })
 
 /**
  * Gets an lvalue reference to one of the { `uc` | `us` | `ui` | `ul` | `ull` }
