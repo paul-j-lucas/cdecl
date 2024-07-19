@@ -1047,15 +1047,11 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define TO_UNSIGNED(N) (                                              \
   STATIC_ASSERT_EXPR( IS_INTEGRAL( (N) ), #N " must be integral" ) *  \
-  STATIC_IF( sizeof(N) == sizeof(char),                               \
-    (unsigned char)(N),                                               \
-  STATIC_IF( sizeof(N) == sizeof(short),                              \
-    (unsigned short)(N),                                              \
-  STATIC_IF( sizeof(N) == sizeof(int),                                \
-    (unsigned int)(N),                                                \
-  STATIC_IF( sizeof(N) == sizeof(long),                               \
-    (unsigned long)(N),                                               \
-    (unsigned long long)(N) ) ) ) ) )
+  STATIC_IF( sizeof(N) == sizeof(char ), (unsigned char     )(N),     \
+  STATIC_IF( sizeof(N) == sizeof(short), (unsigned short    )(N),     \
+  STATIC_IF( sizeof(N) == sizeof(int  ), (unsigned int      )(N),     \
+  STATIC_IF( sizeof(N) == sizeof(long ), (unsigned long     )(N),     \
+          /* else */                     (unsigned long long)(N) ) ) ) ) )
 
 /**
  * Converts \a P to a pointer to `void` preserving `const`-ness.
