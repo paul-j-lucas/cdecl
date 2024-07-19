@@ -445,10 +445,10 @@ union user_data {
   int32_t             i32;              ///< `int32_t` value.
   int64_t             i64;              ///< `int64_t` value.
 
-  uint8_t             ui8;              ///< `uint8_t` value.
-  uint16_t            ui16;             ///< `uint16_t` value.
-  uint32_t            ui32;             ///< `uint32_t` value.
-  uint64_t            ui64;             ///< `uint64_t` value.
+  uint8_t             u8;               ///< `uint8_t` value.
+  uint16_t            u16;              ///< `uint16_t` value.
+  uint32_t            u32;              ///< `uint32_t` value.
+  uint64_t            u64;              ///< `uint64_t` value.
 
   float               f;                ///< `float` value.
   double              d;                ///< `double` value.

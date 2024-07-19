@@ -514,7 +514,7 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
 NODISCARD
 static bool c_ast_vistor_kind_any( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, user_data.ui32 );
+  c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, user_data.u32 );
   return (ast->kind & kinds) != 0;
 }
 
@@ -578,7 +578,7 @@ c_ast_t const* (c_ast_find_kind_any)( c_ast_t const *ast,
                                       c_ast_kind_t kinds ) {
   return kinds == 0 ? NULL :
     c_ast_visit(
-      ast, dir, c_ast_vistor_kind_any, (user_data_t){ .ui32 = kinds }
+      ast, dir, c_ast_vistor_kind_any, (user_data_t){ .u32 = kinds }
     );
 }
 
