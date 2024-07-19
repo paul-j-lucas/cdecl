@@ -37,6 +37,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "slist.h"
+#include "util.h"
 
 // standard
 #include <stdbool.h>
@@ -461,6 +462,35 @@ union user_data {
  * Convenience macro for specifying a zero-initialized user_data literal.
  */
 #define USER_DATA_ZERO            ((user_data_t){ .i64 = 0 })
+
+/**
+ * Gets an lvalue reference to one of the { `u8` | `u16` | `u32` | `u64` }
+ * members of \a DATA depending on `sizeof(` \a TYPE `)`.
+ *
+ * @param TYPE The type whose size to use.
+ * @param DATA A \ref user_data object to get the member of.
+ * @return Returns said lvalue reference.
+ *
+ * @sa #USER_DATA_UINT_AS()
+ */
+#define USER_DATA_UINT(TYPE,DATA) (                        \
+  STATIC_IF( sizeof(TYPE) == sizeof(uint8_t ), (DATA).u8,  \
+  STATIC_IF( sizeof(TYPE) == sizeof(uint16_t), (DATA).u16, \
+  STATIC_IF( sizeof(TYPE) == sizeof(uint32_t), (DATA).u32, \
+                                               (DATA).u64 ) ) ) )
+
+/**
+ * Gets one of the { `u8` | `u16` | `u32` | `u64` } members of \a DATA
+ * depending on `sizeof(` \a TYPE `)` cast to \a TYPE.
+ *
+ * @param TYPE The type whose size to use.
+ * @param DATA A \ref user_data object to get the member of.
+ * @return Returns said member cast to \a TYPE.
+ *
+ * @sa #USER_DATA_UINT()
+ */
+#define USER_DATA_UINT_AS(TYPE,DATA) \
+  STATIC_CAST( TYPE, USER_DATA_UINT( TYPE, (DATA) ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 

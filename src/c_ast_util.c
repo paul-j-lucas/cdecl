@@ -514,7 +514,7 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
 NODISCARD
 static bool c_ast_vistor_kind_any( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, user_data.u32 );
+  c_ast_kind_t const kinds = USER_DATA_UINT_AS( c_ast_kind_t, user_data );
   return (ast->kind & kinds) != 0;
 }
 
@@ -576,10 +576,10 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
 c_ast_t const* (c_ast_find_kind_any)( c_ast_t const *ast,
                                       c_ast_visit_dir_t dir,
                                       c_ast_kind_t kinds ) {
-  return kinds == 0 ? NULL :
-    c_ast_visit(
-      ast, dir, c_ast_vistor_kind_any, (user_data_t){ .u32 = kinds }
-    );
+  user_data_t ud;
+  USER_DATA_UINT( c_ast_kind_t, ud ) = kinds;
+
+  return kinds == 0 ? NULL : c_ast_visit( ast, dir, c_ast_vistor_kind_any, ud );
 }
 
 // See comment for NONCONST_OVERLOAD regarding ().
