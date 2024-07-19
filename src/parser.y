@@ -3638,7 +3638,7 @@ show_command
   | Y_show error
     {
       elaborate_error(
-        "type name or \"all\", \"predefined\", or \"user\" expected"
+        "type or macro name, or \"all\", \"predefined\", or \"user\" expected"
       );
     }
   ;
