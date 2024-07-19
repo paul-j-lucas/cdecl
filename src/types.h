@@ -383,6 +383,9 @@ struct c_loc {
  * Data for the `alignas` specifier.
  */
 struct c_alignas {
+  c_alignas_kind_t  kind;               ///< Kind of `alignas` argument.
+  c_loc_t           loc;                ///< Source location.
+
   /**
    * Additional data for each \ref kind.
    */
@@ -391,8 +394,6 @@ struct c_alignas {
     c_sname_t       sname;              ///< Aligned to _sname_ number of bytes.
     c_ast_t        *type_ast;           ///< Aligned the same as this type.
   };
-  c_alignas_kind_t  kind;               ///< Kind of `alignas` argument.
-  c_loc_t           loc;                ///< Source location.
 };
 
 /**
