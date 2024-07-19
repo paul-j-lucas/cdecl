@@ -1,3 +1,12 @@
+2024-07-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, c_typedef.c, english.c, gibberish.c, parser.y, print.c,
+     show.c, types.h: Made decl_flags an enum.
+   * decl_flags.h, types.h: Revert "Better (?) way to silence warning."
+   * decl_flags.h, types.h: Better (?) way to silence warning.
+   * types.h: Silenced warning.
+   * types.h: Changed USER_DATA_UINT() to using built-in types.
+
 2024-07-18  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, types.h: Added USER_DATA_UINT() and USER_DATA_UINT_AS().
