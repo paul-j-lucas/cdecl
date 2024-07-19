@@ -223,6 +223,203 @@ enum cdecl_show {
   CDECL_SHOW_OPT_IGNORE_LANG  = 1 << 2
 };
 
+/**
+ * Declaration flags for:
+ *
+ *  + How a declaration was originally declared; and:
+ *  + How to print a declaration.
+ */
+enum decl_flags {
+
+  /**
+   * For \ref c_typedef::decl_flags "decl_flags", denotes that a type was
+   * declared via pseudo-English.
+   *
+   * @sa #C_GIB_TYPEDEF
+   * @sa #C_GIB_USING
+   */
+  C_ENG_DECL              = 1 << 0,
+
+  /**
+   * Flag for c_ast_english() to omit the &quot;<code>declare</code> _name_
+   * <code>as</code>&quot; part and print only the type in pseudo-English.
+   *
+   * @sa c_ast_english()
+   */
+  C_ENG_OPT_OMIT_DECLARE  = 1 << 1,
+
+  /**
+   * Flag for c_ast_gibberish() to print as a C/C++ cast instead of a
+   * declaration.
+   *
+   * @note May _not_ be used in combination with any other flags.
+   *
+   * @sa c_ast_gibberish()
+   * @sa #C_GIB_PRINT_DECL
+   */
+  C_GIB_PRINT_CAST        = 1 << 8,
+
+  /**
+   * Flag for c_ast_gibberish() to print as an ordinary declaration instead of a
+   * `typedef` or `using` declaration or C/C++ cast.
+   *
+   * @note May be used _only_ in combination with:
+   *  + #C_GIB_OPT_MULTI_DECL
+   *  + #C_GIB_OPT_OMIT_TYPE
+   *  + #C_GIB_OPT_SEMICOLON
+   *
+   * @sa c_ast_gibberish()
+   * @sa #C_GIB_OPT_MULTI_DECL
+   * @sa #C_GIB_OPT_OMIT_TYPE
+   * @sa #C_GIB_PRINT_CAST
+   * @sa #C_GIB_TYPEDEF
+   * @sa #C_GIB_USING
+   */
+  C_GIB_PRINT_DECL        = 1 << 9,
+
+  /**
+   * Flag for c_ast_gibberish() to indicate that the declaration is of multiple
+   * objects for the same base type, for example:
+   *
+   *      int *x, *y;
+   *
+   * @note Unlike #C_GIB_OPT_OMIT_TYPE, `C_GIB_OPT_MULTI_DECL` _must_ be used
+   * for the entire declaration.
+   *
+   * @note May be used _only_ in combination with:
+   *  + #C_GIB_OPT_OMIT_TYPE
+   *  + #C_GIB_PRINT_DECL
+   *
+   * @sa c_ast_gibberish()
+   * @sa #C_GIB_OPT_OMIT_TYPE
+   * @sa #C_GIB_PRINT_DECL
+   */
+  C_GIB_OPT_MULTI_DECL    = 1 << 10,
+
+  /**
+   * Flag for c_ast_gibberish() to omit the type name when printing gibberish
+   * for the _second_ and subsequent objects when printing multiple objects in
+   * the same declaration.  For example, when printing:
+   *
+   *      int *x, *y;
+   *
+   * the gibberish for `y` _must not_ print the `int` again.
+   *
+   * @note May be used _only_ in combination with:
+   *  + #C_GIB_OPT_MULTI_DECL
+   *  + #C_GIB_PRINT_DECL
+   *
+   * @sa c_ast_gibberish()
+   * @sa #C_GIB_OPT_MULTI_DECL
+   * @sa #C_GIB_PRINT_DECL
+   */
+  C_GIB_OPT_OMIT_TYPE     = 1 << 11,
+
+  /**
+   * Flag for c_ast_gibberish() or c_typedef_gibberish() to print the final
+   * semicolon after a type declaration.
+   *
+   * @note May be used in combination with any other `C_GIB_*` flags _except_
+   * #C_GIB_PRINT_CAST.
+   *
+   * @sa c_ast_gibberish()
+   * @sa c_typedef_gibberish()
+   */
+  C_GIB_OPT_SEMICOLON     = 1 << 12,
+
+  /**
+   * Dual purpose:
+   *
+   *  1. For \ref c_typedef::decl_flags "decl_flags", denotes that a type was
+   *     declared via a `typedef` declaration (as opposed to a `using`
+   *     declaration).
+   *
+   *  2. When printing gibberish, c_typedef_gibberish() will print as a
+   *     `typedef` declaration (as opposed to a `using` declaration).
+   *
+   * @note May be used _only_ in combination with #C_GIB_OPT_SEMICOLON.
+   *
+   * @sa c_typedef_gibberish()
+   * @sa #C_GIB_USING
+   */
+  C_GIB_TYPEDEF           = 1 << 13,
+
+  /**
+   * Dual purpose:
+   *
+   *  1. For \ref c_typedef::decl_flags "decl_flags", denotes that a type was
+   *     declared via a `using` declaration (as opposed to a `typedef`
+   *     declaration).
+   *
+   *  2. When printing gibberish:
+   *
+   *      + c_ast_gibberish() will print only the right-hand side of a `using`
+   *        declaration (the type).
+   *
+   *      + c_typedef_gibberish() will print as a whole `using` declaration.
+   *
+   *     For example, given:
+   *
+   *          using RI = int&
+   *
+   *     then:
+   *
+   *      + c_ast_gibberish() will print only `int&` whereas:
+   *      + c_typedef_gibberish() will print `using RI = int&`.
+   *
+   * @note When used for the second purpose, may be used _only_ in combination
+   * with #C_GIB_OPT_SEMICOLON.
+   *
+   * @sa c_ast_gibberish()
+   * @sa #C_ENG_DECL
+   * @sa #C_GIB_TYPEDEF
+   * @sa c_typedef_gibberish()
+   * @sa print_ast_type_aka()
+   */
+  C_GIB_USING             = 1 << 14,
+};
+
+/**
+ * Shorthand for any pseudo-English-only \ref decl_flags "declaration flags".
+ *
+ * @sa #C_GIB_ANY
+ */
+#define C_ENG_ANY                 0x00FF
+
+/**
+ * Shorthand for any gibberish-only \ref decl_flags "declaration flags".
+ *
+ * @sa #C_ENG_ANY
+ */
+#define C_GIB_ANY                 0xFF00
+
+/**
+ * Convenience macro that is the bitwise-or of the two ways in which a type
+ * can be declared in gibberish:
+ *
+ *  1. Via `typedef` (#C_GIB_TYPEDEF).
+ *  2. Via `using` (#C_GIB_USING).
+ *
+ * @sa #C_ENG_DECL
+ * @sa #C_TYPE_DECL_ANY
+ * @sa decl_flags
+ */
+#define C_GIB_DECL_ANY            ( C_GIB_TYPEDEF | C_GIB_USING )
+
+/**
+ * Convenience macro that is the bitwise-or of the three ways in which a type
+ * can be declared:
+ *
+ *  1. Pseudo-English (#C_ENG_DECL).
+ *  2. Gibberish via `typedef` (#C_GIB_TYPEDEF).
+ *  3. Gibberish via `using` (#C_GIB_USING).
+ *
+ * @sa #C_ENG_DECL
+ * @sa #C_GIB_DECL_ANY
+ * @sa decl_flags
+ */
+#define C_TYPE_DECL_ANY           ( C_ENG_DECL | C_GIB_DECL_ANY )
+
 ////////// typedefs ///////////////////////////////////////////////////////////
 
 typedef struct c_alignas          c_alignas_t;
@@ -305,17 +502,7 @@ typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
 typedef enum   cdecl_debug        cdecl_debug_t;
 typedef enum   cdecl_show         cdecl_show_t;
-
-/**
- * Declaration flags for:
- *
- *  + How a declaration was originally declared; and:
- *  + How to print a declaration.
- *
- * @sa \ref english-flags
- * @sa \ref gibberish-flags
- */
-typedef unsigned                  decl_flags_t;
+typedef enum   decl_flags         decl_flags_t;
 
 /**
  * C preprocessor macro argument list.

@@ -31,10 +31,10 @@
 #include "c_operator.h"
 #include "c_sname.h"
 #include "c_typedef.h"
-#include "decl_flags.h"
 #include "gibberish.h"
 #include "literals.h"
 #include "slist.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

@@ -74,7 +74,6 @@ cdecl_SOURCES =	parser.y \
 		color.c color.h \
 		config_file.c config_file.h \
 		dam_lev.c dam_lev.h \
-		decl_flags.h \
 		did_you_mean.c did_you_mean.h \
 		dump.c dump.h \
 		english.c english.h \

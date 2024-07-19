@@ -47,7 +47,6 @@
 #include "cdecl.h"
 #include "cdecl_keyword.h"
 #include "color.h"
-#include "decl_flags.h"
 #include "dump.h"
 #include "did_you_mean.h"
 #include "english.h"

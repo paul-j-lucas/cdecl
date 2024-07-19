@@ -31,11 +31,11 @@
 #include "c_sglob.h"
 #include "c_sname.h"
 #include "c_typedef.h"
-#include "decl_flags.h"
 #include "gibberish.h"
 #include "options.h"
 #include "p_token.h"
 #include "print.h"
+#include "types.h"
 
 /// @cond DOXYGEN_IGNORE
 

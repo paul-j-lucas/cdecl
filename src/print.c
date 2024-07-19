@@ -35,7 +35,6 @@
 #include "cdecl_keyword.h"
 #include "cdecl_term.h"
 #include "color.h"
-#include "decl_flags.h"
 #include "english.h"
 #include "gibberish.h"
 #include "lexer.h"
@@ -43,6 +42,7 @@
 #include "p_macro.h"
 #include "prompt.h"
 #include "strbuf.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

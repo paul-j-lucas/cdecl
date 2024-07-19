@@ -30,10 +30,10 @@
 #include "c_ast.h"
 #include "c_lang.h"
 #include "cdecl.h"
-#include "decl_flags.h"
 #include "lexer.h"
 #include "options.h"
 #include "parse.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

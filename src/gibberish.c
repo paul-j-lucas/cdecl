@@ -31,9 +31,9 @@
 #include "c_lang.h"
 #include "c_operator.h"
 #include "c_typedef.h"
-#include "decl_flags.h"
 #include "literals.h"
 #include "options.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -645,7 +645,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         //      using foo_t = int32_t;
         //
         decl_flags_t const orig_flags = gib->gib_flags;
-        gib->gib_flags &= ~C_GIB_USING;
+        gib->gib_flags &= ~TO_UNSIGNED( C_GIB_USING );
         c_ast_name_gibberish( ast->tdef.for_ast, gib );
         gib->gib_flags = orig_flags;
         if ( print_parens_for_Atomic )
@@ -680,10 +680,13 @@ static void c_ast_list_gibberish( c_ast_list_t const *ast_list,
   assert( ast_list != NULL );
   assert( gib != NULL );
 
+  decl_flags_t const node_gib_flags =
+    gib->gib_flags & ~TO_UNSIGNED( C_GIB_OPT_OMIT_TYPE );
+
   bool comma = false;
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     gib_state_t node_gib;
-    gib_init( &node_gib, gib->gib_flags & ~C_GIB_OPT_OMIT_TYPE, gib->fout );
+    gib_init( &node_gib, node_gib_flags, gib->fout );
     node_gib.is_nested_scope = gib->is_nested_scope;
     fput_sep( ", ", &comma, gib->fout );
     c_ast_gibberish_impl( ast_node->data, &node_gib );
