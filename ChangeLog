@@ -1,5 +1,6 @@
 2024-07-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * types.h: s/.i64/.ll/
    * src/Makefile.am, c_typedef.c, english.c, gibberish.c, parser.y, print.c,
      show.c, types.h: Made decl_flags an enum.
    * decl_flags.h, types.h: Revert "Better (?) way to silence warning."
