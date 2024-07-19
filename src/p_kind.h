@@ -44,11 +44,11 @@
  * or'd together to test whether a token's kind is any _one_ of those kinds.
  */
 enum p_token_kind {
-  P_CHAR_LIT    = 1u << 0,              ///< Character literal.
-  P_CONCAT      = 1u << 1,              ///< Concatenation operator `##`.
-  P_IDENTIFIER  = 1u << 2,              ///< An identifier.
-  P_NUM_LIT     = 1u << 3,              ///< Integer or floating point literal.
-  P_OTHER       = 1u << 4,              ///< `@`, `$`, or <code>`</code>.
+  P_CHAR_LIT    = 1 << 0,               ///< Character literal.
+  P_CONCAT      = 1 << 1,               ///< Concatenation operator `##`.
+  P_IDENTIFIER  = 1 << 2,               ///< An identifier.
+  P_NUM_LIT     = 1 << 3,               ///< Integer or floating point literal.
+  P_OTHER       = 1 << 4,               ///< `@`, `$`, or <code>`</code>.
 
   ///
   /// Placemarker token.
@@ -72,9 +72,9 @@ enum p_token_kind {
   /// valid cases from invalid cases where they have no argument.
   /// @endparblock
   ///
-  P_PLACEMARKER = 1u << 5,
+  P_PLACEMARKER = 1 << 5,
 
-  P_PUNCTUATOR  = 1u << 6,              ///< Operators and other punctuation.
+  P_PUNCTUATOR  = 1 << 6,               ///< Operators and other punctuation.
 
   ///
   /// Whitespace.
@@ -119,13 +119,13 @@ enum p_token_kind {
   ///
   /// @sa avoid_paste()
   ///
-  P_SPACE       = 1u << 7,
+  P_SPACE       = 1 << 7,
 
-  P_STRINGIFY   = 1u << 8,              ///< Stringify operator `#`.
-  P_STR_LIT     = 1u << 9,              ///< String literal.
+  P_STRINGIFY   = 1 << 8,               ///< Stringify operator `#`.
+  P_STR_LIT     = 1 << 9,               ///< String literal.
 
-  P___VA_ARGS__ = 1u << 10,             ///< `__VA_ARGS__`.
-  P___VA_OPT__  = 1u << 11,             ///< `__VA_OPT__`.
+  P___VA_ARGS__ = 1 << 10,              ///< `__VA_ARGS__`.
+  P___VA_OPT__  = 1 << 11,              ///< `__VA_OPT__`.
 };
 typedef enum p_token_kind p_token_kind_t;
 

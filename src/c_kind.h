@@ -78,35 +78,35 @@ enum c_ast_kind {
    * "something" in the AST.
    * @endparblock
    */
-  K_PLACEHOLDER         = 1u << 0,
+  K_PLACEHOLDER         = 1 << 0,
 
   /**
    * Built-in type, e.g., `void`, `char`, `int`, etc.
    *
    * @sa c_builtin_ast
    */
-  K_BUILTIN             = 1u << 1,
+  K_BUILTIN             = 1 << 1,
 
   /**
    * C++ lambda capture.
    *
    * @sa c_capture_ast
    */
-  K_CAPTURE             = 1u << 2,
+  K_CAPTURE             = 1 << 2,
 
   /**
    * A `class,` `struct,` or `union`.
    *
    * @sa c_csu_ast
    */
-  K_CLASS_STRUCT_UNION  = 1u << 3,
+  K_CLASS_STRUCT_UNION  = 1 << 3,
 
   /**
    * C++ concept.
    *
    * @sa c_concept_ast
    */
-  K_CONCEPT             = 1u << 4,
+  K_CONCEPT             = 1 << 4,
 
   /**
    * Name only.
@@ -122,19 +122,19 @@ enum c_ast_kind {
    *     e.g., <code>double&nbsp;sin(x)</code>.
    * @endparblock
    */
-  K_NAME                = 1u << 5,
+  K_NAME                = 1 << 5,
 
   /**
    * A `typedef` type, e.g., `size_t`.
    *
    * @sa c_typedef_ast
    */
-  K_TYPEDEF             = 1u << 6,
+  K_TYPEDEF             = 1 << 6,
 
   /**
    * Variadic (`...`) function parameter.
    */
-  K_VARIADIC            = 1u << 7,
+  K_VARIADIC            = 1 << 7,
 
   ////////// "parent" kinds ///////////////////////////////////////////////////
 
@@ -143,14 +143,14 @@ enum c_ast_kind {
    *
    * @sa c_array_ast
    */
-  K_ARRAY               = 1u << 8,
+  K_ARRAY               = 1 << 8,
 
   /**
    * Cast.
    *
    * @sa c_cast_ast
    */
-  K_CAST                = 1u << 9,
+  K_CAST                = 1 << 9,
 
   /**
    * An `enum`.
@@ -160,42 +160,42 @@ enum c_ast_kind {
    *
    * @sa c_enum_ast
    */
-  K_ENUM                = 1u << 10,
+  K_ENUM                = 1 << 10,
 
   /**
    * Pointer.
    *
    * @sa c_ptr_ref_ast
    */
-  K_POINTER             = 1u << 11,
+  K_POINTER             = 1 << 11,
 
   /**
    * C++ pointer-to-member.
    *
    * @sa c_ptr_mbr_ast
    */
-  K_POINTER_TO_MEMBER   = 1u << 12,
+  K_POINTER_TO_MEMBER   = 1 << 12,
 
   /**
    * C++ reference.
    *
    * @sa c_ptr_ref_ast
    */
-  K_REFERENCE           = 1u << 13,
+  K_REFERENCE           = 1 << 13,
 
   /**
    * C++ rvalue reference.
    *
    * @sa c_ptr_ref_ast
    */
-  K_RVALUE_REFERENCE    = 1u << 14,
+  K_RVALUE_REFERENCE    = 1 << 14,
 
   /**
    * C++ structured binding.
    *
    * @sa c_struct_bind_ast
    */
-  K_STRUCTURED_BINDING  = 1u << 15,
+  K_STRUCTURED_BINDING  = 1 << 15,
 
   ////////// function-like "parent" kinds /////////////////////////////////////
 
@@ -204,12 +204,12 @@ enum c_ast_kind {
    *
    * @sa c_constructor_ast
    */
-  K_CONSTRUCTOR         = 1u << 16,
+  K_CONSTRUCTOR         = 1 << 16,
 
   /**
    * C++ destructor.
    */
-  K_DESTRUCTOR          = 1u << 17,
+  K_DESTRUCTOR          = 1 << 17,
 
   ////////// function-like "parent" kinds that have return types //////////////
 
@@ -220,42 +220,42 @@ enum c_ast_kind {
    * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
    * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
    */
-  K_APPLE_BLOCK         = 1u << 18,
+  K_APPLE_BLOCK         = 1 << 18,
 
   /**
    * Function.
    *
    * @sa c_function_ast
    */
-  K_FUNCTION            = 1u << 19,
+  K_FUNCTION            = 1 << 19,
 
   /**
    * C++ lambda.
    *
    * @sa c_lambda_ast
    */
-  K_LAMBDA              = 1u << 20,
+  K_LAMBDA              = 1 << 20,
 
   /**
    * C++ overloaded operator.
    *
    * @sa c_operator_ast
    */
-  K_OPERATOR            = 1u << 21,
+  K_OPERATOR            = 1 << 21,
 
   /**
    * C++ user-defined conversion operator.
    *
    * @sa c_udef_conv_ast
    */
-  K_UDEF_CONV           = 1u << 22,
+  K_UDEF_CONV           = 1 << 22,
 
   /**
    * C++ user-defined literal.
    *
    * @sa c_udef_lit_ast
    */
-  K_UDEF_LIT            = 1u << 23,
+  K_UDEF_LIT            = 1 << 23,
 };
 typedef enum c_ast_kind c_ast_kind_t;
 
