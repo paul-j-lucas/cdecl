@@ -177,20 +177,17 @@
  * will be ignored.
  *
  * @param LOC The location of what's being ignored.
- * @param ... The `printf()` arguments, the first of which _must_ be a string
- * literal of what is being ignored.
+ * @param WHAT The string literal of what is being ignored.  It may contain a
+ * `printf()` format string.
+ * @param ... The `printf()` arguments, if any.
  *
  * @sa #UNSUPPORTED()
  */
-#define IGNORING(LOC,...)         IGNORING_HELPER( (LOC), __VA_ARGS__ )
-
-/// @cond DOXYGEN_IGNORE
-#define IGNORING_HELPER(LOC,WHAT,...)               \
+#define IGNORING(LOC,WHAT,...)                      \
   print_warning( (LOC),                             \
     WHAT " not supported by " CDECL " (ignoring)\n" \
     VA_OPT( (,), __VA_ARGS__ )                      \
   )
-/// @endcond
 
 /**
  * Checks whether the type currently being declared (`enum`, `struct`,
@@ -287,20 +284,17 @@
  * it an error.
  *
  * @param LOC The location of what's not supported.
- * @param ... The `printf()` arguments, the first of which _must_ be a string
- * literal of what is unsupported.
+ * @param WHAT The string literal of what is being ignored.  It may contain a
+ * `printf()` format string.
+ * @param ... The `printf()` arguments, if any.
  *
  * @sa #IGNORING()
  */
-#define UNSUPPORTED(LOC,...)      UNSUPPORTED_HELPER( (LOC), __VA_ARGS__ )
-
-/// @cond DOXYGEN_IGNORE
-#define UNSUPPORTED_HELPER(LOC,WHAT,...)  \
+#define UNSUPPORTED(LOC,WHAT,...)         \
   print_error( (LOC),                     \
     WHAT " not supported by " CDECL "\n"  \
     VA_OPT( (,), __VA_ARGS__ )            \
   )
-/// @endcond
 
 /** @} */
 
