@@ -464,7 +464,7 @@ union user_data {
 #define USER_DATA_ZERO            ((user_data_t){ .i64 = 0 })
 
 /**
- * Gets an lvalue reference to one of the { `u8` | `u16` | `u32` | `u64` }
+ * Gets an lvalue reference to one of the { `uc` | `us` | `ui` | `ul` | `ull` }
  * members of \a DATA depending on `sizeof(` \a TYPE `)`.
  *
  * @param TYPE The type whose size to use.
@@ -473,14 +473,15 @@ union user_data {
  *
  * @sa #USER_DATA_UINT_AS()
  */
-#define USER_DATA_UINT(TYPE,DATA) (                        \
-  STATIC_IF( sizeof(TYPE) == sizeof(uint8_t ), (DATA).u8,  \
-  STATIC_IF( sizeof(TYPE) == sizeof(uint16_t), (DATA).u16, \
-  STATIC_IF( sizeof(TYPE) == sizeof(uint32_t), (DATA).u32, \
-                                               (DATA).u64 ) ) ) )
+#define USER_DATA_UINT(TYPE,DATA) (                     \
+  STATIC_IF( sizeof(TYPE) == sizeof(char ), (DATA).uc,  \
+  STATIC_IF( sizeof(TYPE) == sizeof(short), (DATA).us,  \
+  STATIC_IF( sizeof(TYPE) == sizeof(int  ), (DATA).ui,  \
+  STATIC_IF( sizeof(TYPE) == sizeof(long ), (DATA).ul,  \
+                                            (DATA).ull ) ) ) ) )
 
 /**
- * Gets one of the { `u8` | `u16` | `u32` | `u64` } members of \a DATA
+ * Gets one of the { `uc` | `us` | `ui` | `ul` | `ull` } members of \a DATA
  * depending on `sizeof(` \a TYPE `)` cast to \a TYPE.
  *
  * @param TYPE The type whose size to use.
