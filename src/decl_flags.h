@@ -21,10 +21,6 @@
 #ifndef cdecl_decl_flags_H
 #define cdecl_decl_flags_H
 
-// local
-#include "pjl_config.h"                 /* must go first */
-#include "util.h"
-
 /**
  * @file
  * Declares macros for both denoting how a type was declared and how to print
@@ -51,7 +47,7 @@
  * @sa #C_GIB_TYPEDEF
  * @sa #C_GIB_USING
  */
-#define C_ENG_DECL                STATIC_CAST( decl_flags_t, 1u << 0 )
+#define C_ENG_DECL                (1u << 0)
 
 /**
  * Flag for c_ast_english() to omit the &quot;<code>declare</code> _name_
@@ -59,14 +55,14 @@
  *
  * @sa c_ast_english()
  */
-#define C_ENG_OPT_OMIT_DECLARE    STATIC_CAST( decl_flags_t, 1u << 1 )
+#define C_ENG_OPT_OMIT_DECLARE    (1u << 1)
 
 /**
  * Pseudo-English-only declaration flags.
  *
  * @sa #C_GIB_ANY
  */
-#define C_ENG_ANY                 STATIC_CAST( decl_flags_t, 0x00FFu )
+#define C_ENG_ANY                 0x00FFu
 
 /** @} */
 
@@ -91,7 +87,7 @@
  * @sa c_ast_gibberish()
  * @sa #C_GIB_PRINT_DECL
  */
-#define C_GIB_PRINT_CAST          STATIC_CAST( decl_flags_t, 1u << 8 )
+#define C_GIB_PRINT_CAST          (1u << 8)
 
 /**
  * Flag for c_ast_gibberish() to print as an ordinary declaration instead of a
@@ -109,7 +105,7 @@
  * @sa #C_GIB_TYPEDEF
  * @sa #C_GIB_USING
  */
-#define C_GIB_PRINT_DECL          STATIC_CAST( decl_flags_t, 1u << 9 )
+#define C_GIB_PRINT_DECL          (1u << 9)
 
 /**
  * Flag for c_ast_gibberish() to indicate that the declaration is of multiple
@@ -128,7 +124,7 @@
  * @sa #C_GIB_OPT_OMIT_TYPE
  * @sa #C_GIB_PRINT_DECL
  */
-#define C_GIB_OPT_MULTI_DECL      STATIC_CAST( decl_flags_t, 1u << 10 )
+#define C_GIB_OPT_MULTI_DECL      (1u << 10)
 
 /**
  * Flag for c_ast_gibberish() to omit the type name when printing gibberish for
@@ -147,7 +143,7 @@
  * @sa #C_GIB_OPT_MULTI_DECL
  * @sa #C_GIB_PRINT_DECL
  */
-#define C_GIB_OPT_OMIT_TYPE       STATIC_CAST( decl_flags_t, 1u << 11 )
+#define C_GIB_OPT_OMIT_TYPE       (1u << 11)
 
 /**
  * Flag for c_ast_gibberish() or c_typedef_gibberish() to print the final
@@ -159,7 +155,7 @@
  * @sa c_ast_gibberish()
  * @sa c_typedef_gibberish()
  */
-#define C_GIB_OPT_SEMICOLON       STATIC_CAST( decl_flags_t, 1u << 12 )
+#define C_GIB_OPT_SEMICOLON       (1u << 12)
 
 /**
  * Dual purpose:
@@ -176,7 +172,7 @@
  * @sa c_typedef_gibberish()
  * @sa #C_GIB_USING
  */
-#define C_GIB_TYPEDEF             STATIC_CAST( decl_flags_t, 1u << 13 )
+#define C_GIB_TYPEDEF             (1u << 13)
 
 /**
  * Dual purpose:
@@ -210,14 +206,14 @@
  * @sa c_typedef_gibberish()
  * @sa print_ast_type_aka()
  */
-#define C_GIB_USING               STATIC_CAST( decl_flags_t, 1u << 14 )
+#define C_GIB_USING               (1u << 14)
 
 /**
  * Gibberish-only declaration flags.
  *
  * @sa #C_ENG_ANY
  */
-#define C_GIB_ANY                 STATIC_CAST( decl_flags_t, 0xFF00u )
+#define C_GIB_ANY                 0xFF00u
 
 /** @} */
 
