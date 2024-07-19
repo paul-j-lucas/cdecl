@@ -1,5 +1,6 @@
 2024-07-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c, types.h: Added USER_DATA_UINT() and USER_DATA_UINT_AS().
    * src/Makefile.am, red_black_test.c, slist_test.c, unit_test.c, unit_test.h,
      util_test.c: Unit test framework improvements and docs.
    * print.c: Added missing c_lang_oldest().
