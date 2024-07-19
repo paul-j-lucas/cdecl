@@ -478,7 +478,7 @@ union user_data {
   STATIC_IF( sizeof(TYPE) == sizeof(short), (DATA).us,  \
   STATIC_IF( sizeof(TYPE) == sizeof(int  ), (DATA).ui,  \
   STATIC_IF( sizeof(TYPE) == sizeof(long ), (DATA).ul,  \
-                                            (DATA).ull ) ) ) ) )
+          /* else */                        (DATA).ull ) ) ) ) )
 
 /**
  * Gets one of the { `uc` | `us` | `ui` | `ul` | `ull` } members of \a DATA
