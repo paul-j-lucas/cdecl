@@ -315,7 +315,7 @@ typedef enum   cdecl_show         cdecl_show_t;
  * @sa \ref english-flags
  * @sa \ref gibberish-flags
  */
-typedef unsigned                  decl_flags_t;
+typedef uint16_t                  decl_flags_t;
 
 /**
  * C preprocessor macro argument list.
