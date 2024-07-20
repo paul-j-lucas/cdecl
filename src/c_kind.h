@@ -389,8 +389,8 @@ typedef enum c_ast_kind c_ast_kind_t;
 
 /**
  * Shorthand for any kind that can be a "type specifier" in a declaration, that
- * is the type on the left-hand side: #K_BUILTIN, #K_CLASS_STRUCT_UNION, or
- * #K_ENUM.
+ * is the type on the left-hand side: #K_BUILTIN, #K_CLASS_STRUCT_UNION,
+ * #K_ENUM, #K_NAME, or #K_TYPEDEF.
  */
 #define K_ANY_TYPE_SPECIFIER      ( K_BUILTIN | K_ANY_ECSU | K_NAME \
                                   | K_TYPEDEF )
