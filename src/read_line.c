@@ -141,6 +141,33 @@ static char const* readline_wrapper( FILE *fin, char const *prompt,
 // LCOV_EXCL_STOP
 #endif /* WITH_READLINE */
 
+/**
+ * Reads a line of input.
+ *
+ * @param fin The file to read from.
+ * @param prompt The prompt to use.  If NULL, does not read interactively.
+ * @param pline_len A pointer to receive the length of the line read.
+ * @return Returns the line read or NULL for EOF.
+ */
+NODISCARD
+static char const* read_line( FILE *fin, char const *prompt,
+                              size_t *pline_len ) {
+  assert( fin != NULL );
+  assert( pline_len != NULL );
+
+  if ( prompt != NULL ) {
+#ifdef WITH_READLINE
+    // LCOV_EXCL_START -- tests are not interactive
+    return readline_wrapper( fin, prompt, pline_len );
+    // LCOV_EXCL_STOP
+#else /* WITH_READLINE */
+    PUTS( prompt );
+    FFLUSH( stdout );
+#endif /* WITH_READLINE */
+  }
+  return getline_wrapper( fin, pline_len );
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
@@ -153,24 +180,10 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
   bool is_cont_line = false;
 
   do {
-    char const *line;
     size_t line_len;
-
-    if ( is_interactive ) {
-#ifdef WITH_READLINE
-      // LCOV_EXCL_START -- tests are not interactive
-      line = readline_wrapper( fin, prompts[ is_cont_line ], &line_len );
-      // LCOV_EXCL_STOP
-    }
-    else
-#else /* WITH_READLINE */
-      PUTS( prompts[ is_cont_line ] );
-      FFLUSH( stdout );
-    }
-#endif /* WITH_READLINE */
-    {                                   // needed for "else" for WITH_READLINE
-      line = getline_wrapper( fin, &line_len );
-    }
+    char const *const line = read_line(
+      fin, is_interactive ? prompts[ is_cont_line ] : NULL, &line_len
+    );
 
     if ( line == NULL ) {
       FERROR( fin );
