@@ -652,19 +652,20 @@ union user_data {
 
 /**
  * Gets an lvalue reference to one of the { `uc` | `us` | `ui` | `ul` | `ull` }
- * members of \a DATA depending on `sizeof(` \a TYPE `)`.
+ * members of \a DATA depending on `sizeof(` \a TYPE_OR_EXPR `)`.
  *
- * @param TYPE The type whose size to use.
+ * @param TYPE_OR_EXPR The type or expression whose size to use.  If an
+ * expression, it is not evaluated.
  * @param DATA A \ref user_data object to get the member of.
  * @return Returns said lvalue reference.
  *
  * @sa #USER_DATA_UINT_AS()
  */
-#define USER_DATA_UINT(TYPE,DATA) (                     \
-  STATIC_IF( sizeof(TYPE) == sizeof(char ), (DATA).uc,  \
-  STATIC_IF( sizeof(TYPE) == sizeof(short), (DATA).us,  \
-  STATIC_IF( sizeof(TYPE) == sizeof(int  ), (DATA).ui,  \
-  STATIC_IF( sizeof(TYPE) == sizeof(long ), (DATA).ul,  \
+#define USER_DATA_UINT(TYPE_OR_EXPR,DATA) (                     \
+  STATIC_IF( sizeof(TYPE_OR_EXPR) == sizeof(char ), (DATA).uc,  \
+  STATIC_IF( sizeof(TYPE_OR_EXPR) == sizeof(short), (DATA).us,  \
+  STATIC_IF( sizeof(TYPE_OR_EXPR) == sizeof(int  ), (DATA).ui,  \
+  STATIC_IF( sizeof(TYPE_OR_EXPR) == sizeof(long ), (DATA).ul,  \
           /* else */                        (DATA).ull ) ) ) ) )
 
 /**
