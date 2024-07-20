@@ -26,6 +26,7 @@ SUBDIRS = lib share src test
 
 EXTRA_DIST =	bootstrap \
 		cdecl.css \
+		Doxygen.sed \
 		Doxyfile \
 		lcovrc \
 		m4/gnulib-cache.m4 \
