@@ -1,3 +1,9 @@
+2024-07-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_parser.h, parse.c, parser.y: Factored out yyparse_sn().
+   * c_lang.c, c_lang.h, cli_options.c, options.c, options.h, set_options.c:
+     Moved c_lang_set() to lang_set() in options.c.
+
 2024-07-20  Paul J. Lucas <paul@lucasmail.org>
 
    * types.h: Allowing EXPR in USER_DATA_UINT().
