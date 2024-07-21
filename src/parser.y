@@ -9705,6 +9705,29 @@ void parser_cleanup( void ) {
   c_ast_list_cleanup_gc( &typedef_ast_list );
 }
 
+bool yyparse_sn( char const *s, size_t s_len ) {
+  assert( s != NULL );
+
+  FILE *const s_file = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
+  PERROR_EXIT_IF( s_file == NULL, EX_IOERR );
+  yyrestart( s_file );
+
+  int const bison_rv = yyparse();
+  fclose( s_file );
+  if ( unlikely( bison_rv == 2 ) ) {
+    //
+    // Bison has already printed "memory exhausted" via yyerror() that doesn't
+    // print a newline, so print one now.
+    //
+    // LCOV_EXCL_START
+    EPUTC( '\n' );
+    _Exit( EX_SOFTWARE );
+    // LCOV_EXCL_STOP
+  }
+
+  return bison_rv == 0;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

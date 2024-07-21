@@ -34,6 +34,10 @@
 #include "slist.h"
 #include "parser.h"                     /* must go last */
 
+// standard
+#include <stdbool.h>
+#include <stddef.h>                     /* for size_t */
+
 /**
  * @ingroup parser-group
  * @{
@@ -52,6 +56,16 @@
  * @sa cdecl_cleanup()
  */
 void parser_cleanup( void );
+
+/**
+ * Wrapper around `yyparse()` that parses a string.
+ *
+ * @param s The string to parse.
+ * @param s_len The length of \a s.
+ * @return Returns `true` only upon success.
+ */
+NODISCARD
+bool yyparse_sn( char const *s, size_t s_len );
 
 ///////////////////////////////////////////////////////////////////////////////
 
