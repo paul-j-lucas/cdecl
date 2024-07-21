@@ -56,7 +56,11 @@
  * @note The last entry is `{ NULL, false, LANG_NONE }`.
  */
 static c_lang_t const C_LANG[] = {
+  // Even though "C" is an alias for "the latest supported C," set is_alias to
+  // false so it's listed as a distinct value in a CLI usage message and in
+  // autocompletion.
   { "C",      false,  LANG_C_NEW   },
+
   { "CK&R",   true,   LANG_C_KNR   },
   { "CKNR",   true,   LANG_C_KNR   },
   { "CKR",    true,   LANG_C_KNR   },
@@ -66,6 +70,7 @@ static c_lang_t const C_LANG[] = {
   { "KNRC",   true,   LANG_C_KNR   },
   { "KR",     true,   LANG_C_KNR   },
   { "KRC",    true,   LANG_C_KNR   },
+
   { "C78",    true,   LANG_C_KNR   },
   { "C89",    false,  LANG_C_89,   },
   { "C90",    true,   LANG_C_89,   },
@@ -75,7 +80,10 @@ static c_lang_t const C_LANG[] = {
   { "C17",    false,  LANG_C_17    },
   { "C18",    true,   LANG_C_17    },
   { "C23",    false,  LANG_C_23    },
+
+  // Same rationale as "C" above.
   { "C++",    false,  LANG_CPP_NEW },
+
   { "C++98",  false,  LANG_CPP_98  },
   { "C++03",  false,  LANG_CPP_03  },
   { "C++11",  false,  LANG_CPP_11  },
@@ -83,6 +91,7 @@ static c_lang_t const C_LANG[] = {
   { "C++17",  false,  LANG_CPP_17  },
   { "C++20",  false,  LANG_CPP_20  },
   { "C++23",  false,  LANG_CPP_23  },
+
   { NULL,     false,  LANG_NONE    },
 };
 
