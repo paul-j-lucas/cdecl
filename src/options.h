@@ -183,6 +183,13 @@ NODISCARD
 bool is_explicit_int( c_tid_t btids );
 
 /**
+ * Sets the current language option and the corresponding prompt.
+ *
+ * @param lang_id The language to set.  _Exactly one_ language _must_ be set.
+ */
+void lang_set( c_lang_id_t lang_id );
+
+/**
  * Parses the **cdecl** debug option.
  *
  * @param debug_format

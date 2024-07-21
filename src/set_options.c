@@ -617,7 +617,7 @@ static bool set_lang_impl( char const *name ) {
     .opt_value_loc = NULL
   };
 
-  c_lang_set( new_lang_id );
+  lang_set( new_lang_id );
   //
   // Every time the language changes, re-set language-specific options so the
   // user is re-warned if the option is not supported in the current language.

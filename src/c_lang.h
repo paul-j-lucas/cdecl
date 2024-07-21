@@ -1538,13 +1538,6 @@ c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
 }
 
 /**
- * Sets the current language and the corresponding prompt.
- *
- * @param lang_id The language to set.  _Exactly one_ language _must_ be set.
- */
-void c_lang_set( c_lang_id_t lang_id );
-
-/**
  * Gets a string specifying a language when a particular feature isn't, hasn't
  * been, or won't be legal unless, since, or until, if ever.
  *

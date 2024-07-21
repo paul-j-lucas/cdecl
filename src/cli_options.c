@@ -912,7 +912,7 @@ void cli_options_init( int *pargc, char const **pargv[const] ) {
   }
 
   parse_options( pargc, pargv );
-  c_lang_set( opt_lang_id );
+  lang_set( opt_lang_id );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

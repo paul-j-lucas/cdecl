@@ -30,7 +30,6 @@
 /// @endcond
 #include "c_lang.h"
 #include "options.h"
-#include "prompt.h"
 #include "strbuf.h"
 #include "util.h"
 
@@ -185,13 +184,6 @@ c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids ) {
   bool const is_c   = (lang_ids & LANG_C_ANY  ) != LANG_NONE;
   bool const is_cpp = (lang_ids & LANG_CPP_ANY) != LANG_NONE;
   return is_c ^ is_cpp ? (is_c ? LANG_C_ANY : LANG_CPP_ANY) : LANG_NONE;
-}
-
-void c_lang_set( c_lang_id_t lang_id ) {
-  lang_id &= ~LANGX_MASK;
-  assert( is_1_bit( lang_id ) );
-  opt_lang_id = lang_id;
-  cdecl_prompt_init();                  // change prompt based on new language
 }
 
 char const* c_lang_which( c_lang_id_t lang_ids ) {

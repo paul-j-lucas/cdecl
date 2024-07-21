@@ -27,6 +27,7 @@
 #include "pjl_config.h"                 /* must go first */
 #include "options.h"
 #include "c_type.h"
+#include "prompt.h"
 #include "strbuf.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -212,6 +213,13 @@ bool is_explicit_int( c_tid_t btids ) {
   bool const is_unsigned = c_tid_is_any( btids, TB_unsigned );
   btids &= c_tid_compl( TB_unsigned );
   return c_tid_is_any( btids, opt_explicit_int_btids[ is_unsigned ] );
+}
+
+void lang_set( c_lang_id_t lang_id ) {
+  lang_id &= ~LANGX_MASK;
+  assert( is_1_bit( lang_id ) );
+  opt_lang_id = lang_id;
+  cdecl_prompt_init();                  // change prompt based on new language
 }
 
 bool parse_cdecl_debug( char const *debug_format ) {
