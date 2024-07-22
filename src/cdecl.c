@@ -72,7 +72,6 @@ char const *me;
  */
 static void cdecl_cleanup( void ) {
   free_now();
-  parser_cleanup();                     // must call before c_ast_cleanup()
   c_ast_cleanup();
 }
 
@@ -117,6 +116,7 @@ int main( int argc, char const *argv[] ) {
   c_keywords_init();
   cdecl_keywords_init();
   lexer_init();
+  parser_init();
   p_keywords_init();
   p_macros_init();
 

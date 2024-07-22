@@ -9672,6 +9672,13 @@ static void l_elaborate_error( int line, dym_kind_t dym_kinds,
 }
 
 /**
+ * Cleans up global parser data at program termination.
+ */
+static void parser_cleanup( void ) {
+  c_ast_list_cleanup_gc( &typedef_ast_list );
+}
+
+/**
  * Prints \a token, quoted; if \ref opt_cdecl_debug `!=` #CDECL_DEBUG_NO, also
  * prints the look-ahead character within `[]`.
  *
@@ -9701,8 +9708,9 @@ static bool print_error_token( char const *token ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void parser_cleanup( void ) {
-  c_ast_list_cleanup_gc( &typedef_ast_list );
+void parser_init( void ) {
+  ASSERT_RUN_ONCE();
+  ATEXIT( &parser_cleanup );
 }
 
 bool yyparse_sn( char const *s, size_t s_len ) {
