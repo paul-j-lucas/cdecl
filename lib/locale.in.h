@@ -177,8 +177,10 @@ _GL_CXXALIAS_SYS (localeconv, struct lconv *, (void));
 _GL_CXXALIASWARN (localeconv);
 # endif
 #elif @REPLACE_STRUCT_LCONV@
-# undef localeconv
-# define localeconv localeconv_used_without_requesting_gnulib_module_localeconv
+# if !GNULIB_LOCALECONV
+#  undef localeconv
+#  define localeconv localeconv_used_without_requesting_gnulib_module_localeconv
+# endif
 #elif defined GNULIB_POSIXCHECK
 # undef localeconv
 # if HAVE_RAW_DECL_LOCALECONV
