@@ -84,6 +84,8 @@ cdecl> declare f as function (x as const variable length array of int) returning
 void f(int x[const*]);
 cdecl> declare f as function (x as variable length array of int) returning void
 void f(int x[*]);
+cdecl> declare f as function (x as y)
+void f(y x);
 cdecl> declare f as function returning pointer to int
 int* f();
 cdecl> declare f as inline function returning void
@@ -126,6 +128,8 @@ cdecl> declare p as pointer to function (void) returning pointer to int
 int* (*p)(void);
 cdecl> declare p as pointer to int
 int *p;
+cdecl> declare p as pointer to X
+X *p;
 cdecl> declare p as pointer to pointer to int
 int **p;
 cdecl> declare p, q as pointer to function (int, double) returning pointer to char
@@ -238,6 +242,8 @@ cdecl> declare x as volatile pointer to int
 int *volatile x;
 cdecl> declare x as wchar_t
 wchar_t x;
+cdecl> declare x as y
+y x;
 cdecl> declare x, y as array 4 of int
 int x[4], y[4];
 cdecl> declare x, y as int
@@ -270,15 +276,15 @@ cdecl> declare _x as int
 int _x;
 cdecl> declare _X as int
                ^
-141,9: warning: "_X" is a reserved identifier
+144,9: warning: "_X" is a reserved identifier
 int _X;
 cdecl> declare __x as int
                ^
-142,9: warning: "__x" is a reserved identifier
+145,9: warning: "__x" is a reserved identifier
 int __x;
 cdecl> declare x__x as int
                ^
-143,9: warning: "x__x" is a reserved identifier in C++
+146,9: warning: "x__x" is a reserved identifier in C++
 int x__x;
 cdecl> 
 cdecl> set knr
@@ -298,13 +304,13 @@ cdecl> declare f as function (i as register) returning void
 void f(register int i);
 cdecl> declare p as pointer to function (x) returning int
                                          ^
-154,35: warning: missing type specifier; "int" assumed
+157,35: warning: missing type specifier; "int" assumed
 int (*p)(int x);
 cdecl> 
 cdecl> set c17
 cdecl> declare f as function (x) returning pointer to int
                               ^
-157,24: warning: missing type specifier; "int" assumed
+160,24: warning: missing type specifier; "int" assumed
 int* f(int x);
 cdecl> 
 cdecl> declare f as _Noreturn function (int) returning void
@@ -485,7 +491,7 @@ void f() final;
 c++decl> 
 c++decl> declare final as int
                        ^
-255,15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
+258,15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
 c++decl> 
 c++decl> declare T of namespace A of scope B as type int
 namespace B::A { using T = int; };
@@ -503,6 +509,8 @@ c++decl> declare new[] as operator (n as std::size_t) returning pointer to void
 void* operator new[](std::size_t n);
 c++decl> declare p as const pointer to member of class C int
 int C::*const p;
+c++decl> declare p as const pointer to member of class C X
+X C::*const p;
 c++decl> declare p as pointer to member of class C const int
 const int C::*p;
 c++decl> declare p as pointer to member of class C function returning int
@@ -559,6 +567,8 @@ c++decl> declare x as reference to int
 int &x;
 c++decl> declare x as reference to pointer to int
 int *&x;
+c++decl> declare x as reference to X
+X &x;
 c++decl> declare x as static constexpr int
 static constexpr int x;
 c++decl> declare x as type int
@@ -667,5 +677,5 @@ c++decl>
 c++decl> set c++14
 c++decl> declare f as throw function
                  ^
-351,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+356,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 void f() noexcept;

@@ -558,7 +558,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       NO_OP;
       bool printed_type = false;
       if ( OPT_LANG_IS( PROTOTYPES ) ) {
-        if ( !opt_permissive_types && ast->param_of_ast != NULL ) {
+        if ( ast->param_of_ast != NULL && c_ast_is_untyped( ast ) ) {
           //
           // A name can occur as an untyped K&R C function parameter.  In
           // C89-C17, it's implicitly int:

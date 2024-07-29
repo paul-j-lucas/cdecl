@@ -739,6 +739,13 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
   return c_ast_is_tid_any_qual_impl( ast, tids, *rv_qual_stids );
 }
 
+bool c_ast_is_untyped( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  return  ast->kind == K_NAME &&
+          (c_sname_empty( &ast->name.sname ) ||
+           c_sname_cmp( &ast->sname, &ast->name.sname ) == 0);
+}
+
 c_ast_t const* c_ast_leaf( c_ast_t const *ast ) {
   while ( c_ast_is_referrer( ast ) ) {
     c_ast_t const *const child_ast = ast->parent.of_ast;

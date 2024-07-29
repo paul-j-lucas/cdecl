@@ -10,6 +10,14 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.2
+
+** More permissive types
+Unknown names are now always permitted as types in pseudo-English.  Hence, the
+`--permissive-types` option now only additionally allows keywords in language
+versions other than the current language as types.
+
+
 * Changes in Cdecl 18.1
 
 ** `alignas` scoped names

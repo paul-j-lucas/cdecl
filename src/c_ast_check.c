@@ -1329,7 +1329,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         break;
 
       case K_NAME:
-        if ( !OPT_LANG_IS( KNR_FUNC_DEFS ) && !opt_permissive_types ) {
+        if ( !OPT_LANG_IS( KNR_FUNC_DEFS ) && c_ast_is_untyped( param_ast ) ) {
           //
           // C23 finally forbids old-style K&R function definitions:
           //
@@ -3138,7 +3138,8 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_NAME:
-      if ( OPT_LANG_IS( PROTOTYPES ) && ast->param_of_ast != NULL ) {
+      if ( OPT_LANG_IS( PROTOTYPES ) && ast->param_of_ast != NULL &&
+           c_ast_is_untyped( ast ) ) {
         //
         // A name can occur as an untyped K&R C function parameter.  In
         // C89-C17, it's implicitly int:

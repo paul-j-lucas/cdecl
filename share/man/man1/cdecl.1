@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 17, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 29, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -652,21 +652,11 @@ Sends all non-error output to file
 .IR f .
 .TP
 .BR \-\-permissive-types " | " \-p
-Permits either unknown names
-or keywords in language versions other than the current language
+Permits keywords in language versions
+other than the current language
 as types
 in pseudo-English.
 By default,
-a declaration like:
-.RS
-.cS
-declare p as pointer to T
-.cE 0
-.RE
-.IP
-where `T` is an unknown type
-would result in ``unknown type'' error.
-Similarly,
 a declaration in C like:
 .RS
 .cS
@@ -676,7 +666,7 @@ declare p as pointer to class
 .IP
 would result in an ``unsupported type in C'' error
 even though \f(CWclass\fP
-would be a valid user-defined type in C.
+could be a valid user-defined type in C.
 This option permits such declarations.
 (See
 .BR "Permissive Types" .)
@@ -1968,8 +1958,8 @@ Shorthand for
 Prints the current value of all options.
 .TP
 .RB [ no ] permissive-types
-Turns [off] on permitting either unknown names
-or keywords in language versions other than the current language
+Turns [off] on permitting keywords in language versions
+other than the current language
 as types
 \(em default is off.
 (See the
@@ -2816,8 +2806,8 @@ or
 .B \-p
 option
 is not the default
-because always permitting either unknown names
-or keywords in language versions other than the current language
+because always permitting keywords in language versions
+other than the current language
 as types
 can result in confusing errors.
 For example,
@@ -2861,8 +2851,8 @@ cdecl> declare D as virtual destructor
 .cE
 which is clearer,
 but at the cost of not permitting valid declarations
-that use either unknown names
-or keywords in language versions other than the current language
+that use or keywords in language versions
+other than the current language
 as types.
 .SH CONFIGURATION FILES
 .SS cdeclrc

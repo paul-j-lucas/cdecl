@@ -44,6 +44,7 @@ declare f as function (x as non-empty const array 3 of int) returning void
 declare f as function (x as int, y as int) returning void
 declare f as function (x as const variable length array of int) returning void
 declare f as function (x as variable length array of int) returning void
+declare f as function (x as y)
 declare f as function returning pointer to int
 declare f as inline function returning void
 declare f as static function returning void
@@ -65,6 +66,7 @@ declare p as pointer to atomic int
 declare p as pointer to block (void) returning pointer to int
 declare p as pointer to function (void) returning pointer to int
 declare p as pointer to int
+declare p as pointer to X
 declare p as pointer to pointer to int
 declare p, q as pointer to function (int, double) returning pointer to char
 declare p, q as pointer to function (int, double) returning pointer to const char
@@ -121,6 +123,7 @@ declare x as unsigned long long
 declare x as unsigned width 3 bits
 declare x as volatile pointer to int
 declare x as wchar_t
+declare x as y
 declare x, y as array 4 of int
 declare x, y as int
 
@@ -263,6 +266,7 @@ declare x as constant expression int
 declare new as operator (n as std::size_t) returning pointer to void
 declare new[] as operator (n as std::size_t) returning pointer to void
 declare p as const pointer to member of class C int
+declare p as const pointer to member of class C X
 declare p as pointer to member of class C const int
 declare p as pointer to member of class C function returning int
 declare p as pointer to member of class C function returning pointer to class D
@@ -291,6 +295,7 @@ declare x as reference to const int
 declare x as reference to const pointer to int
 declare x as reference to int
 declare x as reference to pointer to int
+declare x as reference to X
 declare x as static constexpr int
 declare x as type int
 declare x of scope s as int

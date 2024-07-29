@@ -406,6 +406,16 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
                                       c_tid_t *rv_qual_stids );
 
 /**
+ * Checks whether \a ast is untyped, that is of kind #K_NAME and have \ref
+ * c_name_ast::sname either be empty or equal \ref c_ast::sname.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast is untyped.
+ */
+NODISCARD
+bool c_ast_is_untyped( c_ast_t const *ast );
+
+/**
  * Gets the leat AST node starting at \a ast.
  *
  * @param ast The AST to start from; may be NULL.

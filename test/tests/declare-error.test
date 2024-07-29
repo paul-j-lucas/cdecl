@@ -22,7 +22,6 @@ declare f as function returning function returning int
 declare f as function (x as int, y as int, void) returning void
 declare f as function (x as static int)
 declare f as function (x as void) returning void
-declare f as function (x as y)
 declare f as function (x) returning pointer to int
 declare f as pure virtual function returning void
 declare f as register function returning void
@@ -34,7 +33,6 @@ declare main as function ( argc as int, argv as array of int ) returning int
 declare main as function ( argc as int, argv as pointer to int ) returning int
 declare p as pointer to function (x) returning int
 declare p as pointer to register int
-declare p as pointer to X
 declare S as int
 declare x as _BitInt(129)
 declare x as class C
@@ -77,7 +75,6 @@ declare x as unsigned size_t
 declare x as unsigned void
 declare x as unsigned wchar_t
 declare x as void
-declare x as y
 declare x of scope s as int
 explain [[unsequenced]] int x
 
@@ -112,13 +109,10 @@ declare f as non-unique-address function
 declare f as _Noreturn function (int) returning void
 declare f of scope S as virtual function
 declare new as operator (size_t) returning int
-declare p as pointer to member of class C X
 declare p as pointer to structured binding
-declare r as reference to X
 declare S::x as structured binding
 declare x, x as structured binding
 declare r as const reference to int
-declare r as reference to X
 declare r as volatile reference to int
 declare x as array of reference to int
 declare x as auto int

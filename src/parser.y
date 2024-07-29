@@ -1054,9 +1054,10 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 }
 
 /**
- * Checks whether \a ast is a #K_NAME and therefore an error (if \ref
- * opt_permissive_types is `false`) or merely a warning (if \ref
- * opt_permissive_types is `true`).
+ * Checks whether \a ast is of kind #K_NAME and an error if:
+ *
+ *  + \ref opt_permissive_types is `false`; and:
+ *  + \ref c_ast::sname is a C or C++ keyword.
  *
  * @note This function isn't normally called directly; use the
  * #c_ast_is_name_error() macro instead.
@@ -1064,15 +1065,22 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
  * @param line The line number within this file where this function was called
  * from.
  * @param ast The AST to check.
- * @return Returns `true` only if \a ast is a #K_NAME and an error.
+ * @return Returns `true` only if \a ast is a #K_NAME, \ref
+ * opt_permissive_types is `false`, and \ref c_ast::sname is a C or C++
+ * keyword.
  */
 NODISCARD
 static bool l_c_ast_is_name_error( int line, c_ast_t const *ast ) {
   assert( ast != NULL );
-  if ( ast->kind != K_NAME )
+  if ( ast->kind != K_NAME || opt_permissive_types )
     return false;
-  if ( opt_permissive_types )
+
+  c_keyword_t const *const ck = c_keyword_find(
+    c_sname_gibberish( &ast->sname ), LANG_ANY, C_KW_CTX_DEFAULT
+  );
+  if ( ck == NULL )
     return false;
+
   assert( !c_sname_empty( &ast->sname ) );
   fl_print_error_unknown_name( __FILE__, line, &ast->loc, &ast->sname );
   return true;
@@ -8834,14 +8842,11 @@ sname_english_ast
       else {
         $$ = c_ast_new_gc( K_NAME, &@$ );
         $$->sname = sname;
-        if ( opt_permissive_types ) {
-          //
-          // Treat the name as a type which means we have to set the
-          // c_name_ast's sname also since it's the "type" name.
-          //
-          c_sname_t temp_sname = c_sname_dup( &$$->sname );
-          c_sname_set( &$$->name.sname, &temp_sname );
-        }
+        //
+        // Set the c_name_ast's sname also in case it's used as a type name.
+        //
+        c_sname_t temp_sname = c_sname_dup( &$$->sname );
+        c_sname_set( &$$->name.sname, &temp_sname );
       }
 
       DUMP_AST( "$$_ast", $$ );
