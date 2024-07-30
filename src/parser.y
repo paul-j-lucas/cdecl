@@ -281,7 +281,7 @@
 
 /**
  * Prints that a particular language feature is not supported by **cdecl** and
- * it an error.
+ * therefore an error followed by #PARSE_ABORT().
  *
  * @param LOC The location of what's not supported.
  * @param WHAT The string literal of what is being ignored.  It may contain a
@@ -290,11 +290,12 @@
  *
  * @sa #IGNORING()
  */
-#define UNSUPPORTED(LOC,WHAT,...)         \
+#define UNSUPPORTED(LOC,WHAT,...) BLOCK(  \
   print_error( (LOC),                     \
     WHAT " not supported by " CDECL "\n"  \
     VA_OPT( (,), __VA_ARGS__ )            \
-  )
+  );                                      \
+  PARSE_ABORT(); )
 
 /** @} */
 
@@ -3279,62 +3280,50 @@ preprocessor_command
   | '#' Y_PRE_elif
     {
       UNSUPPORTED( &@Y_PRE_elif, "\"#elif\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_elifdef
     {
       UNSUPPORTED( &@Y_PRE_elifdef, "\"#elifdef\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_elifndef
     {
       UNSUPPORTED( &@Y_PRE_elifndef, "\"#elifdef\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_else
     {
       UNSUPPORTED( &@Y_PRE_else, "\"#else\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_embed
     {
       UNSUPPORTED( &@Y_PRE_embed, "\"#embed\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_error
     {
       UNSUPPORTED( &@Y_PRE_error, "\"#error\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_if
     {
       UNSUPPORTED( &@Y_PRE_if, "\"#if\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_ifdef
     {
       UNSUPPORTED( &@Y_PRE_ifdef, "\"#ifdef\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_ifndef
     {
       UNSUPPORTED( &@Y_PRE_ifndef, "\"#ifndef\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_line
     {
       UNSUPPORTED( &@Y_PRE_line, "\"#line\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_pragma
     {
       UNSUPPORTED( &@Y_PRE_pragma, "\"#pragma\"" );
-      PARSE_ABORT();
     }
   | '#' Y_PRE_warning
     {
       UNSUPPORTED( &@Y_PRE_warning, "\"#warning\"" );
-      PARSE_ABORT();
     }
   | '#' error
     {
@@ -3887,7 +3876,6 @@ asm_declaration_c
     {
       free( $str );
       UNSUPPORTED( &@Y_asm, "asm declarations" );
-      PARSE_ABORT();
     }
   ;
 
@@ -4357,7 +4345,6 @@ template_declaration_c
   : Y_template
     {
       UNSUPPORTED( &@Y_template, "template declarations" );
-      PARSE_ABORT();
     }
   ;
 
@@ -5402,14 +5389,13 @@ noexcept_c_stid_opt
     {
       c_ast_list_cleanup( &$ast_list );
 
-      if ( OPT_LANG_IS( throw ) ) {
+      if ( OPT_LANG_IS( throw ) )
         UNSUPPORTED( &@ast_list, "dynamic exception specifications" );
-      } else {
-        print_error( &@ast_list,
-          "dynamic exception specifications not supported%s\n",
-          C_LANG_WHICH( throw )
-        );
-      }
+
+      print_error( &@ast_list,
+        "dynamic exception specifications not supported%s\n",
+        C_LANG_WHICH( throw )
+      );
       PARSE_ABORT();
     }
   ;
@@ -6805,7 +6791,6 @@ builtin_no_BitInt_c_btid
   | Y_decltype
     {
       UNSUPPORTED( &@Y_decltype, "decltype declarations" );
-      PARSE_ABORT();
     }
   | Y_wchar_t
   | Y_int
@@ -7018,11 +7003,10 @@ class_struct_union_c_ast
   | class_struct_union_btid[csu_btid] attribute_specifier_list_c_atid_opt
     any_sname_c_opt[sname] '{'[brace]
     {
+      c_sname_cleanup( &$sname );
       UNSUPPORTED( &@brace,
         "explaining %s declarations", c_tid_gibberish( $csu_btid )
       );
-      c_sname_cleanup( &$sname );
-      PARSE_ABORT();
     }
   ;
 
@@ -7055,7 +7039,6 @@ enum_c_ast
       UNSUPPORTED( &@brace,
         "explaining %s declarations", c_tid_gibberish( $enum_btids )
       );
-      PARSE_ABORT();
     }
   ;
 
@@ -8396,7 +8379,6 @@ builtin_no_BitInt_english_btid
   | Y_decltype
     {
       UNSUPPORTED( &@Y_decltype, "decltype() declarations" );
-      PARSE_ABORT();
     }
   | Y_wchar_t
   | Y_wide char_exp               { $$ = TB_wchar_t; }
@@ -9227,7 +9209,6 @@ extern_linkage_c_stid
   | Y_extern linkage_stid '{'[brace]
     {
       UNSUPPORTED( &@brace, "scoped linkage declarations" );
-      PARSE_ABORT();
     }
   ;
 
