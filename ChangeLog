@@ -1,3 +1,7 @@
+2024-07-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: Now using c_sname_cmp().
+
 2024-07-29  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, share/man/man1/cdecl.1, c_ast_check.c, c_ast_util.c,
