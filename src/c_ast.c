@@ -484,9 +484,8 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
 
     case K_STRUCTURED_BINDING:
-      if ( slist_cmp( &i_ast->struct_bind.sname_list,
-                      &j_ast->struct_bind.sname_list,
-                      POINTER_CAST( slist_cmp_fn_t, &c_sname_cmp ) ) != 0 ) {
+      if ( c_sname_cmp( &i_ast->struct_bind.sname_list,
+                        &j_ast->struct_bind.sname_list ) != 0 ) {
         return false;
       }
       break;
