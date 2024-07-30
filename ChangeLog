@@ -1,5 +1,6 @@
 2024-07-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: UNSUPPORTED() now calls PARSE_ABORT().
    * c_ast.c: Now using c_sname_cmp().
 
 2024-07-29  Paul J. Lucas <paul@lucasmail.org>
