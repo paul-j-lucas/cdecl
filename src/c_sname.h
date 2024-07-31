@@ -313,20 +313,6 @@ NODISCARD
 bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc );
 
 /**
- * If the local scope-type of \a sname is #TB_namespace, make all scope-types
- * of all enclosing scopes that are either #TB_NONE or #TB_SCOPE also be
- * #TB_namespace since a namespace can only nest within another namespace.
- *
- * @param sname The scoped name to fill in namespaces.
- *
- * @note If there are scope-types that are something other than either #TB_NONE
- * or #TB_SCOPE, this is an error and will be caught by c_sname_check().
- *
- * @sa c_sname_set_all_types()
- */
-void c_sname_fill_in_namespace_types( c_sname_t *sname );
-
-/**
  * Frees all memory associated with \a sname _including_ \a sname itself.
  *
  * @param sname The scoped name to free.  If NULL, does nothing.
@@ -636,15 +622,10 @@ void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname );
  * and an \a sname of `C::S::x`, set `C`'s scope-type to #TB_class and `S`'s
  * scope-type to #TB_struct; the scope-type of `x` is not changed.
  *
- * If there is no `typedef` for a partial scoped name, then that scope-type is
- * set to #TB_namespace.
- *
- * As a special case, if the first scope's name is `std`, sets that scope-type
- * to #TB_namespace.
+ * If there is no `typedef` for a partial scoped name and the scope-type is
+ * either #TB_scope or not set, then sets that scope-type to #TB_namespace.
  *
  * @param sname The scoped name to set all the scope-types of.
- *
- * @sa c_sname_fill_in_namespace_types()
  */
 void c_sname_set_all_types( c_sname_t *sname );
 

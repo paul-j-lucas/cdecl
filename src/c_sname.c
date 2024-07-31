@@ -286,23 +286,6 @@ bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   return false;
 }
 
-void c_sname_fill_in_namespace_types( c_sname_t *sname ) {
-  assert( sname != NULL );
-
-  if ( c_sname_empty( sname ) )
-    return;                             // LCOV_EXCL_LINE
-
-  c_type_t const *const local_type = c_sname_local_type( sname );
-  if ( local_type->btids != TB_namespace )
-    return;
-
-  FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
-    c_type_t *const type = &c_scope_data( scope )->type;
-    if ( type->btids == TB_SCOPE || c_type_is_none( type ) )
-      type->btids = TB_namespace;
-  } // for
-}
-
 void c_sname_free( c_sname_t *sname ) {
   c_sname_cleanup( sname );
   free( sname );
@@ -447,7 +430,7 @@ void c_sname_set_all_types( c_sname_t *sname ) {
         sname_node = sname_node->next;
       } // for
     }
-    else {
+    else if ( scope_type->btids == TB_SCOPE || c_type_is_none( scope_type ) ) {
       *scope_type = C_TYPE_LIT_B( TB_namespace );
     }
 

@@ -2657,7 +2657,7 @@ define_command
       c_sname_set( &$decl_ast->sname, &$sname );
       if ( c_tid_is_any( $decl_ast->type.btids, TB_ANY_SCOPE ) )
         c_sname_local_data( &$decl_ast->sname )->type = $decl_ast->type;
-      c_sname_fill_in_namespace_types( &$decl_ast->sname );
+      c_sname_set_all_types( &$decl_ast->sname );
 
       DUMP_AST( "$$_ast", $decl_ast );
       DUMP_END();
@@ -9354,7 +9354,7 @@ of_scope_list_english
       // "of scope X of scope Y" means Y::X
       $$ = c_sname_move( &$right_sname );
       c_sname_append_sname( &$$, &$left_sname );
-      c_sname_fill_in_namespace_types( &$$ );
+      c_sname_set_all_types( &$$ );
       if ( !c_sname_check( &$$, &@left_sname ) ) {
         c_sname_cleanup( &$$ );
         PARSE_ABORT();
