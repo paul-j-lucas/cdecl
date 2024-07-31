@@ -178,6 +178,11 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
 
   size_t const sname_count = c_sname_count( sname );
   if ( sname_count > 1 ) {
+    //
+    // This checks for a case like:
+    //
+    //      inline namespace A::B { typedef int Int; }
+    //
     c_type_t const *const scope_type = c_sname_global_type( sname );
     bool const is_inline_namespace =
       c_tid_is_any( scope_type->stids, TS_inline ) &&
