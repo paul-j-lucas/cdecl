@@ -68,6 +68,7 @@
 
 // standard
 #include <assert.h>
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -9680,13 +9681,19 @@ static bool print_error_token( char const *token ) {
     // LCOV_EXCL_START
     switch ( yychar ) {
       case YYEMPTY:
-        EPUTS( " [<empty>]" );
+        EPUTS( " [<EMPTY>]" );
         break;
       case YYEOF:
         EPUTS( " [<EOF>]" );
         break;
+      case YYerror:
+        EPUTS( " [<error>]" );
+        break;
+      case YYUNDEF:
+        EPUTS( " [<UNDEF>]" );
+        break;
       default:
-        EPRINTF( " [%d]", yychar );
+        EPRINTF( isprint( yychar ) ? " ['%c']" : " [%d]", yychar );
     } // switch
     // LCOV_EXCL_STOP
   }
