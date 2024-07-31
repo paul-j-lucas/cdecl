@@ -176,25 +176,6 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   if ( c_sname_empty( sname ) )
     return true;                        // LCOV_EXCL_LINE
 
-  if ( c_sname_count( sname ) > 1 ) {
-    //
-    // This checks for a case like:
-    //
-    //      inline namespace A::B { typedef int Int; }
-    //
-    c_type_t const *const scope_type = c_sname_global_type( sname );
-    bool const is_inline_namespace =
-      c_tid_is_any( scope_type->stids, TS_inline ) &&
-      c_tid_is_any( scope_type->btids, TB_namespace );
-    if ( is_inline_namespace ) {
-      print_error( sname_loc,
-        "nested namespace can not be %s\n",
-        c_tid_error( TS_inline )
-      );
-      return false;
-    }
-  }
-
   bool ok = true;
   c_tid_t prev_btids = TB_NONE;
 
@@ -203,7 +184,14 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
 
   FOREACH_SNAME_SCOPE( scope, sname ) {
     c_scope_data_t const *const scope_data = c_scope_data( scope );
-    c_type_t const scope_type = scope_data->type;
+    char const *const name = scope_data->name;
+
+    ok = !is_predefined_macro_name( name );
+    if ( !ok ) {
+      print_error( sname_loc, "\"%s\" is a predefined macro\n", name );
+      break;
+    }
+
     //
     // Build up partial_sname scope by scope to look up a partial sname. For
     // example, given "A::B::C", see if "A" exists, then if "A::B" exists.
@@ -211,9 +199,11 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     // For any that does, check that the sname's scope's type matches the
     // previously declared sname's scope's type.
     //
-    c_sname_append_name( &partial_sname, check_strdup( scope_data->name ) );
+    c_sname_append_name( &partial_sname, check_strdup( name ) );
 
+    c_type_t const scope_type = scope_data->type;
     c_typedef_t const *const tdef = c_typedef_find_sname( &partial_sname );
+
     if ( tdef != NULL ) {
       c_type_t const *const tdef_type = c_sname_local_type( &tdef->ast->sname );
       if ( c_tid_is_any( tdef_type->btids, TB_ANY_SCOPE | TB_enum ) &&
@@ -262,21 +252,6 @@ void c_sname_cleanup( c_sname_t *sname ) {
   slist_cleanup( sname, POINTER_CAST( slist_free_fn_t, &c_scope_data_free ) );
 }
 
-bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc ) {
-  assert( sname != NULL );
-  assert( sname_loc != NULL );
-
-  FOREACH_SNAME_SCOPE( scope, sname ) {
-    char const *const name = c_scope_data( scope )->name;
-    if ( is_predefined_macro_name( name ) ) {
-      print_error( sname_loc, "\"%s\" is a predefined macro\n", name );
-      return true;
-    }
-  } // for
-
-  return false;
-}
-
 void c_sname_free( c_sname_t *sname ) {
   c_sname_cleanup( sname );
   free( sname );
@@ -302,6 +277,15 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
 
 void c_sname_list_cleanup( slist_t *list ) {
   slist_cleanup( list, POINTER_CAST( slist_free_fn_t, &c_sname_free ) );
+}
+
+bool c_sname_is_inline_nested_namespace( c_sname_t const *sname ) {
+  assert( sname != NULL );
+  if ( c_sname_count( sname ) < 2 )
+    return false;
+  c_type_t const *const scope_type = c_sname_global_type( sname );
+  return  c_tid_is_any( scope_type->stids, TS_inline ) &&
+          c_tid_is_any( scope_type->btids, TB_namespace );
 }
 
 char const* c_sname_local_name( c_sname_t const *sname ) {

@@ -301,18 +301,6 @@ bool c_sname_empty( c_sname_t const *sname ) {
 }
 
 /**
- * Checks a scoped name for errors.
- *
- * @param sname The scoped name to check.
- * @param sname_loc The location of \a sname.
- * @return Returns `true` only if \a sname contains an error.
- *
- * @sa c_sname_warn()
- */
-NODISCARD
-bool c_sname_error( c_sname_t const *sname, c_loc_t const *sname_loc );
-
-/**
  * Frees all memory associated with \a sname _including_ \a sname itself.
  *
  * @param sname The scoped name to free.  If NULL, does nothing.
@@ -402,6 +390,15 @@ void c_sname_init_name( c_sname_t *sname, char *name ) {
  */
 NODISCARD
 bool c_sname_is_ctor( c_sname_t const *sname );
+
+/**
+ * Gets whether \a sname is an `inline` nested `namespace`.
+ *
+ * @param sname The scoped name to check.
+ * @return Returns `true` only if \a sname is an `inline` nested `namespace`.
+ */
+NODISCARD
+bool c_sname_is_inline_nested_namespace( c_sname_t const *sname );
 
 /**
  * Cleans-up all memory associated with \a list but does _not_ free \a list

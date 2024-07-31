@@ -2707,7 +2707,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
   check_state_t const *const check = user_data.pc;
   assert( check != NULL );
 
-  if ( c_sname_error( &ast->sname, &ast->loc ) )
+  if ( !c_sname_check( &ast->sname, &ast->loc ) )
     return VISITOR_ERROR_FOUND;
 
   if ( !c_ast_check_alignas( ast ) )

@@ -3923,7 +3923,7 @@ class_struct_union_declaration_c
 
       c_sname_local_data( &in_attr.scope_sname )->type =
         C_TYPE_LIT_B( $csu_btid );
-      PARSE_ASSERT( c_sname_check( &in_attr.scope_sname, &@sname ) );
+      c_sname_set_all_types( &in_attr.scope_sname );
 
       c_sname_t csu_sname = c_sname_dup( &in_attr.scope_sname );
       c_sname_append_sname( &csu_sname, &$sname );
@@ -3965,10 +3965,7 @@ enum_declaration_c
       c_sname_append_sname( &enum_sname, &$sname );
 
       c_sname_local_data( &enum_sname )->type = C_TYPE_LIT_B( $enum_btids );
-      if ( !c_sname_check( &enum_sname, &@sname ) ) {
-        c_sname_cleanup( &enum_sname );
-        PARSE_ABORT();
-      }
+      c_sname_set_all_types( &enum_sname );
 
       c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM, &@sname );
       enum_ast->sname = enum_sname;
@@ -4044,9 +4041,18 @@ namespace_declaration_c
         );
 
       c_sname_append_sname( &in_attr.scope_sname, &$sname );
+      c_sname_set_all_types( &in_attr.scope_sname );
 
       DUMP_SNAME( "$$_sname", $sname );
       DUMP_END();
+
+      if ( c_sname_is_inline_nested_namespace( &in_attr.scope_sname ) ) {
+        print_error( &@sname,
+          "nested namespace can not be %s\n",
+          c_tid_error( TS_inline )
+        );
+        PARSE_ABORT();
+      }
 
       PARSE_ASSERT( c_sname_check( &in_attr.scope_sname, &@sname ) );
     }
