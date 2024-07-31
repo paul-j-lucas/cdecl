@@ -169,7 +169,7 @@ void c_sname_append_name( c_sname_t *sname, char *name ) {
   slist_push_back( sname, data );
 }
 
-bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
+bool c_sname_check( c_sname_t *sname, c_loc_t const *sname_loc ) {
   assert( sname != NULL );
   assert( !c_sname_empty( sname ) );
   assert( sname_loc != NULL );
@@ -189,9 +189,12 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     }
   }
 
+  bool ok = true;
+  size_t partial_len = 1;
+  c_sname_t partial_sname = c_sname_dup( sname );
   c_tid_t prev_btids = TB_NONE;
 
-  FOREACH_SNAME_SCOPE( scope, sname ) {
+  FOREACH_SNAME_SCOPE( scope, &partial_sname ) {
     c_type_t *const scope_type = &c_scope_data( scope )->type;
     //
     // Temporarily set scope->next to NULL to chop off any scopes past the
@@ -201,13 +204,15 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     //
     c_scope_t *const orig_next = scope->next;
     scope->next = NULL;
+    partial_sname.len = partial_len;
 
-    c_typedef_t const *const tdef = c_typedef_find_sname( sname );
+    c_typedef_t const *const tdef = c_typedef_find_sname( &partial_sname );
     if ( tdef != NULL ) {
       c_type_t const *const tdef_type = c_sname_local_type( &tdef->ast->sname );
       if ( c_tid_is_any( tdef_type->btids, TB_ANY_SCOPE | TB_enum ) &&
            !c_type_equiv( scope_type, tdef_type ) ) {
-        if ( c_tid_is_any( scope_type->btids, TB_ANY_SCOPE ) ) {
+        ok = !c_tid_is_any( scope_type->btids, TB_ANY_SCOPE );
+        if ( !ok ) {
           //
           // The scope's type is a scope-type and doesn't match a previously
           // declared scope-type, e.g.:
@@ -219,37 +224,47 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
           //
           print_error( sname_loc,
             "\"%s\" was previously declared as \"%s\" (\"",
-            c_sname_local_name( sname ),
+            c_sname_local_name( &partial_sname ),
             c_type_error( tdef_type )
           );
           print_type_decl( tdef, tdef->decl_flags, stderr );
           EPUTS( "\")\n" );
-          scope->next = orig_next;
-          return false;
         }
-
-        //
-        // Otherwise, copy the previously declared scope's type to the current
-        // scope's type.
-        //
-        *scope_type = *tdef_type;
+        else {
+          //
+          // Otherwise, copy the previously declared scope's type to the
+          // current scope's type.
+          //
+          *scope_type = *tdef_type;
+        }
       }
     }
 
     scope->next = orig_next;
+    partial_sname.len = sname->len;
+    if ( !ok )
+      break;
 
-    if ( !c_tid_scope_order_ok( prev_btids, scope_type->btids ) ) {
+    ok = c_tid_scope_order_ok( prev_btids, scope_type->btids );
+    if ( !ok ) {
       print_error( sname_loc,
         "%s can not nest inside %s\n",
         c_tid_error( scope_type->btids ),
         c_tid_error( prev_btids )
       );
-      return false;
+      break;
     }
+
     prev_btids = scope_type->btids;
+    ++partial_len;
   } // for
 
-  return true;
+  if ( ok )
+    c_sname_set( sname, &partial_sname );
+  else
+    c_sname_cleanup( &partial_sname );
+
+  return ok;
 }
 
 void c_sname_cleanup( c_sname_t *sname ) {
