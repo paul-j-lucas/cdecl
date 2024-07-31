@@ -4965,7 +4965,7 @@ no_destructor_params
      *
      *      c++decl> explain ~C(int)
      *                          ^
-     *      12: syntax error: "int": '(' expected
+     *      12: syntax error: "int": ')' expected
      *
      * that isn't helpful.  Better would be to say "destructors may not have
      * parameters" explicity, hence this rule.
