@@ -1,5 +1,17 @@
+2024-07-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_sname.c, c_sname.h, parser.y: Folded functionality of
+     c_sname_error() into c_sname_check().
+   * c_sname.c: No longer temporarily setting scope->next to NULL.
+   * c_sname.c, c_sname.h: c_sname_check() no longer modifies sname.
+
 2024-07-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sname.c, c_sname.h, parser.y: Eliminated c_sname_set_std_namespace().
+   * c_sname.c, c_sname.h, parser.y: Eliminated
+     c_sname_fill_in_namespace_types().
+   * c_sname.c, c_sname.h: c_sname_check() no longer alters sname unless
+     success.
    * parser.y: UNSUPPORTED() now calls PARSE_ABORT().
    * c_ast.c: Now using c_sname_cmp().
 
