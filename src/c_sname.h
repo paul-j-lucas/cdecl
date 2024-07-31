@@ -230,7 +230,7 @@ void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-bool c_sname_check( c_sname_t *sname, c_loc_t const *sname_loc );
+bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc );
 
 /**
  * Cleans-up all memory associated with \a sname but does _not_ free \a sname

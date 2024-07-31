@@ -169,10 +169,12 @@ void c_sname_append_name( c_sname_t *sname, char *name ) {
   slist_push_back( sname, data );
 }
 
-bool c_sname_check( c_sname_t *sname, c_loc_t const *sname_loc ) {
+bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   assert( sname != NULL );
-  assert( !c_sname_empty( sname ) );
   assert( sname_loc != NULL );
+
+  if ( c_sname_empty( sname ) )
+    return true;
 
   size_t const sname_count = c_sname_count( sname );
   if ( sname_count > 1 ) {
@@ -230,13 +232,6 @@ bool c_sname_check( c_sname_t *sname, c_loc_t const *sname_loc ) {
           print_type_decl( tdef, tdef->decl_flags, stderr );
           EPUTS( "\")\n" );
         }
-        else {
-          //
-          // Otherwise, copy the previously declared scope's type to the
-          // current scope's type.
-          //
-          *scope_type = *tdef_type;
-        }
       }
     }
 
@@ -259,11 +254,7 @@ bool c_sname_check( c_sname_t *sname, c_loc_t const *sname_loc ) {
     ++partial_len;
   } // for
 
-  if ( ok )
-    c_sname_set( sname, &partial_sname );
-  else
-    c_sname_cleanup( &partial_sname );
-
+  c_sname_cleanup( &partial_sname );
   return ok;
 }
 
