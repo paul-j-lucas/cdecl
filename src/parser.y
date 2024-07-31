@@ -2662,7 +2662,6 @@ define_command
       DUMP_AST( "$$_ast", $decl_ast );
       DUMP_END();
 
-      PARSE_ASSERT( c_sname_check( &$decl_ast->sname, &@sname ) );
       PARSE_ASSERT( define_type( $decl_ast, C_ENG_DECL ) );
     }
   ;

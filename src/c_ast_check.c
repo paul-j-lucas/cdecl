@@ -1609,6 +1609,33 @@ static bool c_ast_check_lambda_captures_redef( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks an AST's name(s) for errors.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if all checks passed.
+ *
+ * @sa c_ast_warn_name()
+ */
+static bool c_ast_check_name( c_ast_t const *ast ) {
+  assert( ast != NULL );
+
+  if ( !c_sname_check( &ast->sname, &ast->loc ) )
+    return false;
+
+  if ( ast->align.kind == C_ALIGNAS_SNAME &&
+       !c_sname_check( &ast->align.sname, &ast->align.loc ) ) {
+    return false;
+  }
+
+  if ( (ast->kind & K_ANY_NAME) != 0 &&
+       !c_sname_check( &ast->name.sname, &ast->loc ) ) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * Checks a #K_OPERATOR AST for errors.
  *
  * @param ast The #K_OPERATOR AST to check.
@@ -2707,7 +2734,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
   check_state_t const *const check = user_data.pc;
   assert( check != NULL );
 
-  if ( !c_sname_check( &ast->sname, &ast->loc ) )
+  if ( !c_ast_check_name( ast ) )
     return VISITOR_ERROR_FOUND;
 
   if ( !c_ast_check_alignas( ast ) )
@@ -3188,6 +3215,8 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
  * Checks an AST's name(s) for warnings.
  *
  * @param ast The AST to check.
+ *
+ * @sa c_ast_check_name()
  */
 static void c_ast_warn_name( c_ast_t const *ast ) {
   assert( ast != NULL );
@@ -3239,6 +3268,9 @@ static bool c_type_ast_visitor_error( c_ast_t const *ast,
                                       user_data_t user_data ) {
   assert( ast != NULL );
   (void)user_data;
+
+  if ( !c_ast_check_name( ast ) )
+    return false;
 
   switch ( ast->kind ) {
     case K_APPLE_BLOCK:
