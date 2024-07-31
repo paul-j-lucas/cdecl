@@ -197,28 +197,29 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   }
 
   bool ok = true;
-  size_t partial_len = 1;
-  c_sname_t partial_sname = c_sname_dup( sname );
   c_tid_t prev_btids = TB_NONE;
 
-  FOREACH_SNAME_SCOPE( scope, &partial_sname ) {
-    c_type_t *const scope_type = &c_scope_data( scope )->type;
+  c_sname_t partial_sname;
+  c_sname_init( &partial_sname );
+
+  FOREACH_SNAME_SCOPE( scope, sname ) {
+    c_scope_data_t const *const scope_data = c_scope_data( scope );
+    c_type_t const scope_type = scope_data->type;
     //
-    // Temporarily set scope->next to NULL to chop off any scopes past the
-    // given scope to look up a partial sname. For example, given "A::B::C",
-    // see if "A::B" exists.  If it does, check that the sname's scope's type
-    // matches the previously declared sname's scope's type.
+    // Build up partial_sname scope by scope to look up a partial sname. For
+    // example, given "A::B::C", see if "A" exists, then if "A::B" exists.
     //
-    c_scope_t *const orig_next = scope->next;
-    scope->next = NULL;
-    partial_sname.len = partial_len;
+    // For any that does, check that the sname's scope's type matches the
+    // previously declared sname's scope's type.
+    //
+    c_sname_append_name( &partial_sname, check_strdup( scope_data->name ) );
 
     c_typedef_t const *const tdef = c_typedef_find_sname( &partial_sname );
     if ( tdef != NULL ) {
       c_type_t const *const tdef_type = c_sname_local_type( &tdef->ast->sname );
       if ( c_tid_is_any( tdef_type->btids, TB_ANY_SCOPE | TB_enum ) &&
-           !c_type_equiv( scope_type, tdef_type ) ) {
-        ok = !c_tid_is_any( scope_type->btids, TB_ANY_SCOPE );
+           !c_type_equiv( &scope_type, tdef_type ) ) {
+        ok = !c_tid_is_any( scope_type.btids, TB_ANY_SCOPE );
         if ( !ok ) {
           //
           // The scope's type is a scope-type and doesn't match a previously
@@ -236,27 +237,22 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
           );
           print_type_decl( tdef, tdef->decl_flags, stderr );
           EPUTS( "\")\n" );
+          break;
         }
       }
     }
 
-    scope->next = orig_next;
-    partial_sname.len = sname->len;
-    if ( !ok )
-      break;
-
-    ok = c_tid_scope_order_ok( prev_btids, scope_type->btids );
+    ok = c_tid_scope_order_ok( prev_btids, scope_type.btids );
     if ( !ok ) {
       print_error( sname_loc,
         "%s can not nest inside %s\n",
-        c_tid_error( scope_type->btids ),
+        c_tid_error( scope_type.btids ),
         c_tid_error( prev_btids )
       );
       break;
     }
 
-    prev_btids = scope_type->btids;
-    ++partial_len;
+    prev_btids = scope_type.btids;
   } // for
 
   c_sname_cleanup( &partial_sname );
