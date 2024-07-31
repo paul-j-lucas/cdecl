@@ -438,14 +438,6 @@ void c_sname_set_all_types( c_sname_t *sname ) {
   } // for
 }
 
-void c_sname_set_std_namespace( c_sname_t *sname ) {
-  assert( sname != NULL );
-  if ( c_sname_count( sname ) < 2 )
-    return;
-  if ( strcmp( c_sname_global_name( sname ), "std" ) == 0 )
-    c_sname_global_data( sname )->type.btids = TB_namespace;
-}
-
 void c_sname_warn( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   assert( sname != NULL );
   assert( sname_loc != NULL );

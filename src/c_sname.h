@@ -646,14 +646,6 @@ void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
 }
 
 /**
- * If \ref c_sname_count(\a sname) &ge; 2 and \ref c_sname_global_name(\a
- * sname) is `"std"`, then sets the global scope's type to #TB_namespace.
- *
- * @param sname The scoped name to possibly set.
- */
-void c_sname_set_std_namespace( c_sname_t *sname );
-
-/**
  * Checks a scoped name for warnings.
  *
  * @param sname The scoped name to check.

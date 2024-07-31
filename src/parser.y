@@ -3920,7 +3920,6 @@ class_struct_union_declaration_c
       DUMP_SNAME( "any_sname_c_exp", $sname );
 
       c_sname_append_sname( &in_attr.scope_sname, &$sname );
-      c_sname_set_std_namespace( &in_attr.scope_sname );
 
       c_sname_local_data( &in_attr.scope_sname )->type =
         C_TYPE_LIT_B( $csu_btid );
@@ -3928,7 +3927,6 @@ class_struct_union_declaration_c
 
       c_sname_t csu_sname = c_sname_dup( &in_attr.scope_sname );
       c_sname_append_sname( &csu_sname, &$sname );
-      c_sname_set_std_namespace( &csu_sname );
 
       c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@sname );
       csu_ast->sname = csu_sname;
@@ -3965,7 +3963,6 @@ enum_declaration_c
 
       c_sname_t enum_sname = c_sname_dup( &in_attr.scope_sname );
       c_sname_append_sname( &enum_sname, &$sname );
-      c_sname_set_std_namespace( &enum_sname );
 
       c_sname_local_data( &enum_sname )->type = C_TYPE_LIT_B( $enum_btids );
       if ( !c_sname_check( &enum_sname, &@sname ) ) {
@@ -4047,7 +4044,6 @@ namespace_declaration_c
         );
 
       c_sname_append_sname( &in_attr.scope_sname, &$sname );
-      c_sname_set_std_namespace( &in_attr.scope_sname );
 
       DUMP_SNAME( "$$_sname", $sname );
       DUMP_END();
@@ -4443,7 +4439,6 @@ typedef_decl_c
 
       temp_sname = c_sname_dup( &in_attr.scope_sname );
       c_sname_prepend_sname( &typedef_ast->sname, &temp_sname );
-      c_sname_set_std_namespace( &typedef_ast->sname );
 
       DUMP_AST( "$$_ast", typedef_ast );
       DUMP_END();
@@ -4551,7 +4546,6 @@ using_decl_c_ast
 
       c_sname_t temp_sname = c_sname_dup( &in_attr.scope_sname );
       c_sname_append_name( &temp_sname, $name );
-      c_sname_set_std_namespace( &temp_sname );
 
       $$ = c_ast_patch_placeholder( $type_ast, cast_ast );
       c_sname_set( &$$->sname, &temp_sname );
@@ -6862,7 +6856,6 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
       else {
         c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
         c_sname_append_sname( &temp_sname, &$sname );
-        c_sname_set_std_namespace( &temp_sname );
 
         if ( type_ast == NULL ) {
           //
