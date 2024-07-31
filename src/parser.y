@@ -4045,6 +4045,10 @@ namespace_declaration_c
       DUMP_SNAME( "$$_sname", $sname );
       DUMP_END();
 
+      //
+      // These checks are better to do now in the parser rather than later in
+      // the AST because they give a better error location.
+      //
       if ( c_sname_is_inline_nested_namespace( &in_attr.scope_sname ) ) {
         print_error( &@sname,
           "nested namespace can not be %s\n",
@@ -4052,7 +4056,6 @@ namespace_declaration_c
         );
         PARSE_ABORT();
       }
-
       PARSE_ASSERT( c_sname_check( &in_attr.scope_sname, &@sname ) );
     }
     brace_in_scope_declaration_c_exp
