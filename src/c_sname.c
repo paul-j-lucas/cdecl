@@ -174,7 +174,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   assert( sname_loc != NULL );
 
   if ( c_sname_empty( sname ) )
-    return true;
+    return true;                        // LCOV_EXCL_LINE
 
   size_t const sname_count = c_sname_count( sname );
   if ( sname_count > 1 ) {
