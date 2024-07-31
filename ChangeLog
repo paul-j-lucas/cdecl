@@ -1,5 +1,7 @@
 2024-07-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, parser.y: Moved most calls to c_sname_check() into
+     c_ast_check.c.
    * c_ast_check.c, c_sname.c, c_sname.h, parser.y: Folded functionality of
      c_sname_error() into c_sname_check().
    * c_sname.c: No longer temporarily setting scope->next to NULL.
