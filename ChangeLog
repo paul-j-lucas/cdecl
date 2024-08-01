@@ -1,3 +1,7 @@
+2024-08-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, util.c, util.h: wait_for_debugger_attach() now always waits.
+
 2024-07-31  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: In debug mode, not printing printable lookahead chars as char.
