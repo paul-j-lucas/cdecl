@@ -106,7 +106,8 @@ int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   ATEXIT( &cdecl_cleanup );
   cdecl_is_testing = is_affirmative( getenv( "CDECL_TEST" ) );
-  wait_for_debugger_attach( "CDECL_DEBUG" );
+  if ( is_affirmative( getenv( "CDECL_DEBUG" ) ) )
+    wait_for_debugger_attach();
 
   cli_options_init( &argc, &argv );     // must call before colors_init()
   colors_init();                        // must call before cdecl_term_init()

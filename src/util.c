@@ -457,15 +457,12 @@ void perror_exit( int status ) {
 
 #ifndef NDEBUG
 // LCOV_EXCL_START
-void wait_for_debugger_attach( char const *env_var ) {
-  assert( env_var != NULL );
-  if ( is_affirmative( getenv( env_var ) ) ) {
-    EPRINTF(
-      "%s: pid=%d: waiting for debugger to attach...\n",
-      me, STATIC_CAST( int, getpid() )
-    );
-    PERROR_EXIT_IF( raise( SIGSTOP ) == -1, EX_OSERR );
-  }
+void wait_for_debugger_attach( void ) {
+  EPRINTF(
+    "%s: pid=%d: waiting for debugger to attach...\n",
+    me, STATIC_CAST( int, getpid() )
+  );
+  PERROR_EXIT_IF( raise( SIGSTOP ) == -1, EX_OSERR );
 }
 // LCOV_EXCL_STOP
 #endif /* NDEBUG */

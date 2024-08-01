@@ -1806,14 +1806,11 @@ void fput_sep( char const *sep, bool *sep_flag, FILE *fout ) {
 
 #ifndef NDEBUG
 /**
- * Suspends process execution until a debugger attaches if \a env_var is set
- * and has a case-insensitive value of one of: 1, t, true, y, or yes.
- *
- * @param env_var The environment variable to check for.
+ * Suspends process execution until a debugger attaches.
  */
-void wait_for_debugger_attach( char const *env_var );
+void wait_for_debugger_attach( void );
 #else
-# define wait_for_debugger_attach( env_var ) NO_OP
+# define wait_for_debugger_attach() NO_OP
 #endif /* NDEBUG */
 
 ///////////////////////////////////////////////////////////////////////////////
