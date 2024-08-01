@@ -60,6 +60,19 @@
 // local variable definitions
 static slist_t free_later_list;         ///< List of stuff to free later.
 
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Checks whether \a s contains only decimal digit characters.
+ *
+ * @param s The null-terminated string to check.
+ * @return Returns `true` only if \a s contains only decimal digits.
+ */
+NODISCARD
+static inline bool str_is_digits( char const *s ) {
+  return *SKIP_CHARS( s, "0123456789" ) == '\0';
+}
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -85,7 +98,8 @@ static char const* fput_list_apc_gets( void const **ppelt ) {
  * @return Returns `true` only if \a s is among \a matches.
  */
 NODISCARD
-static bool is_any( char const *s, char const *const matches[const static 2] ) {
+static bool str_is_any( char const *s,
+                        char const *const matches[const static 2] ) {
   if ( s != NULL ) {
     for ( char const *const *match = matches; *match != NULL; ++match ) {
       if ( strcasecmp( s, *match ) == 0 )
@@ -180,7 +194,7 @@ unsigned long long check_strtoull( char const *s, unsigned long long min,
                                    unsigned long long max ) {
   assert( s != NULL );
 
-  if ( !is_digits( s ) )
+  if ( !str_is_digits( s ) )
     return STRTOULL_ERROR;
   errno = 0;
   unsigned long long const rv = strtoull( s, /*endptr=*/NULL, 10 );
@@ -328,27 +342,6 @@ void free_now( void ) {
   slist_cleanup( &free_later_list, &free );
 }
 
-bool is_affirmative( char const *s ) {
-  static char const *const AFFIRMATIVES[] = {
-    "1",
-    "t",
-    "true",
-    "y",
-    "yes",
-    NULL
-  };
-  return is_any( s, AFFIRMATIVES );
-}
-
-bool is_ident_prefix( char const *ident, size_t ident_len, char const *s,
-                      size_t s_len ) {
-  assert( ident != NULL );
-  assert( s != NULL );
-  if ( ident_len > s_len || strncmp( s, ident, ident_len ) != 0 )
-    return false;
-  return !is_ident( s[ ident_len ] );
-}
-
 uint32_t ls_bit1_32( uint32_t n ) {
   if ( n != 0 ) {
     for ( uint32_t b = 1; b != 0; b <<= 1 ) {
@@ -383,6 +376,34 @@ bool path_is_file( char const *path ) {
   struct stat path_stat;
   STAT( path, &path_stat );
   return S_ISREG( path_stat.st_mode );
+}
+
+// LCOV_EXCL_START
+void perror_exit( int status ) {
+  perror( me );
+  exit( status );
+}
+// LCOV_EXCL_STOP
+
+bool str_is_affirmative( char const *s ) {
+  static char const *const AFFIRMATIVES[] = {
+    "1",
+    "t",
+    "true",
+    "y",
+    "yes",
+    NULL
+  };
+  return str_is_any( s, AFFIRMATIVES );
+}
+
+bool str_is_ident_prefix( char const *ident, size_t ident_len, char const *s,
+                          size_t s_len ) {
+  assert( ident != NULL );
+  assert( s != NULL );
+  if ( ident_len > s_len || strncmp( s, ident, ident_len ) != 0 )
+    return false;
+  return !is_ident( s[ ident_len ] );
 }
 
 bool str_is_prefix( char const *s1, char const *s2 ) {
@@ -447,13 +468,6 @@ size_t strnspn( char const *s, char const *charset, size_t n ) {
     ++s;
   return STATIC_CAST( size_t, s - s0 );
 }
-
-// LCOV_EXCL_START
-void perror_exit( int status ) {
-  perror( me );
-  exit( status );
-}
-// LCOV_EXCL_STOP
 
 #ifndef NDEBUG
 // LCOV_EXCL_START

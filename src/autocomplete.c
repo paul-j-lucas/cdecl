@@ -633,14 +633,14 @@ static char* keyword_generator( char const *text, int state ) {
     //
     //      cdecl> set <tab>
     //
-    if ( is_ident_prefix( "?", 1, buf, buf_len ) )
+    if ( str_is_ident_prefix( "?", 1, buf, buf_len ) )
       command = L_help;
     else {
       FOREACH_CDECL_COMMAND( c ) {
         if ( !opt_lang_is_any( c->lang_ids ) )
           continue;
-        if ( is_ident_prefix( c->literal, strlen( c->literal ),
-                              buf, buf_len ) ) {
+        if ( str_is_ident_prefix( c->literal, strlen( c->literal ),
+                                  buf, buf_len ) ) {
           command = c->literal;
           break;
         }

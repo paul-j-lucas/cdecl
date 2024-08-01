@@ -492,7 +492,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa is_ident()
  * @sa is_ident_first()
- * @sa is_ident_prefix()
+ * @sa str_is_ident_prefix()
  */
 #define IDENT_CHARS               "ABCDEFGHIJKLMNOPQRSTUVWXYZ_" \
                                   "abcdefghijklmnopqrstuvwxyz" \
@@ -1533,27 +1533,6 @@ bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
 }
 
 /**
- * Checks whether \a s is an affirmative value.  An affirmative value is one of
- * 1, t, true, y, or yes, case-insensitive.
- *
- * @param s The null-terminated string to check.  May be NULL.
- * @return Returns `true` only if \a s is affirmative.
- */
-NODISCARD
-bool is_affirmative( char const *s );
-
-/**
- * Checks whether \a s contains only decimal digit characters.
- *
- * @param s The null-terminated string to check.
- * @return Returns `true` only if \a s contains only decimal digits.
- */
-NODISCARD C_UTIL_H_INLINE
-bool is_digits( char const *s ) {
-  return *SKIP_CHARS( s, "0123456789" ) == '\0';
-}
-
-/**
  * Checks whether \a c is an identifier character.
  *
  * @param c The character to check.
@@ -1584,32 +1563,6 @@ bool is_ident_first( char c ) {
 }
 
 /**
- * Checks whether \a ident is a prefix if \a s.
- *
- * @remarks If \a s_len &gt; \a ident_len, then the first character past the
- * end of \a s must _not_ be an identifier character.  For example, if \a ident
- * is "foo", then \a s must be "foo" exactly; or \a s must be "foo" followed by
- * a whitespace or punctuation character, but _not_ an identifier character:
- *
- *      "foo"   match
- *      "foo "  match
- *      "foo("  match
- *      "foob"  no match
- *
- * @param ident The identidier to check for.
- * @param ident_len The length of \a ident.
- * @param s The string to check.  Leading whitespace _must_ have been skipped.
- * @param s_len The length of \a s.
- * @return Returns `true` only if it is.
- *
- * @sa #IDENT_CHARS
- * @sa str_is_prefix()
- */
-NODISCARD
-bool is_ident_prefix( char const *ident, size_t ident_len, char const *s,
-                      size_t s_len );
-
-/**
  * Gets the value of the least significant bit that's a 1 in \a n.
  * For example, for \a n of 12, returns 4.
  *
@@ -1632,6 +1585,22 @@ uint32_t ls_bit1_32( uint32_t n );
  */
 NODISCARD
 uint32_t ms_bit1_32( uint32_t n );
+
+/**
+ * Checks whether \a s is null, an empty string, or consists only of
+ * whitespace.
+ *
+ * @param s The null-terminated string to check.
+ * @return If \a s is either null or the empty string, returns NULL; otherwise
+ * returns a pointer to the first non-whitespace character in \a s.
+ *
+ * @sa empty_if_null()
+ * @sa str_is_empty()
+ */
+NODISCARD C_UTIL_H_INLINE
+char const* null_if_empty( char const *s ) {
+  return s != NULL && *SKIP_WS( s ) == '\0' ? NULL : s;
+}
 
 /**
  * Parses a C/C++ identifier.
@@ -1657,22 +1626,6 @@ char const* parse_identifier( char const *s );
 _Noreturn void perror_exit( int status );
 
 /**
- * Checks whether \a s is null, an empty string, or consists only of
- * whitespace.
- *
- * @param s The null-terminated string to check.
- * @return If \a s is either null or the empty string, returns NULL; otherwise
- * returns a pointer to the first non-whitespace character in \a s.
- *
- * @sa empty_if_null()
- * @sa str_is_empty()
- */
-NODISCARD C_UTIL_H_INLINE
-char const* null_if_empty( char const *s ) {
-  return s != NULL && *SKIP_WS( s ) == '\0' ? NULL : s;
-}
-
-/**
  * Checks whether \a path refers to a regular file.
  *
  * @param path The path to check.
@@ -1682,6 +1635,16 @@ char const* null_if_empty( char const *s ) {
  */
 NODISCARD
 bool path_is_file( char const *path );
+
+/**
+ * Checks whether \a s is an affirmative value.  An affirmative value is one of
+ * 1, t, true, y, or yes, case-insensitive.
+ *
+ * @param s The null-terminated string to check.  May be NULL.
+ * @return Returns `true` only if \a s is affirmative.
+ */
+NODISCARD
+bool str_is_affirmative( char const *s );
 
 /**
  * Checks whether \a s is either an empty string or a line consisting only of
@@ -1699,6 +1662,32 @@ bool str_is_empty( char const *s ) {
 }
 
 /**
+ * Checks whether \a ident is a prefix if \a s.
+ *
+ * @remarks If \a s_len &gt; \a ident_len, then the first character past the
+ * end of \a s must _not_ be an identifier character.  For example, if \a ident
+ * is "foo", then \a s must be "foo" exactly; or \a s must be "foo" followed by
+ * a whitespace or punctuation character, but _not_ an identifier character:
+ *
+ *      "foo"   match
+ *      "foo "  match
+ *      "foo("  match
+ *      "foob"  no match
+ *
+ * @param ident The identidier to check for.
+ * @param ident_len The length of \a ident.
+ * @param s The string to check.  Leading whitespace _must_ have been skipped.
+ * @param s_len The length of \a s.
+ * @return Returns `true` only if it is.
+ *
+ * @sa #IDENT_CHARS
+ * @sa str_is_prefix()
+ */
+NODISCARD
+bool str_is_ident_prefix( char const *ident, size_t ident_len, char const *s,
+                          size_t s_len );
+
+/**
  * Checks whether \a s1 is a prefix of (or equal to) \a s2.
  *
  * @param s1 The candidate prefix string.
@@ -1706,7 +1695,7 @@ bool str_is_empty( char const *s ) {
  * @return Returns `true` only if \a s1 is not the empty string and is a prefix
  * of (or equal to) \a s2.
  *
- * @sa is_ident_prefix()
+ * @sa str_is_ident_prefix()
  */
 NODISCARD
 bool str_is_prefix( char const *s1, char const *s2 );
