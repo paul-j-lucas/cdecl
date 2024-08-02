@@ -1,3 +1,12 @@
+2024-08-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1, cli_options.c, help.c, literals.c, literals.h,
+     set_options.c, alt-tokens.out, cli_options.out, command_line.out,
+     debug.out, explicit-ecsu.out, explicit-int.out, help.out,
+     infer-command.out, lang.out, prompt.out, semicolon.out, set.out,
+     symlinks.out, trigraphs.out, using.out, west-decl.out: Changed `lang`
+     option to `language` to match `--language`.
+
 2024-08-01  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, set_options.c, set-error.out, set-error.test: Fixed "set
