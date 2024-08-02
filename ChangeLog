@@ -1,5 +1,7 @@
 2024-08-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.c: Now checking for ERANGE.
+   * util.c: Eliminated unnecessary check.
    * cdecl.c, util.c, util.h: wait_for_debugger_attach() now always waits.
 
 2024-07-31  Paul J. Lucas <paul@lucasmail.org>
