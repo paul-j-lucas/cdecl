@@ -212,7 +212,18 @@ static char const* map_what( char const *what ) {
 /**
  * Prints a line of help text (in color, if possible and requested).
  *
- * @param format The `printf()` style format string.
+ * @param format
+ * @parblock
+ * The `printf()` style format string.  Only the following `%` specifiers are
+ * supported:
+ *
+ * `%` | Meaning
+ * ----|--------
+ * `c` | `char`
+ * `d` | `int` (decimal)
+ * `s` | `char*`
+ * `u` | `unsigned` (decimal)
+ * @endparblock
  * @param ... The `printf()` arguments.
  */
 static void print_h( char const *format, ... ) {
