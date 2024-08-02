@@ -620,7 +620,7 @@ void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname );
  * scope-type to #TB_struct; the scope-type of `x` is not changed.
  *
  * If there is no `typedef` for a partial scoped name and the scope-type is
- * either #TB_scope or not set, then sets that scope-type to #TB_namespace.
+ * either #TB_SCOPE or not set, then sets that scope-type to #TB_namespace.
  *
  * @param sname The scoped name to set all the scope-types of.
  */
