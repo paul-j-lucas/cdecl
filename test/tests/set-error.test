@@ -1,5 +1,6 @@
 EXPECTED_EXIT=65
 cdecl -bEL$LINENO <<END
+set c=x
 set debug=x
 set expl
 set expli

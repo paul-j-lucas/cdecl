@@ -10,6 +10,17 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.2.1
+
+** Fixed `set` _lang_
+Giving a value for a language for the `set` command is now correctly forbidden,
+e.g.:
+
+    cdecl> set c=x
+                 ^
+    7: error: "x": set option "c" takes no value
+
+
 * Changes in Cdecl 18.2
 
 ** More permissive types

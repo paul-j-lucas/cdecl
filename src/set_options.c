@@ -98,7 +98,6 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
 #endif /* ENABLE_FLEX_DEBUG */
             set_infer_command( set_option_fn_args_t const* ),
             set_lang( set_option_fn_args_t const* ),
-            set_lang_impl( char const* ),
             set_permissive_types( set_option_fn_args_t const* ),
             set_prompt( set_option_fn_args_t const* ),
             set_semicolon( set_option_fn_args_t const* ),
@@ -106,6 +105,8 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
             set_trigraphs( set_option_fn_args_t const* ),
             set_using( set_option_fn_args_t const* ),
             set_west_decl( set_option_fn_args_t const* );
+
+static void set_lang_impl( c_lang_id_t );
 
 /**
  * The column at which to print `(Not supported ...)` when an option is not
@@ -589,26 +590,26 @@ static bool set_infer_command( set_option_fn_args_t const *args ) {
 NODISCARD
 static bool set_lang( set_option_fn_args_t const *args ) {
   assert( args->opt_enabled );
-  if ( set_lang_impl( args->opt_value ) )
-    return true;
-  print_error( args->opt_value_loc,
-    "\"%s\": unknown language\n", args->opt_value
-  );
-  return false;
+
+  c_lang_id_t const lang_id = c_lang_find( args->opt_value );
+  if  ( lang_id == LANG_NONE ) {
+    print_error( args->opt_value_loc,
+      "\"%s\": unknown language\n", args->opt_value
+    );
+    return false;
+  }
+
+  set_lang_impl( lang_id );
+  return true;
 }
 
 /**
  * Sets the current language.
  *
- * @param name The language name.
- * @return Returns `true` only if \a name corresponds to a supported language
- * and the language was set.
+ * @param lang_id The language to set.  _Exactly one_ language _must_ be set.
  */
-NODISCARD
-static bool set_lang_impl( char const *name ) {
-  c_lang_id_t const new_lang_id = c_lang_find( name );
-  if ( new_lang_id == LANG_NONE )
-    return false;
+static void set_lang_impl( c_lang_id_t lang_id ) {
+  assert( is_1_bit( lang_id ) );
 
   static set_option_fn_args_t const ENABLED_ARGS = {
     .opt_enabled = true,
@@ -617,7 +618,7 @@ static bool set_lang_impl( char const *name ) {
     .opt_value_loc = NULL
   };
 
-  lang_set( new_lang_id );
+  lang_set( lang_id );
   //
   // Every time the language changes, re-set language-specific options so the
   // user is re-warned if the option is not supported in the current language.
@@ -640,8 +641,6 @@ static bool set_lang_impl( char const *name ) {
 
   // set_using() isn't here since the feature is defined as printing types via
   // "using" declarations only in C++11 and later anyway.
-
-  return true;
 }
 
 /**
@@ -807,9 +806,6 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     return true;
   }
 
-  if ( set_lang_impl( opt_name ) )
-    return true;
-
   assert( opt_name_loc != NULL );
   assert( opt_value == NULL || opt_value_loc != NULL );
 
@@ -817,11 +813,19 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   bool const is_no = STRNCMPLIT( opt_name, "no" ) == 0;
   if ( is_no )
     opt_name += STRLITLEN( "no" );
-  size_t const opt_name_len = strlen( opt_name );
+
+  c_lang_id_t const lang_id = c_lang_find( orig_name );
+  if ( lang_id != LANG_NONE ) {
+    if ( opt_value != NULL )
+      goto opt_takes_no_value;
+    set_lang_impl( lang_id );
+    return true;
+  }
 
   slist_t found_opt_list;
   slist_init( &found_opt_list );
 
+  size_t const opt_name_len = strlen( opt_name );
   FOREACH_SET_OPTION( opt ) {
     if ( strn_nohyphen_equal( opt->name, opt_name, opt_name_len ) )
       slist_push_back( &found_opt_list, CONST_CAST( void*, opt ) );
@@ -870,31 +874,37 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   } // switch
 
   if ( opt_value == NULL ) {
-    if ( !is_no && found_opt->has_arg == required_argument ) {
-      print_error( opt_name_loc,
-        "set option \"%s\" requires =<value>\n",
-        orig_name
-      );
-      return false;
-    }
+    if ( !is_no && found_opt->has_arg == required_argument )
+      goto opt_requires_value;
   } else {
-    if ( is_no ) {
-      print_error( opt_value_loc, "\"no\" set options take no value\n" );
-      return false;
-    }
-    if ( found_opt->has_arg == no_argument ) {
-      print_error( opt_value_loc,
-        "\"%s\": set option \"%s\" takes no value\n",
-        opt_value, orig_name
-      );
-      return false;
-    }
+    if ( is_no )
+      goto no_opt_takes_no_value;
+    if ( found_opt->has_arg == no_argument )
+      goto opt_takes_no_value;
   }
 
   set_option_fn_args_t const args = {
     !is_no, opt_name_loc, opt_value, opt_value_loc
   };
   return (*found_opt->set_fn)( &args );
+
+no_opt_takes_no_value:
+  print_error( opt_value_loc, "\"no\" set options take no value\n" );
+  return false;
+
+opt_requires_value:
+  print_error( opt_name_loc,
+    "set option \"%s\" requires =<value>\n",
+    orig_name
+  );
+  return false;
+
+opt_takes_no_value:
+  print_error( opt_value_loc,
+    "\"%s\": set option \"%s\" takes no value\n",
+    opt_value, orig_name
+  );
+  return false;
 }
 
 set_option_t const* set_option_next( set_option_t const *opt ) {
