@@ -56,7 +56,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon

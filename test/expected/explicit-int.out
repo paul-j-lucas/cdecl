@@ -27,7 +27,7 @@ cdecl> set
     explicit-int=s
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -62,7 +62,7 @@ cdecl> set
     explicit-int=i
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -97,7 +97,7 @@ cdecl> set
     explicit-int=iu
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -132,7 +132,7 @@ cdecl> set
     explicit-int=l
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -167,7 +167,7 @@ cdecl> set
     explicit-int=ll
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -202,7 +202,7 @@ cdecl> set
     explicit-int=u
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -237,7 +237,7 @@ cdecl> set
     explicit-int=us
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -272,7 +272,7 @@ cdecl> set
     explicit-int=ui
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -307,7 +307,7 @@ cdecl> set
     explicit-int=ul
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -342,7 +342,7 @@ cdecl> set
     explicit-int=ull
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -377,7 +377,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -412,7 +412,7 @@ cdecl> set
     explicit-int=lu
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -439,7 +439,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon

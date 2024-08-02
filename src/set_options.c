@@ -126,27 +126,27 @@ static set_option_t const SET_OPTIONS[] = {
   //  1. print_options()
   //  2. print_help_options()
   //
-  { "alt-tokens",
+  { L_alt_tokens,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_alt_tokens
   },
 
 #ifdef ENABLE_BISON_DEBUG
-  { "bison-debug",
+  { L_bison_debug,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_bison_debug
   },
 #endif /* ENABLE_BISON_DEBUG */
 
-  { "debug",
+  { L_debug,
     SET_OPTION_TOGGLE,
     .has_arg = optional_argument,
     &set_debug
   },
 
-  { "digraphs",                         // See comment for "graphs" entry.
+  { L_digraphs,                         // See comment for "graphs" entry.
     SET_OPTION_AFF_ONLY,
     .has_arg = no_argument,
     &set_digraphs
@@ -174,93 +174,93 @@ static set_option_t const SET_OPTIONS[] = {
     &set_digraphs
   },
 
-  { "east-const",
+  { L_east_const,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_east_const
   },
 
-  { "echo-commands",
+  { L_echo_commands,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_echo_commands
   },
 
-  { "english-types",
+  { L_english_types,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_english_types
   },
 
-  { "explicit-ecsu",
+  { L_explicit_ecsu,
     SET_OPTION_TOGGLE,
     .has_arg = required_argument,
     &set_explicit_ecsu
   },
 
-  { "explicit-int",
+  { L_explicit_int,
     SET_OPTION_TOGGLE,
     .has_arg = required_argument,
     &set_explicit_int
   },
 
 #ifdef ENABLE_FLEX_DEBUG
-  { "flex-debug",
+  { L_flex_debug,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_flex_debug
   },
 #endif /* ENABLE_FLEX_DEBUG */
 
-  { "infer-command",
+  { L_infer_command,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_infer_command
   },
 
-  { "lang",
+  { L_language,
     SET_OPTION_AFF_ONLY,
     .has_arg = required_argument,
     &set_lang
   },
 
-  { "permissive-types",
+  { L_permissive_types,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_permissive_types
   },
 
-  { "prompt",
+  { L_prompt,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_prompt
   },
 
-  { "semicolon",
+  { L_semicolon,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_semicolon
   },
 
-  { "trailing-return",
+  { L_trailing_return,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_trailing_return
   },
 
-  { "trigraphs",                        // See comment for "graphs" entry.
+  { L_trigraphs,                        // See comment for "graphs" entry.
     SET_OPTION_AFF_ONLY,
     .has_arg = no_argument,
     &set_trigraphs
   },
 
-  { "using",
+  { L_using,
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_using
   },
 
-  { "west-decl",
+  { L_west_decl,
     SET_OPTION_TOGGLE,
     .has_arg = required_argument,
     &set_west_decl
@@ -334,24 +334,24 @@ static void print_option( char const *opt_name, char const *opt_value,
  * Prints the current option settings.
  */
 static void print_options( void ) {
-  print_option( "alt-tokens", po_bool_value( opt_alt_tokens ), LANG_ALT_TOKENS );
+  print_option( L_alt_tokens, po_bool_value( opt_alt_tokens ), LANG_ALT_TOKENS );
 #ifdef ENABLE_BISON_DEBUG
-  print_option( "bison-debug", po_bool_value( opt_bison_debug ), LANG_ANY );
+  print_option( L_bison_debug, po_bool_value( opt_bison_debug ), LANG_ANY );
 #endif /* ENABLE_BISON_DEBUG */
 
   // opt_cdecl_debug is a special case in that it can be enabled with no value
   if ( opt_cdecl_debug == CDECL_DEBUG_YES )
-    PUTS( "    debug\n" );
+    printf( "    %s\n", L_debug );
   else
-    print_option( "debug", cdecl_debug_str(), LANG_ANY );
+    print_option( L_debug, cdecl_debug_str(), LANG_ANY );
 
-  print_option( "east-const", po_bool_value( opt_east_const ), LANG_const );
-  print_option( "echo-commands", po_bool_value( opt_echo_commands ), LANG_ANY );
-  print_option( "english-types", po_bool_value( opt_english_types ), LANG_ANY );
-  print_option( "explicit-ecsu", explicit_ecsu_str(), LANG_CPP_ANY );
-  print_option( "explicit-int", explicit_int_str(), LANG_ANY );
+  print_option( L_east_const, po_bool_value( opt_east_const ), LANG_const );
+  print_option( L_echo_commands, po_bool_value( opt_echo_commands ), LANG_ANY );
+  print_option( L_english_types, po_bool_value( opt_english_types ), LANG_ANY );
+  print_option( L_explicit_ecsu, explicit_ecsu_str(), LANG_CPP_ANY );
+  print_option( L_explicit_int, explicit_int_str(), LANG_ANY );
 #ifdef ENABLE_FLEX_DEBUG
-  print_option( "flex-debug", po_bool_value( opt_flex_debug ), LANG_ANY );
+  print_option( L_flex_debug, po_bool_value( opt_flex_debug ), LANG_ANY );
 #endif /* ENABLE_FLEX_DEBUG */
 
   // [di|tri|no]graphs is a special case
@@ -367,14 +367,14 @@ static void print_options( void ) {
   }
   PUTC( '\n' );
 
-  print_option( "infer-command", po_bool_value( opt_infer_command ), LANG_ANY );
-  print_option( "lang", c_lang_name( opt_lang_id ), LANG_ANY );
-  print_option( "permissive-types", po_bool_value( opt_permissive_types ), LANG_ANY );
-  print_option( "prompt", po_bool_value( opt_prompt ), LANG_ANY );
-  print_option( "semicolon", po_bool_value( opt_semicolon ), LANG_ANY );
-  print_option( "trailing-return", po_bool_value( opt_trailing_ret ), LANG_TRAILING_RETURN_TYPES );
-  print_option( "using", po_bool_value( opt_using ), LANG_using_DECLS );
-  print_option( "west-decl", west_decl_str(), LANG_ANY );
+  print_option( L_infer_command, po_bool_value( opt_infer_command ), LANG_ANY );
+  print_option( L_language, c_lang_name( opt_lang_id ), LANG_ANY );
+  print_option( L_permissive_types, po_bool_value( opt_permissive_types ), LANG_ANY );
+  print_option( L_prompt, po_bool_value( opt_prompt ), LANG_ANY );
+  print_option( L_semicolon, po_bool_value( opt_semicolon ), LANG_ANY );
+  print_option( L_trailing_return, po_bool_value( opt_trailing_ret ), LANG_TRAILING_RETURN_TYPES );
+  print_option( L_using, po_bool_value( opt_using ), LANG_using_DECLS );
+  print_option( L_west_decl, west_decl_str(), LANG_ANY );
 }
 
 /**

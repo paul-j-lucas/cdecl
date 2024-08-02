@@ -76,7 +76,7 @@ cdecl> set
   noexplicit-int
  trigraphs                   (Not supported until C89.)
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -101,7 +101,7 @@ cdecl> set
   noexplicit-int
  trigraphs                   (Not supported since C23.)
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -126,7 +126,7 @@ c++decl> set
   noexplicit-int
  trigraphs                   (Not supported since C++17.)
   noinfer-command
-    lang=C++23
+    language=C++23
   nopermissive-types
     prompt
     semicolon

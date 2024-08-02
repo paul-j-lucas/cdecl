@@ -10,7 +10,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -28,7 +28,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -46,7 +46,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -64,7 +64,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -82,7 +82,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -100,7 +100,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -118,7 +118,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -136,7 +136,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -154,7 +154,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C89
+    language=C89
   nopermissive-types
     prompt
     semicolon
@@ -172,7 +172,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C89
+    language=C89
   nopermissive-types
     prompt
     semicolon
@@ -190,7 +190,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C95
+    language=C95
   nopermissive-types
     prompt
     semicolon
@@ -208,7 +208,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C99
+    language=C99
   nopermissive-types
     prompt
     semicolon
@@ -226,7 +226,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C11
+    language=C11
   nopermissive-types
     prompt
     semicolon
@@ -244,7 +244,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C17
+    language=C17
   nopermissive-types
     prompt
     semicolon
@@ -262,7 +262,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C17
+    language=C17
   nopermissive-types
     prompt
     semicolon
@@ -280,7 +280,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -298,7 +298,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++23
+    language=C++23
   nopermissive-types
     prompt
     semicolon
@@ -316,7 +316,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++98
+    language=C++98
   nopermissive-types
     prompt
     semicolon
@@ -334,7 +334,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++03
+    language=C++03
   nopermissive-types
     prompt
     semicolon
@@ -352,7 +352,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++11
+    language=C++11
   nopermissive-types
     prompt
     semicolon
@@ -370,7 +370,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++14
+    language=C++14
   nopermissive-types
     prompt
     semicolon
@@ -388,7 +388,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++17
+    language=C++17
   nopermissive-types
     prompt
     semicolon
@@ -406,7 +406,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++20
+    language=C++20
   nopermissive-types
     prompt
     semicolon
@@ -424,7 +424,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++23
+    language=C++23
   nopermissive-types
     prompt
     semicolon
@@ -443,7 +443,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -461,7 +461,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -479,7 +479,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -497,7 +497,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -515,7 +515,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -533,7 +533,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -551,7 +551,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -569,7 +569,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=K&RC
+    language=K&RC
   nopermissive-types
     prompt
     semicolon
@@ -587,7 +587,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C89
+    language=C89
   nopermissive-types
     prompt
     semicolon
@@ -605,7 +605,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C89
+    language=C89
   nopermissive-types
     prompt
     semicolon
@@ -623,7 +623,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C95
+    language=C95
   nopermissive-types
     prompt
     semicolon
@@ -641,7 +641,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C99
+    language=C99
   nopermissive-types
     prompt
     semicolon
@@ -659,7 +659,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C11
+    language=C11
   nopermissive-types
     prompt
     semicolon
@@ -677,7 +677,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C17
+    language=C17
   nopermissive-types
     prompt
     semicolon
@@ -695,7 +695,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C17
+    language=C17
   nopermissive-types
     prompt
     semicolon
@@ -713,7 +713,7 @@ cdecl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -731,7 +731,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++23
+    language=C++23
   nopermissive-types
     prompt
     semicolon
@@ -749,7 +749,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++98
+    language=C++98
   nopermissive-types
     prompt
     semicolon
@@ -767,7 +767,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++03
+    language=C++03
   nopermissive-types
     prompt
     semicolon
@@ -785,7 +785,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++11
+    language=C++11
   nopermissive-types
     prompt
     semicolon
@@ -803,7 +803,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++14
+    language=C++14
   nopermissive-types
     prompt
     semicolon
@@ -821,7 +821,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++17
+    language=C++17
   nopermissive-types
     prompt
     semicolon
@@ -839,7 +839,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++20
+    language=C++20
   nopermissive-types
     prompt
     semicolon
@@ -857,7 +857,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++23
+    language=C++23
   nopermissive-types
     prompt
     semicolon

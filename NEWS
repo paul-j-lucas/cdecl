@@ -10,7 +10,11 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 18.2.1
+* Changes in Cdecl 18.3
+
+** `language` option
+The `lang` option has been replaced by `language` to match the `--language`
+command-line option.
 
 ** Fixed `set` _lang_
 Giving a value for a language for the `set` command is now correctly forbidden,

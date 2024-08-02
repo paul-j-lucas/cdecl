@@ -212,24 +212,50 @@ static char const* map_what( char const *what ) {
 /**
  * Prints a line of help text (in color, if possible and requested).
  *
- * @param line The line to print.
+ * @param format The `printf()` style format string.
+ * @param ... The `printf()` arguments.
  */
-static void print_h( char const *line ) {
-  assert( line != NULL );
+static void print_h( char const *format, ... ) {
+  assert( format != NULL );
 
   bool is_escaped = false;              // was preceding char a '\'?
-  bool in_title = is_title( line );     // is current char within a title?
+  bool in_title = is_title( format );   // is current char within a title?
   char const *recent_color = NULL;      // most recent color set
 
   if ( in_title )
     color_start( stdout, recent_color = sgr_help_title );
 
-  for ( char const *s = line; *s != '\0'; ++s ) {
+  va_list args;
+  va_start( args, format );
+
+  for ( char const *s = format; *s != '\0'; ++s ) {
     if ( !is_escaped ) {
       switch ( *s ) {
-        case '\\':                      // escapes next char
-          is_escaped = true;
-          continue;
+        case '%':
+          switch ( *++s ) {
+            case 'c':
+              // LCOV_EXCL_START
+              PRINTF( "%c", va_arg( args, int ) );
+              break;
+              // LCOV_EXCL_STOP
+            case 'd':
+              // LCOV_EXCL_START
+              PRINTF( "%d", va_arg( args, int ) );
+              break;
+              // LCOV_EXCL_STOP
+            case 's':
+              PUTS( va_arg( args, char const* ) );
+              break;
+            case 'u':
+              // LCOV_EXCL_START
+              PRINTF( "%u", va_arg( args, unsigned ) );
+              break;
+              // LCOV_EXCL_STOP
+            default:
+              UNEXPECTED_INT_VALUE( *s );
+          } // switch
+          ++s;
+          break;
         case ':':                       // ends a title
           if ( true_clear( &in_title ) )
             color_end( stdout, recent_color );
@@ -250,12 +276,17 @@ static void print_h( char const *line ) {
           PUTC( *s );
           color_end( stdout, recent_color );
           continue;
+        case '\\':                      // escapes next char
+          is_escaped = true;
+          continue;
       } // switch
     }
 
     PUTC( *s );
     is_escaped = false;
   } // for
+
+  va_end( args );
 }
 
 /**
@@ -623,34 +654,28 @@ static void print_help_scopes( void ) {
  */
 static void print_help_set_options( void ) {
   print_h( "option:\n" );
-  print_h( "  [no]alt-tokens\n" );
+  print_h( "  [no]%s\n", L_alt_tokens );
 #ifdef ENABLE_BISON_DEBUG
-  print_h( "  [no]bison-debug\n" );
+  print_h( "  [no]%s\n", L_bison_debug );
 #endif /* ENABLE_BISON_DEBUG */
-  print_h( "  [no]debug[={{" );
-              PUTS( OPT_CDECL_DEBUG_ALL );
-              print_h( "}+|\\*|-}]\n" );
-  print_h( "  [no]east-const\n" );
-  print_h( "  [no]echo-commands\n" );
-  print_h( "  [no]english-types\n" );
-  print_h( "  [no]explicit-ecsu[={{" );
-              PUTS( OPT_ECSU_ALL );
-              print_h( "}+|\\*|-}]\n" );
-  print_h( "  [no]explicit-int[={<types>|\\*|-}]\n" );
+  print_h( "  [no]%s[={{%s}+|\\*|-}]\n", L_debug, OPT_CDECL_DEBUG_ALL );
+  print_h( "  [no]%s\n", L_east_const );
+  print_h( "  [no]%s\n", L_echo_commands );
+  print_h( "  [no]%s\n", L_english_types );
+  print_h( "  [no]%s[={{%s}+|\\*|-}]\n", L_explicit_ecsu, OPT_ECSU_ALL );
+  print_h( "  [no]%s[={<types>|\\*|-}]\n", L_explicit_int );
 #ifdef ENABLE_FLEX_DEBUG
-  print_h( "  [no]flex-debug\n" );
+  print_h( "  [no]%s\n", L_flex_debug );
 #endif /* ENABLE_FLEX_DEBUG */
   print_h( "  {di|tri|no}graphs\n" );
-  print_h( "  [no]infer-command\n" );
-  print_h( "  lang=<lang>\n" );
+  print_h( "  [no]%s\n", L_infer_command );
+  print_h( "  %s=<lang>\n", L_language );
   print_h( "  <lang>\n" );
-  print_h( "  [no]prompt\n" );
-  print_h( "  [no]semicolon\n" );
-  print_h( "  [no]trailing-return\n" );
-  print_h( "  [no]using\n" );
-  print_h( "  [no]west-decl[={{" );
-              PUTS( OPT_WEST_DECL_ALL );
-              print_h( "r}+|\\*|-}]\n" );
+  print_h( "  [no]%s\n", L_prompt );
+  print_h( "  [no]%s\n", L_semicolon );
+  print_h( "  [no]%s\n", L_trailing_return );
+  print_h( "  [no]%s\n", L_using );
+  print_h( "  [no]%s[={{%sr}+|\\*|-}]\n", L_west_decl, OPT_WEST_DECL_ALL );
   print_h( "lang:\n" );
   print_h( "  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C\\+\\+[98|03|11|14|17|20|23]\n" );
   print_h( "types:\n" );

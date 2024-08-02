@@ -127,7 +127,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -253,7 +253,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -363,7 +363,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -473,7 +473,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -585,7 +585,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -706,7 +706,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -827,7 +827,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -1017,7 +1017,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -1171,7 +1171,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -1306,7 +1306,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -1461,7 +1461,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -1616,7 +1616,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -1772,7 +1772,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon
@@ -1929,7 +1929,7 @@ option:
   [no]explicit-int[={<types>|*|-}]
   {di|tri|no}graphs
   [no]infer-command
-  lang=<lang>
+  language=<lang>
   <lang>
   [no]prompt
   [no]semicolon

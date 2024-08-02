@@ -100,6 +100,36 @@ char const L_vector[]                   = "vector";
 char const L_wide[]                     = "wide";
 char const L_width[]                    = "width";
 
+// options
+char const L_alt_tokens[]               = "alt-tokens";
+#ifdef ENABLE_BISON_DEBUG
+char const L_bison_debug[]              = "bison-debug";
+#endif /* ENABLE_BISON_DEBUG */
+char const L_color[]                    = "color";
+char const L_config[]                   = "config";
+char const L_debug[]                    = "debug";
+char const L_digraphs[]                 = "digraphs";
+char const L_east_const[]               = "east-const";
+char const L_echo_commands[]            = "echo-commands";
+char const L_english_types[]            = "english-types";
+char const L_explicit_ecsu[]            = "explicit-ecsu";
+char const L_explicit_int[]             = "explicit-int";
+char const L_file[]                     = "file";
+#ifdef ENABLE_FLEX_DEBUG
+char const L_flex_debug[]               = "flex-debug";
+#endif /* ENABLE_FLEX_DEBUG */
+char const L_infer_command[]            = "infer-command";
+char const L_language[]                 = "language";
+char const L_lineno[]                   = "lineno";
+char const L_output[]                   = "output";
+char const L_permissive_types[]         = "permissive-types";
+char const L_prompt[]                   = "prompt";
+char const L_semicolon[]                = "semicolon";
+char const L_trailing_return[]          = "trailing-return";
+char const L_trigraphs[]                = "trigraphs";
+char const L_version[]                  = "version";
+char const L_west_decl[]                = "west-decl";
+
 // C Preprocessor
 char const L_PRE_define[]               = "define";
 char const L_PRE_elif[]                 = "elif";

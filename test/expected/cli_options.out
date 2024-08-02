@@ -48,7 +48,7 @@ $ cdecl --explicit-ecsu=ecsu set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -66,7 +66,7 @@ $ cdecl --explicit-int=u set
     explicit-int=u
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon
@@ -123,7 +123,7 @@ set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
   noprompt
     semicolon
@@ -149,7 +149,7 @@ $ cdecl -xc++ --no-using set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++23
+    language=C++23
   nopermissive-types
     prompt
     semicolon
@@ -200,7 +200,7 @@ $ cdecl -xc++ --trailing-return set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++23
+    language=C++23
   nopermissive-types
     prompt
     semicolon
@@ -218,7 +218,7 @@ $ cdecl --west-decl=t set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C23
+    language=C23
   nopermissive-types
     prompt
     semicolon

@@ -10,7 +10,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++23
+    language=C++23
   nopermissive-types
     prompt
     semicolon
@@ -183,7 +183,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++23
+    language=C++23
   nopermissive-types
     prompt
     semicolon
@@ -201,7 +201,7 @@ c++decl> set
   noexplicit-int
   nographs
   noinfer-command
-    lang=C++23
+    language=C++23
   nopermissive-types
     prompt
     semicolon

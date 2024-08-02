@@ -35,6 +35,7 @@
 #include "cdecl_command.h"
 #include "color.h"
 #include "help.h"
+#include "literals.h"
 #include "options.h"
 #include "print.h"
 #include "strbuf.h"
@@ -131,27 +132,27 @@ static struct option const CLI_OPTIONS[] = {
   //  2. Calls to opt_check_mutually_exclusive().
   //  3. The corresponding "set" option in SET_OPTIONS in set_options.c.
   //
-  { "alt-tokens",       no_argument,        NULL, COPT(ALT_TOKENS)        },
+  { L_alt_tokens,       no_argument,        NULL, COPT(ALT_TOKENS)        },
 #ifdef ENABLE_BISON_DEBUG
-  { "bison-debug",      no_argument,        NULL, COPT(BISON_DEBUG)       },
+  { L_bison_debug,      no_argument,        NULL, COPT(BISON_DEBUG)       },
 #endif /* ENABLE_BISON_DEBUG */
-  { "color",            required_argument,  NULL, COPT(COLOR)             },
-  { "commands",         no_argument,        NULL, COPT(COMMANDS)          },
-  { "config",           required_argument,  NULL, COPT(CONFIG)            },
-  { "debug",            optional_argument,  NULL, COPT(CDECL_DEBUG)       },
-  { "digraphs",         no_argument,        NULL, COPT(DIGRAPHS)          },
-  { "east-const",       no_argument,        NULL, COPT(EAST_CONST)        },
-  { "echo-commands",    no_argument,        NULL, COPT(ECHO_COMMANDS)     },
-  { "explicit-ecsu",    required_argument,  NULL, COPT(EXPLICIT_ECSU)     },
-  { "explicit-int",     required_argument,  NULL, COPT(EXPLICIT_INT)      },
-  { "file",             required_argument,  NULL, COPT(FILE)              },
+  { L_color,            required_argument,  NULL, COPT(COLOR)             },
+  { L_commands,         no_argument,        NULL, COPT(COMMANDS)          },
+  { L_config,           required_argument,  NULL, COPT(CONFIG)            },
+  { L_debug,            optional_argument,  NULL, COPT(CDECL_DEBUG)       },
+  { L_digraphs,         no_argument,        NULL, COPT(DIGRAPHS)          },
+  { L_east_const,       no_argument,        NULL, COPT(EAST_CONST)        },
+  { L_echo_commands,    no_argument,        NULL, COPT(ECHO_COMMANDS)     },
+  { L_explicit_ecsu,    required_argument,  NULL, COPT(EXPLICIT_ECSU)     },
+  { L_explicit_int,     required_argument,  NULL, COPT(EXPLICIT_INT)      },
+  { L_file,             required_argument,  NULL, COPT(FILE)              },
 #ifdef ENABLE_FLEX_DEBUG
-  { "flex-debug",       no_argument,        NULL, COPT(FLEX_DEBUG)        },
+  { L_flex_debug,       no_argument,        NULL, COPT(FLEX_DEBUG)        },
 #endif /* ENABLE_FLEX_DEBUG */
-  { "help",             no_argument,        NULL, COPT(HELP)              },
-  { "infer-command",    no_argument,        NULL, COPT(INFER_COMMAND)     },
-  { "language",         required_argument,  NULL, COPT(LANGUAGE)          },
-  { "lineno",           required_argument,  NULL, COPT(LINENO)            },
+  { L_help,             no_argument,        NULL, COPT(HELP)              },
+  { L_infer_command,    no_argument,        NULL, COPT(INFER_COMMAND)     },
+  { L_language,         required_argument,  NULL, COPT(LANGUAGE)          },
+  { L_lineno,           required_argument,  NULL, COPT(LINENO)            },
   { "no-buffer-stdout", no_argument,        NULL, COPT(NO_BUFFER_STDOUT)  },
   { "no-config",        no_argument,        NULL, COPT(NO_CONFIG)         },
   { "no-english-types", no_argument,        NULL, COPT(NO_ENGLISH_TYPES)  },
@@ -159,13 +160,13 @@ static struct option const CLI_OPTIONS[] = {
   { "no-semicolon",     no_argument,        NULL, COPT(NO_SEMICOLON)      },
   { "no-typedefs",      no_argument,        NULL, COPT(NO_TYPEDEFS)       },
   { "no-using",         no_argument,        NULL, COPT(NO_USING)          },
-  { "options",          no_argument,        NULL, COPT(OPTIONS)           },
-  { "output",           required_argument,  NULL, COPT(OUTPUT)            },
-  { "permissive-types", no_argument,        NULL, COPT(PERMISSIVE_TYPES)  },
-  { "trailing-return",  no_argument,        NULL, COPT(TRAILING_RETURN)   },
-  { "trigraphs",        no_argument,        NULL, COPT(TRIGRAPHS)         },
-  { "version",          no_argument,        NULL, COPT(VERSION)           },
-  { "west-decl",        required_argument,  NULL, COPT(WEST_DECL)         },
+  { L_options,          no_argument,        NULL, COPT(OPTIONS)           },
+  { L_output,           required_argument,  NULL, COPT(OUTPUT)            },
+  { L_permissive_types, no_argument,        NULL, COPT(PERMISSIVE_TYPES)  },
+  { L_trailing_return,  no_argument,        NULL, COPT(TRAILING_RETURN)   },
+  { L_trigraphs,        no_argument,        NULL, COPT(TRIGRAPHS)         },
+  { L_version,          no_argument,        NULL, COPT(VERSION)           },
+  { L_west_decl,        required_argument,  NULL, COPT(WEST_DECL)         },
   { NULL,               0,                  NULL, 0                       }
 };
 
