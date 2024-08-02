@@ -197,8 +197,7 @@ unsigned long long check_strtoull( char const *s, unsigned long long min,
     return STRTOULL_ERROR;
   errno = 0;
   unsigned long long const rv = strtoull( s, /*endptr=*/NULL, 10 );
-  PERROR_EXIT_IF( errno != 0, EX_USAGE );
-  if ( rv < min || rv > max )
+  if ( errno == ERANGE || rv < min || rv > max )
     return STRTOULL_ERROR;
   return rv;
 }
