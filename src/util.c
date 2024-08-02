@@ -176,7 +176,6 @@ char* check_strdup_tolower( char const *s ) {
   if ( s == NULL )
     return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = MALLOC( char, strlen( s ) + 1/*\0*/ );
-  PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
   for ( char *p = dup_s; (*p++ = STATIC_CAST( char, tolower( *s++ ) )); )
     ;
   return dup_s;
