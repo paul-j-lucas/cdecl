@@ -531,26 +531,30 @@ void print_hint( char const *format, ... ) {
 
 void print_loc( c_loc_t const *loc ) {
   assert( loc != NULL );
+  unsigned const line = opt_lineno + STATIC_CAST( unsigned, loc->first_line );
   size_t const column = print_caret( STATIC_CAST( size_t, loc->first_column ) );
 
-  char const *path = NULL;
-  if ( cdecl_input_path != NULL )
-    path = cdecl_input_path;
-  else if ( strcmp( opt_file, "-" ) != 0 )
-    path = opt_file;
+  if ( line > 0 ) {
+    char const *path = NULL;
+    if ( cdecl_input_path != NULL )
+      path = cdecl_input_path;
+    else if ( strcmp( opt_file, "-" ) != 0 )
+      path = opt_file;
 
-  if ( path != NULL ) {
-    color_start( stderr, sgr_locus );
-    EPUTS( path );
-    color_end( stderr, sgr_locus );
-    EPUTC( ':' );
-  }
-  if ( path != NULL || opt_lineno > 0 ||
-       (!cdecl_is_interactive && print_params.command_line == NULL) ) {
-    color_start( stderr, sgr_locus );
-    EPRINTF( "%u", opt_lineno + STATIC_CAST( unsigned, loc->first_line ) );
-    color_end( stderr, sgr_locus );
-    EPUTC( ',' );
+    if ( path != NULL ) {
+      color_start( stderr, sgr_locus );
+      EPUTS( path );
+      color_end( stderr, sgr_locus );
+      EPUTC( ':' );
+    }
+
+    if ( path != NULL || opt_lineno > 0 ||
+        (!cdecl_is_interactive && print_params.command_line == NULL) ) {
+      color_start( stderr, sgr_locus );
+      EPRINTF( "%u", line );
+      color_end( stderr, sgr_locus );
+      EPUTC( ',' );
+    }
   }
 
   color_start( stderr, sgr_locus );
