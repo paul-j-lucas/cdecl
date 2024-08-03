@@ -189,7 +189,7 @@ static size_t print_caret( size_t error_column ) {
   unsigned const term_columns = term_get_columns();
   size_t caret_column;
 
-  if ( cdecl_interactive || opt_echo_commands ||
+  if ( cdecl_is_interactive || opt_echo_commands ||
        print_params.opt_no_print_input_line ) {
     //
     // If we're interactive or echoing commands, we can put the ^ under the
@@ -546,7 +546,7 @@ void print_loc( c_loc_t const *loc ) {
     EPUTC( ':' );
   }
   if ( path != NULL || opt_lineno > 0 ||
-       (!cdecl_interactive && print_params.command_line == NULL) ) {
+       (!cdecl_is_interactive && print_params.command_line == NULL) ) {
     color_start( stderr, sgr_locus );
     EPRINTF( "%u", opt_lineno + STATIC_CAST( unsigned, loc->first_line ) );
     color_end( stderr, sgr_locus );

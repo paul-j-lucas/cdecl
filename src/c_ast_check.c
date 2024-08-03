@@ -3205,7 +3205,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       unreachable();
   } // switch
 
-  if ( cdecl_initialized )              // don't warn for predefined types
+  if ( cdecl_is_initialized )           // don't warn for predefined types
     c_ast_warn_name( ast );
 
   return VISITOR_ERROR_NOT_FOUND;
@@ -3359,7 +3359,7 @@ bool c_ast_check( c_ast_t const *ast ) {
   if ( !c_ast_check_errors( ast ) )
     return false;
 
-  if ( cdecl_initialized )
+  if ( cdecl_is_initialized )
     PJL_DISCARD_RV( c_ast_check_visitor( ast, &c_ast_visitor_warning ) );
 
   return true;
@@ -3371,7 +3371,7 @@ bool c_ast_check_typedef( c_ast_t const *type_ast ) {
   if ( !c_ast_check_visitor( type_ast, &c_type_ast_visitor_error ) )
     return false;
 
-  if ( cdecl_initialized ) {
+  if ( cdecl_is_initialized ) {
     PJL_DISCARD_RV(
       c_ast_check_visitor( type_ast, &c_type_ast_visitor_warning )
     );

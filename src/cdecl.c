@@ -57,9 +57,9 @@
 /// Otherwise Doxygen generates two entries.
 
 // extern variable definitions
-bool        cdecl_initialized;
+bool        cdecl_is_initialized;
 char const *cdecl_input_path;
-bool        cdecl_interactive;
+bool        cdecl_is_interactive;
 bool        cdecl_is_testing;
 char const *me;
 
@@ -128,7 +128,7 @@ int main( int argc, char const *argv[] ) {
   if ( opt_read_config )
     config_init();
 
-  cdecl_initialized = true;
+  cdecl_is_initialized = true;
 
   // cli_options_init() makes argv[0] be the first argument, if any, and no
   // longer the program name.

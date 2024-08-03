@@ -214,14 +214,14 @@
  * opt_lang_id.
  *
  * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
- * @return Returns `true` only if either **cdecl** is \ref cdecl_initialized is
- * `false` or \ref opt_lang_id is among the bitwise-or of languages specified
- * by \a LANG_MACRO.
+ * @return Returns `true` only if either **cdecl** is \ref cdecl_is_initialized
+ * is `false` or \ref opt_lang_id is among the bitwise-or of languages
+ * specified by \a LANG_MACRO.
  *
  * @sa #OPT_LANG_IS()
  */
 #define IS_SUPPORTED(LANG_MACRO) \
-  ( !cdecl_initialized || OPT_LANG_IS( LANG_MACRO ) )
+  ( !cdecl_is_initialized || OPT_LANG_IS( LANG_MACRO ) )
 
 /**
  * Calls l_keyword_expected() followed by #PARSE_ABORT().

@@ -222,8 +222,8 @@ static bool cdecl_parse_macro( char const *s ) {
  */
 NODISCARD
 static int cdecl_parse_stdin( void ) {
-  cdecl_interactive = isatty( STDIN_FILENO );
-  if ( cdecl_interactive && opt_prompt )
+  cdecl_is_interactive = isatty( STDIN_FILENO );
+  if ( cdecl_is_interactive && opt_prompt )
     PUTS( "Type \"help\" or \"?\" for help\n" );  // LCOV_EXCL_LINE
   return cdecl_parse_file_impl( stdin, /*return_on_error=*/false );
 }
@@ -320,8 +320,8 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     s_len = sbuf.len;
   }
 
-  if ( opt_echo_commands && !cdecl_interactive &&
-       (cdecl_initialized || cdecl_input_path != NULL) ) {
+  if ( opt_echo_commands && !cdecl_is_interactive &&
+       (cdecl_is_initialized || cdecl_input_path != NULL) ) {
     //
     // Echo the original command (without "explain" or "expand" possibly having
     // been inserted) without a trailing newline (if any) so we can always

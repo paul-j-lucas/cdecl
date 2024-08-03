@@ -91,11 +91,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern bool         cdecl_initialized;  ///< Initialized (read conf. file)?
-extern char const  *cdecl_input_path;   ///< Current input file path, if any.
-extern bool         cdecl_interactive;  ///< Interactive (connected to a tty)?
-extern bool         cdecl_is_testing;   ///< Is **cdecl** being tested?
-extern char const  *me;                 ///< Program name.
+extern bool         cdecl_is_initialized; ///< Initialized (read conf. file)?
+extern char const  *cdecl_input_path;     ///< Current input file path, if any.
+extern bool         cdecl_is_interactive; ///< Interactive (connected to a tty)?
+extern bool         cdecl_is_testing;     ///< Is **cdecl** being tested?
+extern char const  *me;                   ///< Program name.
 
 ////////// extern functions ///////////////////////////////////////////////////
 

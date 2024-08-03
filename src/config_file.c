@@ -107,7 +107,7 @@ void config_init( void ) {
 
     FILE *const config_file = fopen( config_path, "r" );
     if ( config_file != NULL ) {
-      bool const echo_file_markers = opt_echo_commands && !cdecl_interactive;
+      bool const echo_file_markers = opt_echo_commands && !cdecl_is_interactive;
       if ( echo_file_markers )
         PRINTF( "/* begin \"%s\" */\n", config_path );
       parse_rv = cdecl_parse_file( config_file );

@@ -477,7 +477,7 @@ static bool set_east_const( set_option_fn_args_t const *args ) {
 NODISCARD
 static bool set_echo_commands( set_option_fn_args_t const *args ) {
   opt_echo_commands = args->opt_enabled;
-  if ( opt_echo_commands && cdecl_interactive ) {
+  if ( opt_echo_commands && cdecl_is_interactive ) {
     // LCOV_EXCL_START -- tests are not interactive
     print_warning( args->opt_name_loc,
       "\"echo-commands\" has no effect when interactive\n"
