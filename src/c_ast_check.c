@@ -999,7 +999,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
             break;
 
           case C_OP_EQUAL_EQUAL:
-          case C_OP_EXCLAM_EQUAL:
+          case C_OP_EXCLAMATION_EQUAL:
           case C_OP_GREATER:
           case C_OP_GREATER_EQUAL:
           case C_OP_LESS:
@@ -1346,7 +1346,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
       case K_VARIADIC:
         if ( ast->kind == K_OPERATOR &&
-             ast->oper.operator->op_id != C_OP_PARENS ) {
+             ast->oper.operator->op_id != C_OP_PARENTHESES ) {
           print_error( &param_ast->loc,
             "operator \"%s\" can not have \"...\" parameter\n",
             ast->oper.operator->literal
@@ -1679,7 +1679,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
        c_tid_is_any( ast->type.stids, TS_static ) ) {
     c_lang_id_t ok_lang_ids = LANG_NONE;
     switch ( op->op_id ) {
-      case C_OP_PARENS:
+      case C_OP_PARENTHESES:
         if ( OPT_LANG_IS( static_OP_PARENS ) )
           break;
         ok_lang_ids = LANG_static_OP_PARENS;
@@ -1797,7 +1797,7 @@ static bool c_ast_check_op_default( c_ast_t const *ast ) {
       break;
 
     case C_OP_EQUAL_EQUAL:
-    case C_OP_EXCLAM_EQUAL:
+    case C_OP_EXCLAMATION_EQUAL:
     case C_OP_GREATER:
     case C_OP_GREATER_EQUAL:
     case C_OP_LESS:

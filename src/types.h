@@ -135,14 +135,14 @@ enum c_op_id {
   C_OP_NEW_ARRAY,                       ///< The `new[]` operator.
   C_OP_DELETE,                          ///< The `delete` operator.
   C_OP_DELETE_ARRAY,                    ///< The `delete[]` operator.
-  C_OP_EXCLAM,                          ///< The `!` operator.
-  C_OP_EXCLAM_EQUAL,                    ///< The `!=` operator.
+  C_OP_EXCLAMATION,                     ///< The `!` operator.
+  C_OP_EXCLAMATION_EQUAL,               ///< The `!=` operator.
   C_OP_PERCENT,                         ///< The `%` operator.
   C_OP_PERCENT_EQUAL,                   ///< The `%=` operator.
-  C_OP_AMPER,                           ///< The `&` operator.
-  C_OP_AMPER_AMPER,                     ///< The `&&` operator.
+  C_OP_AMPERSAND,                       ///< The `&` operator.
+  C_OP_AMPERSAND_AMPERSAND,             ///< The `&&` operator.
   C_OP_AMPER_EQUAL,                     ///< The `&=` operator.
-  C_OP_PARENS,                          ///< The `()` operator.
+  C_OP_PARENTHESES,                     ///< The `()` operator.
   C_OP_STAR,                            ///< The `*` operator.
   C_OP_STAR_EQUAL,                      ///< The `*=` operator.
   C_OP_PLUS,                            ///< The `+` operator.
@@ -170,7 +170,7 @@ enum c_op_id {
   C_OP_GREATER_EQUAL,                   ///< The `>=` operator.
   C_OP_GREATER_GREATER,                 ///< The `>>` operator.
   C_OP_GREATER_GREATER_EQUAL,           ///< The `>>=` operator.
-  C_OP_QMARK_COLON,                     ///< The `?:` operator.
+  C_OP_QUESTION_MARK_COLON,             ///< The `?:` operator.
   C_OP_BRACKETS,                        ///< The `[]` operator.
   C_OP_CARET,                           ///< The `^` operator.
   C_OP_CARET_EQUAL,                     ///< The `^=` operator.
