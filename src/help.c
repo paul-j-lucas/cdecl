@@ -323,7 +323,8 @@ static void print_h( char const *format, ... ) {
 /**
  * Prints the help for a command or all commands.
  *
- * @param command
+ * @param command The name of a command to print help for.  If NULL, prints
+ * help for all commands.
  */
 static void print_help_command( cdecl_command_t const *command ) {
   print_h( "command:\n" );
