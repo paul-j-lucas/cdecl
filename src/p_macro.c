@@ -58,7 +58,7 @@
 /**
  * Convenience macro for casting to \ref c_loc_num_t.
  *
- * @param N The integer to case.
+ * @param N The integer to cast.
  * @return Returns \a N cast to \ref c_loc_num_t.
  */
 #define C_LOC_NUM_T(N)            STATIC_CAST( c_loc_num_t, (N) )
