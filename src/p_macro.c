@@ -1010,22 +1010,31 @@ static bool mex_check_num_args( mex_state_t const *mex ) {
   size_t const n_req_params = slist_len( mex->macro->param_list ) - is_variadic;
   size_t const n_args = p_arg_list_count( mex->arg_list );
 
+  if ( n_args >= n_req_params && (n_args <= n_req_params || is_variadic) )
+    return true;
+
+  c_loc_t loc;
+  if ( mex->indent == 0 ) {
+    loc = mex->name_loc;
+  } else {
+    mex_print_macro( mex, mex->replace_list );
+    loc = (c_loc_t){ .first_column = C_LOC_NUM_T( mex->indent * 2 ) };
+  }
+
   if ( n_args < n_req_params ) {
-    print_error( &mex->name_loc,
+    print_error( &loc,
       "too few arguments (%zu) for function-like macro (need %s%zu)\n",
       n_args, is_variadic ? "at least " : "", n_req_params
     );
-    return false;
   }
-  if ( n_args > n_req_params && !is_variadic ) {
-    print_error( &mex->name_loc,
+  else {
+    print_error( &loc,
       "too many arguments (%zu) for function-like macro (need %zu)\n",
       n_args, n_req_params
     );
-    return false;
   }
 
-  return true;
+  return false;
 }
 
 /**
