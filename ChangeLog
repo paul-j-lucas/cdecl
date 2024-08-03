@@ -1,3 +1,7 @@
+2024-08-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_term.c: Moved code inside ENABLE_TERM_SIZE; combined if statements.
+
 2024-08-02  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Updated.
