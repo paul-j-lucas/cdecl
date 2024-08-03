@@ -1,5 +1,6 @@
 2024-08-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Updated.
    * share/man/man1/cdecl.1, cli_options.c, help.c, literals.c, literals.h,
      set_options.c, alt-tokens.out, cli_options.out, command_line.out,
      debug.out, explicit-ecsu.out, explicit-int.out, help.out,
