@@ -127,35 +127,39 @@ extern char const L_vector[];             // synonym for "array"
 extern char const L_wide[];               // "wide character"
 extern char const L_width[];
 
-// options
-extern char const L_alt_tokens[];
+// cdecl options
+extern char const L_OPT_alt_tokens[];
 #ifdef ENABLE_BISON_DEBUG
-extern char const L_bison_debug[];
+extern char const L_OPT_bison_debug[];
 #endif /* ENABLE_BISON_DEBUG */
-extern char const L_color[];
-extern char const L_config[];
-extern char const L_debug[];
-extern char const L_digraphs[];
-extern char const L_east_const[];
-extern char const L_echo_commands[];
-extern char const L_english_types[];
-extern char const L_explicit_ecsu[];
-extern char const L_explicit_int[];
-extern char const L_file[];
+extern char const L_OPT_color[];
+extern char const L_OPT_commands[];
+extern char const L_OPT_config[];
+extern char const L_OPT_debug[];
+extern char const L_OPT_digraphs[];
+extern char const L_OPT_east_const[];
+extern char const L_OPT_echo_commands[];
+extern char const L_OPT_english_types[];
+extern char const L_OPT_explicit_ecsu[];
+extern char const L_OPT_explicit_int[];
+extern char const L_OPT_file[];
 #ifdef ENABLE_FLEX_DEBUG
-extern char const L_flex_debug[];
+extern char const L_OPT_flex_debug[];
 #endif /* ENABLE_FLEX_DEBUG */
-extern char const L_infer_command[];
-extern char const L_language[];
-extern char const L_lineno[];
-extern char const L_output[];
-extern char const L_permissive_types[];
-extern char const L_prompt[];
-extern char const L_semicolon[];
-extern char const L_trailing_return[];
-extern char const L_trigraphs[];
-extern char const L_version[];
-extern char const L_west_decl[];
+extern char const L_OPT_help[];
+extern char const L_OPT_infer_command[];
+extern char const L_OPT_language[];
+extern char const L_OPT_lineno[];
+extern char const L_OPT_options[];
+extern char const L_OPT_output[];
+extern char const L_OPT_permissive_types[];
+extern char const L_OPT_prompt[];
+extern char const L_OPT_semicolon[];
+extern char const L_OPT_trailing_return[];
+extern char const L_OPT_trigraphs[];
+extern char const L_OPT_using[];
+extern char const L_OPT_version[];
+extern char const L_OPT_west_decl[];
 
 // C Preprocessor
 extern char const L_PRE_define[];

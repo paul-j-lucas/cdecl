@@ -686,28 +686,28 @@ static void print_help_scopes( void ) {
  */
 static void print_help_set_options( void ) {
   print_h( "option:\n" );
-  print_h( "  [no]%s\n", L_alt_tokens );
+  print_h( "  [no]%s\n", L_OPT_alt_tokens );
 #ifdef ENABLE_BISON_DEBUG
-  print_h( "  [no]%s\n", L_bison_debug );
+  print_h( "  [no]%s\n", L_OPT_bison_debug );
 #endif /* ENABLE_BISON_DEBUG */
-  print_h( "  [no]%s[={{%s}+|\\*|-}]\n", L_debug, OPT_CDECL_DEBUG_ALL );
-  print_h( "  [no]%s\n", L_east_const );
-  print_h( "  [no]%s\n", L_echo_commands );
-  print_h( "  [no]%s\n", L_english_types );
-  print_h( "  [no]%s[={{%s}+|\\*|-}]\n", L_explicit_ecsu, OPT_ECSU_ALL );
-  print_h( "  [no]%s[={<types>|\\*|-}]\n", L_explicit_int );
+  print_h( "  [no]%s[={{%s}+|\\*|-}]\n", L_OPT_debug, OPT_CDECL_DEBUG_ALL );
+  print_h( "  [no]%s\n", L_OPT_east_const );
+  print_h( "  [no]%s\n", L_OPT_echo_commands );
+  print_h( "  [no]%s\n", L_OPT_english_types );
+  print_h( "  [no]%s[={{%s}+|\\*|-}]\n", L_OPT_explicit_ecsu, OPT_ECSU_ALL );
+  print_h( "  [no]%s[={<types>|\\*|-}]\n", L_OPT_explicit_int );
 #ifdef ENABLE_FLEX_DEBUG
-  print_h( "  [no]%s\n", L_flex_debug );
+  print_h( "  [no]%s\n", L_OPT_flex_debug );
 #endif /* ENABLE_FLEX_DEBUG */
   print_h( "  {di|tri|no}graphs\n" );
-  print_h( "  [no]%s\n", L_infer_command );
-  print_h( "  %s=<lang>\n", L_language );
+  print_h( "  [no]%s\n", L_OPT_infer_command );
+  print_h( "  %s=<lang>\n", L_OPT_language );
   print_h( "  <lang>\n" );
-  print_h( "  [no]%s\n", L_prompt );
-  print_h( "  [no]%s\n", L_semicolon );
-  print_h( "  [no]%s\n", L_trailing_return );
-  print_h( "  [no]%s\n", L_using );
-  print_h( "  [no]%s[={{%sr}+|\\*|-}]\n", L_west_decl, OPT_WEST_DECL_ALL );
+  print_h( "  [no]%s\n", L_OPT_prompt );
+  print_h( "  [no]%s\n", L_OPT_semicolon );
+  print_h( "  [no]%s\n", L_OPT_trailing_return );
+  print_h( "  [no]%s\n", L_OPT_using );
+  print_h( "  [no]%s[={{%sr}+|\\*|-}]\n", L_OPT_west_decl, OPT_WEST_DECL_ALL );
   print_h( "lang:\n" );
   print_h( "  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C\\+\\+[98|03|11|14|17|20|23]\n" );
   print_h( "types:\n" );
