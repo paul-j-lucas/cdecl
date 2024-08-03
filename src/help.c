@@ -212,19 +212,39 @@ static char const* map_what( char const *what ) {
 /**
  * Prints a line of help text (in color, if possible and requested).
  *
+ * @remarks
+ * @parblock
+ * Initially, \a format is checked to see if it's a title via is_title().  If
+ * so, the current color is set to \ref sgr_help_title.  The color is reset
+ * upon encountering a `:` character.
+ *
+ * If \a format is not a title, the following punctuation characters are
+ * significant:
+ *
+ * Character | Meaning
+ * ----------|--------
+ *  `%`      | Begins a format specifier (see \a format below).
+ *  `<`      | Begins a non-terminal: sets color to \ref sgr_help_nonterm.
+ *  `>`      | Ends a non-terminal: resets color.
+ *  `*` `+` `[` `]` `{` <code>\|</code> `}` | Prints only that character in \ref sgr_help_punct.
+ *  `\`      | Escapes the following character.
+ * @endparblock
+ *
  * @param format
  * @parblock
- * The `printf()` style format string.  Only the following `%` specifiers are
- * supported:
+ * The `printf()` style format string.  When a `%` is encountered, it begins a
+ * _format specifier_. The following character specifies the type of the next
+ * ... argument.  Only the following `%` specifiers are supported:
  *
  * `%` | Meaning
  * ----|--------
  * `c` | `char`
  * `d` | `int` (decimal)
- * `s` | `char*`
+ * `s` | `char const*`
  * `u` | `unsigned` (decimal)
  * @endparblock
- * @param ... The `printf()` arguments.
+ * @param ... The `printf()` arguments.  These are _not_ scanned for
+ * significant punctuation characters.
  */
 static void print_h( char const *format, ... ) {
   assert( format != NULL );

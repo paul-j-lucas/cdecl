@@ -77,6 +77,9 @@ static char const** sgr_var_find( char const* );
 NODISCARD
 static bool         sgr_var_set( char const**, char const* );
 
+/// @cond DOXYGEN_IGNORE
+/// Otherwise Doxygen generates two entries.
+
 // extern variable definitions
 char const *sgr_caret;
 char const *sgr_error;
@@ -90,6 +93,8 @@ char const *sgr_macro_punct;
 char const *sgr_macro_subst;
 char const *sgr_prompt;
 char const *sgr_warning;
+
+/// @endcond
 
 ////////// local functions ////////////////////////////////////////////////////
 
