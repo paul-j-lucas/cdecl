@@ -165,14 +165,12 @@ error:
 void cdecl_term_init( void ) {
   ASSERT_RUN_ONCE();
 
-  if ( !cdecl_is_testing ) {
 #ifdef ENABLE_TERM_SIZE
-    if ( get_columns_via_tigetnum() > 0 ) {
-      get_columns_fn = &get_columns_via_tigetnum;
-      return;
-    }
-#endif /* ENABLE_TERM_SIZE */
+  if ( !cdecl_is_testing && get_columns_via_tigetnum() > 0 ) {
+    get_columns_fn = &get_columns_via_tigetnum;
+    return;
   }
+#endif /* ENABLE_TERM_SIZE */
 
   get_columns_fn = &get_columns_default;
 }
