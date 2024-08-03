@@ -1,5 +1,8 @@
 2024-08-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c: Better error location in mex_check_num_args().
+   * print.c: Now printing the line number (and path) only if the line number >
+     0.
    * cdecl_term.c: Moved code inside ENABLE_TERM_SIZE; combined if statements.
 
 2024-08-02  Paul J. Lucas <paul@lucasmail.org>
