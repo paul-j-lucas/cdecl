@@ -18,21 +18,50 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/* Make some of Doxygen's CSS look better. */
+
+/* enum list. */
 .el {
-  font-family: monospace, fixed;
-  font-weight: bold;
+  font-family: var(--font-family-monospace);
 }
 
+/* enum, struct members. */
 .fieldname {
-  font-family: monospace, fixed;
+  font-family: var(--font-family-monospace);
 }
 
+/* struct members. */
 .memItemLeft, .memItemRight, .memname, .memtitle {
-  font-family: monospace, fixed;
+  font-family: var(--font-family-monospace);
 }
 
+/* Parameter names & types. */
 .paramname, .paramtype {
-  font-family: monospace, fixed;
+  font-family: var(--font-family-monospace);
+  font-style: normal;
+}
+
+/* Put additional space between parameter name and description. */
+.params .paramname {
+  padding-right: 1em;
+}
+
+/* Make "Remarks" section look like it used to. */
+dl.remark {
+  background: var(--page-background-color);
+  border-left: 0;
+  border-radius: 0;
+  color: var(--page-foreground-color);
+  margin: 0 0;
+  padding: 0;
+}
+
+dl.remark dt {
+  color: var(--page-foreground-color);
+}
+
+dl.remark dd {
+  margin-left: 42px;
 }
 
 /* vim:set et sw=2 ts=2: */
