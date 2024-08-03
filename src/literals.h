@@ -186,8 +186,7 @@ extern char const L_PRE_elifndef[];
 extern char const L_PRE_embed[];
 extern char const L_PRE_warning[];
 
-
-// K&R
+// K&R C
 extern char const L_auto[];
 extern char const L_automatic[];          // synonym for "auto", "__auto_type"
 extern char const L_break[];
