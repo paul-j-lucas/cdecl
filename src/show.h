@@ -97,6 +97,7 @@ void show_type( c_typedef_t const *tdef, decl_flags_t decl_flags, FILE *fout );
  * @sa print_type_decl()
  * @sa show_type()
  */
+PJL_DISCARD
 bool show_types( cdecl_show_t show, char const *glob, decl_flags_t decl_flags,
                  FILE *fout );
 
