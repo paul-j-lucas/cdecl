@@ -659,12 +659,12 @@ typedef void *rpl_wctype_t;
 #   undef wctype
 #   define wctype rpl_wctype
 #  endif
-_GL_FUNCDECL_RPL (wctype, wctype_t, (const char *name)
+_GL_FUNCDECL_RPL (wctype, wctype_t, (const char *name),
                                     _GL_ARG_NONNULL ((1)));
 _GL_CXXALIAS_RPL (wctype, wctype_t, (const char *name));
 # else
 #  if !@HAVE_WCTYPE_T@
-_GL_FUNCDECL_SYS (wctype, wctype_t, (const char *name)
+_GL_FUNCDECL_SYS (wctype, wctype_t, (const char *name),
                                     _GL_ARG_NONNULL ((1)));
 #  endif
 _GL_CXXALIAS_SYS (wctype, wctype_t, (const char *name));
@@ -741,12 +741,12 @@ typedef void *rpl_wctrans_t;
 #   undef wctrans
 #   define wctrans rpl_wctrans
 #  endif
-_GL_FUNCDECL_RPL (wctrans, wctrans_t, (const char *name)
+_GL_FUNCDECL_RPL (wctrans, wctrans_t, (const char *name),
                                       _GL_ARG_NONNULL ((1)));
 _GL_CXXALIAS_RPL (wctrans, wctrans_t, (const char *name));
 # else
 #  if !@HAVE_WCTRANS_T@
-_GL_FUNCDECL_SYS (wctrans, wctrans_t, (const char *name)
+_GL_FUNCDECL_SYS (wctrans, wctrans_t, (const char *name),
                                       _GL_ARG_NONNULL ((1)));
 #  endif
 _GL_CXXALIAS_SYS (wctrans, wctrans_t, (const char *name));

@@ -68,6 +68,10 @@ AC_DEFUN([gl_EARLY],
   # Code from module ctype:
   # Code from module errno:
   # Code from module extensions:
+  # This is actually already done in the pre-early phase.
+  # AC_REQUIRE([gl_USE_SYSTEM_EXTENSIONS])
+  # Code from module extensions-aix:
+  AC_REQUIRE([gl_USE_AIX_EXTENSIONS])
   # Code from module extern-inline:
   # Code from module flexmember:
   # Code from module fnmatch:
@@ -966,6 +970,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/codeset.m4
   m4/ctype_h.m4
   m4/errno_h.m4
+  m4/extensions-aix.m4
   m4/extensions.m4
   m4/extern-inline.m4
   m4/flexmember.m4

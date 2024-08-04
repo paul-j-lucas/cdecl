@@ -133,7 +133,7 @@
 
 /* These are intentionally the same values as the WSA* error numbers, defined
    in <winsock2.h>.  */
-#  define ESOCKTNOSUPPORT 10044  /* not required by POSIX */
+#  define ESOCKTNOSUPPORT 10044
 #  define EPFNOSUPPORT    10046  /* not required by POSIX */
 #  define ESHUTDOWN       10058  /* not required by POSIX */
 #  define ETOOMANYREFS    10059  /* not required by POSIX */

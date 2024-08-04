@@ -170,7 +170,7 @@ btoc32 (int c)
 }
 _GL_END_C_LINKAGE
 # else
-_GL_FUNCDECL_SYS (btoc32, wint_t, (int c) _GL_ATTRIBUTE_PURE);
+_GL_FUNCDECL_SYS (btoc32, wint_t, (int c), _GL_ATTRIBUTE_PURE);
 # endif
 _GL_CXXALIAS_SYS (btoc32, wint_t, (int c));
 _GL_CXXALIASWARN (btoc32);
@@ -516,7 +516,7 @@ _GL_END_C_LINKAGE
 # else
 _GL_FUNCDECL_SYS (c32snrtombs, size_t,
                   (char *dest, const char32_t **srcp, size_t srclen, size_t len,
-                   mbstate_t *ps)
+                   mbstate_t *ps),
                   _GL_ARG_NONNULL ((2)));
 # endif
 _GL_CXXALIAS_SYS (c32snrtombs, size_t,
@@ -542,7 +542,8 @@ c32srtombs (char *dest, const char32_t **srcp, size_t len, mbstate_t *ps)
 _GL_END_C_LINKAGE
 # else
 _GL_FUNCDECL_SYS (c32srtombs, size_t,
-                  (char *dest, const char32_t **srcp, size_t len, mbstate_t *ps)
+                  (char *dest, const char32_t **srcp, size_t len,
+                   mbstate_t *ps),
                   _GL_ARG_NONNULL ((2)));
 # endif
 _GL_CXXALIAS_SYS (c32srtombs, size_t,
@@ -567,7 +568,7 @@ c32stombs (char *dest, const char32_t *src, size_t len)
 _GL_END_C_LINKAGE
 # else
 _GL_FUNCDECL_SYS (c32stombs, size_t,
-                  (char *dest, const char32_t *src, size_t len)
+                  (char *dest, const char32_t *src, size_t len),
                   _GL_ARG_NONNULL ((2)));
 # endif
 _GL_CXXALIAS_SYS (c32stombs, size_t,
@@ -591,7 +592,7 @@ c32swidth (const char32_t *s, size_t n)
 }
 _GL_END_C_LINKAGE
 # else
-_GL_FUNCDECL_SYS (c32swidth, int, (const char32_t *s, size_t n)
+_GL_FUNCDECL_SYS (c32swidth, int, (const char32_t *s, size_t n),
                                   _GL_ARG_NONNULL ((1)));
 # endif
 _GL_CXXALIAS_SYS (c32swidth, int, (const char32_t *s, size_t n));
@@ -704,7 +705,7 @@ _GL_END_C_LINKAGE
 # else
 _GL_FUNCDECL_SYS (mbsnrtoc32s, size_t,
                   (char32_t *dest, const char **srcp, size_t srclen, size_t len,
-                   mbstate_t *ps)
+                   mbstate_t *ps),
                   _GL_ARG_NONNULL ((2)));
 # endif
 _GL_CXXALIAS_SYS (mbsnrtoc32s, size_t,
@@ -730,7 +731,8 @@ mbsrtoc32s (char32_t *dest, const char **srcp, size_t len, mbstate_t *ps)
 _GL_END_C_LINKAGE
 # else
 _GL_FUNCDECL_SYS (mbsrtoc32s, size_t,
-                  (char32_t *dest, const char **srcp, size_t len, mbstate_t *ps)
+                  (char32_t *dest, const char **srcp, size_t len,
+                   mbstate_t *ps),
                   _GL_ARG_NONNULL ((2)));
 # endif
 _GL_CXXALIAS_SYS (mbsrtoc32s, size_t,
@@ -755,7 +757,7 @@ mbstoc32s (char32_t *dest, const char *src, size_t len)
 _GL_END_C_LINKAGE
 # else
 _GL_FUNCDECL_SYS (mbstoc32s, size_t,
-                  (char32_t *dest, const char *src, size_t len)
+                  (char32_t *dest, const char *src, size_t len),
                   _GL_ARG_NONNULL ((2)));
 # endif
 _GL_CXXALIAS_SYS (mbstoc32s, size_t,
@@ -796,7 +798,7 @@ c32_get_type_test (const char *name)
 }
 _GL_END_C_LINKAGE
 # else
-_GL_FUNCDECL_SYS (c32_get_type_test, c32_type_test_t, (const char *name)
+_GL_FUNCDECL_SYS (c32_get_type_test, c32_type_test_t, (const char *name),
                                                       _GL_ARG_NONNULL ((1)));
 # endif
 _GL_CXXALIAS_SYS (c32_get_type_test, c32_type_test_t, (const char *name));
@@ -828,7 +830,7 @@ _GL_FUNCDECL_SYS (c32_apply_type_test, int,
 #  endif
 # else
 _GL_FUNCDECL_SYS (c32_apply_type_test, int,
-                  (wint_t wc, c32_type_test_t property)
+                  (wint_t wc, c32_type_test_t property),
                   _GL_ARG_NONNULL ((2)));
 # endif
 _GL_CXXALIAS_SYS (c32_apply_type_test, int,
@@ -868,7 +870,7 @@ c32_get_mapping (const char *name)
 }
 _GL_END_C_LINKAGE
 # else
-_GL_FUNCDECL_SYS (c32_get_mapping, c32_mapping_t, (const char *name)
+_GL_FUNCDECL_SYS (c32_get_mapping, c32_mapping_t, (const char *name),
                                                   _GL_ARG_NONNULL ((1)));
 # endif
 _GL_CXXALIAS_SYS (c32_get_mapping, c32_mapping_t, (const char *name));
@@ -895,7 +897,7 @@ c32_apply_mapping (wint_t wc, c32_mapping_t mapping)
 _GL_END_C_LINKAGE
 # else
 _GL_FUNCDECL_SYS (c32_apply_mapping, wint_t,
-                  (wint_t wc, c32_mapping_t mapping)
+                  (wint_t wc, c32_mapping_t mapping),
                   _GL_ARG_NONNULL ((2)));
 # endif
 _GL_CXXALIAS_SYS (c32_apply_mapping, wint_t,
