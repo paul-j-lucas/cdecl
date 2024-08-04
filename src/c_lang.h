@@ -138,7 +138,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CPP_20   (1u << 14)        /**< C++ 20. */
 #define LANG_CPP_23   (1u << 15)        /**< C++ 23. */
 #define LANG_CPP_NEW  LANG_CPP_23       /**< Newest supported C++ language. */
-#define LANG_CPP_ANY  0xFE00u           /**< Any C++ language. */
+#define LANG_CPP_ANY  LANG_MIN(CPP_OLD) /**< Any C++ language. */
 
 /**
  * Embedded C, or more formally, _Programming languages - C - Extensions to
@@ -216,7 +216,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_MAX()
  * @sa #LANG_RANGE()
  */
-#define LANG_MIN(L)               (BITS_GE( LANG_##L ) & ~LANGX_MASK)
+#define LANG_MIN(L)               BITS_GE( LANG_##L )
 
 /**
  * C-only languages up to and including \a L.
