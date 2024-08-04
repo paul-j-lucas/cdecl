@@ -369,7 +369,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_alignas                    LANG_C_CPP_MIN(23,11)
 
 /**
- * Languages `alignas` may be used with `enum`, `class`, `struct`, and `union`
+ * Languages `alignas` may be used with `class`, `struct`, and `union`
  * declarations.
  *
  * @sa #LANG_ALIGNMENT
@@ -443,7 +443,9 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_auto_PARAMS                LANG_CPP_MIN(20)
 
 /**
- * Languages the `auto` keyword as a pointer type is supported in.
+ * Languages the `auto` keyword as a pointer type is supported in, e.g.:
+ *
+ *      auto *p = f();
  *
  * @sa #LANG_auto_PARAMS
  * @sa #LANG_auto_RETURN_TYPES
@@ -465,7 +467,9 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_auto_RETURN_TYPES          LANG_CPP_MIN(14)
 
 /**
- * Languages the `auto` keyword as a storage class is supported in.
+ * Languages the `auto` keyword as a storage class is supported in, e.g.:
+ *
+ *      auto int x;
  *
  * @sa #LANG_auto_PARAMS
  * @sa #LANG_auto_POINTER_TYPES
@@ -476,7 +480,9 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_auto_STORAGE               LANG_C_CPP_MAX(17,03)
 
 /**
- * Languages the `auto` keyword as a type is supported in.
+ * Languages the `auto` keyword as a type is supported in, e.g.:
+ *
+ *      auto x = f();
  *
  * @sa #LANG_auto_PARAMS
  * @sa #LANG_auto_POINTER_TYPES
@@ -488,7 +494,9 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Languages the `auto` keyword as a type declaring multiple variables is
- * supported in.
+ * supported in, e.g.:
+ *
+ *      auto x = f(), y = g();
  *
  * @sa #LANG_auto_PARAMS
  * @sa #LANG_auto_POINTER_TYPES
@@ -733,7 +741,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_export                     LANG_CPP_MIN(20)
 
 /**
- * Languages `extern void x` is supported in.
+ * Languages `extern void` is supported in.
  *
  * @sa #LANG_void
  */
@@ -809,7 +817,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_inline_VARIABLES           LANG_CPP_MIN(17)
 
 /**
- * Languages K&R style function definitions are supported in.
+ * Languages K&R style function definitions are supported in, e.g.:
+ *
+ *      int f(x)
+ *
+ * where arguments between `()` are just names and have no type.
  *
  * @sa #LANG_PROTOTYPES
  */
@@ -835,7 +847,10 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG___LINE__                   LANG_MIN(C_89)
 
 /**
- * Languages linkage declarations are supported in.
+ * Languages linkage declarations are supported in, e.g.:
+ *
+ *      extern "C" f(int);
+ *      extern "C" using T = U;
  */
 #define LANG_LINKAGE_DECLS              LANG_CPP_ANY
 
@@ -910,7 +925,38 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_NESTED_namespace           LANG_CPP_MIN(17)
 
 /**
- * Languages nested types are supported in.
+ * Languages nested types are supported in, e.g.:
+ *
+ *      struct S {
+ *        typedef int T;
+ *      };
+ *
+ * @note
+ * @parblock
+ * C syntactically allows:
+ *
+ *      struct S {
+ *        int s_x;
+ *        struct T {
+ *          int t_x;
+ *        };
+ *      };
+ *
+ * but it means:
+ *
+ *      struct T {
+ *        int t_x;
+ *      };
+ *
+ *      struct S {
+ *        int s_x;
+ *      };
+ *
+ * i.e., `T` is _not_ scoped within `S` nor is there an object of `T` in `S`.
+ *
+ * Because nested `struct`s are both misleading and practically useless in C,
+ * **cdecl** doesn't support it at all in C even though it's legal.
+ * @endparblock
  */
 #define LANG_NESTED_TYPES               LANG_CPP_ANY
 
@@ -1049,7 +1095,9 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_PROTOTYPES                 LANG_MIN(C_89)
 
 /**
- * Languages qualified array parameters are supported in.
+ * Languages qualified array parameters are supported in, e.g.:
+ *
+ *      int f(int a[const])
  */
 #define LANG_QUALIFIED_ARRAYS           LANG_C_MIN(99)
 
@@ -1061,7 +1109,9 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_REFERENCES                 LANG_CPP_ANY
 
 /**
- * Languages reference qualified functions are supported in.
+ * Languages reference qualified member functions are supported in, e.g.:
+ *
+ *      void f() &
  */
 #define LANG_REF_QUALIFIED_FUNCS        LANG_CPP_MIN(11)
 
@@ -1143,7 +1193,9 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_STRUCTURED_BINDINGS        LANG_CPP_MIN(17)
 
 /**
- * Languages "tentative definitions" are supported in.
+ * Languages "tentative definitions" are supported in, e.g.:
+ *
+ *      int i, i;                 // OK in C; error in C++
  */
 #define LANG_TENTATIVE_DEFS             LANG_C_ANY
 
@@ -1184,7 +1236,9 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG___TIME__                   LANG_MIN(C_89)
 
 /**
- * Languages trailing return types are supported in.
+ * Languages trailing return types are supported in, e.g.:
+ *
+ *      auto f() -> int
  */
 #define LANG_TRAILING_RETURN_TYPES      LANG_CPP_MIN(11)
 
@@ -1204,7 +1258,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_true_false                 LANG_MIN(C_23)
 
 /**
- * Languages `typeof` and `typeof_unqual` are supported in.
+ * Languages the `typeof` and `typeof_unqual` keywords are supported in.
  */
 #define LANG_typeof                     LANG_C_MIN(23)
 
@@ -1516,6 +1570,9 @@ c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
  * @param lang A pointer to the previous language. For the first iteration,
  * NULL should be passed.
  * @return Returns the next C/C++ language or NULL for none.
+ *
+ * @note This function isn't normally called directly; use the #FOREACH_LANG()
+ * macro instead.
  *
  * @sa #FOREACH_LANG()
  */
