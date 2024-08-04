@@ -745,8 +745,7 @@ static bool c_ast_free_if_garbage( slist_node_t *ast_node, void *data ) {
 
   // We also need to ensure the AST isn't in the type_ast_stack.
   FOREACH_SLIST_NODE( type_node, &in_attr.type_ast_stack ) {
-    c_ast_t const *const stack_type_ast = type_node->data;
-    if ( ast == stack_type_ast )
+    if ( ast == type_node->data )
       return false;
   } // for
 
