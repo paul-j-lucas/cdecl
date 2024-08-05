@@ -85,7 +85,7 @@ extern unsigned     test_failures;      ///< Test failure count.
  * @param argc The command-line argument count.
  * @param argv The command-line argument values.
  */
-void test_prog_init( int argc, char const *argv[const] );
+void test_prog_init( int argc, char const *const argv[] );
 
 ///////////////////////////////////////////////////////////////////////////////
 

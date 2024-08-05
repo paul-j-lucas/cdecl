@@ -102,7 +102,7 @@ bool is_cppdecl( void ) {
  * @param argv The command-line argument values.
  * @return Returns 0 on success, non-zero on failure.
  */
-int main( int argc, char const *argv[] ) {
+int main( int argc, char const *const argv[] ) {
   me = base_name( argv[0] );
   ATEXIT( &cdecl_cleanup );
   cdecl_is_testing = str_is_affirmative( getenv( "CDECL_TEST" ) );

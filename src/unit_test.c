@@ -71,7 +71,7 @@ static void test_prog_usage( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void test_prog_init( int argc, char const *argv[const] ) {
+void test_prog_init( int argc, char const *const argv[] ) {
   ASSERT_RUN_ONCE();
   me = base_name( argv[0] );
   if ( --argc != 0 )
