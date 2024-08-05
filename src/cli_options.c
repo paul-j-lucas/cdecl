@@ -128,8 +128,8 @@ static struct option const CLI_OPTIONS[] = {
   //
   // If this is updated, ensure the following are updated to match:
   //
-  //  1. Calls to opt_check_exclusive().
-  //  2. Calls to opt_check_mutually_exclusive().
+  //  1. Calls to check_opt_exclusive().
+  //  2. Calls to check_opt_mutually_exclusive().
   //  3. The corresponding "set" option in SET_OPTIONS in set_options.c.
   //
   { L_OPT_alt_tokens,       no_argument,        NULL, COPT(ALT_TOKENS)        },
@@ -221,6 +221,9 @@ static bool         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
 NODISCARD
+static char const*  get_opt_format( char );
+
+NODISCARD
 static char const*  get_opt_long( char );
 
 static void         print_commands( void );
@@ -232,6 +235,55 @@ static void         print_usage( int );
 static void         print_version( bool );
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * If \a opt was given, checks that _only_ it was given and, if not, prints an
+ * error message and exits; if \a opt was not given, does nothing.
+ *
+ * @param opt The option to check for.
+ *
+ * @sa check_opt_mutually_exclusive()
+ */
+static void check_opt_exclusive( char opt ) {
+  if ( !opts_given[ STATIC_CAST( unsigned, opt ) ] )
+    return;
+  for ( size_t i = '0'; i < ARRAY_SIZE( opts_given ); ++i ) {
+    char const curr_opt = STATIC_CAST( char, i );
+    if ( curr_opt == opt )
+      continue;
+    if ( opts_given[ STATIC_CAST( unsigned, curr_opt ) ] ) {
+      fatal_error( EX_USAGE,
+        "%s can be given only by itself\n",
+        get_opt_format( opt )
+      );
+    }
+  } // for
+}
+
+/**
+ * If \a opt was given, checks that no option in \a opts was also given.  If it
+ * was, prints an error message and exits; if it wasn't, does nothing.
+ *
+ * @param opt The option.
+ * @param opts The set of options.
+ *
+ * @sa check_opt_exclusive()
+ */
+static void check_opt_mutually_exclusive( char opt, char const *opts ) {
+  assert( opts != NULL );
+  if ( !opts_given[ STATIC_CAST( unsigned, opt ) ] )
+    return;
+  for ( ; *opts != '\0'; ++opts ) {
+    assert( *opts != opt );
+    if ( opts_given[ STATIC_CAST( unsigned, *opts ) ] ) {
+      fatal_error( EX_USAGE,
+        "%s and %s are mutually exclusive\n",
+        get_opt_format( opt ),
+        get_opt_format( *opts )
+      );
+    }
+  } // for
+}
 
 /**
  * Formats an option as `[--%%s/]-%%c` where `%%s` is the long option (if any)
@@ -329,55 +381,6 @@ static char const* make_short_opts( struct option const opts[static const 2] ) {
   *s = '\0';
 
   return short_opts;
-}
-
-/**
- * If \a opt was given, checks that _only_ it was given and, if not, prints an
- * error message and exits; if \a opt was not given, does nothing.
- *
- * @param opt The option to check for.
- *
- * @sa opt_check_mutually_exclusive()
- */
-static void opt_check_exclusive( char opt ) {
-  if ( !opts_given[ STATIC_CAST( unsigned, opt ) ] )
-    return;
-  for ( size_t i = '0'; i < ARRAY_SIZE( opts_given ); ++i ) {
-    char const curr_opt = STATIC_CAST( char, i );
-    if ( curr_opt == opt )
-      continue;
-    if ( opts_given[ STATIC_CAST( unsigned, curr_opt ) ] ) {
-      fatal_error( EX_USAGE,
-        "%s can be given only by itself\n",
-        get_opt_format( opt )
-      );
-    }
-  } // for
-}
-
-/**
- * If \a opt was given, checks that no option in \a opts was also given.  If it
- * was, prints an error message and exits; if it wasn't, does nothing.
- *
- * @param opt The option.
- * @param opts The set of options.
- *
- * @sa opt_check_exclusive()
- */
-static void opt_check_mutually_exclusive( char opt, char const *opts ) {
-  assert( opts != NULL );
-  if ( !opts_given[ STATIC_CAST( unsigned, opt ) ] )
-    return;
-  for ( ; *opts != '\0'; ++opts ) {
-    assert( *opts != opt );
-    if ( opts_given[ STATIC_CAST( unsigned, *opts ) ] ) {
-      fatal_error( EX_USAGE,
-        "%s and %s are mutually exclusive\n",
-        get_opt_format( opt ),
-        get_opt_format( *opts )
-      );
-    }
-  } // for
 }
 
 /**
@@ -622,10 +625,10 @@ static void parse_options( int *const pargc, char const *const *pargv[const] ) {
   *pargc -= optind;
   *pargv += optind;
 
-  opt_check_exclusive( COPT(HELP) );
-  opt_check_exclusive( COPT(VERSION) );
+  check_opt_exclusive( COPT(HELP) );
+  check_opt_exclusive( COPT(VERSION) );
 
-  opt_check_mutually_exclusive( COPT(COMMANDS),
+  check_opt_mutually_exclusive( COPT(COMMANDS),
     SOPT(ALT_TOKENS)
     SOPT(COLOR)
     SOPT(DIGRAPHS)
@@ -645,7 +648,7 @@ static void parse_options( int *const pargc, char const *const *pargv[const] ) {
     SOPT(WEST_DECL)
   );
 
-  opt_check_mutually_exclusive( COPT(OPTIONS),
+  check_opt_mutually_exclusive( COPT(OPTIONS),
     SOPT(ALT_TOKENS)
     SOPT(COLOR)
     SOPT(COMMANDS)
@@ -665,8 +668,8 @@ static void parse_options( int *const pargc, char const *const *pargv[const] ) {
     SOPT(WEST_DECL)
   );
 
-  opt_check_mutually_exclusive( COPT(DIGRAPHS), SOPT(TRIGRAPHS) );
-  opt_check_mutually_exclusive( COPT(FILE), SOPT(LINENO) );
+  check_opt_mutually_exclusive( COPT(DIGRAPHS), SOPT(TRIGRAPHS) );
+  check_opt_mutually_exclusive( COPT(FILE), SOPT(LINENO) );
 
   if ( strcmp( opt_file, "-" ) != 0 && !freopen( opt_file, "r", stdin ) )
     fatal_error( EX_NOINPUT, "\"%s\": %s\n", opt_file, STRERROR() );
