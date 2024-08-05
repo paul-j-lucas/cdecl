@@ -1,3 +1,13 @@
+2024-08-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, cli_options.c, cli_options.h, unit_test.c, unit_test.h: Added
+     more `const`s.
+
+2024-08-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * show.h: Added missing PJL_DISCARD.
+   * c_lang.h: Simplified LANG_MIN(); redefined LANG_CPP_ANY.
+
 2024-08-03  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c: Better error location in mex_check_num_args().
