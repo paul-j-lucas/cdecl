@@ -111,7 +111,7 @@
  * @param FORMAT The `printf()` format string literal to use.
  * @param ... The `printf()` arguments.
  */
-#define OPT_INVALID_VALUE(OPT,VALUE,FORMAT,...)                     \
+#define INVALID_OPT_VALUE(OPT,VALUE,FORMAT,...)                     \
   fatal_error( EX_USAGE,                                            \
     "\"%s\": invalid value for %s; must be " FORMAT "\n",           \
     (VALUE), get_opt_format( COPT(OPT) ) VA_OPT( (,), __VA_ARGS__ ) \
@@ -421,7 +421,7 @@ static color_when_t parse_color_when( char const *when ) {
   bool comma = false;
   FOREACH_ARRAY_ELEMENT( colorize_map_t, m, COLORIZE_MAP )
     strbuf_sepsn_puts( &when_sbuf, ", ", 2, &comma, m->map_when );
-  OPT_INVALID_VALUE( COLOR, when, "%s", when_sbuf.str );
+  INVALID_OPT_VALUE( COLOR, when, "%s", when_sbuf.str );
 }
 
 /**
@@ -445,7 +445,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
     if ( !lang->is_alias )
       strbuf_sepsn_puts( &langs_sbuf, ", ", 2, &comma, lang->name );
   } // for
-  OPT_INVALID_VALUE( LANGUAGE, lang_name, "%s", langs_sbuf.str );
+  INVALID_OPT_VALUE( LANGUAGE, lang_name, "%s", langs_sbuf.str );
 }
 
 /**
@@ -485,7 +485,7 @@ static void parse_options( int *const pargc, char const *const *pargv[const] ) {
 #endif /* ENABLE_BISON_DEBUG */
       case COPT(CDECL_DEBUG):
         if ( !parse_cdecl_debug( empty_if_null( optarg ) ) ) {
-          OPT_INVALID_VALUE(
+          INVALID_OPT_VALUE(
             CDECL_DEBUG, optarg, "[%s]+|*|-", OPT_CDECL_DEBUG_ALL
           );
         }
@@ -512,11 +512,11 @@ static void parse_options( int *const pargc, char const *const *pargv[const] ) {
         break;
       case COPT(EXPLICIT_ECSU):
         if ( !parse_explicit_ecsu( optarg ) )
-          OPT_INVALID_VALUE( EXPLICIT_ECSU, optarg, "[%s]+|*|-", OPT_ECSU_ALL );
+          INVALID_OPT_VALUE( EXPLICIT_ECSU, optarg, "[%s]+|*|-", OPT_ECSU_ALL );
         break;
       case COPT(EXPLICIT_INT):
         if ( !parse_explicit_int( optarg ) ) {
-          OPT_INVALID_VALUE(
+          INVALID_OPT_VALUE(
             EXPLICIT_INT, optarg, "i|u|{[u]{i|s|l[l]}[,]}+|*|-"
           );
         }
@@ -595,7 +595,7 @@ static void parse_options( int *const pargc, char const *const *pargv[const] ) {
         break;
       case COPT(WEST_DECL):
         if ( !parse_west_decl( optarg ) ) {
-          OPT_INVALID_VALUE(
+          INVALID_OPT_VALUE(
             WEST_DECL, optarg, "[%s]+|*|-", OPT_WEST_DECL_ALL
           );
         }
