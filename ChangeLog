@@ -1,3 +1,8 @@
+2024-08-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c: Now allowing optional '-' after "set no" for a "no" option.
+   * set_options.c: Now checking for lang only if not is_no.
+
 2024-08-05  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c, cli_options.c, cli_options.h, unit_test.c, unit_test.h: Added
