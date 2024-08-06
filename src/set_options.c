@@ -811,15 +811,17 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
 
   char const *const orig_name = opt_name;
   bool const is_no = STRNCMPLIT( opt_name, "no" ) == 0;
-  if ( is_no )
+  if ( is_no ) {
     opt_name += STRLITLEN( "no" );
-
-  c_lang_id_t const lang_id = c_lang_find( orig_name );
-  if ( lang_id != LANG_NONE ) {
-    if ( opt_value != NULL )
-      goto opt_takes_no_value;
-    set_lang_impl( lang_id );
-    return true;
+  }
+  else {
+    c_lang_id_t const lang_id = c_lang_find( orig_name );
+    if ( lang_id != LANG_NONE ) {
+      if ( opt_value != NULL )
+        goto opt_takes_no_value;
+      set_lang_impl( lang_id );
+      return true;
+    }
   }
 
   slist_t found_opt_list;
