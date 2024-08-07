@@ -62,7 +62,7 @@
  * @param FORMAT The `printf()` format string literal to use.
  * @param ... The `printf()` arguments.
  */
-#define OPTION_INVALID_VALUE(OPT,ARGS,FORMAT,...)               \
+#define INVALID_OPT_VALUE(OPT,ARGS,FORMAT,...)                  \
   print_error( (ARGS)->opt_value_loc,                           \
     "\"%s\": invalid value for " OPT "; must be " FORMAT "\n",  \
     (ARGS)->opt_value VA_OPT( (,), __VA_ARGS__ )                \
@@ -422,7 +422,7 @@ static bool set_debug( set_option_fn_args_t const *args ) {
   if ( args->opt_enabled ) {
     ok = parse_cdecl_debug( empty_if_null( args->opt_value ) );
     if ( !ok )
-      OPTION_INVALID_VALUE( "debug", args, "[%s]+|*|-", OPT_CDECL_DEBUG_ALL );
+      INVALID_OPT_VALUE( "debug", args, "[%s]+|*|-", OPT_CDECL_DEBUG_ALL );
   }
   else {
     ok = parse_cdecl_debug( NULL );
@@ -512,7 +512,7 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
   if ( args->opt_enabled ) {
     ok = parse_explicit_ecsu( args->opt_value );
     if ( !ok )
-      OPTION_INVALID_VALUE( "explicit-ecsu", args, "[%s]+|*|-", OPT_ECSU_ALL );
+      INVALID_OPT_VALUE( "explicit-ecsu", args, "[%s]+|*|-", OPT_ECSU_ALL );
   }
   else {
     ok = parse_explicit_ecsu( "" );
@@ -541,11 +541,8 @@ static bool set_explicit_int( set_option_fn_args_t const *args ) {
 
   if ( args->opt_enabled ) {
     ok = parse_explicit_int( args->opt_value );
-    if ( !ok ) {
-      OPTION_INVALID_VALUE(
-        "explicit-int", args, "i|u|{[u]{i|s|l[l]}[,]}+|*|-"
-      );
-    }
+    if ( !ok )
+      INVALID_OPT_VALUE( "explicit-int", args, "i|u|{[u]{i|s|l[l]}[,]}+|*|-" );
   }
   else {
     ok = parse_explicit_int( "" );
@@ -747,7 +744,7 @@ static bool set_west_decl( set_option_fn_args_t const *args ) {
   if ( args->opt_enabled ) {
     ok = parse_west_decl( args->opt_value );
     if ( !ok )
-      OPTION_INVALID_VALUE( "west-decl", args, "[%s]+|*|-", OPT_WEST_DECL_ALL );
+      INVALID_OPT_VALUE( "west-decl", args, "[%s]+|*|-", OPT_WEST_DECL_ALL );
   }
   else {
     ok = parse_west_decl( "" );
