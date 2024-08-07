@@ -455,10 +455,10 @@ static char const* const* prev_keyword_ac_next( char const *s, size_t pos ) {
     char const *const token = str_prev_token( s, pos, &token_len );
     if ( token == NULL )
       return NULL;
-    static strbuf_t token_buf;
-    strbuf_reset( &token_buf );
-    strbuf_putsn( &token_buf, token, token_len );
-    cdecl_keyword_t const *const cdk = cdecl_keyword_find( token_buf.str );
+    static strbuf_t token_sbuf;
+    strbuf_reset( &token_sbuf );
+    strbuf_putsn( &token_sbuf, token, token_len );
+    cdecl_keyword_t const *const cdk = cdecl_keyword_find( token_sbuf.str );
     if ( cdk != NULL )
       return cdk->ac_next_keywords;
     pos = STATIC_CAST( size_t, token - s );
