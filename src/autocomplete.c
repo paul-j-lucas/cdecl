@@ -397,6 +397,42 @@ static char const *const* command_ac_keywords( char const *command ) {
 }
 
 /**
+ * Retroactively figure out what the current command is so we can do some
+ * command-sensitive autocompletion.
+ *
+ * @remarks We can't just set the command in command_generator() since it may
+ * never be called: the user could type an entire command, then hit <tab>
+ * sometime later, e.g.:
+ *
+ *      cdecl> set <tab>
+ *
+ * @return Returns a command literal or NULL if there's no command.
+ */
+NODISCARD
+static char const* determine_command( void ) {
+  size_t const rl_size = STATIC_CAST( size_t, rl_end );
+  size_t const leading_spaces = strnspn( rl_line_buffer, " ", rl_size );
+  size_t const buf_len = rl_size - leading_spaces;
+  if ( buf_len == 0 )
+    return NULL;
+  char const *const buf = rl_line_buffer + leading_spaces;
+
+  if ( str_is_ident_prefix( "?", 1, buf, buf_len ) )
+    return L_help;
+
+  FOREACH_CDECL_COMMAND( c ) {
+    if ( !opt_lang_is_any( c->lang_ids ) )
+      continue;
+    if ( str_is_ident_prefix( c->literal, strlen( c->literal ),
+                              buf, buf_len ) ) {
+      return c->literal;
+    }
+  } // for
+
+  return opt_infer_command ? L_explain : NULL;
+}
+
+/**
  * Gets whether \a command is a pseudo-English command (that is followed by
  * pseudo-English) instead of gibberish.
  *
@@ -600,37 +636,6 @@ static char* command_generator( char const *text, int state ) {
   return NULL;
 }
 
-static char const* figure_out_command( void ) {
-  size_t const rl_size = STATIC_CAST( size_t, rl_end );
-  size_t const leading_spaces = strnspn( rl_line_buffer, " ", rl_size );
-  size_t const buf_len = rl_size - leading_spaces;
-  if ( buf_len == 0 )
-    return NULL;
-  char const *const buf = rl_line_buffer + leading_spaces;
-
-  //
-  // Retroactively figure out what the current command is so we can do some
-  // command-sensitive autocompletion.  We can't just set the command in
-  // command_generator() since it may never be called: the user could type an
-  // entire command, then hit <tab> sometime later, e.g.:
-  //
-  //      cdecl> set <tab>
-  //
-  if ( str_is_ident_prefix( "?", 1, buf, buf_len ) )
-    return L_help;
-
-  FOREACH_CDECL_COMMAND( c ) {
-    if ( !opt_lang_is_any( c->lang_ids ) )
-      continue;
-    if ( str_is_ident_prefix( c->literal, strlen( c->literal ),
-                              buf, buf_len ) ) {
-      return c->literal;
-    }
-  } // for
-
-  return opt_infer_command ? L_explain : NULL;
-}
-
 /**
  * Attempts to match a **cdecl** keyword (that is not a command).
  *
@@ -646,7 +651,7 @@ static char* keyword_generator( char const *text, int state ) {
   static bool        returned_any;      // returned at least one match?
 
   if ( state == 0 ) {                   // new word? reset
-    command = figure_out_command();
+    command = determine_command();
     returned_any = false;
   }
 
