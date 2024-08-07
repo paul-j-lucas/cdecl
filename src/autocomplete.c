@@ -687,7 +687,7 @@ static char* keyword_generator( char const *text, int state ) {
   }
 
   if ( command == L_set && STRNCMPLIT( text, "no-" ) == 0 ) {
-    static char *alt_text;
+    static strbuf_t no_sbuf;
     //
     // Special case: for the "set" command, since the "no" options are of the
     // form "nofoo" and not "no-foo", if the user types:
@@ -698,14 +698,12 @@ static char* keyword_generator( char const *text, int state ) {
     // all the "no" options.
     //
     if ( state == 0 ) {
-      free( alt_text );
-      alt_text = MALLOC( char, text_len );
-      strcpy( alt_text, "no" );
-      strcpy( alt_text + 2, text + 3 );
-      --text_len;
+      strbuf_reset( &no_sbuf );
+      strbuf_reserve( &no_sbuf, --text_len );
+      strbuf_printf( &no_sbuf, "no%s", text + STRLITLEN( "no-" ) );
     }
-    assert( alt_text != NULL );
-    text = alt_text;
+    assert( no_sbuf.str != NULL );
+    text = no_sbuf.str;
   }
 
   if ( specific_ac_keywords != NULL ) {
