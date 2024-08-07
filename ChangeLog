@@ -1,5 +1,7 @@
 2024-08-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.c, ac-set.exp: For the `set` command, if the user types
+     `no-`, change it to `no`.
    * set_options.c: Now allowing optional '-' after "set no" for a "no" option.
    * set_options.c: Now checking for lang only if not is_no.
 
