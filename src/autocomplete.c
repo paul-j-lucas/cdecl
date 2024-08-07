@@ -816,7 +816,7 @@ void readline_init( FILE *fin, FILE *fout ) {
   //
   // Allow almost any non-identifier character to break a word -- except:
   //
-  //  + '#' since it starts off #define and #undef.
+  //  + '#' since it starts off #define, #include, and #undef.
   //  + '-' since we use it as part of hyphenated keywords.
   //
   rl_basic_word_break_characters =
