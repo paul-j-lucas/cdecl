@@ -721,7 +721,7 @@ static char* keyword_generator( char const *text, int state ) {
       int const cmp = strncmp( text, s, text_len );
       if ( cmp > 0 )
         continue;
-      if ( cmp < 0 )                      // the array is sorted
+      if ( cmp < 0 )                    // the array is sorted
         break;
       ac_keyword_t const *const ack = ac_keyword_find( s );
       if ( ack == NULL || opt_lang_is_any( ack->ac_lang_ids ) ) {
