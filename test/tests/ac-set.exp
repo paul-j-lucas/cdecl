@@ -14,6 +14,11 @@ send "set a\t; set\r"
 expect default { exit 1 } -ex { alt-tokens}
 
 expect "cdecl> "
+# set no-english-types
+send "set no-en\t; set\r"
+expect default { exit 1 } -ex { noenglish-types}
+
+expect "cdecl> "
 # set nousing
 send "set nou\t; set\r"
 expect default { exit 1 } -ex { nousing}

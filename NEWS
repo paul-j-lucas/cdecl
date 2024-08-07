@@ -12,6 +12,15 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 18.3
 
+** `no` option autocompletion
+Since the "no" options are of the form `nofoo` and not `no-foo`, if the user
+types:
+
+    cdecl> set no-<tab>
+
+i.e., includes '-', it's changed to just "no" so **cdecl** will still present
+all the "no" options.
+
 ** `language` option
 The `lang` option has been replaced by `language` to match the `--language`
 command-line option.

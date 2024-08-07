@@ -686,6 +686,28 @@ static char* keyword_generator( char const *text, int state ) {
     }
   }
 
+  if ( command == L_set && STRNCMPLIT( text, "no-" ) == 0 ) {
+    static char *alt_text;
+    //
+    // Special case: for the "set" command, since the "no" options are of the
+    // form "nofoo" and not "no-foo", if the user types:
+    //
+    //      cdecl> set no-<tab>
+    //
+    // i.e., includes '-', change it to just "no" so cdecl will still present
+    // all the "no" options.
+    //
+    if ( state == 0 ) {
+      free( alt_text );
+      alt_text = MALLOC( char, text_len );
+      strcpy( alt_text, "no" );
+      strcpy( alt_text + 2, text + 3 );
+      --text_len;
+    }
+    assert( alt_text != NULL );
+    text = alt_text;
+  }
+
   if ( specific_ac_keywords != NULL ) {
     //
     // There's a special-case command or keyword having specific keywords in
