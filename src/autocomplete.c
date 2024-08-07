@@ -600,6 +600,37 @@ static char* command_generator( char const *text, int state ) {
   return NULL;
 }
 
+static char const* figure_out_command( void ) {
+  size_t const rl_size = STATIC_CAST( size_t, rl_end );
+  size_t const leading_spaces = strnspn( rl_line_buffer, " ", rl_size );
+  size_t const buf_len = rl_size - leading_spaces;
+  if ( buf_len == 0 )
+    return NULL;
+  char const *const buf = rl_line_buffer + leading_spaces;
+
+  //
+  // Retroactively figure out what the current command is so we can do some
+  // command-sensitive autocompletion.  We can't just set the command in
+  // command_generator() since it may never be called: the user could type an
+  // entire command, then hit <tab> sometime later, e.g.:
+  //
+  //      cdecl> set <tab>
+  //
+  if ( str_is_ident_prefix( "?", 1, buf, buf_len ) )
+    return L_help;
+
+  FOREACH_CDECL_COMMAND( c ) {
+    if ( !opt_lang_is_any( c->lang_ids ) )
+      continue;
+    if ( str_is_ident_prefix( c->literal, strlen( c->literal ),
+                              buf, buf_len ) ) {
+      return c->literal;
+    }
+  } // for
+
+  return opt_infer_command ? L_explain : NULL;
+}
+
 /**
  * Attempts to match a **cdecl** keyword (that is not a command).
  *
@@ -615,39 +646,8 @@ static char* keyword_generator( char const *text, int state ) {
   static bool        returned_any;      // returned at least one match?
 
   if ( state == 0 ) {                   // new word? reset
-    command = NULL;
+    command = figure_out_command();
     returned_any = false;
-
-    size_t const rl_size = STATIC_CAST( size_t, rl_end );
-    size_t const leading_spaces = strnspn( rl_line_buffer, " ", rl_size );
-    size_t const buf_len = rl_size - leading_spaces;
-    if ( buf_len == 0 )
-      goto done;
-    char const *const buf = rl_line_buffer + leading_spaces;
-
-    //
-    // Retroactively figure out what the current command is so we can do some
-    // command-sensitive autocompletion.  We can't just set the command in
-    // command_generator() since it may never be called: the user could type an
-    // entire command, then hit <tab> sometime later, e.g.:
-    //
-    //      cdecl> set <tab>
-    //
-    if ( str_is_ident_prefix( "?", 1, buf, buf_len ) ) {
-      command = L_help;
-    } else {
-      FOREACH_CDECL_COMMAND( c ) {
-        if ( !opt_lang_is_any( c->lang_ids ) )
-          continue;
-        if ( str_is_ident_prefix( c->literal, strlen( c->literal ),
-                                  buf, buf_len ) ) {
-          command = c->literal;
-          break;
-        }
-      } // for
-    }
-    if ( command == NULL && opt_infer_command )
-      command = L_explain;
   }
 
   if ( command == NULL ) {
