@@ -1,3 +1,7 @@
+2024-08-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Now using strbuf_t.
+
 2024-08-06  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c, ac-set.exp: For the `set` command, if the user types
