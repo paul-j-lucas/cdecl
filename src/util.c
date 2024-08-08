@@ -404,15 +404,15 @@ bool str_is_ident_prefix( char const *ident, size_t ident_len, char const *s,
   return !is_ident( s[ ident_len ] );
 }
 
-bool str_is_prefix( char const *s1, char const *s2 ) {
-  assert( s1 != NULL );
-  assert( s2 != NULL );
-  if ( s1[0] == '\0' )
+bool str_is_prefix( char const *si, char const *sj ) {
+  assert( si != NULL );
+  assert( sj != NULL );
+  if ( si[0] == '\0' )
     return false;
   do {
-    if ( *s1++ != *s2++ )
+    if ( *si++ != *sj++ )
       return false;
-  } while ( *s1 != '\0' );
+  } while ( *si != '\0' );
   return true;
 }
 

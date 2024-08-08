@@ -1688,17 +1688,17 @@ bool str_is_ident_prefix( char const *ident, size_t ident_len, char const *s,
                           size_t s_len );
 
 /**
- * Checks whether \a s1 is a prefix of (or equal to) \a s2.
+ * Checks whether \a si is a prefix of (or equal to) \a sj.
  *
- * @param s1 The candidate prefix string.
- * @param s2 The larger string.
- * @return Returns `true` only if \a s1 is not the empty string and is a prefix
- * of (or equal to) \a s2.
+ * @param si The candidate prefix string.
+ * @param sj The larger string.
+ * @return Returns `true` only if \a si is not the empty string and is a prefix
+ * of (or equal to) \a sj.
  *
  * @sa str_is_ident_prefix()
  */
 NODISCARD
-bool str_is_prefix( char const *s1, char const *s2 );
+bool str_is_prefix( char const *si, char const *sj );
 
 /**
  * Concatenates \a sep and \a src onto the end of \a dst.
