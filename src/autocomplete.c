@@ -401,7 +401,7 @@ static char const *const* command_ac_keywords( char const *command ) {
  * command-sensitive autocompletion.
  *
  * @remarks We can't just set the command in command_generator() since it may
- * never be called: the user could type an entire command, then hit <tab>
+ * never be called: the user could type an entire command, then <kbd>tab</kbd>
  * sometime later, e.g.:
  *
  *      cdecl> set <tab>
