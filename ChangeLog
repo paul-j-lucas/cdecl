@@ -1,3 +1,8 @@
+2024-08-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c, util.c, util.h, util_test.c: Replaced strn_nohyphen_equal()
+     with strncmp_in_set().
+
 2024-08-07  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c: Factored out determine_command().
