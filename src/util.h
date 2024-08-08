@@ -1731,6 +1731,25 @@ PJL_DISCARD
 char* str_realloc_pcat( char const *src, char const *sep, char *dst );
 
 /**
+ * Like **strncmp**(3), but ignores characters _not_ in \a charset.
+ *
+ * @param si The first string.
+ * @param sj The second string.
+ * @param n The maximum number of characters to check.
+ * @param charset The string containing the set of characters to consider.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a si is less
+ * than, equal to (ignoring characters not in \a charset), or greater than \a
+ * sj, respectively.
+ * @par
+ * When a non-zero value is returned, it will have the same sign as what
+ * <code>strncmp(</code> \a si<code>,</code> \a sj<code>,</code> \a n
+ * <code>)</code> would return.
+ */
+NODISCARD
+int strncmp_in_set( char const *si, char const *sj, size_t n,
+                    char const *charset );
+
+/**
  * Decrements \a *s_len as if to trim whitespace, if any, from the end of \a s.
  *
  * @param s The null-terminated string to trim.

@@ -772,28 +772,6 @@ static char const* slist_set_option_gets( void const **ppelt ) {
   return opt->name;
 }
 
-/**
- * Compares strings for at most \a n characters ignoring hyphens for equality.
- *
- * @param s1 The first string.
- * @param s2 The second string.
- * @param n The maximum number of characters to check.
- * @return Returns `true` only if \a s1 equals \a s2 (ignoring hyphens) for \a
- * n characters.
- */
-NODISCARD
-static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
-  while ( n-- > 0 ) {
-    if ( *s1 == '-' )
-      ++s1;
-    else if ( *s2 == '-' )
-      ++s2;
-    else if ( *s1++ != *s2++ )
-      return false;
-  } // while
-  return true;
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
@@ -826,7 +804,7 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
 
   size_t const opt_name_len = strlen( opt_name );
   FOREACH_SET_OPTION( opt ) {
-    if ( strn_nohyphen_equal( opt->name, opt_name, opt_name_len ) )
+    if ( strncmp_in_set( opt->name, opt_name, opt_name_len, IDENT_CHARS ) == 0 )
       slist_push_back( &found_opt_list, CONST_CAST( void*, opt ) );
   } // for
 

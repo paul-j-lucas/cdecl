@@ -38,6 +38,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
+#include <limits.h>
 #ifndef NDEBUG
 #include <signal.h>                     /* for raise(3) */
 #endif /* NDEBUG */
@@ -447,6 +448,38 @@ char* str_realloc_pcat( char const *src, char const *sep, char *dst ) {
   memcpy( dst, src, src_len );
   memcpy( dst + src_len, sep, sep_len );
   return dst;
+}
+
+int strncmp_in_set( char const *si, char const *sj, size_t n,
+                    char const *charset ) {
+  assert( si != NULL );
+  assert( sj != NULL );
+  assert( charset != NULL );
+  assert( charset[0] != '\0' );
+
+  if ( n == 0 )
+    return 0;
+
+  bool in_set[UCHAR_MAX + 1] = { true };  // always put '\0' in the set
+  while ( *charset != 0 )
+    in_set[ STATIC_CAST( unsigned char, *charset++ ) ] = true;
+
+  for ( size_t i = 0, j = 0; i < n && j < n; ) {
+    if ( !in_set[ STATIC_CAST( unsigned char, si[i] ) ] )
+      ++i;
+    else if ( !in_set[ STATIC_CAST( unsigned char, sj[j] ) ] )
+      ++j;
+    else if ( si[i] != sj[j] )
+      return strncmp( si, sj, n );
+    else if ( si[i] == '\0' )             // sj[j] == '\0' also
+      break;
+    else {
+      ++i;
+      ++j;
+    }
+  } // for
+
+  return 0;
 }
 
 void strn_rtrim( char const *s, size_t *s_len ) {

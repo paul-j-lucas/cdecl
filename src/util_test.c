@@ -69,6 +69,50 @@ static void test_str_is_prefix( void ) {
   TEST( !str_is_prefix( "HELLOX", "HELLO" ) );
 }
 
+static void test_strncmp_in_set( void ) {
+  TEST( strncmp_in_set( "", "A", 0, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "A", "", 0, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "", "A", 1, IDENT_CHARS ) < 0 );
+  TEST( strncmp_in_set( "A", "", 1, IDENT_CHARS ) > 0 );
+
+  TEST( strncmp_in_set( "A", "A", 1, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "A", "B", 1, IDENT_CHARS ) < 0 );
+  TEST( strncmp_in_set( "B", "A", 1, IDENT_CHARS ) > 0 );
+
+  TEST( strncmp_in_set( "A", "A", 9, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "A", "B", 9, IDENT_CHARS ) < 0 );
+  TEST( strncmp_in_set( "B", "A", 9, IDENT_CHARS ) > 0 );
+
+  TEST( strncmp_in_set( "A", "AB", 2, IDENT_CHARS ) < 0 );
+  TEST( strncmp_in_set( "AB", "A", 2, IDENT_CHARS ) > 0 );
+  TEST( strncmp_in_set( "AB", "AX", 1, IDENT_CHARS ) == 0 );
+
+  TEST( strncmp_in_set( "-A", "A", 2, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "A-", "A", 2, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "-A-", "A", 3, IDENT_CHARS ) == 0 );
+
+  TEST( strncmp_in_set( "A", "-A", 2, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "A", "A-", 1, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "A", "-A-", 2, IDENT_CHARS ) == 0 );
+
+  TEST( strncmp_in_set( "A-", "A-B", 2, IDENT_CHARS ) == 0 );
+
+  TEST( strncmp_in_set( "AB", "AA", 3, IDENT_CHARS ) > 0 );
+  TEST( strncmp_in_set( "AB", "A-A", 3, IDENT_CHARS ) > 0 );
+  TEST( strncmp_in_set( "AB", "A~A", 3, IDENT_CHARS ) < 0 );
+
+  TEST( strncmp_in_set( "A-B", "A-BC", 3, IDENT_CHARS ) == 0 );
+
+  TEST( strncmp_in_set( "-e-a--st-", "east", 9, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "-e-a--st-", "east-const", 9, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "east-const", "-e-a--st-", 9, IDENT_CHARS ) == 0 );
+
+  TEST( strncmp_in_set( "non-e", "non-empty", 5, IDENT_CHARS ) == 0 );
+  TEST( strncmp_in_set( "non-empty", "non-e", 5, IDENT_CHARS ) == 0 );
+
+  TEST( strncmp_in_set( "no-foo", "nofoo", 6, IDENT_CHARS ) == 0 );
+}
+
 static void test_strnspn( void ) {
   TEST( strnspn( "", "AB", 0 ) == 0 );
 
@@ -110,6 +154,7 @@ int main( int argc, char const *argv[const] ) {
   test_parse_identifier();
   test_strdup_tolower();
   test_str_is_prefix();
+  test_strncmp_in_set();
   test_strnspn();
   test_str_realloc_pcat();
 }
