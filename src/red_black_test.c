@@ -187,7 +187,7 @@ static void test_script( void ) {
 
 ////////// main ///////////////////////////////////////////////////////////////
 
-int main( int argc, char const *argv[const] ) {
+int main( int argc, char const *const argv[] ) {
   test_prog_init( argc, argv );
 
   test_insert1_find_delete();

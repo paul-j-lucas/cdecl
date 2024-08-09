@@ -146,7 +146,7 @@ static void test_str_realloc_pcat( void ) {
 
 ////////// main ///////////////////////////////////////////////////////////////
 
-int main( int argc, char const *argv[const] ) {
+int main( int argc, char const *const argv[] ) {
   test_prog_init( argc, argv );
 
   test_check_strdup_suffix();

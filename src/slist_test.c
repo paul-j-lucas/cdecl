@@ -610,7 +610,7 @@ static bool test_slist_push_back( void ) {
 
 ////////// main ///////////////////////////////////////////////////////////////
 
-int main( int argc, char const *argv[const] ) {
+int main( int argc, char const *const argv[] ) {
   test_prog_init( argc, argv );
 
   if ( test_slist_push_front() && test_slist_push_back() ) {
