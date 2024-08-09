@@ -557,12 +557,6 @@ static bool mex_append_args( mex_state_t *mex ) {
 
   slist_push_back( mex->expand_list, p_token_new( P_PUNCTUATOR, "(" ) );
 
-  static mex_expand_all_fn_t const EXPAND_FNS[] = {
-    // We need only mex_expand_all_macros() that mex_expand_all_fns() does
-    // implicitly.
-    NULL
-  };
-
   unsigned arg_index = 0;
   bool comma = false;
   FOREACH_SLIST_NODE( arg_node, mex->arg_list ) {
@@ -579,6 +573,12 @@ static bool mex_append_args( mex_state_t *mex ) {
       mex->fout
     );
     arg_mex.expand_opt_no_trim_tokens = true;
+
+    static mex_expand_all_fn_t const EXPAND_FNS[] = {
+      // We need only mex_expand_all_macros() that mex_expand_all_fns() does
+      // implicitly.
+      NULL
+    };
 
     mex_print_macro( &arg_mex, arg_mex.replace_list );
     bool const ok = mex_expand_all_fns( &arg_mex, EXPAND_FNS );
