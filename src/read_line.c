@@ -117,7 +117,7 @@ static bool is_continued_line( char const *s, size_t *ps_len ) {
  * Wrapper around GNU **readline**(3).
  *
  * @param fin The file to read from.
- * @param prompt The prompt to use.
+ * @param prompt The prompt to use.  May be NULL.
  * @param pline_len A pointer to receive the length of the line read.
  * @return Returns the line read or NULL for EOF.
  */
@@ -125,7 +125,6 @@ NODISCARD
 static char const* readline_wrapper( FILE *fin, char const *prompt,
                                      size_t *pline_len ) {
   assert( fin != NULL );
-  assert( prompt != NULL );
   assert( pline_len != NULL );
 
   static char *line;
