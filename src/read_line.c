@@ -67,7 +67,7 @@ static char const* getline_wrapper( FILE *fin, size_t *pline_len ) {
   assert( fin != NULL );
   assert( pline_len != NULL );
 
-  static char *line;
+  static char *line;  // must be distinct from "line" in readline_wrapper()
   static size_t line_cap;
 
   ssize_t const rv = getline( &line, &line_cap, fin );
@@ -129,7 +129,7 @@ static char const* readline_wrapper( FILE *fin, char const *prompt,
 
   readline_init( fin, stdout );
 
-  static char *line;
+  static char *line;  // must be distinct from "line" in getline_wrapper()
   free( line );
 
   line = readline( prompt );
