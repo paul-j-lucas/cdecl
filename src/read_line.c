@@ -70,13 +70,13 @@ static char const* getline_wrapper( FILE *fin, size_t *pline_len ) {
   static char *line;
   static size_t line_cap;
 
-  // Note: getline() DOES include the '\n'.
   ssize_t const rv = getline( &line, &line_cap, fin );
   if ( rv == -1 )
     return NULL;
 
   *pline_len = STATIC_CAST( size_t, rv );
-  // Chop off the newline so it's consistent with readline().
+  // Note: getline() DOES include a '\n', so chop it off so it's consistent
+  // with readline().
   strn_rtrim( line, pline_len );
 
   return line;
@@ -127,14 +127,15 @@ static char const* readline_wrapper( FILE *fin, char const *prompt,
   assert( fin != NULL );
   assert( pline_len != NULL );
 
+  readline_init( fin, stdout );
+
   static char *line;
   free( line );
 
-  readline_init( fin, stdout );
-  // Note: readline() does NOT include the '\n'.
   line = readline( prompt );
   if ( line != NULL )
     *pline_len = strlen( line );
+  // Note: readline() does NOT include a '\n'.
   return line;
 }
 // LCOV_EXCL_STOP
