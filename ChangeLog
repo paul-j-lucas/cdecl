@@ -1,3 +1,8 @@
+2024-08-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, pjl_config.h, util.h: Now using AC_C_TYPEOF.
+   * configure.ac: Added AC_C__GENERIC.
+
 2024-08-08  Paul J. Lucas <paul@lucasmail.org>
 
    * set_options.c, util.c, util.h, util_test.c: Replaced strn_nohyphen_equal()
