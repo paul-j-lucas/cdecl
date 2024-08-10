@@ -332,8 +332,8 @@ void fputsp_s( char const *s, FILE *out ) {
 }
 
 void* free_later( void *p ) {
-  assert( p != NULL );
-  slist_push_back( &free_later_list, p );
+  if ( p != NULL )
+    slist_push_back( &free_later_list, p );
   return p;
 }
 

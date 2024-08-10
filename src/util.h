@@ -1405,7 +1405,7 @@ void fputsp_s( char const *s, FILE *out );
 /**
  * Adds a pointer to the head of the free-later-list.
  *
- * @param p The pointer to add.
+ * @param p The pointer to add.  If NULL, does nothing.
  * @return Returns \a p.
  *
  * @sa free_now()
