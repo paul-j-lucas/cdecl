@@ -65,16 +65,8 @@
 
 #endif /* HAVE___ATTRIBUTE__ */
 
-/**
- * Define %PJL_TYPEOF to the supported `typeof` keyword, if any.
- */
-#if defined HAVE_TYPEOF
-# define PJL_TYPEOF               typeof
-#elif defined HAVE___TYPEOF__
-# define PJL_TYPEOF               __typeof__
-#endif
+#ifdef HAVE_TYPEOF
 
-#ifdef PJL_TYPEOF
 /**
  * Discard the return value of a non-`void` function even if it was declared
  * with `NODISCARD`.
@@ -82,8 +74,9 @@
  * @param FN_CALL The function call.
  */
 #define PJL_DISCARD_RV(FN_CALL) \
-  do { MAYBE_UNUSED PJL_TYPEOF(FN_CALL) _rv = (FN_CALL); } while (0)
-#endif /* PJL_TYPEOF */
+  do { MAYBE_UNUSED typeof(FN_CALL) _rv = (FN_CALL); } while (0)
+
+#endif /* HAVE_TYPEOF */
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -552,15 +552,15 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa https://stackoverflow.com/a/77881417/99089
  */
-#ifdef PJL_TYPEOF
-# define IS_ARRAY(A)              \
-    _Generic( &(A),               \
-      PJL_TYPEOF(*(A)) (*)[]: 1,  \
-      default               : 0   \
+#ifdef HAVE_TYPEOF
+# define IS_ARRAY(A)          \
+    _Generic( &(A),           \
+      typeof(*(A)) (*)[]: 1,  \
+      default           : 0   \
     )
 #else
 # define IS_ARRAY(A)              1
-#endif /* PJL_TYPEOF */
+#endif /* HAVE_TYPEOF */
 
 /**
  * Checks (at compile-time) whether the type of \a T is a C string type, i.e.,

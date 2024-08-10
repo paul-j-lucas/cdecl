@@ -171,14 +171,13 @@ AS_IF([test "x$ac_cv_c__Generic" = xno], [
   AC_MSG_ERROR([C11 _Generic support required to compile $PACKAGE_NAME])
 ])
 AC_C_INLINE
+AC_C_TYPEOF
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
 AC_CHECK_MEMBERS([struct passwd.pw_dir],[],[],[[#include <pwd.h>]])
 PJL_COMPILE([__builtin_expect],[], [(void)__builtin_expect(1,1);])
-PJL_COMPILE([typeof],[],[typeof(1) x = 1;])
-PJL_COMPILE([__typeof__],[],[__typeof__(1) x = 1;])
 PJL_COMPILE([__VA_OPT__],
   [#define VA_OPT_TEST(...) __VA_OPT__(int) __VA_ARGS__
   ],
