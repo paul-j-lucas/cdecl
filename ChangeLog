@@ -1,5 +1,6 @@
 2024-08-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * read_line.c: Removed assert().
    * configure.ac, pjl_config.h, util.h: Now using AC_C_TYPEOF.
    * configure.ac: Added AC_C__GENERIC.
 
