@@ -1,3 +1,8 @@
+2024-08-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: s/= xno/!= xyes/
+   * util.c, util.h: free_later() now allows NULL.
+
 2024-08-09  Paul J. Lucas <paul@lucasmail.org>
 
    * read_line.c: Removed assert().
