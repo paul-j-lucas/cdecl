@@ -166,6 +166,10 @@ AC_HEADER_STDBOOL
 gl_INIT
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_C__GENERIC
+AS_IF([test "x$ac_cv_c__Generic" = xno], [
+  AC_MSG_ERROR([C11 _Generic support required to compile $PACKAGE_NAME])
+])
 AC_C_INLINE
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
