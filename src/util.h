@@ -89,20 +89,20 @@ _GL_INLINE_HEADER_BEGIN
     ARGS_HAS_COMMA( __VA_ARGS__ ),                                          \
     /*  Case 2: argument within parentheses,                                \
         e.g., "(ARG)", "(...)", or "()". */                                 \
-    ARGS_HAS_COMMA( ARG_WITHIN_PARENS __VA_ARGS__ ),                        \
+    ARGS_HAS_COMMA( ARGS_IS_EMPTY_COMMA __VA_ARGS__ ),                      \
     /*  Case 3: argument that is a macro that will expand the parentheses,  \
         possibly generating a comma. */                                     \
     ARGS_HAS_COMMA( __VA_ARGS__ () ),                                       \
     /*  Case 4: __VA_ARGS__ doesn't generate a comma by itself, nor with    \
-        ARG_WITHIN_PARENS behind it, nor with () after it.  Therefore,      \
-        "ARG_WITHIN_PARENS __VA_ARGS__ ()" generates a comma only if        \
+        ARGS_IS_EMPTY_COMMA behind it, nor with () after it.  Therefore,    \
+        "ARGS_IS_EMPTY_COMMA __VA_ARGS__ ()" generates a comma only if      \
         __VA_ARGS__ is empty.  So this is the empty __VA_ARGS__ case since  \
         the previous cases are false. */                                    \
-    ARGS_HAS_COMMA( ARG_WITHIN_PARENS __VA_ARGS__ () )                      \
+    ARGS_HAS_COMMA( ARGS_IS_EMPTY_COMMA __VA_ARGS__ () )                    \
   )
 
 /// @cond DOXYGEN_IGNORE
-#define ARG_WITHIN_PARENS(...)    ,
+#define ARGS_IS_EMPTY_COMMA(...)  ,
 #define ARGS_IS_EMPTY_HELPER(_1,_2,_3,_4) \
   ARGS_HAS_COMMA( NAME5( ARGS_IS_EMPTY_RESULT_, _1, _2, _3, _4 ) )
 #define ARGS_IS_EMPTY_RESULT_0001 ,
