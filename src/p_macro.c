@@ -2062,7 +2062,9 @@ static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
       p_token_list_push_back( &va_opt_list, p_token_dup( token ) );
   } // for
 
-  if ( !is_va_args_empty ) {
+  p_token_list_trim( &va_opt_list );
+
+  if ( !slist_empty( &va_opt_list ) ) {
     mex_state_t va_opt_mex;
     mex_init( &va_opt_mex,
       /*parent_mex=*/mex,

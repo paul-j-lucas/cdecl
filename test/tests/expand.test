@@ -105,6 +105,11 @@ expand RECURSIVE_1
 #define RECURSIVE_1               f(RECURSIVE_2)
 expand RECURSIVE_1
 
+// See <https://www.corsix.org/content/va-opt-minutiae>
+#define CALL_QUOTE(X)             QUOTE(X)
+#define TILDAS(...)               ~__VA_OPT__( ~ )~
+expand CALL_QUOTE(TILDAS(x))
+
 #define UNIQUE_NAME(PREFIX)       PASTE(PASTE(PREFIX,_),__LINE__)
 expand UNIQUE_NAME(unused)
 

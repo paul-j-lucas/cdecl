@@ -33,6 +33,16 @@ e.g.:
                  ^
     7: error: "x": set option "c" takes no value
 
+** `__VA_OPT__` whitespace
+Leading & trailing whitespace in `__VA_OPT__()` tokens is now trimmed, e.g.:
+
+    cdecl> #define CALL_QUOTE(x) QUOTE(x)
+    cdecl> #define QUOTE(X) #X
+    cdecl> #define TILDAS(...) ~__VA_OPT__( ~ )~
+    cdecl> expand CALL_QUOTE(TILDAS(x))
+    ...
+    CALL_QUOTE(~~~) => "~~~"
+
 
 * Changes in Cdecl 18.2
 
