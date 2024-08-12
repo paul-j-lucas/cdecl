@@ -145,6 +145,28 @@ struct p_token {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Checks whether the presumed #P_IDENTIFIER token between \a prev_node and \a
+ * next_node that is a presumed macro parameter is an argument for either
+ * #P_CONCAT or #P_STRINGIFY.
+ *
+ * @remarks For function-like macros, when a parameter name is encountered in
+ * the replacement list, it is substituted with the token sequence comprising
+ * the corresponding macro argument.  If that token sequence is a macro, then
+ * it is recursively expanded --- except if it was preceded by either #P_CONCAT
+ * or #P_STRINGIFY, or followed by #P_CONCAT.
+ *
+ * @param prev_node The node pointing to the non-space token before the
+ * parameter, if any.
+ * @param next_node The node pointing to the non-space token after the
+ * parameter, if any.
+ * @return Returns `true` only if the macro is an argument of either #P_CONCAT
+ * or #P_STRINGIFY.
+ */
+NODISCARD
+bool p_is_operator_arg( p_token_node_t const *prev_node,
+                        p_token_node_t const *next_node );
+
+/**
  * Duplicates \a token.
  *
  * @param token The p_token to duplicate; may be NULL.
@@ -354,31 +376,6 @@ void print_token_list( p_token_list_t const *token_list, FILE *fout );
 void print_token_list_color( p_token_list_t const *token_list, FILE *fout );
 
 ////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Checks whether the presumed #P_IDENTIFIER token between \a prev_node and \a
- * next_node that is a presumed macro parameter is an argument for either
- * #P_CONCAT or #P_STRINGIFY.
- *
- * @remarks For function-like macros, when a parameter name is encountered in
- * the replacement list, it is substituted with the token sequence comprising
- * the corresponding macro argument.  If that token sequence is a macro, then
- * it is recursively expanded --- except if it was preceded by either #P_CONCAT
- * or #P_STRINGIFY, or followed by #P_CONCAT.
- *
- * @param prev_node The node pointing to the non-space token before the
- * parameter, if any.
- * @param next_node The node pointing to the non-space token after the
- * parameter, if any.
- * @return Returns `true` only if the macro is an argument of either #P_CONCAT
- * or #P_STRINGIFY.
- */
-NODISCARD P_TOKEN_H_INLINE
-bool p_is_operator_arg( p_token_node_t const *prev_node,
-                        p_token_node_t const *next_node ) {
-  return p_token_node_is_any( prev_node, P_ANY_OPERATOR ) ||
-         p_token_node_is_any( next_node, P_CONCAT );
-}
 
 /**
  * Checks whether the #P_PUNCTUATOR \a token is _any single_ character.

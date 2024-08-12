@@ -261,6 +261,12 @@ static bool p_token_free_if_consec_space( p_token_node_t *token_node,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+bool p_is_operator_arg( p_token_node_t const *prev_node,
+                        p_token_node_t const *next_node ) {
+  return p_token_node_is_any( prev_node, P_ANY_OPERATOR ) ||
+         p_token_node_is_any( next_node, P_CONCAT );
+}
+
 p_token_t* p_token_dup( p_token_t const *token ) {
   if ( token == NULL )
     return NULL;                        // LCOV_EXCL_LINE
