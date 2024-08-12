@@ -223,7 +223,7 @@ struct mex_state {
    */
   rb_tree_t            *no_expand_set;
 
-  p_token_list_t        va_args_list;   ///< Expanded `__VA_ARGS__` tokens.
+  p_token_list_t        va_args_token_list; ///< Expanded `__VA_ARGS__` tokens.
 
   /**
    * Token lists used during expansion.
@@ -1271,7 +1271,7 @@ static void mex_cleanup( mex_state_t *mex ) {
   // arg_list is the caller's responsibility
   // replace_list is the caller's responsibility
   // expand_list only points to one of work_lists
-  p_token_list_cleanup( &mex->va_args_list );
+  p_token_list_cleanup( &mex->va_args_token_list );
   p_token_list_cleanup( &mex->work_lists[0] );
   p_token_list_cleanup( &mex->work_lists[1] );
 
@@ -1843,7 +1843,7 @@ static mex_rv_t mex_expand_all___VA_ARGS__( mex_state_t *mex ) {
     p_token_t const *const token = token_node->data;
     if ( token->kind == P___VA_ARGS__ ) {
       set_substituted(
-        push_back_dup_tokens( mex->expand_list, &mex->va_args_list )
+        push_back_dup_tokens( mex->expand_list, &mex->va_args_token_list )
       );
       rv = MEX_EXPANDED;
       continue;
@@ -2036,7 +2036,7 @@ static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
     p_token_node_not( __VA_OPT___node->next, P_SPACE );
   assert( p_token_node_is_punct( token_node, '(' ) );
 
-  bool const is_va_args_empty = slist_empty( &mex->va_args_list );
+  bool const is_va_args_empty = slist_empty( &mex->va_args_token_list );
 
   p_token_list_t va_opt_list;
   slist_init( &va_opt_list );
@@ -2226,15 +2226,15 @@ static bool mex_pre_expand___VA_ARGS__( mex_state_t *mex ) {
   size_t curr_index = 0;
   size_t const ellipsis_index = slist_len( mex->macro->param_list ) - 1;
 
-  p_token_list_t va_args_list;
-  slist_init( &va_args_list );
+  p_token_list_t va_args_token_list;
+  slist_init( &va_args_token_list );
 
   FOREACH_SLIST_NODE( arg_node, mex->arg_list ) {
     if ( curr_index++ < ellipsis_index )
       continue;
     if ( true_or_set( &comma ) )
-      slist_push_back( &va_args_list, p_token_new( P_PUNCTUATOR, "," ) );
-    push_back_dup_tokens( &va_args_list, arg_node->data );
+      slist_push_back( &va_args_token_list, p_token_new( P_PUNCTUATOR, "," ) );
+    push_back_dup_tokens( &va_args_token_list, arg_node->data );
   } // for
 
   mex_state_t va_args_mex;
@@ -2243,7 +2243,7 @@ static bool mex_pre_expand___VA_ARGS__( mex_state_t *mex ) {
     &(p_macro_t){ .name = L_PRE___VA_ARGS__ },
     &mex->name_loc,
     /*arg_list=*/NULL,
-    /*replace_list=*/&va_args_list,
+    /*replace_list=*/&va_args_token_list,
     mex->fout
   );
   mex_print_macro( &va_args_mex, va_args_mex.replace_list );
@@ -2257,9 +2257,9 @@ static bool mex_pre_expand___VA_ARGS__( mex_state_t *mex ) {
 
   bool const ok = mex_expand_all_fns( &va_args_mex, EXPAND_FNS );
   if ( ok )
-    mex->va_args_list = slist_move( va_args_mex.expand_list );
+    mex->va_args_token_list = slist_move( va_args_mex.expand_list );
   mex_cleanup( &va_args_mex );
-  p_token_list_cleanup( &va_args_list );
+  p_token_list_cleanup( &va_args_token_list );
   return ok;
 }
 
@@ -2579,7 +2579,7 @@ static void mex_stringify___VA_ARGS__( mex_state_t *mex ) {
   assert( mex != NULL );
 
   p_token_t *const stringified_token = p_token_new(
-    P_STR_LIT, check_strdup( p_token_list_str( &mex->va_args_list ) )
+    P_STR_LIT, check_strdup( p_token_list_str( &mex->va_args_token_list ) )
   );
 
   stringified_token->is_substituted = true;
