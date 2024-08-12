@@ -2038,8 +2038,8 @@ static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
 
   bool const is_va_args_empty = slist_empty( &mex->va_args_token_list );
 
-  p_token_list_t va_opt_list;
-  slist_init( &va_opt_list );
+  p_token_list_t va_opt_token_list;
+  slist_init( &va_opt_token_list );
 
   for ( unsigned paren_count = 1; paren_count > 0; ) {
     token_node = token_node->next;
@@ -2056,12 +2056,12 @@ static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
       } // switch
     }
     if ( !is_va_args_empty )
-      p_token_list_push_back( &va_opt_list, p_token_dup( token ) );
+      p_token_list_push_back( &va_opt_token_list, p_token_dup( token ) );
   } // for
 
-  p_token_list_trim( &va_opt_list );
+  p_token_list_trim( &va_opt_token_list );
 
-  if ( !slist_empty( &va_opt_list ) ) {
+  if ( !slist_empty( &va_opt_token_list ) ) {
     mex_state_t va_opt_mex;
     mex_init( &va_opt_mex,
       /*parent_mex=*/mex,
@@ -2071,7 +2071,7 @@ static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
       },
       &mex->name_loc,
       mex->arg_list,
-      /*replace_list=*/&va_opt_list,
+      /*replace_list=*/&va_opt_token_list,
       mex->fout
     );
     va_opt_mex.print_opt_omit_args = true;
@@ -2091,7 +2091,7 @@ static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
     mex_cleanup( &va_opt_mex );
   }
 
-  p_token_list_cleanup( &va_opt_list );
+  p_token_list_cleanup( &va_opt_token_list );
   return token_node;
 }
 
@@ -2604,14 +2604,15 @@ static p_token_node_t* mex_stringify___VA_OPT__( mex_state_t *mex,
   assert( mex != NULL );
   assert( p_token_node_is_any( __VA_OPT___node, P___VA_OPT__ ) );
 
-  p_token_list_t va_opt_list;
-  slist_init( &va_opt_list );
+  p_token_list_t va_opt_token_list;
+  slist_init( &va_opt_token_list );
 
   p_token_node_t *const rv_node =
-    mex_expand___VA_OPT__( mex, __VA_OPT___node, &va_opt_list );
-  p_token_t *const stringified_token =
-    p_token_new( P_STR_LIT, check_strdup( p_token_list_str( &va_opt_list ) ) );
-  p_token_list_cleanup( &va_opt_list );
+    mex_expand___VA_OPT__( mex, __VA_OPT___node, &va_opt_token_list );
+  p_token_t *const stringified_token = p_token_new(
+    P_STR_LIT, check_strdup( p_token_list_str( &va_opt_token_list ) )
+  );
+  p_token_list_cleanup( &va_opt_token_list );
   stringified_token->is_substituted = true;
   p_token_list_push_back( mex->expand_list, stringified_token );
 
