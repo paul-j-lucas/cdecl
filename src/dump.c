@@ -664,8 +664,10 @@ static void p_token_dump_impl( p_token_t const *token, dump_state_t *dump ) {
       break;
   } // switch
 
-  FPUTS( ", loc: ", dump->fout );
-  c_loc_dump( &token->loc, dump->fout );
+  if ( token->loc.first_column > 0 ) {
+    FPUTS( ", loc: ", dump->fout );
+    c_loc_dump( &token->loc, dump->fout );
+  }
 
   FPUTS( " }", dump->fout );
 }

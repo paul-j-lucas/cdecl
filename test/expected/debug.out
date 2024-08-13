@@ -11237,7 +11237,7 @@ NAME2(x, __LINE__) => NAME2_HELPER(A,B)
     {
       macro: "__LINE__",
       token_list: [
-        { kind: "num_lit", string: "42", loc: { first_column: 0 } }
+        { kind: "num_lit", string: "42" }
       ]
     }
 | B => 42
