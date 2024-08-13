@@ -33,6 +33,14 @@ e.g.:
                  ^
     7: error: "x": set option "c" takes no value
 
+** `__VA_ARGS__` as `##` argument
+`__VA_ARGS__` as a `##` argument is now correctly not further expanded, e.g.:
+
+    cdecl> #define XPASTE(...)  x ## __VA_ARGS__
+    cdecl> expand XPASTE(__LINE__)
+    ...
+    XPASTE(__LINE__) => x__LINE__
+
 ** `__VA_OPT__` whitespace
 Leading & trailing whitespace in `__VA_OPT__()` tokens is now trimmed, e.g.:
 

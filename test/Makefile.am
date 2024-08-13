@@ -157,6 +157,7 @@ TESTS+=	tests/expand.test \
 	tests/expand-C23_std-6.10.4.5-ex-5.test \
 	tests/expand-C23_std-6.10.4.5-ex-7.test \
 	tests/expand-robertelder.test \
+	tests/expand-va-opt-minutiae.test \
 	tests/preprocessor-error.test
 
 # Auto-completion tests

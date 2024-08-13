@@ -16,8 +16,8 @@ showlist(The first, second, and third items.) => puts(#__VA_ARGS__)
 showlist(The first, second, and third items.) => puts("The first, second, and third items.")
 cdecl> expand report(x>y, "x is %d but y is %d", x, y)
 report(x>y, "x is %d but y is %d", x, y) => ((test)?puts(#test): printf(__VA_ARGS__))
-| __VA_ARGS__ => "x is %d but y is %d", x, y
 report(x>y, "x is %d but y is %d", x, y) => ((test)?puts("x>y"): printf(__VA_ARGS__))
 | test => x>y
 report(x>y, "x is %d but y is %d", x, y) => ((x>y)?puts("x>y"): printf(__VA_ARGS__))
+| __VA_ARGS__ => "x is %d but y is %d", x, y
 report(x>y, "x is %d but y is %d", x, y) => ((x>y)?puts("x>y"): printf( "x is %d but y is %d", x, y))

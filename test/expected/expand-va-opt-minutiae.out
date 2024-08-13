@@ -1,0 +1,77 @@
+cdecl> #define TILDAS(...)               ~__VA_OPT__( ~ )~
+cdecl> #define S2(x)                     #x
+cdecl> #define S1(x)                     S2(x)
+cdecl> expand S1(TILDAS())
+S1(TILDAS()) => S2(x)
+| x => TILDAS()
+| | TILDAS() => ~__VA_OPT__( ~ )~
+| | | __VA_ARGS__ =>
+| | TILDAS() => ~~
+| x => ~~
+S1(~~) => S2(~~)
+| S2(~~) => #x
+| S2(~~) => "~~"
+S1(~~) => "~~"
+cdecl> expand S1(TILDAS(a))
+S1(TILDAS(a)) => S2(x)
+| x => TILDAS(a)
+| | TILDAS(a) => ~__VA_OPT__( ~ )~
+| | | __VA_ARGS__ => a
+| | | __VA_OPT__ => ~
+| | TILDAS(a) => ~~~
+| x => ~~~
+S1(~~~) => S2(~~~)
+| S2(~~~) => #x
+| S2(~~~) => "~~~"
+S1(~~~) => "~~~"
+cdecl> 
+cdecl> #define G(x, y, z, ...)           1 ## __VA_OPT__(x y ## y z) ## 5
+cdecl> expand G(2,,4,-)
+G(2,, 4, -) => 1 ## __VA_OPT__(x y ## y z) ## 5
+| x => 2
+| z => 4
+G(2,, 4, -) => 1 ## __VA_OPT__(2 ## 4) ## 5
+| __VA_ARGS__ => -
+| __VA_OPT__ => 2 ## 4
+| __VA_OPT__ => 2 4
+G(2,, 4, -) => 1 ## 2 4 ## 5
+G(2,, 4, -) => 12 45
+cdecl> expand G( ,,4,-)
+G(,, 4, -) => 1 ## __VA_OPT__(x y ## y z) ## 5
+| x =>
+| z => 4
+G(,, 4, -) => 1 ## __VA_OPT__( ## 4) ## 5
+| __VA_ARGS__ => -
+| __VA_OPT__ => ## 4
+| __VA_OPT__ => 4
+G(,, 4, -) => 1 ## 4 ## 5
+G(,, 4, -) => 1 45
+cdecl> expand G( ,, ,-)
+G(,,, -) => 1 ## __VA_OPT__(x y ## y z) ## 5
+| x =>
+| z =>
+G(,,, -) => 1 ## __VA_OPT__( ## ) ## 5
+| __VA_ARGS__ => -
+| __VA_OPT__ => ##
+| __VA_OPT__ =>
+G(,,, -) => 1 ## ## 5
+G(,,, -) => 15
+cdecl> 
+cdecl> #define H1(...)                   x ##            __VA_ARGS__
+cdecl> #define H2(...)                   x ## __VA_OPT__(__VA_ARGS__)
+cdecl> expand H1(__LINE__)
+H1(__LINE__) => x ## __VA_ARGS__
+| __VA_ARGS__ => __LINE__
+H1(__LINE__) => x ## __LINE__
+                     ^
+23,22: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
+H1(__LINE__) => x__LINE__
+cdecl> expand H2(__LINE__)
+H2(__LINE__) => x ## __VA_OPT__(__VA_ARGS__)
+| __VA_ARGS__ => __LINE__
+| | __LINE__ => 42
+| __VA_ARGS__ => 42
+H2(__LINE__) => x ## __VA_OPT__(42)
+| __VA_OPT__ => 42
+H2(__LINE__) => x ## 42
+H2(__LINE__) => x42

@@ -1,0 +1,26 @@
+##
+#   These tests are taken from:
+#
+#   "__VA_OPT__ Minutiae"
+#   <https://www.corsix.org/content/va-opt-minutiae>
+##
+
+EXPECTED_EXIT=0
+cdecl -bEL$LINENO <<END
+#define TILDAS(...)               ~__VA_OPT__( ~ )~
+#define S2(x)                     #x
+#define S1(x)                     S2(x)
+expand S1(TILDAS())
+expand S1(TILDAS(a))
+
+#define G(x, y, z, ...)           1 ## __VA_OPT__(x y ## y z) ## 5
+expand G(2,,4,-)
+expand G( ,,4,-)
+expand G( ,, ,-)
+
+#define H1(...)                   x ##            __VA_ARGS__
+#define H2(...)                   x ## __VA_OPT__(__VA_ARGS__)
+expand H1(__LINE__)
+expand H2(__LINE__)
+END
+# vim:set et sw=2 ts=2:
