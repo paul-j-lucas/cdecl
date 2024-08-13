@@ -1,3 +1,14 @@
+2024-08-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, debug.out: Now dumping p_token location only if first_column > 0.
+   * p_token.c, p_token.h: Moved p_is_operator_arg() out-of-line.
+
+2024-08-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c: Eliminated va_args_str.
+   * p_macro.c, expand.out, expand.test: Leading & trailing whitespace in
+     `__VA_OPT__()` tokens is now trimmed.
+
 2024-08-10  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: s/= xno/!= xyes/
