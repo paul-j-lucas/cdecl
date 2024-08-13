@@ -101,7 +101,7 @@ options:
   --no-using          (-u) Declare types with typedef, not using, in C++.
   --options           (-O) Print command-line options (for shell completion).
   --output=ARG        (-o) Write to file [default: stdout].
-  --permissive-types  (-p) Allow unknown names and keywords to be types.
+  --permissive-types  (-p) Permit other language keywords as types.
   --trailing-return   (-r) Print trailing return type in C++.
   --trigraphs         (-3) Print trigraphs.
   --version           (-v) Print version and exit.
@@ -182,7 +182,7 @@ $ cdecl --options
 --no-using -u Declare types with typedef, not using, in C++
 --options -O Print command-line options (for shell completion)
 --output -o Write to file [default: stdout]
---permissive-types -p Allow unknown names and keywords to be types
+--permissive-types -p Permit other language keywords as types
 --trailing-return -r Print trailing return type in C++
 --trigraphs -3 Print trigraphs
 --version -v Print version and exit
