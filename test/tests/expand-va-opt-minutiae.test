@@ -14,6 +14,7 @@ expand S1(TILDAS())
 expand S1(TILDAS(a))
 
 #define G(x, y, z, ...)           1 ## __VA_OPT__(x y ## y z) ## 5
+expand G(2,3,4,-)
 expand G(2,,4,-)
 expand G( ,,4,-)
 expand G( ,, ,-)

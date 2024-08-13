@@ -26,6 +26,16 @@ S1(~~~) => S2(~~~)
 S1(~~~) => "~~~"
 cdecl> 
 cdecl> #define G(x, y, z, ...)           1 ## __VA_OPT__(x y ## y z) ## 5
+cdecl> expand G(2,3,4,-)
+G(2, 3, 4, -) => 1 ## __VA_OPT__(x y ## y z) ## 5
+| x => 2
+| z => 4
+G(2, 3, 4, -) => 1 ## __VA_OPT__(2 3 ## 3 4) ## 5
+| __VA_ARGS__ => -
+| __VA_OPT__ => 2 3 ## 3 4
+| __VA_OPT__ => 2 33 4
+G(2, 3, 4, -) => 1 ## 2 33 4 ## 5
+G(2, 3, 4, -) => 12 33 45
 cdecl> expand G(2,,4,-)
 G(2,, 4, -) => 1 ## __VA_OPT__(x y ## y z) ## 5
 | x => 2
@@ -64,7 +74,7 @@ H1(__LINE__) => x ## __VA_ARGS__
 | __VA_ARGS__ => __LINE__
 H1(__LINE__) => x ## __LINE__
                      ^
-23,22: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
+24,22: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
 H1(__LINE__) => x__LINE__
 cdecl> expand H2(__LINE__)
 H2(__LINE__) => x ## __VA_OPT__(__VA_ARGS__)
