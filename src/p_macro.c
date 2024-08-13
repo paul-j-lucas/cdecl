@@ -2164,7 +2164,10 @@ static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
 
   p_token_list_trim( &va_opt_token_list );
 
-  if ( !slist_empty( &va_opt_token_list ) ) {
+  if ( slist_empty( &va_opt_token_list ) ) {
+    slist_push_back( dst_list, p_token_new( P_PLACEMARKER, /*literal=*/NULL ) );
+  }
+  else {
     mex_state_t va_opt_mex;
     mex_init( &va_opt_mex,
       /*parent_mex=*/mex,

@@ -41,6 +41,9 @@ e.g.:
     ...
     XPASTE(__LINE__) => x__LINE__
 
+** `__VA_OPT__` expanding to nothing
+When `__VA_OPT__` expands to nothing, it needs to expand into a placemarker.
+
 ** `__VA_OPT__` whitespace
 Leading & trailing whitespace in `__VA_OPT__()` tokens is now trimmed, e.g.:
 

@@ -1,5 +1,9 @@
 2024-08-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c, expand-va-opt-minutiae.out, expand-va-opt-minutiae.test: When
+     `__VA_OPT__` expands to nothing, it needs to expand into a placemarker.
+   * expand-va-opt-minutiae.out, expand-va-opt-minutiae.test: Another
+     preprocessor test.
    * cli_options.c, cli_options-error.out, cli_options.out: Updated help for
      --permissive-types to match recent change.
    * p_macro.c, test/Makefile.am, expand-C23_std-6.10.4.1-ex-1.out,
