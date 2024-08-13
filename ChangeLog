@@ -1,3 +1,10 @@
+2024-08-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c, test/Makefile.am, expand-C23_std-6.10.4.1-ex-2.out,
+     expand-C23_std-6.10.4.5-ex-7.out, expand-va-opt-minutiae.out, expand.out,
+     expand-va-opt-minutiae.test, expand.test: `__VA_ARGS__` as a `##` argument
+     is now correctly not further expanded.
+
 2024-08-12  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, debug.out: Now dumping p_token location only if first_column > 0.
