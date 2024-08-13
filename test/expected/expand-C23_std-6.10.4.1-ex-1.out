@@ -1,0 +1,16 @@
+cdecl> #define LPAREN()                  (
+cdecl> #define G(Q)                      42
+cdecl> #define F(R, X, ...)              __VA_OPT__(G R X) )
+cdecl> expand F(LPAREN(), 0, <:-);
+F(LPAREN(), 0, [-) => __VA_OPT__(G R X) )
+| R => LPAREN()
+| | LPAREN() => (
+| R => (
+| X => 0
+F((, 0, [-) => __VA_OPT__(G ( 0) )
+| __VA_ARGS__ => [-
+| __VA_OPT__ => G ( 0)
+| | G(0) => 42
+| __VA_OPT__ => 42
+F((, 0, [-) => 42
+F((, 0, [-) => 42;

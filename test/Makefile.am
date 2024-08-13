@@ -151,6 +151,7 @@ TESTS+=	tests/__declspec.test \
 # C Preprocessor tests
 TESTS+=	tests/expand.test \
 	tests/expand-error.test \
+	tests/expand-C23_std-6.10.4.1-ex-1.test \
 	tests/expand-C23_std-6.10.4.1-ex-2.test \
 	tests/expand-C23_std-6.10.4.3-ex-1.test \
 	tests/expand-C23_std-6.10.4.5-ex-4.test \

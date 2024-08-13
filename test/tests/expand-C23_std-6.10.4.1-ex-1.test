@@ -1,0 +1,19 @@
+##
+#   These tests are taken verbatim from:
+#
+#     ISO/IEC 9899:2023: Programming languages -- C
+#     (working draft -- September 3, 2022)
+#
+#     section 6.10.4.1: Argument substitution
+#     paragraph 5
+#     Example 1
+##
+
+EXPECTED_EXIT=0
+cdecl -bEL$LINENO <<END
+#define LPAREN()                  (
+#define G(Q)                      42
+#define F(R, X, ...)              __VA_OPT__(G R X) )
+expand F(LPAREN(), 0, <:-);
+END
+# vim:set et sw=2 ts=2:

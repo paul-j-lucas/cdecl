@@ -2298,11 +2298,12 @@ static void mex_init( mex_state_t *mex, mex_state_t *parent_mex,
 static void mex_init_va_args_token_list( mex_state_t *mex ) {
   assert( mex != NULL );
 
+  if ( !slist_empty( &mex->va_args_token_list ) )
+    return;
   if ( !p_macro_is_variadic( mex->macro ) )
     return;
 
   assert( OPT_LANG_IS( VARIADIC_MACROS ) );
-  assert( slist_empty( &mex->va_args_token_list ) );
 
   bool comma = false;
   size_t curr_index = 0;
