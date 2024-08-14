@@ -2065,10 +2065,14 @@ static bool mex_expand_stringify( mex_state_t *mex,
 }
 
 /**
- * Expands the #P___VA_ARG__ token.
+ * Expands the #P___VA_ARGS__ token.
  *
  * @param mex The mex_state to use.
  * @param va_args_token_list The \ref p_token_list_t to expand into.
+ * @param prev_node The non-space \ref p_token_node_t just before
+ * #P___VA_ARGS__.
+ * @param next_node The non-space \ref p_token_node_t just after
+ * #P___VA_ARGS__.
  * @return Returns a \ref mex_rv.
  *
  * @sa mex_expand_all___VA_ARGS__()
