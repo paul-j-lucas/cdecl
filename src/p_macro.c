@@ -1978,7 +1978,7 @@ static mex_rv_t mex_expand_identifier( mex_state_t *mex,
   if ( p_token_node_is_punct( next_node, '(' ) ) {
     token_node = parse_args( next_node, &arg_list );
     if ( token_node == NULL )
-      goto parse_args_error;
+      goto error;
     looks_func_like = true;
   }
 
@@ -2010,7 +2010,7 @@ static mex_rv_t mex_expand_identifier( mex_state_t *mex,
 
   mex_cleanup( &macro_mex );
 
-parse_args_error:
+error:
   p_arg_list_cleanup( &arg_list );
   return rv;
 }
