@@ -2815,7 +2815,7 @@ p_arg_list_opt
 
     /*
      * Handles cases where there are empty macro arguments separated only by
-     * commas and the beginning and end, e.g.:
+     * commas at the beginning and end, e.g.:
      *
      *      M(,x,)
      *      M(,x,,)
