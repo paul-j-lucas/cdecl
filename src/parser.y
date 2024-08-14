@@ -2808,7 +2808,6 @@ p_arg_list_opt
   | p_comma_arg_list[comma_arg_list] p_arg_list[arg_list]
     {
       slist_push_back( $comma_arg_list, p_token_list_new_placemarker() );
-
       $$ = $arg_list;
       slist_push_list_front( $$, $comma_arg_list );
     }
@@ -2849,8 +2848,8 @@ p_arg_list_opt
      */
   | p_arg_list[arg_list] p_comma_arg_list[comma_arg_list]
     {
-      $$ = $arg_list;
       slist_push_back( $comma_arg_list, p_token_list_new_placemarker() );
+      $$ = $arg_list;
       slist_push_list_back( $$, $comma_arg_list );
     }
 
