@@ -1,8 +1,12 @@
+2024-08-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1, p_macro.c, expand.out, infer-command.out,
+     show.out: The values of __FILE__ and __LINE__ arw now dynamic.
+
 2024-08-14  Paul J. Lucas <paul@lucasmail.org>
 
    * p_token.c, p_token.h, expand-C23_std-6.10.4.1-ex-2.out,
-     expand-va-opt-minutiae.out, expand-va-opt-minutiae.test: Fixed incorrect
-     deletion of whitespace when concatenating tokens in some cases.
+     expand-va-opt-minutiae.out, expand-va-opt-minutiae.test: Updated.
 
 2024-08-13  Paul J. Lucas <paul@lucasmail.org>
 
