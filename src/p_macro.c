@@ -524,7 +524,7 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
  *
  * @warning The pointer returned is to a static buffer.
  *
- * @sa #get___TIME___str()
+ * @sa get___TIME___str()
  */
 static char const* get___DATE___str( void ) {
   if ( cdecl_is_testing )
@@ -544,7 +544,7 @@ static char const* get___DATE___str( void ) {
  *
  * @warning The pointer returned is to a static buffer.
  *
- * @sa #get___DATE___str()
+ * @sa get___DATE___str()
  */
 static char const* get___TIME___str( void ) {
   if ( cdecl_is_testing )
