@@ -33,6 +33,9 @@ e.g.:
                  ^
     7: error: "x": set option "c" takes no value
 
+** `##` whitespace
+Fixed incorrect deletion of whitespace when concatenating tokens in some cases.
+
 ** `__VA_ARGS__` as `##` argument
 `__VA_ARGS__` as a `##` argument is now correctly not further expanded, e.g.:
 

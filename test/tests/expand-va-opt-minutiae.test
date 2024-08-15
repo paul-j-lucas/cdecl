@@ -18,6 +18,7 @@ expand G(,,)
 expand G(2,3,4,-)
 expand G(2,,4,-)
 expand G( ,,4,-)
+expand G(2,, ,-)
 expand G( ,, ,-)
 
 #define H1(...)                   x ##            __VA_ARGS__

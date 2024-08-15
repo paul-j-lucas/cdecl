@@ -241,6 +241,8 @@ size_t p_token_list_relocate( p_token_list_t *token_list, size_t first_column );
  *
  * @warning The pointer returned is to a static buffer.
  *
+ * @sa print_token_list()
+ * @sa print_token_list_color()
  * @sa p_token_str()
  */
 NODISCARD
@@ -361,6 +363,7 @@ char const* p_token_str( p_token_t const *token );
  * @param token_list The list of \ref p_token to print.
  * @param fout The `FILE` to print to.
  *
+ * @sa p_token_list_str()
  * @sa print_token_list_color()
  */
 void print_token_list( p_token_list_t const *token_list, FILE *fout );
@@ -371,6 +374,7 @@ void print_token_list( p_token_list_t const *token_list, FILE *fout );
  * @param token_list The list of \ref p_token to print.
  * @param fout The `FILE` to print to.
  *
+ * @sa p_token_list_str()
  * @sa print_token_list()
  */
 void print_token_list_color( p_token_list_t const *token_list, FILE *fout );

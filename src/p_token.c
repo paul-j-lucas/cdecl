@@ -234,26 +234,41 @@ static bool is_multi_char_punctuator( char const *s ) {
 
 /**
  * A predicate function for slist_free_if() that checks whether \a token_node
- * is a #P_SPACE token and precedes another: if so, frees it.
+ * is a #P_ANY_TRANSPARENT token and precedes another of the same kind: if so,
+ * frees it.
  *
  * @param token_node A pointer to the \ref p_token to possibly free.
  * @param data Not used.
  * @return Returns `true` only if \a token_node was freed.
  */
-static bool p_token_free_if_consec_space( p_token_node_t *token_node,
-                                          void *data ) {
+static bool p_token_free_if_consec_transparent( p_token_node_t *token_node,
+                                                void *data ) {
   assert( token_node != NULL );
   (void)data;
   p_token_t *const token = token_node->data;
   assert( token != NULL );
 
-  if ( token->kind != P_SPACE )
-    return false;
+  p_token_node_t const *next_node;
 
-  p_token_node_t const *const next_node =
-    p_token_node_not( token_node->next, P_PLACEMARKER );
-  if ( p_token_node_is_any( next_node, P_ANY_OPAQUE ) )
-    return false;
+  switch ( token->kind ) {
+    case P_PLACEMARKER:
+      //
+      // For P_PLACEMARKER, intervening whitespace, if any, doesn't count.
+      //
+      next_node = p_token_node_not( token_node->next, P_SPACE );
+      if ( next_node == NULL || p_token_node_is_any( next_node, P_ANY_OPAQUE ) )
+        return false;
+      break;
+
+    case P_SPACE:
+      next_node = token_node->next;
+      if ( p_token_node_is_any( next_node, P_ANY_OPAQUE | P_PLACEMARKER ) )
+        return false;
+      break;
+
+    default:
+      return false;
+  } // switch
 
   p_token_free( token );
   return true;
@@ -541,7 +556,7 @@ size_t p_token_list_relocate( p_token_list_t *token_list,
                               size_t first_column ) {
   assert( token_list != NULL );
 
-  bool relocated_opaque = false;
+  bool relocated_space = true;          // dont' do leading spaces
 
   FOREACH_SLIST_NODE( token_node, token_list ) {
     p_token_t *const token = token_node->data;
@@ -549,17 +564,19 @@ size_t p_token_list_relocate( p_token_list_t *token_list,
       case P_PLACEMARKER:
         continue;
       case P_SPACE:
-        if ( !relocated_opaque )
-          continue;                     // don't do leading spaces
         if ( p_token_node_emptyish( token_node->next ) )
           goto done;                    // don't do trailing spaces either
-        FALLTHROUGH;
+        if ( true_or_set( &relocated_space ) )
+          continue;
+        break;
       default:
-        token->loc.first_column = STATIC_CAST( c_loc_num_t, first_column );
-        first_column += strlen( p_token_str( token ) );
-        token->loc.last_column = STATIC_CAST( c_loc_num_t, first_column - 1 );
-        relocated_opaque = true;
+        relocated_space = false;
+        break;
     } // switch
+
+    token->loc.first_column = STATIC_CAST( c_loc_num_t, first_column );
+    first_column += strlen( p_token_str( token ) );
+    token->loc.last_column = STATIC_CAST( c_loc_num_t, first_column - 1 );
   } // for
 
 done:
@@ -577,7 +594,7 @@ char const* p_token_list_str( p_token_list_t const *token_list ) {
   static strbuf_t sbuf;
   strbuf_reset( &sbuf );
 
-  bool stringified_opaque = false;
+  bool stringified_space = true;        // don't do leading spaces
 
   FOREACH_SLIST_NODE( token_node, token_list ) {
     p_token_t const *const token = token_node->data;
@@ -585,15 +602,17 @@ char const* p_token_list_str( p_token_list_t const *token_list ) {
       case P_PLACEMARKER:
         continue;
       case P_SPACE:
-        if ( !stringified_opaque )
-          continue;                     // don't do leading spaces
         if ( p_token_node_emptyish( token_node->next ) )
           goto done;                    // don't do trailing spaces either
-        FALLTHROUGH;
+        if ( true_or_set( &stringified_space ) )
+          continue;
+        break;
       default:
-        strbuf_puts( &sbuf, p_token_str( token ) );
-        stringified_opaque = true;
+        stringified_space = false;
+        break;
     } // switch
+
+    strbuf_puts( &sbuf, p_token_str( token ) );
   } // for
 
 done:
@@ -617,7 +636,9 @@ void p_token_list_trim( p_token_list_t *token_list ) {
     p_token_free( slist_pop_back( token_list ) );
   } // while
 
-  slist_free_if( token_list, &p_token_free_if_consec_space, /*data=*/NULL );
+  slist_free_if(
+    token_list, &p_token_free_if_consec_transparent, /*data=*/NULL
+  );
 }
 
 p_token_t* p_token_new_loc( p_token_kind_t kind, c_loc_t const *loc,
@@ -727,7 +748,7 @@ void print_token_list( p_token_list_t const *token_list, FILE *fout ) {
   assert( token_list != NULL );
   assert( fout != NULL );
 
-  bool printed_opaque = false;
+  bool printed_space = true;            // don't print leading spaces
 
   FOREACH_SLIST_NODE( token_node, token_list ) {
     p_token_t const *const token = token_node->data;
@@ -735,17 +756,17 @@ void print_token_list( p_token_list_t const *token_list, FILE *fout ) {
       case P_PLACEMARKER:
         continue;
       case P_SPACE:
-        if ( !printed_opaque )
-          continue;                     // don't print leading spaces
         if ( p_token_node_emptyish( token_node->next ) )
           return;                       // don't print trailing spaces either
+        if ( true_or_set( &printed_space ) )
+          continue;
         break;
       default:
+        printed_space = false;
         break;
     } // switch
 
     FPUTS( p_token_str( token ), fout );
-    printed_opaque = true;
   } // for
 }
 
@@ -753,7 +774,7 @@ void print_token_list_color( p_token_list_t const *token_list, FILE *fout ) {
   assert( token_list != NULL );
   assert( fout != NULL );
 
-  bool printed_opaque = false;
+  bool printed_space = true;            // don't print leading spaces
 
   p_token_node_t const *prev_node = NULL;
   FOREACH_SLIST_NODE( token_node, token_list ) {
@@ -767,27 +788,28 @@ void print_token_list_color( p_token_list_t const *token_list, FILE *fout ) {
       case P_IDENTIFIER:
         if ( ident_will_not_expand( token, prev_node, next_node ) ) {
           color = sgr_macro_no_expand;
+          printed_space = false;
           break;
         }
         FALLTHROUGH;
       default:
         if ( token->is_substituted )
           color = sgr_macro_subst;
+        printed_space = false;
         break;
       case P_PLACEMARKER:
         continue;
       case P_SPACE:
-        if ( !printed_opaque )
-          continue;                     // don't print leading spaces
         if ( next_node == NULL )
           return;                       // don't print trailing spaces either
+        if ( true_or_set( &printed_space ) )
+          continue;
         break;
     } // switch
 
     color_start( fout, color );
     FPUTS( p_token_str( token ), fout );
     color_end( fout, color );
-    printed_opaque = true;
 
     if ( token->kind != P_SPACE )
       prev_node = token_node;

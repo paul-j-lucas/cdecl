@@ -89,7 +89,7 @@ H4(, 1) => __VA_OPT__(a ## ) ## b
 | __VA_OPT__ => a ##
 | __VA_OPT__ => a
 H4(, 1) => a ## b
-H4(, 1) => ab
+H4(, 1) => a b
 cdecl> 
 cdecl> #define H5A(...)                  __VA_OPT__()/**/__VA_OPT__()
 cdecl> #define H5B(X)                    a ## X ## b

@@ -64,6 +64,16 @@ G(,, 4, -) => 1 ## __VA_OPT__( ## 4) ## 5
 | __VA_OPT__ => 4
 G(,, 4, -) => 1 ## 4 ## 5
 G(,, 4, -) => 1 45
+cdecl> expand G(2,, ,-)
+G(2,,, -) => 1 ## __VA_OPT__(x y ## y z) ## 5
+| x => 2
+| z =>
+G(2,,, -) => 1 ## __VA_OPT__(2 ## ) ## 5
+| __VA_ARGS__ => -
+| __VA_OPT__ => 2 ##
+| __VA_OPT__ => 2
+G(2,,, -) => 1 ## 2 ## 5
+G(2,,, -) => 12 5
 cdecl> expand G( ,, ,-)
 G(,,, -) => 1 ## __VA_OPT__(x y ## y z) ## 5
 | x =>
@@ -82,7 +92,7 @@ H1(__LINE__) => x ## __VA_ARGS__
 | __VA_ARGS__ => __LINE__
 H1(__LINE__) => x ## __LINE__
                      ^
-25,22: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
+26,22: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
 H1(__LINE__) => x__LINE__
 cdecl> expand H2(__LINE__)
 H2(__LINE__) => x ## __VA_OPT__(__VA_ARGS__)
