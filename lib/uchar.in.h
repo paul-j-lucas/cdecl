@@ -668,7 +668,7 @@ _GL_FUNCDECL_RPL (mbrtoc16, size_t,
 _GL_CXXALIAS_RPL (mbrtoc16, size_t,
                   (char16_t *pc, const char *s, size_t n, mbstate_t *ps));
 # else
-#  if !@HAVE_MBRTOC32@
+#  if !@HAVE_MBRTOC16@
 _GL_FUNCDECL_SYS (mbrtoc16, size_t,
                   (char16_t *pc, const char *s, size_t n, mbstate_t *ps));
 #  endif

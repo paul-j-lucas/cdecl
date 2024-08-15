@@ -270,9 +270,16 @@
 #  define GNULIB_defined_ENOTRECOVERABLE 1
 # endif
 
+/* On LynxOS, the macro EILSEQ is not defined.  */
 # ifndef EILSEQ
 #  define EILSEQ 2015
 #  define GNULIB_defined_EILSEQ 1
+# endif
+
+/* On Haiku, the macro ESOCKTNOSUPPORT is not defined.  */
+# ifndef ESOCKTNOSUPPORT
+#  define ESOCKTNOSUPPORT 2016
+#  define GNULIB_defined_ESOCKTNOSUPPORT 1
 # endif
 
 #endif /* _@GUARD_PREFIX@_ERRNO_H */

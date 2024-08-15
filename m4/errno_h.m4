@@ -1,5 +1,5 @@
 # errno_h.m4
-# serial 17
+# serial 18
 dnl Copyright (C) 2004, 2006, 2008-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -67,6 +67,9 @@ booboo
 booboo
 #endif
 #if !defined EILSEQ
+booboo
+#endif
+#if !defined ESOCKTNOSUPPORT
 booboo
 #endif
       ],
