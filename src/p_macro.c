@@ -766,15 +766,6 @@ static c_lang_id_t macro_dyn___TIME__( p_token_t **ptoken ) {
 }
 
 /**
- * Cleans up C preprocessor macro data.
- *
- * @sa p_macros_init()
- */
-static void macros_cleanup( void ) {
-  rb_tree_cleanup( &macro_set, POINTER_CAST( rb_free_fn_t, &p_macro_free ) );
-}
-
-/**
  * Checks \a macro for syntactic & semantic errors.
  *
  * @param mex The mex_state to use.
@@ -2994,6 +2985,15 @@ static p_token_node_t* parse_args( p_token_node_t *token_node,
 }
 
 /**
+ * Cleans up C preprocessor macro data.
+ *
+ * @sa p_macros_init()
+ */
+static void p_macros_cleanup( void ) {
+  rb_tree_cleanup( &macro_set, POINTER_CAST( rb_free_fn_t, &p_macro_free ) );
+}
+
+/**
  * Predefines a macro.
  *
  * @param name The name of the macro to predefine.
@@ -3314,7 +3314,7 @@ void p_macros_init( void ) {
   ASSERT_RUN_ONCE();
 
   rb_tree_init( &macro_set, POINTER_CAST( rb_cmp_fn_t, &p_macro_cmp ) );
-  ATEXIT( &macros_cleanup );
+  ATEXIT( &p_macros_cleanup );
 
   predefine_macro( "__cplusplus",       &macro_dyn___cplusplus      );
   predefine_macro( "__DATE__",          &macro_dyn___DATE__         );
