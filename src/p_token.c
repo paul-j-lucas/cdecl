@@ -556,6 +556,12 @@ size_t p_token_list_relocate( p_token_list_t *token_list,
                               size_t first_column ) {
   assert( token_list != NULL );
 
+  // The code here _must_ parallel the code in:
+  //
+  //  + p_token_list_str()
+  //  + print_token_list()
+  //  + print_token_list_color()
+
   bool relocated_space = true;          // dont' do leading spaces
 
   FOREACH_SLIST_NODE( token_node, token_list ) {
@@ -593,6 +599,12 @@ char const* p_token_list_str( p_token_list_t const *token_list ) {
 
   static strbuf_t sbuf;
   strbuf_reset( &sbuf );
+
+  // The code here _must_ parallel the code in:
+  //
+  //  + p_token_list_relocate()
+  //  + print_token_list()
+  //  + print_token_list_color()
 
   bool stringified_space = true;        // don't do leading spaces
 
@@ -748,6 +760,12 @@ void print_token_list( p_token_list_t const *token_list, FILE *fout ) {
   assert( token_list != NULL );
   assert( fout != NULL );
 
+  // The code here _must_ parallel the code in:
+  //
+  //  + p_token_list_str()
+  //  + p_token_list_relocate()
+  //  + print_token_list_color()
+
   bool printed_space = true;            // don't print leading spaces
 
   FOREACH_SLIST_NODE( token_node, token_list ) {
@@ -773,6 +791,12 @@ void print_token_list( p_token_list_t const *token_list, FILE *fout ) {
 void print_token_list_color( p_token_list_t const *token_list, FILE *fout ) {
   assert( token_list != NULL );
   assert( fout != NULL );
+
+  // The code here _must_ parallel the code in:
+  //
+  //  + p_token_list_str()
+  //  + p_token_list_relocate()
+  //  + print_token_list()
 
   bool printed_space = true;            // don't print leading spaces
 
@@ -800,7 +824,7 @@ void print_token_list_color( p_token_list_t const *token_list, FILE *fout ) {
       case P_PLACEMARKER:
         continue;
       case P_SPACE:
-        if ( next_node == NULL )
+        if ( p_token_node_emptyish( next_node ) )
           return;                       // don't print trailing spaces either
         if ( true_or_set( &printed_space ) )
           continue;
