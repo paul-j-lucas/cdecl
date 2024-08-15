@@ -21,6 +21,10 @@ types:
 i.e., includes '-', it's changed to just "no" so **cdecl** will still present
 all the "no" options.
 
+** Dynamic `__FILE__` & `__LINE__` macros.
+The value of `__FILE__` is now the current input file, if any, or `stdin`.  The
+value of `__LINE__` is the line numer within that file, if any.
+
 ** `language` option
 The `lang` option has been replaced by `language` to match the `--language`
 command-line option.

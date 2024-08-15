@@ -801,13 +801,13 @@ cx_throw() => DEF_ARGS(THROW_, )
 | | | | | XID => (cx_tb.thrown_xid)
 | | | | | DATA => cx_user_data()
 | | | | THROW_2((cx_tb.thrown_xid), cx_user_data()) => cx_impl_throw( __FILE__, __LINE__, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
-| | | | | __FILE__ => "example.c"
+| | | | | __FILE__ => "testing.c"
 | | | | | __LINE__ => 42
-| | | | THROW_2((cx_tb.thrown_xid), cx_user_data()) => cx_impl_throw( "example.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
-| | | THROW_1(cx_tb.thrown_xid) => cx_impl_throw( "example.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
-| | THROW_0() => cx_impl_throw( "example.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
-| DEF_ARGS(THROW_,) => cx_impl_throw( "example.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
-cx_throw() => cx_impl_throw( "example.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+| | | | THROW_2((cx_tb.thrown_xid), cx_user_data()) => cx_impl_throw( "testing.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+| | | THROW_1(cx_tb.thrown_xid) => cx_impl_throw( "testing.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+| | THROW_0() => cx_impl_throw( "testing.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+| DEF_ARGS(THROW_,) => cx_impl_throw( "testing.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+cx_throw() => cx_impl_throw( "testing.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
 cdecl> expand cx_throw(123)
 cx_throw(123) => DEF_ARGS(THROW_, __VA_ARGS__)
 | __VA_ARGS__ => 123
@@ -894,12 +894,12 @@ cx_throw(123) => DEF_ARGS(THROW_, 123)
 | | | | XID => (123)
 | | | | DATA => cx_user_data()
 | | | THROW_2((123), cx_user_data()) => cx_impl_throw( __FILE__, __LINE__, ((123)), (void*)( cx_user_data()) )
-| | | | __FILE__ => "example.c"
+| | | | __FILE__ => "testing.c"
 | | | | __LINE__ => 42
-| | | THROW_2((123), cx_user_data()) => cx_impl_throw( "example.c", 42, ((123)), (void*)( cx_user_data()) )
-| | THROW_1(123) => cx_impl_throw( "example.c", 42, ((123)), (void*)( cx_user_data()) )
-| DEF_ARGS(THROW_, 123) => cx_impl_throw( "example.c", 42, ((123)), (void*)( cx_user_data()) )
-cx_throw(123) => cx_impl_throw( "example.c", 42, ((123)), (void*)( cx_user_data()) )
+| | | THROW_2((123), cx_user_data()) => cx_impl_throw( "testing.c", 42, ((123)), (void*)( cx_user_data()) )
+| | THROW_1(123) => cx_impl_throw( "testing.c", 42, ((123)), (void*)( cx_user_data()) )
+| DEF_ARGS(THROW_, 123) => cx_impl_throw( "testing.c", 42, ((123)), (void*)( cx_user_data()) )
+cx_throw(123) => cx_impl_throw( "testing.c", 42, ((123)), (void*)( cx_user_data()) )
 cdecl> expand cx_throw(123, ptr)
 cx_throw(123, ptr) => DEF_ARGS(THROW_, __VA_ARGS__)
 | __VA_ARGS__ => 123, ptr
@@ -985,11 +985,11 @@ cx_throw(123, ptr) => DEF_ARGS(THROW_, 123, ptr)
 | | | XID => 123
 | | | DATA => ptr
 | | THROW_2(123, ptr) => cx_impl_throw( __FILE__, __LINE__, (123), (void*)( ptr) )
-| | | __FILE__ => "example.c"
+| | | __FILE__ => "testing.c"
 | | | __LINE__ => 42
-| | THROW_2(123, ptr) => cx_impl_throw( "example.c", 42, (123), (void*)( ptr) )
-| DEF_ARGS(THROW_, 123, ptr) => cx_impl_throw( "example.c", 42, (123), (void*)( ptr) )
-cx_throw(123, ptr) => cx_impl_throw( "example.c", 42, (123), (void*)( ptr) )
+| | THROW_2(123, ptr) => cx_impl_throw( "testing.c", 42, (123), (void*)( ptr) )
+| DEF_ARGS(THROW_, 123, ptr) => cx_impl_throw( "testing.c", 42, (123), (void*)( ptr) )
+cx_throw(123, ptr) => cx_impl_throw( "testing.c", 42, (123), (void*)( ptr) )
 cdecl> 
 cdecl> ////////// Predefined macros //////////////////////////////////////////////////
 cdecl> 
@@ -1014,7 +1014,7 @@ cdecl>
 cdecl> set c
 cdecl> 
 cdecl> expand __FILE__
-__FILE__ => "example.c"
+__FILE__ => "testing.c"
 cdecl> expand __LINE__
 __LINE__ => 42
 cdecl> 

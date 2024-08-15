@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "August 13, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "August 15, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2739,10 +2739,14 @@ The local date
 in the form \f(CW"Mmm dd yyyy"\fP.
 .TP
 .B __FILE__
-An artbitrary file name.
+The current file name,
+if any,
+or \f(CW"stdin"\fP.
 .TP
 .B __LINE__
-An artbitrary line number.
+The current line number within \f(CW__FILE__\fP,
+if any,
+or an arbitrary line number.
 .TP
 .B __STDC__
 \f(CW1\fP.
@@ -3205,7 +3209,9 @@ variable.
 .IP \(bu
 Use constant values
 for the
-.B __DATE__
+.BR __DATE__ ,
+.BR __FILE__ ,
+.BR __LINE__ ,
 and
 .B __TIME__
 macros.

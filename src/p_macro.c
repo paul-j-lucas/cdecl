@@ -29,6 +29,7 @@
 #include "color.h"
 #include "dump.h"
 #include "gibberish.h"
+#include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "p_token.h"
@@ -538,6 +539,42 @@ static char const* get___DATE___str( void ) {
 }
 
 /**
+ * Gets the current value of the `__FILE__` macro.
+ *
+ * @return Returns said value.
+ *
+ * @sa #get___LINE___str()
+ */
+static char const* get___FILE___str( void ) {
+  if ( cdecl_is_testing ) {
+    static char const *const VALUE[] = { "testing.c", "testing.cpp" };
+    return VALUE[ OPT_LANG_IS( CPP_ANY ) ];
+  }
+  // LCOV_EXCL_START
+  return cdecl_input_path != NULL ? base_name( cdecl_input_path ) : "stdin";
+  // LCOV_EXCL_STOP
+}
+
+/**
+ * Gets the current value of the `__LINE__` macro.
+ *
+ * @return Returns said value.
+ *
+ * @warning The pointer returned is to a static buffer.
+ *
+ * @sa #get___FILE___str()
+ */
+static char const* get___LINE___str( void ) {
+  if ( cdecl_is_testing )
+    return "42";
+  // LCOV_EXCL_START
+  static char buf[ ARRAY_SIZE( "-9223372036854775808" ) ];
+  check_snprintf( buf, sizeof buf, "%d", yylineno );
+  return buf;
+  // LCOV_EXCL_STOP
+}
+
+/**
  * Gets the current value of the `__TIME__` macro.
  *
  * @return Returns said value.
@@ -681,9 +718,8 @@ static c_lang_id_t macro_dyn___DATE__( p_token_t **ptoken ) {
  */
 static c_lang_id_t macro_dyn___FILE__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
-    static char const *const VALUE[] = { "example.c", "example.cpp" };
     *ptoken = !OPT_LANG_IS( __FILE__ ) ? NULL :
-      p_token_new( P_STR_LIT, check_strdup( VALUE[ OPT_LANG_IS( CPP_ANY ) ] ) );
+      p_token_new( P_STR_LIT, check_strdup( get___FILE___str() ) );
   }
   return LANG___FILE__;
 }
@@ -700,9 +736,8 @@ static c_lang_id_t macro_dyn___FILE__( p_token_t **ptoken ) {
  */
 static c_lang_id_t macro_dyn___LINE__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
-    static char const VALUE[] = "42";
     *ptoken = !OPT_LANG_IS( __LINE__ ) ? NULL :
-      p_token_new( P_NUM_LIT, check_strdup( VALUE ) );
+      p_token_new( P_NUM_LIT, check_strdup( get___LINE___str() ) );
   }
   return LANG___LINE__;
 }

@@ -35,7 +35,7 @@ c++decl> const casty c
 declare c as constant casty
 c++decl> 
 c++decl> __FILE__
-__FILE__ => "example.cpp"
+__FILE__ => "testing.cpp"
 c++decl> __LINE__
 __LINE__ => 42
 c++decl> __cplusplus
