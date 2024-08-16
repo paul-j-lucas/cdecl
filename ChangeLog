@@ -1,3 +1,10 @@
+2024-08-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c, p_token.c, p_token.h, parser.y, expand.out, expand.test: An
+     empty macro argument list can be 1 argument with no tokens.
+   * p_macro.c: In mex_expand_all_params(), if arg_list == NULL or macro isn't
+     func-like, return immediately.
+
 2024-08-15  Paul J. Lucas <paul@lucasmail.org>
 
    * share/man/man1/cdecl.1, p_macro.c, expand.out, infer-command.out,
