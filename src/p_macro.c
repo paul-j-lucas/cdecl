@@ -1713,6 +1713,9 @@ NODISCARD
 static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
   assert( mex != NULL );
 
+  if ( mex->arg_list == NULL || !p_macro_is_func_like( mex->macro ) )
+    return MEX_DID_NOT_EXPAND;
+
   mex_rv_t rv = MEX_DID_NOT_EXPAND;
 
   //
