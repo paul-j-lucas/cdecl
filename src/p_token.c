@@ -552,6 +552,13 @@ void p_token_list_cleanup( p_token_list_t *list ) {
   slist_cleanup( list, POINTER_CAST( slist_free_fn_t, &p_token_free ) );
 }
 
+p_token_list_t* p_token_list_new_placemarker( void ) {
+  p_token_list_t *const rv_tokens = MALLOC( p_token_list_t, 1 );
+  slist_init( rv_tokens );
+  slist_push_back( rv_tokens, p_token_new( P_PLACEMARKER, /*literal=*/NULL ) );
+  return rv_tokens;
+}
+
 size_t p_token_list_relocate( p_token_list_t *token_list,
                               size_t first_column ) {
   assert( token_list != NULL );

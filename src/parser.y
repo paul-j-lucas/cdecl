@@ -1246,19 +1246,6 @@ static void parse_cleanup( bool fatal_error ) {
 }
 
 /**
- * Creates a new \ref p_token_list_t containing a single #P_PLACEMARKER token.
- *
- * @return Returns said list.
- */
-NODISCARD
-static p_token_list_t* p_token_list_new_placemarker( void ) {
-  p_token_list_t *const rv_tokens = MALLOC( p_token_list_t, 1 );
-  slist_init( rv_tokens );
-  slist_push_back( rv_tokens, p_token_new( P_PLACEMARKER, /*literal=*/NULL ) );
-  return rv_tokens;
-}
-
-/**
  * Called by Bison to print a parsing error message to standard error.
  *
  * @remarks A custom error printing function via `%%define parse.error custom`

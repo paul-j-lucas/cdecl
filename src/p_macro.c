@@ -1071,6 +1071,37 @@ static bool mex_check_num_args( mex_state_t const *mex ) {
   size_t const n_req_params = slist_len( mex->macro->param_list ) - is_variadic;
   size_t const n_args = p_arg_list_count( mex->arg_list );
 
+  if ( n_args == 0 && n_req_params == 1 ) {
+    //
+    // Function-like macros taking multiple parameters will accept zero tokens
+    // for an argument, e.g.:
+    //
+    //      cdecl> #define M2(A,B)  [A ## B]
+    //      cdecl> expand M2(X,)
+    //      M2(X,) => [A ## B]
+    //      M2(X,) => [X ## ]
+    //      M2(X,) => [X]
+    //
+    // This is also true for macros taking a single parameter:
+    //
+    //      cdecl> #define M1(A)    [A]
+    //      cdecl> expand M1()
+    //      M1() => [A]
+    //      | A =>
+    //      M1() => []
+    //
+    // Hence, retroactively create a single placemarker token for an argument.
+    //
+    // Even though the p_arg_list_opt parser rule inserts placemarkers for
+    // empty arguments for multiple parameters, it doesn't do it for no
+    // parameters because it can't distinguish between a function-like macro
+    // that takes zero parameters from one that takes one parameter.  Hence, we
+    // do it here.
+    //
+    slist_push_back( mex->arg_list, p_token_list_new_placemarker() );
+    return true;
+  }
+
   if ( n_args >= n_req_params && (n_args <= n_req_params || is_variadic) )
     return true;
 
@@ -2376,7 +2407,9 @@ static p_token_list_t* mex_param_arg( mex_state_t const *mex,
   size_t const param_index = p_macro_find_param( mex->macro, param_name );
   if ( param_index == NO_PARAM )
     return NULL;
-  return slist_at( mex->arg_list, param_index );
+  p_token_list_t *const arg_tokens = slist_at( mex->arg_list, param_index );
+  assert( arg_tokens != NULL );
+  return arg_tokens;
 }
 
 /**

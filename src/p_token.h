@@ -441,6 +441,15 @@ bool p_token_is_punct( p_token_t const *token, char punct ) {
 }
 
 /**
+ * Conveniene function that creates a new \ref p_token_list_t containing a
+ * single #P_PLACEMARKER token.
+ *
+ * @return Returns said list.
+ */
+NODISCARD
+p_token_list_t* p_token_list_new_placemarker( void );
+
+/**
  * Creates a new \ref p_token.
  *
  * @param kind The kind of token to create.

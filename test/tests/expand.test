@@ -48,6 +48,10 @@ expand DEFINED
 #define FAKE_ARG_2                fake_2
 expand NOT_FUNC_LIKE(FAKE_ARG_1, FAKE_ARG_2)
 
+#define ZERO_OR_ONE_ARGUMENT(X)   (X)
+expand ZERO_OR_ONE_ARGUMENT(1)
+expand ZERO_OR_ONE_ARGUMENT()
+
 #define PASTE_WRONG(A,B)          A ## B
 expand PASTE_WRONG(__LINE__,x)
 expand PASTE_WRONG(x,__LINE__)

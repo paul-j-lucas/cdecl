@@ -10,6 +10,21 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.4
+
+** Placemarker for empty macro argument
+Macros that can take a single argument can also accept no arguments since it's
+interpreted as an argument of a placemarker, e.g.:
+
+    cdecl> #define M1(A)    [A]
+    cdecl> expand M1()
+    M1() => [A]
+    | A =>
+    M1() => []
+
+is correct.
+
+
 * Changes in Cdecl 18.3
 
 ** `no` option autocompletion
