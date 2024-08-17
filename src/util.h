@@ -747,7 +747,7 @@ _GL_INLINE_HEADER_BEGIN
  *        return const_cast<R*>( f( const_cast<T const*>( t ) ) );
  *      }
  *
- * In C, you'd need two different functions:
+ * In C, you'd need two differently named functions:
  *
  *      R const*  f( T const* );        // C
  *      inline R* nonconst_f( T *t ) {
