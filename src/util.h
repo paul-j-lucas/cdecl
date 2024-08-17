@@ -742,8 +742,10 @@ _GL_INLINE_HEADER_BEGIN
  * That is you want the `const`-ness of `R` to match that of `T`.  In C++,
  * you'd simply overload `f`:
  *
- *      R const* f( T const* );         // C++ only
- *      R        f( T* );
+ *      R const*  f( T const* );        // C++ only
+ *      inline R* f( T *t ) {
+ *        return const_cast<R*>( f( const_cast<T const*>( t ) ) );
+ *      }
  *
  * In C, you'd need two different functions:
  *
