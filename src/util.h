@@ -123,7 +123,6 @@ _GL_INLINE_HEADER_BEGIN
   sizeof( (ARRAY) ) / sizeof(0[ (ARRAY) ])  \
   * STATIC_ASSERT_EXPR( IS_ARRAY( (ARRAY) ), #ARRAY " must be an array" ))
 
-#ifndef NDEBUG
 /**
  * Asserts that this line of code is run at most once --- useful in
  * initialization functions that must be called at most once.  For example:
@@ -135,12 +134,13 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #RUN_ONCE
  */
-#define ASSERT_RUN_ONCE() BLOCK(    \
-  static bool UNIQUE_NAME(called);  \
-  assert( !UNIQUE_NAME(called) );   \
-  UNIQUE_NAME(called) = true; )
+#ifndef NDEBUG
+# define ASSERT_RUN_ONCE() BLOCK(     \
+    static bool UNIQUE_NAME(called);  \
+    assert( !UNIQUE_NAME(called) );   \
+    UNIQUE_NAME(called) = true; )
 #else
-#define ASSERT_RUN_ONCE()         NO_OP
+# define ASSERT_RUN_ONCE()        NO_OP
 #endif /* NDEBUG */
 
 /**
@@ -588,7 +588,7 @@ _GL_INLINE_HEADER_BEGIN
  * Checks (at compile-time) whether the type of the expression \a T is an
  * integral type.
  *
- * @param T An expression.
+ * @param T An expression. It is _not_ evaluated.
  * @return Returns 1 (true) only if \a T is an integral type; 0 (false)
  * otherwise.
  *
@@ -614,7 +614,7 @@ _GL_INLINE_HEADER_BEGIN
  * Checks (at compile-time) whether the type of the expression \a T is a signed
  * integral type.
  *
- * @param T An expression.
+ * @param T An expression. It is _not_ evaluated.
  * @return Returns 1 (true) only if \a T is a signed integral type; 0 (false)
  * otherwise.
  *
@@ -635,7 +635,7 @@ _GL_INLINE_HEADER_BEGIN
  * Checks (at compile-time) whether the type of the expression \a T is an
  * unsigned integral type.
  *
- * @param T An expression.
+ * @param T An expression. It is _not_ evaluated.
  * @return Returns 1 (true) only if \a T is an unsigned integral type; 0
  * (false) otherwise.
  *
