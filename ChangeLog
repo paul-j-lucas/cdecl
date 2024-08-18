@@ -1,3 +1,8 @@
+2024-08-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, p_macro.c, p_predefine.c, types.h: Split out predefined
+     macro code.
+
 2024-08-16  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c, p_token.c, p_token.h, parser.y, expand.out, expand.test: An
