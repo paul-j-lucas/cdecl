@@ -466,6 +466,14 @@ typedef struct c_loc              c_loc_t;
  */
 typedef short                     c_loc_num_t;
 
+/**
+ * Convenience macro for casting to \ref c_loc_num_t.
+ *
+ * @param N The integer to cast.
+ * @return Returns \a N cast to \ref c_loc_num_t.
+ */
+#define C_LOC_NUM_T(N)            STATIC_CAST( c_loc_num_t, (N) )
+
 typedef struct c_name_ast         c_name_ast_t;
 typedef enum   c_op_id            c_op_id_t;
 typedef struct c_operator         c_operator_t;
