@@ -2147,12 +2147,13 @@ static char const* mex_no_expand_set_key( mex_state_t const *mex,
 }
 
 /**
- * Given \a param_name, gets the corresponding macro argument.
+ * Given \a param_name, gets the tokens comprising the corresponding macro
+ * argument.
  *
  * @param mex The mex_state to use.
  * @param param_name The name of a macro parameter.
- * @return Returns said argument or NULL if \a param_name isn't a macro
- * parameter.
+ * @return Returns the tokens comprising said argument or NULL if \a param_name
+ * isn't a macro parameter.
  */
 NODISCARD
 static p_token_list_t* mex_param_arg( mex_state_t const *mex,
