@@ -1412,8 +1412,8 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
  *      C(a b, c d) => a b ## c d
  *      C(a b, c d) => a bc d
  *
- * Above, only `b` and `c` are concatenated even though `X` was substituted for
- * `a b` and `Y` was substituted for `c d`.
+ * Above, only `b` and `c` are concatenated even though `a b` was substituted
+ * for `X` and `c d` was substituted for `Y`.
  * @endparblock
  *
  * @param mex The mex_state to use.
