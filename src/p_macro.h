@@ -147,8 +147,10 @@ void p_arg_list_cleanup( p_arg_list_t *arg_list );
  * @param name The name of the macro to define.  Ownership is taken only if the
  * macro is defined successfully.
  * @param name_loc The source location of \a name.
- * @param param_list The parameter list, if any.
- * @param replace_list The replacement token list, if any.
+ * @param param_list The parameter list, if any.  Parameters are moved out of
+ * the list only if the macro is defined successfully.
+ * @param replace_list The replacement token list, if any.  Tokens are move out
+ * of the list only if the macro is defined successfully.
  * @return Returns a pointer to the new macro or NULL if unsuccessful.
  *
  * @sa p_macro_undef()
