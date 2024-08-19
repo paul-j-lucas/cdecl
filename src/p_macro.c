@@ -437,21 +437,6 @@ static inline bool is_VA_macro_name( char const *name ) {
           strcmp( name, L_PRE___VA_OPT__  ) == 0;
 }
 
-/**
- * Checks whether \a token is an eligible #P_IDENTIFIER and a macro exists
- * having the identifier's name.
- *
- * @param token The \ref p_token to use.
- * @return Returns `true` only if it is.
- *
- * @sa is_predefined_macro_name()
- */
-NODISCARD
-static inline bool p_token_is_macro( p_token_t const *token ) {
-  return  token->kind == P_IDENTIFIER && !token->ident.ineligible &&
-          p_macro_find( token->ident.name ) != NULL;
-}
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**

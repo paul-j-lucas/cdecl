@@ -425,6 +425,18 @@ bool p_token_is_any_char( p_token_t const *token ) {
 }
 
 /**
+ * Checks whether \a token is an eligible #P_IDENTIFIER and a macro exists
+ * having the identifier's name.
+ *
+ * @param token The \ref p_token to use.
+ * @return Returns `true` only if it is.
+ *
+ * @sa is_predefined_macro_name()
+ */
+NODISCARD
+bool p_token_is_macro( p_token_t const *token );
+
+/**
  * Checks whether \a token is of kind #P_PUNCTUATOR and if it's equal to \a
  * punct.
  *

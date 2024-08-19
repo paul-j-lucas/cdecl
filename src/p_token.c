@@ -345,6 +345,12 @@ void p_token_free( p_token_t *token ) {
   free( token );
 }
 
+bool p_token_is_macro( p_token_t const *token ) {
+  assert( token != NULL );
+  return  token->kind == P_IDENTIFIER && !token->ident.ineligible &&
+          p_macro_find( token->ident.name ) != NULL;
+}
+
 p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
   assert( loc != NULL );
   assert( sbuf != NULL );
