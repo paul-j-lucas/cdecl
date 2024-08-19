@@ -72,7 +72,7 @@ static char const* get___DATE___str( void ) {
  *
  * @return Returns said value.
  *
- * @sa #get___LINE___str()
+ * @sa get___LINE___str()
  */
 static char const* get___FILE___str( void ) {
   if ( cdecl_is_testing ) {
@@ -91,7 +91,7 @@ static char const* get___FILE___str( void ) {
  *
  * @warning The pointer returned is to a static buffer.
  *
- * @sa #get___FILE___str()
+ * @sa get___FILE___str()
  */
 static char const* get___LINE___str( void ) {
   if ( cdecl_is_testing )
