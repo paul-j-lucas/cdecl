@@ -1,5 +1,6 @@
 2024-08-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c: Added assert()s.
    * src/Makefile.am, p_macro.c, p_predefine.c, types.h: Split out predefined
      macro code.
 
