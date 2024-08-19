@@ -2773,6 +2773,8 @@ static void p_macro_relocate_params( p_macro_t *macro ) {
  */
 static int param_expand_cmp( param_expand_t const *i_pe,
                              param_expand_t const *j_pe ) {
+  assert( i_pe != NULL );
+  assert( j_pe != NULL );
   return strcmp( i_pe->name, j_pe->name );
 }
 
