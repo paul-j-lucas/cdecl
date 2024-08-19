@@ -1,3 +1,7 @@
+2024-08-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c, p_token.h: Moved p_token_list_emptyish().
+
 2024-08-18  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c: Added assert()s.
