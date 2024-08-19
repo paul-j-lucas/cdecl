@@ -491,6 +491,20 @@ bool p_token_node_emptyish( p_token_node_t const *token_node ) {
   return p_token_node_not( token_node, P_ANY_TRANSPARENT ) == NULL;
 }
 
+/**
+ * Convenience function that checks whether \a token_list is "empty-ish," that
+ * is empty or contains only #P_PLACEMARKER or #P_SPACE tokens.
+ *
+ * @param token_list The \ref p_token_list_t to check.
+ * @return Returns `true` only if it's "empty-ish."
+ *
+ * @sa p_token_node_emptyish()
+ */
+NODISCARD P_TOKEN_H_INLINE
+bool p_token_list_emptyish( p_token_list_t const *token_list ) {
+  return p_token_node_emptyish( token_list->head );
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

@@ -452,20 +452,6 @@ static inline bool p_token_is_macro( p_token_t const *token ) {
           p_macro_find( token->ident.name ) != NULL;
 }
 
-/**
- * Convenience function that checks whether \a token_list is "empty-ish," that
- * is empty or contains only #P_PLACEMARKER or #P_SPACE tokens.
- *
- * @param token_list The \ref p_token_list_t to check.
- * @return Returns `true` only if it's "empty-ish."
- *
- * @sa p_token_node_emptyish()
- */
-NODISCARD
-static inline bool p_token_list_emptyish( p_token_list_t const *token_list ) {
-  return p_token_node_emptyish( token_list->head );
-}
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
