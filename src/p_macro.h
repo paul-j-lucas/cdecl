@@ -86,7 +86,14 @@ struct p_param {
  */
 struct p_macro {
   char const         *name;             ///< Macro name.
-  bool                is_dynamic;       ///< Is value dynamically generated?
+
+  /**
+   * Is value dynamically generated?
+   *
+   * @remarks All predefined macros generate their values dynamically, so this
+   * is synonymous with a macro being predefined.
+   */
+  bool                is_dynamic;
 
   /**
    * Additional data based on whether \ref is_dynamic is `true` or `false`.
