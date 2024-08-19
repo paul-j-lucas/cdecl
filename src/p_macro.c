@@ -233,7 +233,7 @@ struct mex_state {
    *  + Dynamic and not supported in the current language; or:
    *  + A function-like macro not followed by `(`.
    *
-   * @sa macro_flmwa_key()
+   * @sa mex_no_expand_set_key()
    */
   rb_tree_t            *no_expand_set;
 
@@ -370,6 +370,10 @@ static void             mex_init( mex_state_t*, mex_state_t*, p_macro_t const*,
 static void             mex_init_va_args_token_list( mex_state_t* );
 
 NODISCARD
+static char const*      mex_no_expand_set_key( mex_state_t const*,
+                                               p_macro_t const* );
+
+NODISCARD
 static p_token_list_t*  mex_param_arg( mex_state_t const*, char const* );
 
 NODISCARD
@@ -478,27 +482,6 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
   } // for
 
   return true;
-}
-
-/**
- * Generates a key for function-like macros that won't expand for the \ref
- * mex_state::no_expand_set "no_expand_set".
- *
- * @param curr_macro The current \ref p_macro.
- * @param warn_macro The function-like \ref p_macro to potentially warn about.
- * @return Returns said key.
- *
- * @warning The pointer returned is to a static buffer.
- */
-NODISCARD
-static char const* macro_flmwa_key( p_macro_t const *curr_macro,
-                                    p_macro_t const *warn_macro ) {
-  assert( curr_macro != NULL );
-  assert( warn_macro != NULL );
-
-  static strbuf_t sbuf;
-  strbuf_reset( &sbuf );
-  return strbuf_printf( &sbuf, "%s-%s", curr_macro->name, warn_macro->name );
 }
 
 /**
@@ -779,9 +762,9 @@ static void mex_check_identifier( mex_state_t *mex,
     } // switch
   }
 
-  char const *const macro_key = macro_flmwa_key( mex->macro, found_macro );
+  char const *const mnes_key = mex_no_expand_set_key( mex, found_macro );
   rb_insert_rv_t rbi_rv = rb_tree_insert(
-    mex->no_expand_set, CONST_CAST( char*, macro_key )
+    mex->no_expand_set, CONST_CAST( char*, mnes_key )
   );
 
   if ( next_token != NULL && next_token->is_substituted ) {
@@ -1280,10 +1263,10 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
   if ( mex->arg_list == NULL && p_macro_is_func_like( mex->macro ) )
     return MEX_CAN_NOT_EXPAND;
 
-  char const *macro_key = mex_expanding_set_key( mex );
+  char const *mes_key = mex_expanding_set_key( mex );
   rb_insert_rv_t const rbi_rv = rb_tree_insert(
     mex->expanding_set,
-    CONST_CAST( char*, macro_key )
+    CONST_CAST( char*, mes_key )
   );
   if ( !rbi_rv.inserted ) {
     identifier_token->ident.ineligible = true;
@@ -1342,9 +1325,9 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
 
   bool const ok = mex_expand_all_fns( mex, EXPAND_FNS );
 
-  macro_key = rb_tree_delete( mex->expanding_set, rbi_rv.node );
-  assert( macro_key != NULL );
-  FREE( macro_key );
+  mes_key = rb_tree_delete( mex->expanding_set, rbi_rv.node );
+  assert( mes_key != NULL );
+  FREE( mes_key );
 
   if ( !ok )
     return MEX_ERROR;
@@ -2140,6 +2123,27 @@ static void mex_init_va_args_token_list( mex_state_t *mex ) {
     }
     push_back_dup_tokens( &mex->va_args_token_list, arg_node->data );
   } // for
+}
+
+/**
+ * Generates a key for function-like macros that won't expand for the \ref
+ * mex_state::no_expand_set "no_expand_set".
+ *
+ * @param mex The mex_state to use.
+ * @param warn_macro The function-like \ref p_macro to potentially warn about.
+ * @return Returns said key.
+ *
+ * @warning The pointer returned is to a static buffer.
+ */
+NODISCARD
+static char const* mex_no_expand_set_key( mex_state_t const *mex,
+                                          p_macro_t const *warn_macro ) {
+  assert( mex != NULL );
+  assert( warn_macro != NULL );
+
+  static strbuf_t sbuf;
+  strbuf_reset( &sbuf );
+  return strbuf_printf( &sbuf, "%s-%s", mex->macro->name, warn_macro->name );
 }
 
 /**
