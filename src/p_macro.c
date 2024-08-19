@@ -2430,7 +2430,7 @@ static void mex_print_macro( mex_state_t const *mex,
  *
  * @param mex The mex_state to use.
  *
- * @note The column caclulations _must_ match how mex_print_macro() prints.
+ * @note The column calculations _must_ match how mex_print_macro() prints.
  *
  * @sa mex_preliminary_relocate_replace_list()
  * @sa p_token_list_relocate()
@@ -2741,7 +2741,7 @@ static bool p_macro_check_params( p_macro_t const *macro ) {
  *
  * @param macro The \ref p_macro whose parameters to relocate.
  *
- * @note The column caclulations _must_ match how show_macro() prints.
+ * @note The column calculations _must_ match how show_macro() prints.
  */
 static void p_macro_relocate_params( p_macro_t *macro ) {
   assert( macro != NULL );
