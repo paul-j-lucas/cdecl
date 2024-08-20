@@ -559,18 +559,18 @@ _GL_INLINE_HEADER_BEGIN
 #endif /* HAVE_TYPEOF */
 
 /**
- * Checks (at compile-time) whether the type of \a T is a C string type, i.e.,
- * <code>char*</code> or <code>char const*</code>.
+ * Checks (at compile-time) whether the type of \a EXPR is a C string type,
+ * i.e., <code>char*</code> or <code>char const*</code>.
  *
- * @param T An expression. It is _not_ evaluated.
- * @return Returns 1 (true) only if \a T is a C string type; 0 (false)
+ * @param EXPR An expression. It is _not_ evaluated.
+ * @return Returns 1 (true) only if \a EXPR is a C string type; 0 (false)
  * otherwise.
  */
-#define IS_C_STR(T)   \
-  _Generic( (T),      \
-    char*       : 1,  \
-    char const* : 1,  \
-    default     : 0   \
+#define IS_C_STR(EXPR)  \
+  _Generic( (EXPR),     \
+    char*       : 1,    \
+    char const* : 1,    \
+    default     : 0     \
   )
 
 /**
@@ -581,17 +581,17 @@ _GL_INLINE_HEADER_BEGIN
 #define IS_CHAR_SIGNED            STATIC_IF( (char)-1 < 0, 1, 0 )
 
 /**
- * Checks (at compile-time) whether the type of the expression \a T is an
+ * Checks (at compile-time) whether the type of the expression \a EXPR is an
  * integral type.
  *
- * @param T An expression. It is _not_ evaluated.
- * @return Returns 1 (true) only if \a T is an integral type; 0 (false)
+ * @param EXPR An expression. It is _not_ evaluated.
+ * @return Returns 1 (true) only if \a EXPR is an integral type; 0 (false)
  * otherwise.
  *
  * @sa #IS_SIGNED()
  * @sa #IS_UNSIGNED()
  */
-#define IS_INTEGRAL(T)            (IS_SIGNED(T) || IS_UNSIGNED(T))
+#define IS_INTEGRAL(EXPR)         (IS_SIGNED(EXPR) || IS_UNSIGNED(EXPR))
 
 /**
  * Checks (at compile-time) whether \a P is a pointer to `const`.
@@ -607,17 +607,17 @@ _GL_INLINE_HEADER_BEGIN
   )
 
 /**
- * Checks (at compile-time) whether the type of the expression \a T is a signed
- * integral type.
+ * Checks (at compile-time) whether the type of the expression \a EXPR is a
+ * signed integral type.
  *
- * @param T An expression. It is _not_ evaluated.
- * @return Returns 1 (true) only if \a T is a signed integral type; 0 (false)
- * otherwise.
+ * @param EXPR An expression. It is _not_ evaluated.
+ * @return Returns 1 (true) only if \a EXPR is a signed integral type; 0
+ * (false) otherwise.
  *
  * @sa #IS_UNSIGNED()
  */
-#define IS_SIGNED(T)                      \
-  _Generic( (T),                          \
+#define IS_SIGNED(EXPR)                   \
+  _Generic( (EXPR),                       \
     char       : IS_CHAR_SIGNED,          \
     signed char: 1,                       \
     short      : 1,                       \
@@ -628,17 +628,17 @@ _GL_INLINE_HEADER_BEGIN
   )
 
 /**
- * Checks (at compile-time) whether the type of the expression \a T is an
+ * Checks (at compile-time) whether the type of the expression \a EXPR is an
  * unsigned integral type.
  *
- * @param T An expression. It is _not_ evaluated.
- * @return Returns 1 (true) only if \a T is an unsigned integral type; 0
+ * @param EXPR An expression. It is _not_ evaluated.
+ * @return Returns 1 (true) only if \a EXPR is an unsigned integral type; 0
  * (false) otherwise.
  *
  * @sa #IS_SIGNED()
  */
-#define IS_UNSIGNED(T)                    \
-  _Generic( (T),                          \
+#define IS_UNSIGNED(EXPR)                 \
+  _Generic( (EXPR),                       \
     _Bool             : 1,                \
     char              : !IS_CHAR_SIGNED,  \
     unsigned char     : 1,                \
@@ -784,7 +784,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param ... Additional arguments passed to \a FN.
  */
-#define NONCONST_OVERLOAD(FN, PTR, ...) \
+#define NONCONST_OVERLOAD(FN,PTR,...)   \
   STATIC_IF( IS_PTR_TO_CONST( (PTR) ),  \
     FN,                                 \
     NAME2(nonconst_,FN)                 \
@@ -802,7 +802,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa perror_exit()
  * @sa #UNEXPECTED_INT_VALUE()
  */
-#define PERROR_EXIT_IF( EXPR, STATUS ) \
+#define PERROR_EXIT_IF(EXPR,STATUS) \
   BLOCK( if ( unlikely( (EXPR) ) ) perror_exit( (STATUS) ); )
 
 /**
