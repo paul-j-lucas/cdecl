@@ -405,8 +405,8 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Convenience macro for iterating \a N times.
  *
- * @param N The number of times to iterate.  If of a signed type, must be &gt;
- * 0.
+ * @param N The number of times to iterate.  If of a signed type, it must be
+ * &ge; 0.
  *
  * @sa #FOREACH_ARRAY_ELEMENT()
  */
