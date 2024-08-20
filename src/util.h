@@ -410,10 +410,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #FOREACH_ARRAY_ELEMENT()
  */
-#define FOR_N_TIMES(N)                                                  \
-  for ( size_t UNIQUE_NAME(i) =                                         \
-        STATIC_IF( IS_SIGNED(N), ASSERT_EXPR( (N) >= 0 ) * (N), (N) );  \
-        UNIQUE_NAME(i) > 0;                                             \
+#define FOR_N_TIMES(N)                                                    \
+  for ( size_t UNIQUE_NAME(i) = STATIC_CAST( size_t,                      \
+        STATIC_IF( IS_SIGNED(N), ASSERT_EXPR( (N) >= 0 ) * (N), (N) ) );  \
+        UNIQUE_NAME(i) > 0;                                               \
         --UNIQUE_NAME(i) )
 
 /**
