@@ -1,5 +1,12 @@
+2024-08-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Put STATIC_CAST( size_t, ... ) back.
+   * util.h: Added ASSERT_EXPR(); made FOR_N_TIMES() check N.
+
 2024-08-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: Removed INTEGER_CAST() -- not used.
+   * p_macro.c, p_token.c, p_token.h: Moved p_token_is_macro().
    * p_macro.c, p_token.h: Moved p_token_list_emptyish().
 
 2024-08-18  Paul J. Lucas <paul@lucasmail.org>
