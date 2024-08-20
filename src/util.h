@@ -303,7 +303,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * C version of C++'s `const_cast`.
  *
- * @param T The type to cast to.
+ * @param TYPE The type to cast to.
  * @param EXPR The expression to cast.
  *
  * @note This macro can't actually implement C++'s `const_cast` because there's
@@ -313,16 +313,16 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #POINTER_CAST()
  * @sa #STATIC_CAST()
  */
-#define CONST_CAST(T,EXPR)        ((T)(EXPR))
+#define CONST_CAST(TYPE,EXPR)     ((TYPE)(EXPR))
 
 /**
- * Declares a object with an unspecified name both aligned and sized as a \a T
- * intended to be used inside a `struct` declaration to add padding.
+ * Declares a object with an unspecified name both aligned and sized as a \a
+ * TYPE intended to be used inside a `struct` declaration to add padding.
  *
- * @param T The type of the object.
+ * @param TYPE The type of the object.
  */
-#define DECL_UNUSED(T) \
-  _Alignas(T) char UNIQUE_NAME(unused)[ sizeof(T) ]
+#define DECL_UNUSED(TYPE) \
+  _Alignas(TYPE) char UNIQUE_NAME(unused)[ sizeof(TYPE) ]
 
 /**
  * Shorthand for printing to standard error.
@@ -591,7 +591,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #IS_SIGNED()
  * @sa #IS_UNSIGNED()
  */
-#define IS_INTEGRAL(EXPR)         (IS_SIGNED(EXPR) || IS_UNSIGNED(EXPR))
+#define IS_INTEGRAL(EXPR)         (IS_SIGNED((EXPR)) || IS_UNSIGNED((EXPR)))
 
 /**
  * Checks (at compile-time) whether \a P is a pointer to `const`.
@@ -809,7 +809,7 @@ _GL_INLINE_HEADER_BEGIN
  * Cast either from or to a pointer type --- similar to C++'s
  * `reinterpret_cast`, but for pointers only.
  *
- * @param T The type to cast to.
+ * @param TYPE The type to cast to.
  * @param EXPR The expression to cast.
  *
  * @note This macro silences a "cast to pointer from integer of different size"
@@ -819,7 +819,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #CONST_CAST()
  * @sa #STATIC_CAST()
  */
-#define POINTER_CAST(T,EXPR)      ((T)(uintptr_t)(EXPR))
+#define POINTER_CAST(TYPE,EXPR)   ((TYPE)(uintptr_t)(EXPR))
 
 /**
  * Calls #FPRINTF() with `stdout`.
@@ -938,7 +938,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * C version of C++'s `static_cast`.
  *
- * @param T The type to cast to.
+ * @param TYPE The type to cast to.
  * @param EXPR The expression to cast.
  *
  * @note This macro can't actually implement C++'s `static_cast` because
@@ -948,7 +948,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #CONST_CAST()
  * @sa #POINTER_CAST()
  */
-#define STATIC_CAST(T,EXPR)       ((T)(EXPR))
+#define STATIC_CAST(TYPE,EXPR)    ((TYPE)(EXPR))
 
 /**
  * Implements a "static if" similar to `if constexpr` in C++.
