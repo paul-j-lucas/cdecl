@@ -379,7 +379,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_ALIGNED_CSUS               LANG_CPP_MIN(11)
 
 /**
- * Lanuages aligned storage is supported in.
+ * Languages aligned storage is supported in.
  *
  * @sa #LANG_ALIGNED_CSUS
  * @sa #LANG__Alignas
@@ -542,7 +542,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_BOOLEAN                    (LANG__Bool | LANG_bool)
 
 /**
- * Lanuages capturing `*this` in lambdas is supported in.
+ * Languages capturing `*this` in lambdas is supported in.
  */
 #define LANG_CAPTURE_STAR_THIS          LANG_CPP_MIN(17)
 
@@ -828,7 +828,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_KNR_FUNC_DEFS              LANG_C_MAX(17)
 
 /**
- * Lanuages lambdas are supported in.
+ * Languages lambdas are supported in.
  */
 #define LANG_LAMBDAS                    LANG_CPP_MIN(11)
 
@@ -855,17 +855,17 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_LINKAGE_DECLS              LANG_CPP_ANY
 
 /**
- * Lanuages the `long double` type is supported in.
+ * Languages the `long double` type is supported in.
  */
 #define LANG_long_double                LANG_MIN(C_89)
 
 /**
- * Lanuages the `long float` type is supported in.
+ * Languages the `long float` type is supported in.
  */
 #define LANG_long_float                 LANG_C_KNR
 
 /**
- * Lanuages the `long long` type is supported in.
+ * Languages the `long long` type is supported in.
  */
 #define LANG_long_long                  LANG_C_CPP_MIN(99,11)
 
@@ -1268,17 +1268,17 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_unsequenced                LANG_C_MIN(23)
 
 /**
- * Lanuages the `unsigned char` type is supported in.
+ * Languages the `unsigned char` type is supported in.
  */
 #define LANG_unsigned_char              LANG_MIN(C_89)
 
 /**
- * Lanuages the `unsigned long` type is supported in.
+ * Languages the `unsigned long` type is supported in.
  */
 #define LANG_unsigned_long              LANG_MIN(C_89)
 
 /**
- * Lanuages the `unsigned short` type is supported in.
+ * Languages the `unsigned short` type is supported in.
  */
 #define LANG_unsigned_short             LANG_MIN(C_89)
 
