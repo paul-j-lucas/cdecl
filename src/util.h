@@ -299,7 +299,6 @@ _GL_INLINE_HEADER_BEGIN
  * no way to do it in C.  It serves merely as a visual cue for the type of cast
  * meant.
  *
- * @sa #INTEGER_CAST()
  * @sa #POINTER_CAST()
  * @sa #STATIC_CAST()
  */
@@ -509,22 +508,6 @@ _GL_INLINE_HEADER_BEGIN
  * @warning If \a EXPR1 is non-zero, it is evaluated twice.
  */
 #define IF_ELSE(EXPR1,EXPR2)      ( (EXPR1) ? (EXPR1) : (EXPR2) )
-
-/**
- * Cast either from or to an integral type --- similar to C++'s
- * `reinterpret_cast`, but for integers only.
- *
- * @param T The integral type to cast to.
- * @param EXPR The expression to cast.
- *
- * @note In C++, this would be done via `reinterpret_cast`, but it's not
- * possible to implement that in C that works for both pointers and integers.
- *
- * @sa #CONST_CAST()
- * @sa #POINTER_CAST()
- * @sa #STATIC_CAST()
- */
-#define INTEGER_CAST(T,EXPR)      ((T)(uintmax_t)(EXPR))
 
 /**
  * A special-case of fatal_error() that additionally prints the file and line
@@ -821,7 +804,6 @@ _GL_INLINE_HEADER_BEGIN
  * possible to implement that in C that works for both pointers and integers.
  *
  * @sa #CONST_CAST()
- * @sa #INTEGER_CAST()
  * @sa #STATIC_CAST()
  */
 #define POINTER_CAST(T,EXPR)      ((T)(uintptr_t)(EXPR))
@@ -949,7 +931,6 @@ _GL_INLINE_HEADER_BEGIN
  * of cast meant.
  *
  * @sa #CONST_CAST()
- * @sa #INTEGER_CAST()
  * @sa #POINTER_CAST()
  */
 #define STATIC_CAST(T,EXPR)       ((T)(EXPR))
