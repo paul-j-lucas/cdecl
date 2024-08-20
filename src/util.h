@@ -124,6 +124,17 @@ _GL_INLINE_HEADER_BEGIN
   * STATIC_ASSERT_EXPR( IS_ARRAY( (ARRAY) ), #ARRAY " must be an array" ))
 
 /**
+ * Like **assert**(3) except can be used in an expression.
+ *
+ * @param EXPR The expression to evaluate.
+ * @return Returns 1 (true) only if \a EXPR is non-zero; if zero, asserts (does
+ * not return).
+ *
+ * @sa #STATIC_ASSERT_EXPR()
+ */
+#define ASSERT_EXPR(EXPR)         ( assert( (EXPR) ), 1 )
+
+/**
  * Asserts that this line of code is run at most once --- useful in
  * initialization functions that must be called at most once.  For example:
  *
@@ -394,14 +405,16 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Convenience macro for iterating \a N times.
  *
- * @param N The number of times to iterate.
+ * @param N The number of times to iterate.  If of a signed type, must be &gt;
+ * 0.
  *
  * @sa #FOREACH_ARRAY_ELEMENT()
  */
-#define FOR_N_TIMES(N)                                \
-  for ( size_t UNIQUE_NAME(i) = 0;                    \
-        UNIQUE_NAME(i) < STATIC_CAST( size_t, (N) );  \
-        ++UNIQUE_NAME(i) )
+#define FOR_N_TIMES(N)                                                  \
+  for ( size_t UNIQUE_NAME(i) =                                         \
+        STATIC_IF( IS_SIGNED(N), ASSERT_EXPR( (N) >= 0 ) * (N), (N) );  \
+        UNIQUE_NAME(i) > 0;                                             \
+        --UNIQUE_NAME(i) )
 
 /**
  * Calls **fprintf**(3) on \a STREAM, checks for an error, and exits if there
@@ -916,6 +929,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param MSG The string literal of the error message to print only if \a EXPR
  * evaluates to 0 (false).
  * @return Always returns 1.
+ *
+ * @sa #ASSERT_EXPR()
  */
 #define STATIC_ASSERT_EXPR(EXPR,MSG) \
   (!!sizeof( struct { static_assert( (EXPR), MSG ); char c; } ))
