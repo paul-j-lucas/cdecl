@@ -20,11 +20,11 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "p_macro.h"
-#include "cdecl.h"
 #include "c_lang.h"
+#include "cdecl.h"
 #include "lexer.h"
 #include "options.h"
+#include "p_macro.h"
 #include "p_token.h"
 #include "util.h"
 
