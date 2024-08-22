@@ -1,3 +1,8 @@
+2024-08-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c, util.h: Now always setting `errno` to 0 initially; now setting
+     `errno` to `ERANGE` if the number < min or > max.
+
 2024-08-20  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Put STATIC_CAST( size_t, ... ) back.
