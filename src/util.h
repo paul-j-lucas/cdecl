@@ -1275,8 +1275,11 @@ char* check_strndup( char const *s, size_t n );
  * @param min The minimum allowed value.
  * @param max The maximum allowed value.
  * @return Returns \a s convervted to an unsigned integer upon success or
- * #STRTOULL_ERROR upon failure. Additionally, if the unsigned integer is &lt;
- * \a min or &gt; \a max, sets `errno` to `ERANGE`.
+ * #STRTOULL_ERROR upon failure.
+ * @par
+ * Additionally, `errno` is set to:
+ *  + `EILSEQ` if \a s contains non-decimal digits; or:
+ *  + `ERANGE` if the unsigned integer is &lt; \a min or &gt; \a max.
  */
 NODISCARD
 unsigned long long check_strtoull( char const *s, unsigned long long min,

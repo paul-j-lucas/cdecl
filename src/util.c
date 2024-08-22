@@ -194,9 +194,11 @@ unsigned long long check_strtoull( char const *s, unsigned long long min,
                                    unsigned long long max ) {
   assert( s != NULL );
 
-  errno = 0;
-  if ( !str_is_digits( s ) )
+  if ( !str_is_digits( s ) ) {
+    errno = EILSEQ;
     return STRTOULL_ERROR;
+  }
+  errno = 0;
   unsigned long long const rv = strtoull( s, /*endptr=*/NULL, 10 );
   if ( rv < min || rv > max )
     errno = ERANGE;
