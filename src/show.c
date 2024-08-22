@@ -241,7 +241,7 @@ bool show_types( cdecl_show_t show, char const *glob, decl_flags_t decl_flags,
     // We didn't show any specific user-defined types, so try showing specific
     // predefined types.
     //
-    sti.show &= ~TO_UNSIGNED( CDECL_SHOW_USER_DEFINED );
+    sti.show &= ~TO_UNSIGNED_EXPR( CDECL_SHOW_USER_DEFINED );
     sti.show |= CDECL_SHOW_PREDEFINED;
     c_typedef_visit( &show_type_visitor, &sti );
   }

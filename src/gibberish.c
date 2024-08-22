@@ -645,7 +645,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         //      using foo_t = int32_t;
         //
         decl_flags_t const orig_flags = gib->gib_flags;
-        gib->gib_flags &= ~TO_UNSIGNED( C_GIB_USING );
+        gib->gib_flags &= ~TO_UNSIGNED_EXPR( C_GIB_USING );
         c_ast_name_gibberish( ast->tdef.for_ast, gib );
         gib->gib_flags = orig_flags;
         if ( print_parens_for_Atomic )
@@ -681,7 +681,7 @@ static void c_ast_list_gibberish( c_ast_list_t const *ast_list,
   assert( gib != NULL );
 
   decl_flags_t const node_gib_flags =
-    gib->gib_flags & ~TO_UNSIGNED( C_GIB_OPT_OMIT_TYPE );
+    gib->gib_flags & ~TO_UNSIGNED_EXPR( C_GIB_OPT_OMIT_TYPE );
 
   bool comma = false;
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
