@@ -1320,7 +1320,7 @@ static void yyerror( char const *msg ) {
   bool                flag;           // simple flag
   unsigned            flags;          // multipurpose bitwise flags
   char const         *literal;        // token L_* literal for new-style casts
-  int                 int_val;        // signed integer value
+  int                 int_val;        // signed integer value, cf. uint_val
   char               *name;           // identifier name, cf. sname
   c_func_member_t     member;         // member, non-member, or unspecified
   c_op_id_t           op_id;          // overloaded operator ID
