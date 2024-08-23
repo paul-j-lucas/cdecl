@@ -1,3 +1,8 @@
+2024-08-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.h, pjl_config.h: Moved HAVE_GENUINE_GNU_READLINE.
+   * autocomplete.h: Removed unnecessary #include.
+
 2024-08-22  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c, util.h: Now using EILSEQ.
