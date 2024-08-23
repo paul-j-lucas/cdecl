@@ -649,7 +649,7 @@ union user_data {
   float               f;                ///< `float` value.
   double              d;                ///< `double` value.
 
-  void               *p;                ///< Pointer (to non-`const`) value.
+  void               *p;                ///< Pointer to (non-`const`) value.
   void const         *pc;               ///< Pointer to `const` value.
 };
 
