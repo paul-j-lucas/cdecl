@@ -42,6 +42,26 @@
 // standard
 #include <attribute.h>
 
+/**
+ * Defined to an expression that evaluates to `true` only if we're running
+ * genuine GNU **readline**(3) and not some other library emulating it.
+ *
+ * @remarks Some readline emulators, e.g., editline, have a bug that makes
+ * color prompts not work correctly.  So, unless we know we're using genuine
+ * GNU readline, use this to disable color prompts.
+ *
+ * @return Evaluates to `true` only if we're running genuine GNU readline.
+ *
+ * @sa [The GNU Readline
+ * Library](https://tiswww.case.edu/php/chet/readline/rltop.html)
+ * @sa http://stackoverflow.com/a/31333315/99089
+ */
+#if HAVE_DECL_RL_GNU_READLINE_P
+# define HAVE_GENUINE_GNU_READLINE  (rl_gnu_readline_p == 1)
+#else
+# define HAVE_GENUINE_GNU_READLINE  0
+#endif /* HAVE_DECL_RL_GNU_READLINE_P */
+
 ////////// compiler attributes ////////////////////////////////////////////////
 
 /**
