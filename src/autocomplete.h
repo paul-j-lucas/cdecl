@@ -34,7 +34,6 @@
 
 // standard
 #include <stdio.h>                      /* for FILE */
-#include <readline/readline.h>          /* must go last */
 
 /**
  * @defgroup autocompletion-group Autocompletion
