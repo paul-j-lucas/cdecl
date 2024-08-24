@@ -153,6 +153,13 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
 }
 
 /**
+ * Cleans-up autocompletion data.
+ */
+static void ac_cleanup( void ) {
+  FREE( ac_keywords );
+}
+
+/**
  * Creates and initializes an array of all `help` command next keywords to be
  * used for autocompletion for the `help` command.
  *
@@ -237,8 +244,7 @@ static ac_keyword_t const* ac_keywords_new( void ) {
   FOREACH_CDECL_KEYWORD( cdk )
     n += !is_c_keyword( cdk->literal );
 
-  ac_keyword_t *const ac_keywords_array =
-    free_later( MALLOC( ac_keyword_t, n + 1/*NULL*/ ) );
+  ac_keyword_t *const ac_keywords_array = MALLOC( ac_keyword_t, n + 1/*NULL*/ );
   ac_keyword_t *pack = ac_keywords_array;
 
   FOREACH_C_KEYWORD( ck ) {
@@ -869,6 +875,7 @@ void readline_init( FILE *fin, FILE *fout ) {
 
   RUN_ONCE {
     ac_keywords = ac_keywords_new();
+    ATEXIT( &ac_cleanup );
   }
 
   //
