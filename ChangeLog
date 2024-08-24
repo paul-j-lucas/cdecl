@@ -1,5 +1,6 @@
 2024-08-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * read_line.c: Now setting *pline_len even when line == NULL.
    * autocomplete.c: Now init'ing ac_keywords lazily.
    * autocomplete.c: Now free'ing ac_help_keywords.
    * autocomplete.c: Added ac_cleanup().
