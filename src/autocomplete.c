@@ -73,9 +73,29 @@ struct ac_keyword {
 };
 typedef struct ac_keyword ac_keyword_t;
 
+/**
+ * Keyword generator state.
+ */
+struct kg_state {
+  char const         *command;          ///< Current command.
+  bool                is_gibberish;     ///< Is command gibberish?
+  size_t              keyword_index;    ///< Current match keyword index.
+  ac_keyword_t const *no_other_ack;     ///< Keyword to match only if no other.
+  bool                returned_any;     ///< Returned at least one match?
+  char const *const  *specific_ac_keywords; ///< Specific keywords to match?
+  size_t              text_len;         ///< Length of text read (so far).
+};
+typedef struct kg_state kg_state_t;
+
 // local functions
 static char*              command_generator( char const*, int );
 static char*              keyword_generator( char const*, int );
+
+NODISCARD
+static char const*        kg_match_specific_keyword( kg_state_t*, char const* );
+
+NODISCARD
+static char const* const* prev_keyword_ac_next( char const*, size_t );
 
 NODISCARD
 static char const*        str_prev_token( char const*, size_t, size_t* );
@@ -397,41 +417,6 @@ static char const *const* command_ac_keywords( char const *command ) {
 }
 
 /**
- * For \a command, possibly gets alternate text for \a text.
- *
- * @param command The command to get the alternate text for.
- * @param text The text read (so far) to match against.
- * @param ptext_len A pointer to the length of \a text.
- * @return Returns alternate text for \a command or \a text if none.
- */
-static char const* command_alt_text( char const *command, char const *text,
-                                     size_t *ptext_len ) {
-  assert( command != NULL );
-  assert( text != NULL );
-  assert( ptext_len != NULL );
-
-  static strbuf_t sbuf;
-
-  if ( command == L_set && STRNCMPLIT( text, "no-" ) == 0 ) {
-    //
-    // Special case: for the "set" command, since the "no" options are of the
-    // form "nofoo" and not "no-foo", if the user types:
-    //
-    //      cdecl> set no-<tab>
-    //
-    // i.e., includes '-', change it to just "no" so cdecl will still present
-    // all the "no" options.
-    //
-    strbuf_reset( &sbuf );
-    strbuf_reserve( &sbuf, --*ptext_len );
-    strbuf_printf( &sbuf, "no%s", text + STRLITLEN( "no-" ) );
-    text = sbuf.str;
-  }
-
-  return text;
-}
-
-/**
  * Retroactively figure out what the current command is so we can do some
  * command-sensitive autocompletion.
  *
@@ -497,6 +482,181 @@ static bool is_english_command( char const *command ) {
 NODISCARD
 static inline bool is_token_char( char c ) {
   return is_ident( c ) || c == '-';
+}
+
+/**
+ * For \ref kg_state::command, possibly gets alternate text for \a text.
+ *
+ * @param kg The kg_state to use.
+ * @param text The text read (so far) to match against.
+ * @return Returns alternate text for \ref kg_state::command or \a text if
+ * none.
+ */
+static char const* kg_alt_text( kg_state_t *kg, char const *text ) {
+  assert( kg != NULL );
+  assert( text != NULL );
+
+  static strbuf_t sbuf;
+
+  if ( kg->command == L_set && STRNCMPLIT( text, "no-" ) == 0 ) {
+    //
+    // Special case: for the "set" command, since the "no" options are of the
+    // form "nofoo" and not "no-foo", if the user types:
+    //
+    //      cdecl> set no-<tab>
+    //
+    // i.e., includes '-', change it to just "no" so cdecl will still present
+    // all the "no" options.
+    //
+    strbuf_reset( &sbuf );
+    strbuf_reserve( &sbuf, --kg->text_len );
+    strbuf_printf( &sbuf, "no%s", text + STRLITLEN( "no-" ) );
+    text = sbuf.str;
+  }
+
+  return text;
+}
+
+/**
+ * Initializes a kg_state.
+ *
+ * @param kg The kg_state to initialize.
+ * @param ptext A pointer to the text read (so far) to match.
+ */
+static void kg_init( kg_state_t *kg, char const **ptext ) {
+  assert( kg != NULL );
+  assert( ptext != NULL );
+  assert( *ptext != NULL );
+
+  *kg = (kg_state_t){ .command = determine_command() };
+  if ( kg->command == NULL )
+    return;
+
+  kg->is_gibberish = !is_english_command( kg->command );
+
+  //
+  // Special case: for certain commands, complete using specific keywords for
+  // that command.
+  //
+  kg->specific_ac_keywords = command_ac_keywords( kg->command );
+
+  if ( kg->specific_ac_keywords == NULL ) {
+    //
+    // Special case: for certain keywords, complete using specific keywords
+    // for that keyword.
+    //
+    assert( rl_point >= 0 );
+    size_t const rl_pos = STATIC_CAST( size_t, rl_point );
+    kg->specific_ac_keywords = prev_keyword_ac_next( rl_line_buffer, rl_pos );
+  }
+
+  kg->text_len = strlen( *ptext );
+  *ptext = kg_alt_text( kg, *ptext );
+}
+
+/**
+ * Attempts to match \a text against a keyword.
+ *
+ * @param The kg_state to use.
+ * @param text The text read (so far) to match.
+ * @return Returns the matched keyword or NULL for none.
+ */
+NODISCARD
+static char const* kg_match( kg_state_t *kg, char const *text ) {
+  assert( kg != NULL );
+  assert( text != NULL );
+
+  if ( kg->specific_ac_keywords != NULL )
+    return kg_match_specific_keyword( kg, text );
+
+  ac_keyword_t const *ack;
+  while ( (ack = ac_keywords + kg->keyword_index)->literal != NULL ) {
+    ++kg->keyword_index;
+
+    int const cmp = strncmp( text, ack->literal, kg->text_len );
+    if ( cmp > 0 )
+      continue;
+    if ( cmp < 0 )                      // the array is sorted
+      break;
+
+    //
+    // If we're deciphering gibberish into pseudo-English, but the current
+    // keyword shouldn't be autocompleted in gibberish, skip it.
+    //
+    if ( kg->is_gibberish && !ack->ac_in_gibberish )
+      continue;
+
+    if ( !opt_lang_is_any( ack->ac_lang_ids ) )
+      continue;
+
+    if ( ack->lang_syn != NULL ) {
+      //
+      // If this keyword is a synonym for another keyword and the text typed so
+      // far is a prefix of the synonym, skip this keyword because the synonym
+      // was previously returned and we don't want to return this keyword and
+      // its synonym since it's redundant.
+      //
+      // For example, if this keyword is "character" (a synonym for "char"),
+      // and the text typed so far is "char", skip "character" since it would
+      // be redundant with "char".
+      //
+      char const *const synonym = c_lang_literal( ack->lang_syn );
+      if ( synonym != NULL && str_is_prefix( text, synonym ) )
+        continue;
+    }
+
+    switch ( ack->ac_policy ) {
+      case AC_POLICY_DEFAULT:
+        kg->returned_any = true;
+        return ack->literal;
+      case AC_POLICY_NO_OTHER:
+        kg->no_other_ack = ack;
+        continue;
+      case AC_POLICY_DEFER:
+      case AC_POLICY_IN_NEXT_ONLY:      // handled by specific_ac_keywords
+      case AC_POLICY_TOO_SHORT:
+        continue;
+    } // switch
+    UNEXPECTED_INT_VALUE( ack->ac_policy );
+  } // while
+
+  if ( kg->no_other_ack != NULL && false_set( &kg->returned_any ) )
+    return kg->no_other_ack->literal;
+
+  return NULL;
+}
+
+/**
+ * There's a special-case command or keyword having specific keywords in
+ * effect: attempt to match against only those.
+ *
+ * @param kg The kg_state to use.
+ * @param text The text read (so far) to match.
+ * @return Returns the matched keyword or NULL for none.
+ */
+NODISCARD
+static char const* kg_match_specific_keyword( kg_state_t *kg,
+                                              char const *text ) {
+  assert( kg != NULL );
+  assert( kg->specific_ac_keywords != NULL );
+  assert( text != NULL );
+
+  char const *keyword;
+  while ( (keyword = kg->specific_ac_keywords[ kg->keyword_index ]) != NULL ) {
+    ++kg->keyword_index;
+    int const cmp = strncmp( text, keyword, kg->text_len );
+    if ( cmp > 0 )
+      continue;
+    if ( cmp < 0 )                      // the array is sorted
+      break;
+    ac_keyword_t const *const ack = ac_keyword_find( keyword );
+    if ( ack == NULL || opt_lang_is_any( ack->ac_lang_ids ) ) {
+      kg->returned_any = true;
+      return keyword;
+    }
+  } // while
+
+  return NULL;
 }
 
 /**
@@ -682,144 +842,24 @@ static char* command_generator( char const *text, int state ) {
 static char* keyword_generator( char const *text, int state ) {
   assert( text != NULL );
 
-  static char const *command;           // current command
-  static bool        returned_any;      // returned at least one match?
+  static kg_state_t kg;
 
   if ( state == 0 ) {                   // new word? reset
-    command = determine_command();
-    returned_any = false;
-  }
-
-  if ( command == NULL ) {
-    //
-    // We haven't at least matched a command yet, so don't match any other
-    // keywords.
-    //
-    goto done;
-  }
-
-  static size_t             match_index;
-  static char const *const *specific_ac_keywords;
-  static size_t             text_len;
-
-  if ( state == 0 ) {
-    match_index = 0;
-    text_len = strlen( text );
-
     if ( ac_keywords == NULL )
       ac_keywords = ac_keywords_new();
-
-    //
-    // Special case: for certain commands, complete using specific keywords for
-    // that command.
-    //
-    specific_ac_keywords = command_ac_keywords( command );
-
-    if ( specific_ac_keywords == NULL ) {
-      //
-      // Special case: for certain keywords, complete using specific keywords
-      // for that keyword.
-      //
-      assert( rl_point >= 0 );
-      size_t const rl_pos = STATIC_CAST( size_t, rl_point );
-      specific_ac_keywords = prev_keyword_ac_next( rl_line_buffer, rl_pos );
-    }
-
-    text = command_alt_text( command, text, &text_len );
+    kg_init( &kg, &text );
   }
 
-  if ( specific_ac_keywords != NULL ) {
+  if ( kg.command != NULL ) {
     //
-    // There's a special-case command or keyword having specific keywords in
-    // effect: attempt to match against only those.
+    // Attempt to match a keyword only if we've at least matched a command.
     //
-    for ( char const *s; (s = specific_ac_keywords[ match_index ]) != NULL; ) {
-      ++match_index;
-      int const cmp = strncmp( text, s, text_len );
-      if ( cmp > 0 )
-        continue;
-      if ( cmp < 0 )                    // the array is sorted
-        break;
-      ac_keyword_t const *const ack = ac_keyword_find( s );
-      if ( ack == NULL || opt_lang_is_any( ack->ac_lang_ids ) ) {
-        returned_any = true;
-        return check_strdup( s );
-      }
-    } // for
-    goto done;
+    char const *const keyword = kg_match( &kg, text );
+    if ( keyword != NULL )
+      return check_strdup( keyword );
   }
 
-  //
-  // Otherwise, just attempt to match (almost) any keyword (if any text has
-  // been typed).
-  //
-  if ( text_len == 0 )
-    goto done;
-
-  static bool                 is_gibberish;
-  static ac_keyword_t const  *no_other_ack;
-
-  if ( state == 0 ) {
-    is_gibberish = !is_english_command( command );
-    no_other_ack = NULL;
-  }
-
-  for ( ac_keyword_t const *ack;
-        (ack = ac_keywords + match_index)->literal != NULL; ) {
-    ++match_index;
-
-    int const cmp = strncmp( text, ack->literal, text_len );
-    if ( cmp > 0 )
-      continue;
-    if ( cmp < 0 )                      // the array is sorted
-      break;
-
-    //
-    // If we're deciphering gibberish into pseudo-English, but the current
-    // keyword shouldn't be autocompleted in gibberish, skip it.
-    //
-    if ( is_gibberish && !ack->ac_in_gibberish )
-      continue;
-
-    if ( !opt_lang_is_any( ack->ac_lang_ids ) )
-      continue;
-
-    if ( ack->lang_syn != NULL ) {
-      //
-      // If this keyword is a synonym for another keyword and the text typed so
-      // far is a prefix of the synonym, skip this keyword because the synonym
-      // was previously returned and we don't want to return this keyword and
-      // its synonym since it's redundant.
-      //
-      // For example, if this keyword is "character" (a synonym for "char"),
-      // and the text typed so far is "char", skip "character" since it would
-      // be redundant with "char".
-      //
-      char const *const synonym = c_lang_literal( ack->lang_syn );
-      if ( synonym != NULL && str_is_prefix( text, synonym ) )
-        continue;
-    }
-
-    switch ( ack->ac_policy ) {
-      case AC_POLICY_DEFAULT:
-        returned_any = true;
-        return check_strdup( ack->literal );
-      case AC_POLICY_NO_OTHER:
-        no_other_ack = ack;
-        continue;
-      case AC_POLICY_DEFER:
-      case AC_POLICY_IN_NEXT_ONLY:      // handled by specific_ac_keywords
-      case AC_POLICY_TOO_SHORT:
-        continue;
-    } // switch
-    UNEXPECTED_INT_VALUE( ack->ac_policy );
-  } // for
-
-  if ( no_other_ack != NULL && false_set( &returned_any ) )
-    return check_strdup( no_other_ack->literal );
-
-done:
-  if ( !returned_any )
+  if ( !kg.returned_any )
     rl_ding();
   return NULL;
 }
