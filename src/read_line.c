@@ -133,8 +133,7 @@ static char const* readline_wrapper( FILE *fin, char const *prompt,
   free( line );
 
   line = readline( prompt );
-  if ( line != NULL )
-    *pline_len = strlen( line );
+  *pline_len = line != NULL ? strlen( line ) : 0;
   // Note: readline() does NOT include a '\n'.
   return line;
 }
