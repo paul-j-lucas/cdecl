@@ -1,5 +1,15 @@
+2024-08-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Now init'ing ac_keywords lazily.
+   * autocomplete.c: Now free'ing ac_help_keywords.
+   * autocomplete.c: Added ac_cleanup().
+   * autocomplete.c: Now calling ac_keywords_new() from readline_init().
+   * autocomplete.c: Added kg_state; split up keyword_generator().
+   * autocomplete.c: Factored out command_alt_text().
+
 2024-08-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.c: Now handline "set no-" special-case only in state == 0.
    * autocomplete.h, pjl_config.h: Moved HAVE_GENUINE_GNU_READLINE.
    * autocomplete.h: Removed unnecessary #include.
 
