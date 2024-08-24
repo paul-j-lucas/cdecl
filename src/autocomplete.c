@@ -397,6 +397,41 @@ static char const *const* command_ac_keywords( char const *command ) {
 }
 
 /**
+ * For \a command, possibly gets alternate text for \a text.
+ *
+ * @param command The command to get the alternate text for.
+ * @param text The text read (so far) to match against.
+ * @param ptext_len A pointer to the length of \a text.
+ * @return Returns alternate text for \a command or \a text if none.
+ */
+static char const* command_alt_text( char const *command, char const *text,
+                                     size_t *ptext_len ) {
+  assert( command != NULL );
+  assert( text != NULL );
+  assert( ptext_len != NULL );
+
+  static strbuf_t sbuf;
+
+  if ( command == L_set && STRNCMPLIT( text, "no-" ) == 0 ) {
+    //
+    // Special case: for the "set" command, since the "no" options are of the
+    // form "nofoo" and not "no-foo", if the user types:
+    //
+    //      cdecl> set no-<tab>
+    //
+    // i.e., includes '-', change it to just "no" so cdecl will still present
+    // all the "no" options.
+    //
+    strbuf_reset( &sbuf );
+    strbuf_reserve( &sbuf, --*ptext_len );
+    strbuf_printf( &sbuf, "no%s", text + STRLITLEN( "no-" ) );
+    text = sbuf.str;
+  }
+
+  return text;
+}
+
+/**
  * Retroactively figure out what the current command is so we can do some
  * command-sensitive autocompletion.
  *
@@ -690,22 +725,7 @@ static char* keyword_generator( char const *text, int state ) {
       specific_ac_keywords = prev_keyword_ac_next( rl_line_buffer, rl_pos );
     }
 
-    if ( command == L_set && STRNCMPLIT( text, "no-" ) == 0 ) {
-      //
-      // Special case: for the "set" command, since the "no" options are of the
-      // form "nofoo" and not "no-foo", if the user types:
-      //
-      //      cdecl> set no-<tab>
-      //
-      // i.e., includes '-', change it to just "no" so cdecl will still present
-      // all the "no" options.
-      //
-      static strbuf_t no_sbuf;
-      strbuf_reset( &no_sbuf );
-      strbuf_reserve( &no_sbuf, --text_len );
-      strbuf_printf( &no_sbuf, "no%s", text + STRLITLEN( "no-" ) );
-      text = no_sbuf.str;
-    }
+    text = command_alt_text( command, text, &text_len );
   }
 
   if ( specific_ac_keywords != NULL ) {
