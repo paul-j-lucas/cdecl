@@ -854,8 +854,11 @@ static char* keyword_generator( char const *text, int state ) {
 
   static kg_state_t kg;
 
-  if ( state == 0 )                     // new word? reset
+  if ( state == 0 ) {                   // new word? reset
+    if ( ac_keywords == NULL )
+      ac_keywords = ac_keywords_new();
     kg_init( &kg, &text );
+  }
 
   if ( kg.command != NULL ) {
     //
@@ -877,10 +880,7 @@ void readline_init( FILE *fin, FILE *fout ) {
   assert( fin != NULL );
   assert( fout != NULL );
 
-  RUN_ONCE {
-    ac_keywords = ac_keywords_new();
-    ATEXIT( &ac_cleanup );
-  }
+  RUN_ONCE ATEXIT( &ac_cleanup );
 
   //
   // Allow almost any non-identifier character to break a word -- except:
