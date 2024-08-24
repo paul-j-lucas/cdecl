@@ -233,7 +233,8 @@ static ac_keyword_t const* ac_keyword_find( char const *s ) {
  * Creates and initializes an array of all autocompletable keywords composed of
  * C/C++ keywords and **cdecl** keywords.
  *
- * @return Returns a pointer to said array.
+ * @return Returns a pointer to said array.  The caller is responsible for
+ * freeing it.
  */
 static ac_keyword_t const* ac_keywords_new( void ) {
   size_t n = 0;
