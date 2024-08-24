@@ -815,12 +815,12 @@ static char* command_generator( char const *text, int state ) {
   }
 
   while ( command != NULL ) {
-    cdecl_command_t const *const c = command;
+    cdecl_command_t const *const curr_command = command;
     command = ac_cdecl_command_next( command );
-    int const cmp = strncmp( text, c->literal, text_len );
-    if ( cmp == 0 && opt_lang_is_any( c->lang_ids ) ) {
+    int const cmp = strncmp( text, curr_command->literal, text_len );
+    if ( cmp == 0 && opt_lang_is_any( curr_command->lang_ids ) ) {
       returned_any = true;
-      return check_strdup( c->literal );
+      return check_strdup( curr_command->literal );
     }
     if ( cmp < 0 )                      // the array is sorted
       break;
