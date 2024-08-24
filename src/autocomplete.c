@@ -104,7 +104,11 @@ NODISCARD
 static int                str_ptr_cmp( char const**, char const** );
 
 // local variables
-static ac_keyword_t const *ac_keywords; ///< Autocompletion keywords.
+
+/// Autocomplete keywords only for `help` command.
+static char const *const  *ac_help_keywords;
+
+static ac_keyword_t const *ac_keywords; ///< General autocompletion keywords.
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -156,6 +160,7 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
  * Cleans-up autocompletion data.
  */
 static void ac_cleanup( void ) {
+  FREE( ac_help_keywords );
   FREE( ac_keywords );
 }
 
@@ -175,9 +180,8 @@ static char const* const* ac_help_keywords_new( void ) {
   FOREACH_CDECL_COMMAND( command )
     ++n;
 
-  char const **const ac_help_keywords =
-    free_later( MALLOC( char*, n + 1/*NULL*/ ) );
-  char const **pk = ac_help_keywords;
+  char const **const ac_help_keywords_array = MALLOC( char*, n + 1/*NULL*/ );
+  char const **pk = ac_help_keywords_array;
 
   FOREACH_HELP_OPTION( opt )
     *pk++ = *opt;
@@ -187,11 +191,11 @@ static char const* const* ac_help_keywords_new( void ) {
   *pk = NULL;
 
   qsort(
-    ac_help_keywords, n, sizeof( ac_help_keywords[0] ),
+    ac_help_keywords_array, n, sizeof( ac_help_keywords_array[0] ),
     POINTER_CAST( qsort_cmp_fn_t, &str_ptr_cmp )
   );
 
-  return ac_help_keywords;
+  return ac_help_keywords_array;
 }
 
 /**
@@ -373,7 +377,6 @@ static char const *const* command_ac_keywords( char const *command ) {
     // 2. The set of commands should be generated dynamically via
     //    FOREACH_CDECL_COMMAND().
     //
-    static char const *const *ac_help_keywords;
     if ( ac_help_keywords == NULL )
       ac_help_keywords = ac_help_keywords_new();
     return ac_help_keywords;
