@@ -689,26 +689,23 @@ static char* keyword_generator( char const *text, int state ) {
       size_t const rl_pos = STATIC_CAST( size_t, rl_point );
       specific_ac_keywords = prev_keyword_ac_next( rl_line_buffer, rl_pos );
     }
-  }
 
-  if ( command == L_set && STRNCMPLIT( text, "no-" ) == 0 ) {
-    static strbuf_t no_sbuf;
-    //
-    // Special case: for the "set" command, since the "no" options are of the
-    // form "nofoo" and not "no-foo", if the user types:
-    //
-    //      cdecl> set no-<tab>
-    //
-    // i.e., includes '-', change it to just "no" so cdecl will still present
-    // all the "no" options.
-    //
-    if ( state == 0 ) {
+    if ( command == L_set && STRNCMPLIT( text, "no-" ) == 0 ) {
+      //
+      // Special case: for the "set" command, since the "no" options are of the
+      // form "nofoo" and not "no-foo", if the user types:
+      //
+      //      cdecl> set no-<tab>
+      //
+      // i.e., includes '-', change it to just "no" so cdecl will still present
+      // all the "no" options.
+      //
+      static strbuf_t no_sbuf;
       strbuf_reset( &no_sbuf );
       strbuf_reserve( &no_sbuf, --text_len );
       strbuf_printf( &no_sbuf, "no%s", text + STRLITLEN( "no-" ) );
+      text = no_sbuf.str;
     }
-    assert( no_sbuf.str != NULL );
-    text = no_sbuf.str;
   }
 
   if ( specific_ac_keywords != NULL ) {
