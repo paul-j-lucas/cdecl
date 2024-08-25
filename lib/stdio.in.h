@@ -646,7 +646,9 @@ _GL_FUNCDECL_SYS (fpurge, int, (FILE *gl_stream), _GL_ARG_NONNULL ((1)));
 #  endif
 _GL_CXXALIAS_SYS (fpurge, int, (FILE *gl_stream));
 # endif
+# if __GLIBC__ >= 2
 _GL_CXXALIASWARN (fpurge);
+# endif
 #elif defined GNULIB_POSIXCHECK
 # undef fpurge
 # if HAVE_RAW_DECL_FPURGE
