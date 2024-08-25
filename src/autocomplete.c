@@ -88,6 +88,7 @@ struct kg_state {
 typedef struct kg_state kg_state_t;
 
 // local functions
+static void               ac_set_keywords_free( void );
 static char*              command_generator( char const*, int );
 static char*              keyword_generator( char const*, int );
 
@@ -109,6 +110,9 @@ static int                str_ptr_cmp( char const**, char const** );
 static char const *const  *ac_help_keywords;
 
 static ac_keyword_t const *ac_keywords; ///< General autocompletion keywords.
+
+/// Autocomplete keywords only for `set` command.
+static char const *const  *ac_set_keywords;
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -160,15 +164,21 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
  * Cleans-up autocompletion data.
  */
 static void ac_cleanup( void ) {
+  // The keywords in the array are literals, so just free the array itself.
   FREE( ac_help_keywords );
+
+  // ac_keyword has only non-owning pointers, so just free the array itself.
   FREE( ac_keywords );
+
+  ac_set_keywords_free();
 }
 
 /**
  * Creates and initializes an array of all `help` command next keywords to be
  * used for autocompletion for the `help` command.
  *
- * @return Returns a pointer to said array.
+ * @return Returns a pointer to said array.  The caller is responsible for
+ * freeing it.
  */
 NODISCARD
 static char const* const* ac_help_keywords_new( void ) {
@@ -292,13 +302,24 @@ static ac_keyword_t const* ac_keywords_new( void ) {
 }
 
 /**
- * Creates and initializes an array of all `set` option strings to be used for
+ * Frees all memory used by \ref ac_set_keywords.
+ */
+static void ac_set_keywords_free( void ) {
+  if ( ac_set_keywords == NULL )
+    return;
+  for ( char **pk = CONST_CAST( char**, ac_set_keywords ); *pk != NULL; ++pk )
+    free( *pk );
+  FREE( ac_set_keywords );
+}
+
+/**
+ * Creates and initializes an array of all `set` option keywords to be used for
  * autocompletion for the `set` command.
  *
  * @return Returns a pointer to said array.
  */
 NODISCARD
-static char const* const* ac_set_options_new( void ) {
+static char const* const* ac_set_keywords_new( void ) {
   size_t n = 1;                         // for "options"
 
   // pre-flight to calculate array size
@@ -307,43 +328,41 @@ static char const* const* ac_set_options_new( void ) {
   FOREACH_LANG( lang )
     n += !lang->is_alias;
 
-  char const **const ac_set_options =
-    free_later( MALLOC( char*, n + 1/*NULL*/ ) );
-  char const **popt = ac_set_options;
+  char const **const ac_set_keywords_array = MALLOC( char*, n + 1/*NULL*/ );
+  char const **pk = ac_set_keywords_array;
 
-  *popt++ = L_options;
+  *pk++ = check_strdup( L_options );
 
   FOREACH_SET_OPTION( opt ) {
     switch ( opt->kind ) {
       case SET_OPTION_AFF_ONLY:
       case SET_OPTION_TOGGLE:
         if ( opt->has_arg == required_argument )
-          *popt++ = free_later( check_strdup_suffix( opt->name, " =", 2 ) );
+          *pk++ = check_strdup_suffix( opt->name, " =", 2 );
         else
-          *popt++ = opt->name;
+          *pk++ = check_strdup( opt->name );
         if ( opt->kind == SET_OPTION_AFF_ONLY )
           break;
         FALLTHROUGH;
 
       case SET_OPTION_NEG_ONLY:
-        *popt = free_later( check_prefix_strdup( "no", 2, opt->name ) );
-        ++popt;
+        *pk++ = check_prefix_strdup( "no", 2, opt->name );
         break;
     } // switch
   } // for
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
-      *popt++ = free_later( check_strdup_tolower( lang->name ) );
+      *pk++ = check_strdup_tolower( lang->name );
   } // for
 
-  *popt = NULL;
+  *pk = NULL;
 
   qsort(
-    ac_set_options, n, sizeof( ac_set_options[0] ),
+    ac_set_keywords_array, n, sizeof( ac_set_keywords_array[0] ),
     POINTER_CAST( qsort_cmp_fn_t, &str_ptr_cmp )
   );
 
-  return ac_set_options;
+  return ac_set_keywords_array;
 }
 
 /**
@@ -387,10 +406,9 @@ static char const *const* command_ac_keywords( char const *command ) {
     // This needs to be here instead of in CDECL_KEYWORDS because the list of
     // keywords is generated (not static).
     //
-    static char const *const *ac_set_options;
-    if ( ac_set_options == NULL )
-      ac_set_options = ac_set_options_new();
-    return ac_set_options;
+    if ( ac_set_keywords == NULL )
+      ac_set_keywords = ac_set_keywords_new();
+    return ac_set_keywords;
   }
 
   if ( command == L_show ) {
