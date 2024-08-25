@@ -1421,24 +1421,6 @@ void fputs_sp( char const *s, FILE *out );
 void fputsp_s( char const *s, FILE *out );
 
 /**
- * Adds a pointer to the head of the free-later-list.
- *
- * @param p The pointer to add.  If NULL, does nothing.
- * @return Returns \a p.
- *
- * @sa free_now()
- */
-PJL_DISCARD
-void* free_later( void *p );
-
-/**
- * Frees all the memory pointed to by all the nodes in the free-later-list.
- *
- * @sa free_later()
- */
-void free_now( void );
-
-/**
  * Checks whether \a n has either 0 or 1 bits set.
  *
  * @param n The number to check.

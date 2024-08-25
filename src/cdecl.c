@@ -71,7 +71,6 @@ char const *me;
  * Cleans up **cdecl** data.
  */
 static void cdecl_cleanup( void ) {
-  free_now();
   c_ast_cleanup();
 }
 

@@ -56,11 +56,6 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
-
-// local variable definitions
-static slist_t free_later_list;         ///< List of stuff to free later.
-
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
@@ -333,16 +328,6 @@ void fputsp_s( char const *s, FILE *out ) {
   assert( out != NULL );
   if ( s[0] != '\0' )
     FPRINTF( out, " %s", s );
-}
-
-void* free_later( void *p ) {
-  if ( p != NULL )
-    slist_push_back( &free_later_list, p );
-  return p;
-}
-
-void free_now( void ) {
-  slist_cleanup( &free_later_list, &free );
 }
 
 uint32_t ls_bit1_32( uint32_t n ) {

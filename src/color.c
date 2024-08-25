@@ -96,12 +96,22 @@ char const *sgr_warning;
 
 /// @endcond
 
+// local variables
+char *color_capabilities;               ///< Parsed color capabilities.
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Parses and sets the sequence of gcc color capabilities.
+ * Frees all memory used by colors.
+ */
+static void colors_free( void ) {
+  free( color_capabilities );
+}
+
+/**
+ * Parses and sets the sequence of SGR color capabilities.
  *
- * @param capabilities The gcc capabilities to parse.  It's of the form:
+ * @param capabilities The SGR capabilities to parse.  It's of the form:
  *  <table border="0">
  *    <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
  *    <tr>
@@ -142,9 +152,9 @@ static bool colors_parse( char const *capabilities ) {
 
   if ( null_if_empty( capabilities ) == NULL )
     return false;
-  char *const capabilities_dup = check_strdup( capabilities );
+  color_capabilities = check_strdup( capabilities );
 
-  for ( char *next_cap = capabilities_dup, *cap_name_val;
+  for ( char *next_cap = color_capabilities, *cap_name_val;
         (cap_name_val = strsep( &next_cap, SGR_CAP_SEP )) != NULL; ) {
     char const *const cap_name = strsep( &cap_name_val, "=" );
     char const **const sgr_var = sgr_var_find( cap_name );
@@ -156,9 +166,9 @@ static bool colors_parse( char const *capabilities ) {
   } // for
 
   if ( set_any )
-    free_later( capabilities_dup );     // sgr_* variables point to substrings
+    ATEXIT( &colors_free );
   else
-    free( capabilities_dup );
+    free( color_capabilities );
 
   return set_any;
 }
