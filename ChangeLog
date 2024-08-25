@@ -1,5 +1,7 @@
 2024-08-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.c, color.c, util.c, util.h: Eliminated free_later() & free_now().
+   * autocomplete.c: Eliminated use of free_later().
    * autocomplete.c, autocomplete.h, read_line.c:
      s/readline_init/autocomplete_init/; now calling once.
 
