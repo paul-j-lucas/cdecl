@@ -97,7 +97,7 @@ char const *sgr_warning;
 /// @endcond
 
 // local variables
-char *color_capabilities;               ///< Parsed color capabilities.
+char const *color_capabilities;         ///< Parsed color capabilities.
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -105,7 +105,7 @@ char *color_capabilities;               ///< Parsed color capabilities.
  * Frees all memory used by colors.
  */
 static void colors_free( void ) {
-  free( color_capabilities );
+  FREE( color_capabilities );
 }
 
 /**
@@ -140,21 +140,21 @@ static void colors_free( void ) {
  * Rendition](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR) code.  An
  * example \a capabilities is: `caret=42;1:error=41;1:warning=43;1`.  If NULL,
  * does nothing.
- * @return Returns `true` only if at least one capability was parsed
- * successfully.
+ * @return Returns a pointer to the parsed color capabilities string only if at
+ * least one capability was parsed successfully.  The caller is responsible for
+ * freeing it.  Otherwise returns NULL.
  *
- * @warning If this function returns `true`, it must never be called again.
+ * @warning If this function returns non-NULL, it must never be called again.
  */
 NODISCARD
-static bool colors_parse( char const *capabilities ) {
-  static bool set_any;                  // set at least one?
-  assert( !set_any );
-
+static char const* colors_parse( char const *capabilities ) {
   if ( null_if_empty( capabilities ) == NULL )
-    return false;
-  color_capabilities = check_strdup( capabilities );
+    return NULL;
 
-  for ( char *next_cap = color_capabilities, *cap_name_val;
+  char *const capabilities_dup = check_strdup( capabilities );
+  bool set_any = false;
+
+  for ( char *next_cap = capabilities_dup, *cap_name_val;
         (cap_name_val = strsep( &next_cap, SGR_CAP_SEP )) != NULL; ) {
     char const *const cap_name = strsep( &cap_name_val, "=" );
     char const **const sgr_var = sgr_var_find( cap_name );
@@ -166,11 +166,10 @@ static bool colors_parse( char const *capabilities ) {
   } // for
 
   if ( set_any )
-    ATEXIT( &colors_free );
-  else
-    free( color_capabilities );
+    return capabilities_dup;
 
-  return set_any;
+  free( capabilities_dup );
+  return NULL;
 }
 
 /**
@@ -309,8 +308,10 @@ void colors_init( void ) {
 
   if ( !should_colorize( opt_color_when ) )
     return;
-  if ( colors_parse( getenv( "CDECL_COLORS" ) ) )
-    return;
+
+  color_capabilities = colors_parse( getenv( "CDECL_COLORS" ) );
+  if ( color_capabilities != NULL )
+    goto done;
 
   static char const COLORS_DEFAULT[] =
     COLOR_CAP_CARET           "=" SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
@@ -326,8 +327,11 @@ void colors_init( void ) {
     COLOR_CAP_PROMPT          "=" SGR_FG_GREEN                    SGR_CAP_SEP
     COLOR_CAP_WARNING         "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  ;
 
-  MAYBE_UNUSED bool const ok = colors_parse( COLORS_DEFAULT );
-  assert( ok );
+  color_capabilities = colors_parse( COLORS_DEFAULT );
+  assert( color_capabilities != NULL );
+
+done:
+  ATEXIT( &colors_free );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
