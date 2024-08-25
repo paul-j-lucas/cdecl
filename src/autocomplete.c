@@ -567,7 +567,7 @@ static void kg_init( kg_state_t *kg, char const **ptext ) {
 /**
  * Attempts to match \a text against a keyword.
  *
- * @param The kg_state to use.
+ * @param kg The kg_state to use.
  * @param text The text read (so far) to match.
  * @return Returns the matched keyword or NULL for none.
  */
