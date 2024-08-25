@@ -127,10 +127,12 @@ static char const* readline_wrapper( FILE *fin, char const *prompt,
   assert( fin != NULL );
   assert( pline_len != NULL );
 
-  readline_init( fin, stdout );
-
   static char *line;  // must be distinct from "line" in getline_wrapper()
   free( line );
+
+  RUN_ONCE autocomplete_init();
+  rl_instream  = fin;
+  rl_outstream = stdout;
 
   line = readline( prompt );
   *pline_len = line != NULL ? strlen( line ) : 0;

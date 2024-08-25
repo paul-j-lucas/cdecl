@@ -876,11 +876,9 @@ static char* keyword_generator( char const *text, int state ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void readline_init( FILE *fin, FILE *fout ) {
-  assert( fin != NULL );
-  assert( fout != NULL );
-
-  RUN_ONCE ATEXIT( &ac_cleanup );
+void autocomplete_init( void ) {
+  ASSERT_RUN_ONCE();
+  ATEXIT( &ac_cleanup );
 
   //
   // Allow almost any non-identifier character to break a word -- except:
@@ -892,8 +890,6 @@ void readline_init( FILE *fin, FILE *fout ) {
     CONST_CAST( char*, "\t\n \"!$%&'()*+,./:;<=>?@[\\]^`{|}" );
 
   rl_attempted_completion_function = cdecl_rl_completion;
-  rl_instream = fin;
-  rl_outstream = fout;
   rl_readline_name = CONST_CAST( char*, CDECL );
 }
 

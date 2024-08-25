@@ -32,9 +32,6 @@
 #error "This file should not be included unless WITH_READLINE is defined."
 #endif /* WITH_READLINE */
 
-// standard
-#include <stdio.h>                      /* for FILE */
-
 /**
  * @defgroup autocompletion-group Autocompletion
  * Types and functions for command-line autocompletion.
@@ -100,15 +97,12 @@ typedef enum ac_policy ac_policy_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Initializes GNU **readline**(3).
+ * Initializes autocompletion.
  *
- * @param fin The `FILE` to read from.
- * @param fout The `FILE` to write to.
- *
- * @note This function _must_ be called once before calling **readline**(3);
- * however, calling it more than once is harmless.
+ * @note This function must be called exactly once before calling
+ * **readline**(3).
  */
-void readline_init( FILE *fin, FILE *fout );
+void autocomplete_init( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 
