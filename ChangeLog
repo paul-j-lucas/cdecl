@@ -1,3 +1,8 @@
+2024-08-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, autocomplete.h, read_line.c:
+     s/readline_init/autocomplete_init/; now calling once.
+
 2024-08-24  Paul J. Lucas <paul@lucasmail.org>
 
    * pjl_config.h: Added defined(HAVE_DECL_RL_GNU_READLINE_P).
