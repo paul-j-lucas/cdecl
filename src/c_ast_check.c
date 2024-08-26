@@ -160,6 +160,7 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_func_params_redef( c_ast_t const* ),
                     c_ast_check_lambda_captures( c_ast_t const* ),
                     c_ast_check_lambda_captures_redef( c_ast_t const* ),
+                    c_ast_check_op_minus_minus_plus_plus_params( c_ast_t const* ),
                     c_ast_check_op_relational_default( c_ast_t const* ),
                     c_ast_check_oper_default( c_ast_t const* ),
                     c_ast_check_oper_params( c_ast_t const* ),
@@ -168,6 +169,9 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_visitor_error( c_ast_t const*, user_data_t ),
                     c_ast_visitor_type( c_ast_t const*, user_data_t ),
                     c_op_is_new_delete( c_op_id_t );
+
+NODISCARD
+static char const*  c_ast_member_or_nonmember_str( c_ast_t const* );
 
 static void         c_ast_warn_name( c_ast_t const* );
 
@@ -1810,6 +1814,56 @@ static bool c_ast_check_op_delete_params( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks #K_OPERATOR `--` and `++` AST parameters for semantic errors.
+ *
+ * @param ast The #K_OPERATOR AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_check_op_minus_minus_plus_plus_params( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_OPERATOR );
+  assert( ast->oper.operator->op_id == C_OP_MINUS_MINUS ||
+          ast->oper.operator->op_id == C_OP_PLUS_PLUS );
+
+  //
+  // Ensure the dummy parameter for postfix -- or ++ is type int (or a typedef
+  // for int).
+  //
+  c_param_t const *param = c_ast_params( ast );
+  if ( param == NULL )                  // member prefix
+    return true;
+  c_func_member_t const member = c_ast_op_overload( ast );
+  if ( member == C_FUNC_NON_MEMBER ) {
+    param = param->next;
+    if ( param == NULL )                // non-member prefix
+      return true;
+  }
+
+  c_operator_t const *const op = ast->oper.operator;
+
+  //
+  // At this point, it's either member or non-member postfix: operator++(int)
+  // or operator++(S&,int).
+  //
+  c_ast_t const *const param_ast = c_param_ast( param );
+  if ( !c_ast_is_builtin_any( param_ast, TB_int ) ) {
+    print_error( &param_ast->loc,
+      "invalid postfix %soperator \"%s\" parameter type ",
+      c_ast_member_or_nonmember_str( ast ), op->literal
+    );
+    print_ast_type_aka( param_ast, stderr );
+    EPRINTF(
+      "; must be \"%s\" or a typedef thereof\n",
+      c_tid_error( TB_int )
+    );
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * Checks #K_OPERATOR `new` and `new[]` AST parameters for semantic errors.
  *
  * @param ast The #K_OPERATOR `new` AST to check.
@@ -2048,10 +2102,6 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
 
   c_operator_t const *const op = ast->oper.operator;
   c_func_member_t const member = c_ast_op_overload( ast );
-  char const *const member_or_nonmember =
-    member == C_FUNC_MEMBER     ? "member "     :
-    member == C_FUNC_NON_MEMBER ? "non-member " :
-    "";
 
   unsigned params_min, params_max;
   c_ast_op_params_min_max( ast, &params_min, &params_max );
@@ -2064,13 +2114,13 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
     if ( params_min == params_max ) {
 same: print_error( c_ast_params_loc( ast ),
         "%soperator \"%s\" must have exactly %u parameter%s\n",
-        member_or_nonmember, op->literal,
+        c_ast_member_or_nonmember_str( ast ), op->literal,
         params_min, plural_s( params_min )
       );
     } else {
       print_error( c_ast_params_loc( ast ),
         "%soperator \"%s\" must have at least %u parameter%s\n",
-        member_or_nonmember, op->literal,
+        c_ast_member_or_nonmember_str( ast ), op->literal,
         params_min, plural_s( params_min )
       );
     }
@@ -2081,7 +2131,7 @@ same: print_error( c_ast_params_loc( ast ),
       goto same;
     print_error( c_ast_params_loc( ast ),
       "%soperator \"%s\" can have at most %u parameter%s\n",
-      member_or_nonmember, op->literal,
+      c_ast_member_or_nonmember_str( ast ), op->literal,
       op->params_max, plural_s( op->params_max )
     );
     return false;
@@ -2146,35 +2196,7 @@ same: print_error( c_ast_params_loc( ast ),
   switch ( op->op_id ) {
     case C_OP_MINUS_MINUS:
     case C_OP_PLUS_PLUS:
-      NO_OP;
-      //
-      // Ensure that the dummy parameter for postfix -- or ++ is type int (or
-      // is a typedef of int).
-      //
-      c_param_t const *param = c_ast_params( ast );
-      if ( param == NULL )              // member prefix
-        break;
-      if ( member == C_FUNC_NON_MEMBER ) {
-        param = param->next;
-        if ( param == NULL )            // non-member prefix
-          break;
-      }
-      // At this point, it's either member or non-member postfix:
-      // operator++(int) or operator++(S&,int).
-      c_ast_t const *const param_ast = c_param_ast( param );
-      if ( !c_ast_is_builtin_any( param_ast, TB_int ) ) {
-        print_error( &param_ast->loc,
-          "invalid postfix %soperator \"%s\" parameter type ",
-          member_or_nonmember, op->literal
-        );
-        print_ast_type_aka( param_ast, stderr );
-        EPRINTF(
-          "; must be \"%s\" or a typedef thereof\n",
-          c_tid_error( TB_int )
-        );
-        return false;
-      }
-      break;
+      return c_ast_check_op_minus_minus_plus_plus_params( ast );
 
     case C_OP_DELETE:
     case C_OP_DELETE_ARRAY:
@@ -2716,6 +2738,25 @@ static bool c_ast_check_visitor( c_ast_t const *ast,
   return NULL == c_ast_visit(
     ast, C_VISIT_DOWN, check_fn, (user_data_t){ .pc = &(check_state_t){ 0 } }
   );
+}
+
+/**
+ * Gets the string `"member "` or `"non-member "` depending on whether \a ast
+ * is a member or non-member operator.
+ *
+ * @param ast The #K_OPERATOR AST to get the string for.
+ * @return Returns either `"member "` or `"non-member "` including a trailing
+ * space; or the empty string if unspecified.
+ */
+NODISCARD
+static char const* c_ast_member_or_nonmember_str( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_OPERATOR );
+
+  c_func_member_t const member = c_ast_op_overload( ast );
+  return  member == C_FUNC_MEMBER     ? "member "     :
+          member == C_FUNC_NON_MEMBER ? "non-member " :
+          "";
 }
 
 /**
