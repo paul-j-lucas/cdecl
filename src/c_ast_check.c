@@ -1997,7 +1997,6 @@ rel_2par: print_error( c_ast_params_loc( ast ),
   } // switch
 
   c_ast_t const *const ret_ast = ast->oper.ret_ast;
-  c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
   if ( op->op_id == C_OP_LESS_EQUAL_GREATER ) {
     static c_ast_t const *std_partial_ordering_ast;
@@ -2011,6 +2010,7 @@ rel_2par: print_error( c_ast_params_loc( ast ),
       std_weak_ordering_ast =
         c_typedef_find_name( "std::weak_ordering" )->ast;
     }
+    c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
     if ( !c_ast_is_builtin_any( ret_ast, TB_auto ) &&
          !c_ast_equal( raw_ret_ast, std_partial_ordering_ast ) &&
          !c_ast_equal( raw_ret_ast, std_strong_ordering_ast ) &&
