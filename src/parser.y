@@ -209,21 +209,6 @@
   l_is_nested_type_ok( __LINE__, (TYPE_LOC) )
 
 /**
- * Checks whether \ref opt_lang_id is among the bitwise-or of languages
- * specified by \a LANG_MACRO, i.e., \a LANG_MACRO is supported by \ref
- * opt_lang_id.
- *
- * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
- * @return Returns `true` only if either **cdecl** is \ref cdecl_is_initialized
- * is `false` or \ref opt_lang_id is among the bitwise-or of languages
- * specified by \a LANG_MACRO.
- *
- * @sa #OPT_LANG_IS()
- */
-#define IS_SUPPORTED(LANG_MACRO) \
-  ( !cdecl_is_initialized || OPT_LANG_IS( LANG_MACRO ) )
-
-/**
  * Calls l_keyword_expected() followed by #PARSE_ABORT().
  *
  * @param KEYWORD A keyword literal.
@@ -2201,7 +2186,7 @@ declare_command
       // keyword in C++98 which skims right past the bigger error that operator
       // overloading isn't supported in C.
       //
-      if ( !IS_SUPPORTED( operator ) ) {
+      if ( !OPT_LANG_IS( operator ) ) {
         print_error( &@op_id,
           "operator overloading not supported%s\n",
           C_LANG_WHICH( operator )
@@ -3630,7 +3615,7 @@ show_format
   | Y_typedef                     { $$ = C_GIB_TYPEDEF; }
   | Y_using
     {
-      if ( !IS_SUPPORTED( using_DECLS ) ) {
+      if ( !OPT_LANG_IS( using_DECLS ) ) {
         print_error( &@Y_using,
           "\"using\" not supported%s\n",
           C_LANG_WHICH( using_DECLS )
@@ -3992,7 +3977,7 @@ namespace_declaration_c
       // AST because the AST has no "memory" of how a namespace was
       // constructed.
       //
-      if ( c_sname_count( &$sname ) > 1 && !IS_SUPPORTED( NESTED_namespace ) ) {
+      if ( c_sname_count( &$sname ) > 1 && !OPT_LANG_IS( NESTED_namespace ) ) {
         print_error( &@sname,
           "nested namespace declarations not supported%s\n",
           C_LANG_WHICH( NESTED_namespace )
@@ -4488,7 +4473,7 @@ using_decl_c_ast
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      if ( !IS_SUPPORTED( using_DECLS ) ) {
+      if ( !OPT_LANG_IS( using_DECLS ) ) {
         print_error( &@Y_using,
           "\"using\" not supported%s\n",
           C_LANG_WHICH( using_DECLS )
@@ -5255,7 +5240,7 @@ pc99_func_or_constructor_declaration_c
         ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       }
       else {
-        if ( !IS_SUPPORTED( IMPLICIT_int ) ) {
+        if ( !OPT_LANG_IS( IMPLICIT_int ) ) {
           //
           // In C99 and later, implicit int is an error.  This check has to be
           // done now in the parser rather than later in the AST since the AST
@@ -5408,7 +5393,7 @@ trailing_return_type_c_ast_opt
       // later in the AST because the AST has no "memory" of where the return-
       // type came from.
       //
-      if ( !IS_SUPPORTED( TRAILING_RETURN_TYPES ) ) {
+      if ( !OPT_LANG_IS( TRAILING_RETURN_TYPES ) ) {
         print_error( &@Y_MINUS_GREATER,
           "trailing return type not supported%s\n",
           C_LANG_WHICH( TRAILING_RETURN_TYPES )
@@ -5760,7 +5745,7 @@ pc99_pointer_type_c_ast
   : // in_attr: type_c_ast
     '*'[star] type_qualifier_list_c_stid_opt[qual_stids]
     {
-      if ( !IS_SUPPORTED( IMPLICIT_int ) ) {
+      if ( !OPT_LANG_IS( IMPLICIT_int ) ) {
         //
         // In C99 and later, implicit int is an error.  This check has to be
         // done now in the parser rather than later in the AST since the AST
@@ -7288,7 +7273,7 @@ storage_class_c_type
       // the AST because the _Noreturn keyword is mapped to the [[noreturn]]
       // attribute and the AST has no "memory" that it was _Noreturn.
       //
-      if ( !IS_SUPPORTED( _Noreturn ) ) {
+      if ( !OPT_LANG_IS( _Noreturn ) ) {
         print_error( &@_Noreturn_atid,
           "\"%s\" keyword not supported%s",
           yytext, C_LANG_WHICH( _Noreturn )
@@ -7334,7 +7319,7 @@ attribute_specifier_list_c_atid_opt
 attribute_specifier_list_c_atid
   : Y_ATTR_BEGIN '['
     {
-      if ( !IS_SUPPORTED( ATTRIBUTES ) ) {
+      if ( !OPT_LANG_IS( ATTRIBUTES ) ) {
         print_error( &@Y_ATTR_BEGIN,
           "\"%s\" attribute syntax not supported%s\n",
           other_token_c( "[[" ),
@@ -8162,7 +8147,7 @@ user_defined_literal_decl_english_ast
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( !IS_SUPPORTED( USER_DEF_LITS ) ) {
+      if ( !OPT_LANG_IS( USER_DEF_LITS ) ) {
         print_error( &@user_defined,
           "user-defined literals not supported%s\n",
           C_LANG_WHICH( USER_DEF_LITS )
@@ -8663,7 +8648,7 @@ sname_c
   : sname_c[sname] Y_COLON_COLON Y_NAME[name]
     {
       // see the comment in "of_scope_english"
-      if ( !IS_SUPPORTED( SCOPED_NAMES ) ) {
+      if ( !OPT_LANG_IS( SCOPED_NAMES ) ) {
         print_error( &@2,
           "scoped names not supported%s\n",
           C_LANG_WHICH( SCOPED_NAMES )
@@ -9322,7 +9307,7 @@ of_scope_english
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( !IS_SUPPORTED( SCOPED_NAMES ) ) {
+      if ( !OPT_LANG_IS( SCOPED_NAMES ) ) {
         print_error( &@scope_type,
           "scoped names not supported%s\n",
           C_LANG_WHICH( SCOPED_NAMES )
