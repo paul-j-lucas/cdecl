@@ -1814,6 +1814,59 @@ static bool c_ast_check_op_delete_params( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks the return type of a #K_OPERATOR `<=>` AST for semantic errors.
+ *
+ * @param ast The #K_OPERATOR AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_check_op_less_equal_greater_ret_type( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_OPERATOR );
+  c_operator_t const *const op = ast->oper.operator;
+  assert( op->op_id == C_OP_LESS_EQUAL_GREATER );
+
+  static c_ast_t const *std_partial_ordering_ast;
+  static c_ast_t const *std_strong_ordering_ast;
+  static c_ast_t const *std_weak_ordering_ast;
+
+  if ( std_partial_ordering_ast == NULL ) {
+    std_partial_ordering_ast =
+      c_typedef_find_name( "std::partial_ordering" )->ast;
+    std_strong_ordering_ast =
+      c_typedef_find_name( "std::strong_ordering" )->ast;
+    std_weak_ordering_ast =
+      c_typedef_find_name( "std::weak_ordering" )->ast;
+  }
+
+  c_ast_t const *const ret_ast = ast->oper.ret_ast;
+  c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
+
+  if ( c_ast_is_builtin_any( ret_ast, TB_auto ) ||
+       c_ast_equal( raw_ret_ast, std_partial_ordering_ast ) ||
+       c_ast_equal( raw_ret_ast, std_strong_ordering_ast ) ||
+       c_ast_equal( raw_ret_ast, std_weak_ordering_ast ) ) {
+    return true;
+  }
+
+  print_error( &ret_ast->loc,
+    "invalid operator \"%s\" return type ", op->literal
+  );
+  print_ast_type_aka( ret_ast, stderr );
+  EPRINTF(
+    "; must be "
+    "\"%s\", "
+    "\"std::partial_ordering\", "
+    "\"std::strong_ordering\", "
+    "or "
+    "\"std::weak_ordering\"\n",
+    c_tid_error( TB_auto )
+  );
+
+  return false;
+}
+
+/**
  * Checks #K_OPERATOR `--` and `++` AST parameters for semantic errors.
  *
  * @param ast The #K_OPERATOR AST to check.
@@ -1999,38 +2052,8 @@ rel_2par: print_error( c_ast_params_loc( ast ),
   c_ast_t const *const ret_ast = ast->oper.ret_ast;
 
   if ( op->op_id == C_OP_LESS_EQUAL_GREATER ) {
-    static c_ast_t const *std_partial_ordering_ast;
-    static c_ast_t const *std_strong_ordering_ast;
-    static c_ast_t const *std_weak_ordering_ast;
-    if ( std_partial_ordering_ast == NULL ) {
-      std_partial_ordering_ast =
-        c_typedef_find_name( "std::partial_ordering" )->ast;
-      std_strong_ordering_ast =
-        c_typedef_find_name( "std::strong_ordering" )->ast;
-      std_weak_ordering_ast =
-        c_typedef_find_name( "std::weak_ordering" )->ast;
-    }
-    c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
-    if ( !c_ast_is_builtin_any( ret_ast, TB_auto ) &&
-         !c_ast_equal( raw_ret_ast, std_partial_ordering_ast ) &&
-         !c_ast_equal( raw_ret_ast, std_strong_ordering_ast ) &&
-         !c_ast_equal( raw_ret_ast, std_weak_ordering_ast ) ) {
-      print_error( &ret_ast->loc,
-        "invalid operator \"%s\" return type ",
-        op->literal
-      );
-      print_ast_type_aka( ret_ast, stderr );
-      EPRINTF(
-        "; must be "
-        "\"%s\", "
-        "\"std::partial_ordering\", "
-        "\"std::strong_ordering\", "
-        "or "
-        "\"std::weak_ordering\"\n",
-        c_tid_error( TB_auto )
-      );
+    if ( !c_ast_check_op_less_equal_greater_ret_type( ast ) )
       return false;
-    }
   }
   else if ( !c_ast_is_builtin_any( ret_ast, TB_bool ) ) {
     print_error( &ret_ast->loc,
