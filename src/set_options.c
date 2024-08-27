@@ -82,31 +82,35 @@ struct set_option_fn_args {
 
 // local functions
 NODISCARD
-static bool set_alt_tokens( set_option_fn_args_t const* ),
+static bool         is_no_option( char const* ),
+                    set_alt_tokens( set_option_fn_args_t const* ),
 #ifdef ENABLE_BISON_DEBUG
-            set_bison_debug( set_option_fn_args_t const* ),
+                    set_bison_debug( set_option_fn_args_t const* ),
 #endif /* ENABLE_BISON_DEBUG */
-            set_debug( set_option_fn_args_t const* ),
-            set_digraphs( set_option_fn_args_t const* ),
-            set_east_const( set_option_fn_args_t const* ),
-            set_english_types( set_option_fn_args_t const* ),
-            set_echo_commands( set_option_fn_args_t const* ),
-            set_explicit_ecsu( set_option_fn_args_t const* ),
-            set_explicit_int( set_option_fn_args_t const* ),
+                    set_debug( set_option_fn_args_t const* ),
+                    set_digraphs( set_option_fn_args_t const* ),
+                    set_east_const( set_option_fn_args_t const* ),
+                    set_english_types( set_option_fn_args_t const* ),
+                    set_echo_commands( set_option_fn_args_t const* ),
+                    set_explicit_ecsu( set_option_fn_args_t const* ),
+                    set_explicit_int( set_option_fn_args_t const* ),
 #ifdef ENABLE_FLEX_DEBUG
-            set_flex_debug( set_option_fn_args_t const* ),
+                    set_flex_debug( set_option_fn_args_t const* ),
 #endif /* ENABLE_FLEX_DEBUG */
-            set_infer_command( set_option_fn_args_t const* ),
-            set_lang( set_option_fn_args_t const* ),
-            set_permissive_types( set_option_fn_args_t const* ),
-            set_prompt( set_option_fn_args_t const* ),
-            set_semicolon( set_option_fn_args_t const* ),
-            set_trailing_return( set_option_fn_args_t const* ),
-            set_trigraphs( set_option_fn_args_t const* ),
-            set_using( set_option_fn_args_t const* ),
-            set_west_decl( set_option_fn_args_t const* );
+                    set_infer_command( set_option_fn_args_t const* ),
+                    set_lang( set_option_fn_args_t const* ),
+                    set_permissive_types( set_option_fn_args_t const* ),
+                    set_prompt( set_option_fn_args_t const* ),
+                    set_semicolon( set_option_fn_args_t const* ),
+                    set_trailing_return( set_option_fn_args_t const* ),
+                    set_trigraphs( set_option_fn_args_t const* ),
+                    set_using( set_option_fn_args_t const* ),
+                    set_west_decl( set_option_fn_args_t const* );
 
-static void set_lang_impl( c_lang_id_t );
+static void         set_lang_impl( c_lang_id_t );
+
+NODISCARD
+static char const*  slist_set_option_gets( void const** );
 
 /**
  * The column at which to print `(Not supported ...)` when an option is not
@@ -274,6 +278,75 @@ static set_option_t const SET_OPTIONS[] = {
 };
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Gets the \ref set_option having \a name.
+ *
+ * @param name The name (or prefix) of the option to find.
+ * @param name_loc The location of \a name.
+ * @return Returns a pointer to the \ref set_option having \a name or NULL if
+ * none.
+ */
+NODISCARD
+static set_option_t const* find_option( char const *name,
+                                        c_loc_t const *name_loc ) {
+  assert( name != NULL );
+  assert( name_loc != NULL );
+
+  char const *const orig_name = name;
+  // Note: this will become a problem if there's ever an option that starts
+  // with "no".
+  if ( is_no_option( name ) )
+    name += STRLITLEN( "no" ) + (name[2] == '-');
+
+  slist_t found_opt_list;
+  slist_init( &found_opt_list );
+
+  size_t const name_len = strlen( name );
+  FOREACH_SET_OPTION( opt ) {
+    if ( strncmp_in_set( opt->name, name, name_len, IDENT_CHARS ) == 0 )
+      slist_push_back( &found_opt_list, CONST_CAST( void*, opt ) );
+  } // for
+
+  set_option_t const *found_opt = NULL;
+
+  switch ( slist_len( &found_opt_list ) ) {
+    case 0:
+      print_error( name_loc, "\"%s\": unknown set option", orig_name );
+      print_suggestions( DYM_SET_OPTIONS, orig_name );
+      EPUTC( '\n' );
+      return NULL;
+    case 1:
+      found_opt = slist_front( &found_opt_list );
+      break;
+    default:
+      print_error( name_loc,
+        "\"%s\": ambiguous set option; could be ", orig_name
+      );
+      fput_list( stderr, found_opt_list.head, &slist_set_option_gets );
+      EPUTC( '\n' );
+  } // switch
+
+  slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
+  return found_opt;
+}
+
+/**
+ * Checks whether \a opt_name is the name of either a #SET_OPTION_TOGGLE option
+ * prefixed by "no" or a #SET_OPTION_NEG_ONLY option.
+ *
+ * @param opt_name The name of the option to check.
+ * @return Returns `true` only if \a opt_name is a "no" option.
+ */
+NODISCARD
+static bool is_no_option( char const *opt_name ) {
+  //
+  // Since there currently isn't an option that starts with "no", e.g.,
+  // "notes", this can simply check the first two letters.  If such an option
+  // is ever added, this will have to be more involved.
+  //
+  return STRNCMPLIT( opt_name, "no" ) == 0;
+}
 
 /**
  * A helper function for print_option() that converts \a b to a suitable
@@ -784,13 +857,9 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   assert( opt_name_loc != NULL );
   assert( opt_value == NULL || opt_value_loc != NULL );
 
-  char const *const orig_name = opt_name;
-  bool const is_no = STRNCMPLIT( opt_name, "no" ) == 0;
-  if ( is_no ) {
-    opt_name += STRLITLEN( "no" ) + (opt_name[2] == '-');
-  }
-  else {
-    c_lang_id_t const lang_id = c_lang_find( orig_name );
+  bool const is_no = is_no_option( opt_name );
+  if ( !is_no ) {
+    c_lang_id_t const lang_id = c_lang_find( opt_name );
     if ( lang_id != LANG_NONE ) {
       if ( opt_value != NULL )
         goto opt_takes_no_value;
@@ -799,35 +868,9 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     }
   }
 
-  slist_t found_opt_list;
-  slist_init( &found_opt_list );
-
-  size_t const opt_name_len = strlen( opt_name );
-  FOREACH_SET_OPTION( opt ) {
-    if ( strncmp_in_set( opt->name, opt_name, opt_name_len, IDENT_CHARS ) == 0 )
-      slist_push_back( &found_opt_list, CONST_CAST( void*, opt ) );
-  } // for
-
-  switch ( slist_len( &found_opt_list ) ) {
-    case 0:
-      print_error( opt_name_loc, "\"%s\": unknown set option", orig_name );
-      print_suggestions( DYM_SET_OPTIONS, orig_name );
-      EPUTC( '\n' );
-      return false;
-    case 1:
-      break;
-    default:
-      print_error( opt_name_loc,
-        "\"%s\": ambiguous set option; could be ", orig_name
-      );
-      fput_list( stderr, found_opt_list.head, &slist_set_option_gets );
-      EPUTC( '\n' );
-      slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
-      return false;
-  } // switch
-
-  set_option_t const *const found_opt = slist_front( &found_opt_list );
-  slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
+  set_option_t const *const found_opt = find_option( opt_name, opt_name_loc );
+  if ( found_opt == NULL )
+    return false;
 
   switch ( found_opt->kind ) {
     case SET_OPTION_TOGGLE:
@@ -872,14 +915,14 @@ no_opt_takes_no_value:
 opt_requires_value:
   print_error( opt_name_loc,
     "set option \"%s\" requires =<value>\n",
-    orig_name
+    opt_name
   );
   return false;
 
 opt_takes_no_value:
   print_error( opt_value_loc,
     "\"%s\": set option \"%s\" takes no value\n",
-    opt_value, orig_name
+    opt_value, opt_name
   );
   return false;
 }
