@@ -1,3 +1,9 @@
+2024-08-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c: Moved switch ( found_opt->kind ).
+   * set_options.c: Factored out find_option().
+   * p_macro.c, show.c: Eliminated some "comma" variables.
+
 2024-08-26  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c: Factored out c_ast_check_restrict().
