@@ -69,6 +69,7 @@ struct gib_state {
 typedef struct gib_state gib_state_t;
 
 // local functions
+static void c_ast_gibberish_impl( c_ast_t const*, gib_state_t* );
 static void c_ast_list_gibberish( c_ast_list_t const*, gib_state_t const* );
 static void c_ast_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_postfix_gibberish( c_ast_t const*, gib_state_t* );
@@ -214,6 +215,66 @@ static void c_ast_bit_width_gibberish( c_ast_t const *ast,
 
   if ( ast->bit_field.bit_width > 0 )
     FPRINTF( gib->fout, " : %u", ast->bit_field.bit_width );
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a #K_CAPTURE AST.
+ *
+ * @param ast The #K_CAPTURE AST to print.
+ * @param gib The gib_state to use.
+ */
+static void c_ast_capture_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_CAPTURE );
+  assert( gib != NULL );
+
+  switch ( ast->capture.kind ) {
+    case C_CAPTURE_COPY:
+      FPUTC( '=', gib->fout );
+      break;
+    case C_CAPTURE_REFERENCE:
+      FPUTS( other_token_c( "&" ), gib->fout );
+      if ( c_sname_empty( &ast->sname ) )
+        break;
+      if ( opt_alt_tokens )
+        FPUTC( ' ', gib->fout );
+      FALLTHROUGH;
+    case C_CAPTURE_VARIABLE:
+      FPUTS( c_sname_local_name( &ast->sname ), gib->fout );
+      break;
+    case C_CAPTURE_STAR_THIS:
+      FPUTC( '*', gib->fout );
+      FALLTHROUGH;
+    case C_CAPTURE_THIS:
+      FPUTS( L_this, gib->fout );
+      break;
+  } // switch
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a #K_CAST AST.
+ *
+ * @param ast The #K_CAST AST to print.
+ * @param gib The gib_state to use.
+ */
+static void c_ast_cast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_CAST );
+  assert( gib != NULL );
+  assert( gib->gib_flags == C_GIB_PRINT_CAST );
+
+  gib_state_t child_gib;
+  gib_init( &child_gib, C_GIB_PRINT_CAST, gib->fout );
+
+  if ( ast->cast.kind == C_CAST_C ) {
+    FPUTC( '(', gib->fout );
+    c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
+    FPRINTF( gib->fout, ")%s\n", c_sname_gibberish( &ast->sname ) );
+  } else {
+    FPRINTF( gib->fout, "%s<", c_cast_gibberish( ast->cast.kind ) );
+    c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
+    FPRINTF( gib->fout, ">(%s)\n", c_sname_gibberish( &ast->sname ) );
+  }
 }
 
 /**
@@ -396,41 +457,11 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_CAPTURE:
-      switch ( ast->capture.kind ) {
-        case C_CAPTURE_COPY:
-          FPUTC( '=', gib->fout );
-          break;
-        case C_CAPTURE_REFERENCE:
-          FPUTS( other_token_c( "&" ), gib->fout );
-          if ( c_sname_empty( &ast->sname ) )
-            break;
-          if ( opt_alt_tokens )
-            FPUTC( ' ', gib->fout );
-          FALLTHROUGH;
-        case C_CAPTURE_VARIABLE:
-          FPUTS( c_sname_local_name( &ast->sname ), gib->fout );
-          break;
-        case C_CAPTURE_STAR_THIS:
-          FPUTC( '*', gib->fout );
-          FALLTHROUGH;
-        case C_CAPTURE_THIS:
-          FPUTS( L_this, gib->fout );
-          break;
-      } // switch
+      c_ast_capture_gibberish( ast, gib );
       break;
 
     case K_CAST:
-      assert( gib->gib_flags == C_GIB_PRINT_CAST );
-      gib_init( &child_gib, C_GIB_PRINT_CAST, gib->fout );
-      if ( ast->cast.kind == C_CAST_C ) {
-        FPUTC( '(', gib->fout );
-        c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
-        FPRINTF( gib->fout, ")%s\n", c_sname_gibberish( &ast->sname ) );
-      } else {
-        FPRINTF( gib->fout, "%s<", c_cast_gibberish( ast->cast.kind ) );
-        c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
-        FPRINTF( gib->fout, ">(%s)\n", c_sname_gibberish( &ast->sname ) );
-      }
+      c_ast_cast_gibberish( ast, gib );
       break;
 
     case K_ENUM:
