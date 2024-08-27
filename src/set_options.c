@@ -897,11 +897,18 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     return false;
 
   if ( opt_value == NULL ) {
-    if ( !is_no && found_opt->has_arg == required_argument )
-      goto opt_requires_value;
+    if ( !is_no && found_opt->has_arg == required_argument ) {
+      print_error( opt_name_loc,
+        "set option \"%s\" requires =<value>\n",
+        opt_name
+      );
+      return false;
+    }
   } else {
-    if ( is_no )
-      goto no_opt_takes_no_value;
+    if ( is_no ) {
+      print_error( opt_value_loc, "\"no\" set options take no value\n" );
+      return false;
+    }
     if ( found_opt->has_arg == no_argument )
       goto opt_takes_no_value;
   }
@@ -910,17 +917,6 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     !is_no, opt_name_loc, opt_value, opt_value_loc
   };
   return (*found_opt->set_fn)( &args );
-
-no_opt_takes_no_value:
-  print_error( opt_value_loc, "\"no\" set options take no value\n" );
-  return false;
-
-opt_requires_value:
-  print_error( opt_name_loc,
-    "set option \"%s\" requires =<value>\n",
-    opt_name
-  );
-  return false;
 
 opt_takes_no_value:
   print_error( opt_value_loc,
