@@ -2442,6 +2442,80 @@ static bool c_ast_check_reference( c_ast_t const *ast,
 }
 
 /**
+ * Checks an AST whose type is #TS_restrict for errors.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if all checks passed.
+ *
+ * @sa c_ast_visitor_type()
+ */
+NODISCARD
+static bool c_ast_check_restrict( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( c_ast_is_tid_any( ast, TS_restrict ) );
+
+  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+  switch ( raw_ast->kind ) {
+    case K_ARRAY:                     // legal in C; __restrict legal in C++
+      if ( ast->param_of_ast == NULL ) {
+        print_error( &ast->loc,
+          "%s can not be \"%s\" except as function parameter\n",
+          c_kind_name( raw_ast->kind ),
+          c_tid_error( TS_restrict )
+        );
+        return false;
+      }
+      break;
+
+    case K_FUNCTION:
+    case K_OPERATOR:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_UDEF_CONV:
+      //
+      // These being declared "restrict" is already made an error by checks
+      // elsewhere.
+      //
+      break;
+
+    case K_POINTER:
+      if ( !c_ast_is_ptr_to_kind_any( raw_ast, K_ANY_OBJECT ) ) {
+        print_error( &ast->loc,
+          "pointer to %s can not be \"%s\"\n",
+          c_kind_name( c_ast_unpointer( ast )->kind ),
+          c_tid_error( TS_restrict )
+        );
+        return false;
+      }
+      break;
+
+    case K_BUILTIN:
+    case K_CLASS_STRUCT_UNION:
+    case K_CONCEPT:
+    case K_ENUM:
+    case K_POINTER_TO_MEMBER:
+      error_kind_not_tid( raw_ast, TS_restrict, LANG_NONE, "\n" );
+      return false;
+
+    case K_APPLE_BLOCK:
+    case K_CAPTURE:
+    case K_CAST:
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
+    case K_LAMBDA:
+    case K_NAME:
+    case K_PLACEHOLDER:
+    case K_STRUCTURED_BINDING:
+    case K_TYPEDEF:
+    case K_UDEF_LIT:
+    case K_VARIADIC:
+      UNEXPECTED_INT_VALUE( raw_ast->kind );
+  } // switch
+
+  return true;
+}
+
+/**
  * Checks the return type of a function-like AST for errors.
  *
  * @param ast The function-like AST to check the return type of.
@@ -3046,65 +3120,8 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
     }
   }
 
-  if ( c_ast_is_tid_any( ast, TS_restrict ) ) {
-    c_ast_t const *const raw_ast = c_ast_untypedef( ast );
-    switch ( raw_ast->kind ) {
-      case K_ARRAY:                     // legal in C; __restrict legal in C++
-        if ( ast->param_of_ast == NULL ) {
-          print_error( &ast->loc,
-            "%s can not be \"%s\" except as function parameter\n",
-            c_kind_name( raw_ast->kind ),
-            c_tid_error( TS_restrict )
-          );
-          return VISITOR_ERROR_FOUND;
-        }
-        break;
-
-      case K_FUNCTION:
-      case K_OPERATOR:
-      case K_REFERENCE:
-      case K_RVALUE_REFERENCE:
-      case K_UDEF_CONV:
-        //
-        // These being declared "restrict" is already made an error by checks
-        // elsewhere.
-        //
-        break;
-
-      case K_POINTER:
-        if ( !c_ast_is_ptr_to_kind_any( raw_ast, K_ANY_OBJECT ) ) {
-          print_error( &ast->loc,
-            "pointer to %s can not be \"%s\"\n",
-            c_kind_name( c_ast_unpointer( ast )->kind ),
-            c_tid_error( TS_restrict )
-          );
-          return VISITOR_ERROR_FOUND;
-        }
-        break;
-
-      case K_BUILTIN:
-      case K_CLASS_STRUCT_UNION:
-      case K_CONCEPT:
-      case K_ENUM:
-      case K_POINTER_TO_MEMBER:
-        error_kind_not_tid( raw_ast, TS_restrict, LANG_NONE, "\n" );
-        return VISITOR_ERROR_FOUND;
-
-      case K_APPLE_BLOCK:
-      case K_CAPTURE:
-      case K_CAST:
-      case K_CONSTRUCTOR:
-      case K_DESTRUCTOR:
-      case K_LAMBDA:
-      case K_NAME:
-      case K_PLACEHOLDER:
-      case K_STRUCTURED_BINDING:
-      case K_TYPEDEF:
-      case K_UDEF_LIT:
-      case K_VARIADIC:
-        UNEXPECTED_INT_VALUE( raw_ast->kind );
-    } // switch
-  }
+  if ( c_ast_is_tid_any( ast, TS_restrict ) && !c_ast_check_restrict( ast ) )
+    return VISITOR_ERROR_FOUND;
 
   return VISITOR_ERROR_NOT_FOUND;
 }
