@@ -78,6 +78,8 @@ static void c_capture_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_cast_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_name_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_struct_bind_ast_gibberish( c_ast_t const*, gib_state_t* );
+static void c_typedef_ast_gibberish( c_ast_t const*, c_type_t const*,
+                                     gib_state_t* );
 static void gib_init( gib_state_t*, decl_flags_t, FILE* );
 
 NODISCARD
@@ -555,57 +557,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_TYPEDEF:
-      if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 ) {
-        //
-        // Of course a K_TYPEDEF AST also has a type comprising TB_typedef, but
-        // we need to see whether there's any more to the type, e.g., "const".
-        //
-        bool const is_more_than_plain_typedef = type.stids != TS_NONE;
-
-        if ( is_more_than_plain_typedef && !opt_east_const )
-          FPUTS( c_type_gibberish( &type ), gib->fout );
-
-        //
-        // Special case: C++23 adds an _Atomic(T) macro for compatibility with
-        // C11, but while _Atomic can be printed without () in C, they're
-        // required in C++:
-        //
-        //      _Atomic size_t x;       // C11 only
-        //      _Atomic(size_t) y;      // C11 or C++23
-        //
-        // Note that this handles printing () only for typedef types; for non-
-        // typedef types, see the similar special case in c_type_name_impl().
-        //
-        bool const print_parens_for_Atomic =
-          OPT_LANG_IS( CPP_MIN(23) ) &&
-          c_tid_is_any( type.stids, TS__Atomic );
-
-        if ( print_parens_for_Atomic )
-          FPUTC( '(', gib->fout );
-        else if ( is_more_than_plain_typedef && !opt_east_const )
-          FPUTC( ' ', gib->fout );
-
-        //
-        // Temporarily turn off C_GIB_USING to force printing of the type's
-        // name.  This is necessary for when printing the name of a typedef of
-        // a typedef as a "using" declaration:
-        //
-        //      c++decl> typedef int32_t foo_t
-        //      c++decl> show foo_t as using
-        //      using foo_t = int32_t;
-        //
-        decl_flags_t const orig_flags = gib->gib_flags;
-        gib->gib_flags &= ~TO_UNSIGNED_EXPR( C_GIB_USING );
-        c_ast_name_gibberish( ast->tdef.for_ast, gib );
-        gib->gib_flags = orig_flags;
-        if ( print_parens_for_Atomic )
-          FPUTC( ')', gib->fout );
-        if ( is_more_than_plain_typedef && opt_east_const )
-          FPRINTF( gib->fout, " %s", c_type_gibberish( &type ) );
-      }
-
-      c_ast_space_name_gibberish( ast, gib );
-      c_ast_bit_width_gibberish( ast, gib );
+      c_typedef_ast_gibberish( ast, &type, gib );
       break;
 
     case K_VARIADIC:
@@ -1290,6 +1242,73 @@ static void c_struct_bind_ast_gibberish( c_ast_t const *ast,
   } // for
 
   FPUTC( ']', gib->fout );
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a #K_TYPEDEF AST.
+ *
+ * @param ast The #K_TYPEDEF AST to print.
+ * @param type The \ref c_type to use instead of \ref c_ast::type.
+ * @param gib The gib_state to use.
+ */
+static void c_typedef_ast_gibberish( c_ast_t const *ast, c_type_t const *type,
+                                     gib_state_t *gib ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_TYPEDEF );
+  assert( type != NULL );
+  assert( gib != NULL );
+
+  if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 ) {
+    //
+    // Of course a K_TYPEDEF AST also has a type comprising TB_typedef, but we
+    // need to see whether there's any more to the type, e.g., "const".
+    //
+    bool const is_more_than_plain_typedef = type->stids != TS_NONE;
+
+    if ( is_more_than_plain_typedef && !opt_east_const )
+      FPUTS( c_type_gibberish( type ), gib->fout );
+
+    //
+    // Special case: C++23 adds an _Atomic(T) macro for compatibility with
+    // C11, but while _Atomic can be printed without () in C, they're
+    // required in C++:
+    //
+    //      _Atomic size_t x;       // C11 only
+    //      _Atomic(size_t) y;      // C11 or C++23
+    //
+    // Note that this handles printing () only for typedef types; for non-
+    // typedef types, see the similar special case in c_type_name_impl().
+    //
+    bool const print_parens_for_Atomic =
+      OPT_LANG_IS( CPP_MIN(23) ) &&
+      c_tid_is_any( type->stids, TS__Atomic );
+
+    if ( print_parens_for_Atomic )
+      FPUTC( '(', gib->fout );
+    else if ( is_more_than_plain_typedef && !opt_east_const )
+      FPUTC( ' ', gib->fout );
+
+    //
+    // Temporarily turn off C_GIB_USING to force printing of the type's
+    // name.  This is necessary for when printing the name of a typedef of
+    // a typedef as a "using" declaration:
+    //
+    //      c++decl> typedef int32_t foo_t
+    //      c++decl> show foo_t as using
+    //      using foo_t = int32_t;
+    //
+    decl_flags_t const orig_flags = gib->gib_flags;
+    gib->gib_flags &= ~TO_UNSIGNED_EXPR( C_GIB_USING );
+    c_ast_name_gibberish( ast->tdef.for_ast, gib );
+    gib->gib_flags = orig_flags;
+    if ( print_parens_for_Atomic )
+      FPUTC( ')', gib->fout );
+    if ( is_more_than_plain_typedef && opt_east_const )
+      FPRINTF( gib->fout, " %s", c_type_gibberish( type ) );
+  }
+
+  c_ast_space_name_gibberish( ast, gib );
+  c_ast_bit_width_gibberish( ast, gib );
 }
 
 /**
