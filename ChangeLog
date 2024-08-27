@@ -1,5 +1,10 @@
 2024-08-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c: Factored out c_ptr_ref_ast_gibberish().
+   * gibberish.c: Factored out c_typedef_ast_gibberish().
+   * gibberish.c: Factored out c_name_ast_gibberish().
+   * gibberish.c: Factored out c_ast_capture_gibberish() and
+     c_ast_cast_gibberish().
    * set_options.c: Moved switch ( found_opt->kind ).
    * set_options.c: Factored out find_option().
    * p_macro.c, show.c: Eliminated some "comma" variables.
