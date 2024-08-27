@@ -499,7 +499,6 @@ static bool mex_append_args( mex_state_t *mex ) {
   slist_push_back( mex->expand_list, p_token_new( P_PUNCTUATOR, "(" ) );
 
   unsigned arg_index = 0;
-  bool comma = false;
   FOREACH_SLIST_NODE( arg_node, mex->arg_list ) {
     char arg_name[ ARRAY_SIZE( "arg_NNN" ) ];
     check_snprintf( arg_name, sizeof arg_name, "arg_%u", ++arg_index );
@@ -524,9 +523,9 @@ static bool mex_append_args( mex_state_t *mex ) {
     mex_print_macro( &arg_mex, arg_mex.replace_list );
     bool const ok = mex_expand_all_fns( &arg_mex, EXPAND_FNS );
     if ( ok ) {
-      if ( true_or_set( &comma ) )
-        slist_push_back( mex->expand_list, p_token_new( P_PUNCTUATOR, "," ) );
       push_back_dup_tokens( mex->expand_list, arg_mex.expand_list );
+      if ( arg_node->next != NULL )
+        slist_push_back( mex->expand_list, p_token_new( P_PUNCTUATOR, "," ) );
     }
     mex_cleanup( &arg_mex );
     if ( !ok )
@@ -2109,19 +2108,18 @@ static void mex_init_va_args_token_list( mex_state_t *mex ) {
 
   assert( OPT_LANG_IS( VARIADIC_MACROS ) );
 
-  bool comma = false;
   size_t curr_index = 0;
   size_t const ellipsis_index = slist_len( mex->macro->param_list ) - 1;
 
   FOREACH_SLIST_NODE( arg_node, mex->arg_list ) {
     if ( curr_index++ < ellipsis_index )
       continue;
-    if ( true_or_set( &comma ) ) {
+    push_back_dup_tokens( &mex->va_args_token_list, arg_node->data );
+    if ( arg_node->next != NULL ) {
       slist_push_back(
         &mex->va_args_token_list, p_token_new( P_PUNCTUATOR, "," )
       );
     }
-    push_back_dup_tokens( &mex->va_args_token_list, arg_node->data );
   } // for
 }
 
@@ -2234,11 +2232,10 @@ static bool mex_preliminary_check( mex_state_t const *mex ) {
 
   if ( mex->arg_list != NULL ) {
     slist_push_back( &replace_list, p_token_new( P_PUNCTUATOR, "(" ) );
-    bool comma = false;
     FOREACH_SLIST_NODE( arg_node, mex->arg_list ) {
-      if ( true_or_set( &comma ) )
-        slist_push_back( &replace_list, p_token_new( P_PUNCTUATOR, "," ) );
       push_back_dup_tokens( &replace_list, arg_node->data );
+      if ( arg_node->next != NULL )
+        slist_push_back( &replace_list, p_token_new( P_PUNCTUATOR, "," ) );
     } // for
     slist_push_back( &replace_list, p_token_new( P_PUNCTUATOR, ")" ) );
   }
@@ -2726,14 +2723,13 @@ static void p_macro_relocate_params( p_macro_t *macro ) {
   size_t column = strlen( other_token_c( "#" ) ) + STRLITLEN( "define " )
     + strlen( macro->name ) + STRLITLEN( "(" );
 
-  bool comma = false;
   FOREACH_SLIST_NODE( param_node, macro->param_list ) {
     p_param_t *const param = param_node->data;
-    if ( true_or_set( &comma ) )
-      column += STRLITLEN( ", " );
     param->loc.first_column = C_LOC_NUM_T( column );
     column += strlen( param->name );
     param->loc.last_column = C_LOC_NUM_T( column - 1 );
+    if ( param_node->next != NULL )
+      column += STRLITLEN( ", " );
   } // for
 }
 

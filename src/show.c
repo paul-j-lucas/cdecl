@@ -89,12 +89,11 @@ static void print_param_list( p_param_list_t const *param_list, FILE *fout ) {
   assert( fout != NULL );
 
   FPUTC( '(', fout );
-  bool comma = false;
   FOREACH_SLIST_NODE( param_node, param_list ) {
     p_param_t const *const param = param_node->data;
-    if ( true_or_set( &comma ) )
-      FPUTS( ", ", fout );
     FPUTS( param->name, fout );
+    if ( param_node->next != NULL )
+      FPUTS( ", ", fout );
   } // for
   FPUTC( ')', fout );
 }
