@@ -294,9 +294,8 @@ static set_option_t const* find_option( char const *name,
   assert( name_loc != NULL );
 
   char const *const orig_name = name;
-  // Note: this will become a problem if there's ever an option that starts
-  // with "no".
-  if ( is_no_option( name ) )
+  bool const is_no = is_no_option( name );
+  if ( is_no )
     name += STRLITLEN( "no" ) + (name[2] == '-');
 
   slist_t found_opt_list;
@@ -328,6 +327,31 @@ static set_option_t const* find_option( char const *name,
   } // switch
 
   slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
+
+  if ( found_opt == NULL )
+    return NULL;
+
+  switch ( found_opt->kind ) {
+    case SET_OPTION_TOGGLE:
+      break;
+    case SET_OPTION_AFF_ONLY:
+      if ( is_no ) {
+        print_error( name_loc,
+          "\"no\" not valid for \"%s\"\n", found_opt->name
+        );
+        return NULL;
+      }
+      break;
+    case SET_OPTION_NEG_ONLY:
+      if ( !is_no ) {
+        print_error( name_loc,
+          "\"no\" required for \"%s\"\n", found_opt->name
+        );
+        return NULL;
+      }
+      break;
+  } // switch
+
   return found_opt;
 }
 
@@ -871,27 +895,6 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   set_option_t const *const found_opt = find_option( opt_name, opt_name_loc );
   if ( found_opt == NULL )
     return false;
-
-  switch ( found_opt->kind ) {
-    case SET_OPTION_TOGGLE:
-      break;
-    case SET_OPTION_AFF_ONLY:
-      if ( is_no ) {
-        print_error( opt_name_loc,
-          "\"no\" not valid for \"%s\"\n", found_opt->name
-        );
-        return false;
-      }
-      break;
-    case SET_OPTION_NEG_ONLY:
-      if ( !is_no ) {
-        print_error( opt_name_loc,
-          "\"no\" required for \"%s\"\n", found_opt->name
-        );
-        return false;
-      }
-      break;
-  } // switch
 
   if ( opt_value == NULL ) {
     if ( !is_no && found_opt->has_arg == required_argument )
