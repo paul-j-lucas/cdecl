@@ -1,3 +1,10 @@
+2024-08-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: Factored out c_ast_check_restrict().
+   * c_ast_check.c: Factored out c_ast_check_op_less_equal_greater_ret_type().
+   * c_ast_check.c: Factored out c_ast_check_op_minus_minus_plus_plus_params().
+   * parser.y: Eliminated IS_SUPPORTED().
+
 2024-08-25  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c, color.c, util.c, util.h: Eliminated free_later() & free_now().
