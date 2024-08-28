@@ -579,14 +579,15 @@ c_ast_t const* (c_ast_find_kind_any)( c_ast_t const *ast,
   user_data_t ud;
   USER_DATA_UINT( c_ast_kind_t, ud ) = kinds;
 
-  return kinds == 0 ? NULL : c_ast_visit( ast, dir, c_ast_vistor_kind_any, ud );
+  return kinds == 0 ? NULL :
+    c_ast_visit( ast, dir, &c_ast_vistor_kind_any, ud );
 }
 
 // See comment for NONCONST_OVERLOAD regarding ().
 c_sname_t const* (c_ast_find_name)( c_ast_t const *ast,
                                     c_ast_visit_dir_t dir ) {
   c_ast_t const *const found_ast =
-    c_ast_visit( ast, dir, c_ast_visitor_name, USER_DATA_ZERO );
+    c_ast_visit( ast, dir, &c_ast_visitor_name, USER_DATA_ZERO );
   return found_ast != NULL ? &found_ast->sname : NULL;
 }
 
@@ -616,7 +617,7 @@ c_ast_t const* c_ast_find_param_named( c_ast_t const *func_ast,
 c_ast_t const* (c_ast_find_type_any)( c_ast_t const *ast, c_ast_visit_dir_t dir,
                                       c_type_t const *type ) {
   return c_ast_visit(
-    ast, dir, c_ast_vistor_type_any, (user_data_t){ .pc = type }
+    ast, dir, &c_ast_vistor_type_any, (user_data_t){ .pc = type }
   );
 }
 
