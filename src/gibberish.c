@@ -76,6 +76,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_space_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_capture_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_cast_ast_gibberish( c_ast_t const*, gib_state_t* );
+static void c_concept_ast_gibberish( c_ast_t const*, c_type_t*, gib_state_t* );
 static void c_lambda_ast_gibberish( c_ast_t const*, c_type_t const*,
                                     gib_state_t* );
 static void c_name_ast_gibberish( c_ast_t const*, gib_state_t* );
@@ -502,17 +503,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_CONCEPT:
-      if ( opt_east_const ) {
-        cv_qual_stids = type.stids & TS_CV;
-        type.stids &= c_tid_compl( TS_CV );
-      }
-      fputs_sp( c_type_gibberish( &type ), gib->fout );
-      FPRINTF( gib->fout,
-        "%s %s",
-        c_sname_gibberish( &ast->concept.concept_sname ), L_auto
-      );
-      fputsp_s( c_tid_gibberish( cv_qual_stids ), gib->fout );
-      c_ast_space_name_gibberish( ast, gib );
+      c_concept_ast_gibberish( ast, &type, gib );
       break;
 
     case K_LAMBDA:
@@ -1092,6 +1083,36 @@ static void c_cast_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
     FPRINTF( gib->fout, ">(%s)\n", c_sname_gibberish( &ast->sname ) );
   }
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a #K_CONCEPT AST.
+ *
+ * @param ast The #K_CONCEPT AST to print.
+ * @param type The \ref c_type to use instead of \ref c_ast::type.
+ * @param gib The gib_state to use.
+ */
+static void c_concept_ast_gibberish( c_ast_t const *ast, c_type_t *type,
+                                     gib_state_t *gib ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_CONCEPT );
+  assert( type != NULL );
+  assert( gib != NULL );
+
+  c_tid_t cv_qual_stids = TS_NONE;
+
+  if ( opt_east_const ) {
+    cv_qual_stids = type->stids & TS_CV;
+    type->stids &= c_tid_compl( TS_CV );
+  }
+
+  fputs_sp( c_type_gibberish( type ), gib->fout );
+  FPRINTF( gib->fout,
+    "%s %s",
+    c_sname_gibberish( &ast->concept.concept_sname ), L_auto
+  );
+  fputsp_s( c_tid_gibberish( cv_qual_stids ), gib->fout );
+  c_ast_space_name_gibberish( ast, gib );
 }
 
 /**
