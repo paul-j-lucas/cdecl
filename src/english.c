@@ -198,8 +198,7 @@ static void c_ast_alignas_english( c_ast_t const *ast,
 }
 
 /**
- * Helper function for c_ast_visitor_english() that prints a bit-field width,
- * if any.
+ * Prints a bit-field width, if any, in pseudo-English.
  *
  * @param ast The AST to print the bit-field width of.
  * @param fout The `FILE` to emit to.
@@ -214,8 +213,7 @@ static void c_ast_bit_width_english( c_ast_t const *ast, FILE *fout ) {
 }
 
 /**
- * Helper function for c_ast_visitor_english() that prints a function-like
- * AST's parameters, if any.
+ * Prints a function-like AST's parameters, if any, in pseudo-English.
  *
  * @param ast The AST to print the parameters of.
  * @param eng The eng_state to use.
@@ -273,8 +271,7 @@ static void c_ast_func_params_english( c_ast_t const *ast,
 }
 
 /**
- * Helper function for c_ast_visitor_english() that prints a lambda AST's
- * captures, if any.
+ * Prints a lambda AST's captures, if any, in pseudo-English.
  *
  * @param ast The lambda AST to print the captures of.
  * @param fout The `FILE` to emit to.
