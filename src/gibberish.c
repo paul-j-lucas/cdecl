@@ -182,7 +182,7 @@ static char const* alt_token_c( char const *token ) {
  * Prints the alignment of \a ast in C/C++.
  *
  * @param ast The AST to print the alignment of.
- * @param file The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  */
 static void c_ast_alignas_gibberish( c_ast_t const *ast, FILE *fout ) {
   assert( ast != NULL );
