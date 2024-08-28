@@ -1,5 +1,10 @@
 2024-08-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c: Factored out c_ecsu_ast_gibberish().
+   * gibberish.c: Factored out c_builtint_ast_gibberish().
+   * gibberish.c: Factored out c_concept_ast_gibberish().
+   * gibberish.c: Factored out c_lambda_ast_gibberish().
+   * gibberish.c: Factored out c_ptr_mbr_ast_gibberish().
    * gibberish.c: Factored out c_ptr_ref_ast_gibberish().
    * gibberish.c: Factored out c_typedef_ast_gibberish().
    * gibberish.c: Factored out c_name_ast_gibberish().
