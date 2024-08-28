@@ -195,10 +195,7 @@ static void c_ast_func_params_english( c_ast_t const *ast,
   eng_init( &param_eng, eng->fout );
   param_eng.func_ast = ast;
 
-  bool comma = false;
   FOREACH_AST_FUNC_PARAM( param, ast ) {
-    fput_sep( ", ", &comma, eng->fout );
-
     c_ast_t const *const param_ast = c_param_ast( param );
     c_sname_t const *const sname = c_ast_find_name( param_ast, C_VISIT_DOWN );
     if ( sname != NULL ) {
@@ -230,6 +227,8 @@ static void c_ast_func_params_english( c_ast_t const *ast,
     }
 
     c_ast_visit_english( param_ast, &param_eng );
+    if ( param->next != NULL )
+      FPUTS( ", ", eng->fout );
   } // for
 
   FPUTC( ')', eng->fout );
@@ -302,11 +301,9 @@ static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *fout ) {
 
   FPUTC( '[', fout );
 
-  bool comma = false;
   FOREACH_AST_LAMBDA_CAPTURE( capture, ast ) {
-    fput_sep( ", ", &comma, fout );
-
     c_ast_t const *const capture_ast = c_capture_ast( capture );
+
     switch ( capture_ast->capture.kind ) {
       case C_CAPTURE_COPY:
         FPUTS( "copy by default", fout );
@@ -328,6 +325,9 @@ static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *fout ) {
         FPUTS( L_this, fout );
         break;
     } // switch
+
+    if ( capture->next != NULL )
+      FPUTS( ", ", fout );
   } // for
 
   FPUTC( ']', fout );
@@ -989,11 +989,11 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *fout ) {
     // that have the same base type.
     //
     FPUTS( "declare ", fout );
-    bool comma = false;
     FOREACH_SLIST_NODE( equal_node, equal_ast_list ) {
       c_ast_t const *const equal_ast = equal_node->data;
-      fput_sep( ", ", &comma, fout );
       c_ast_name_english( equal_ast, fout );
+      if ( equal_node->next != NULL )
+        FPUTS( ", ", fout );
     } // for
 
     //

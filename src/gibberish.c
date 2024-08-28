@@ -508,13 +508,13 @@ static void c_ast_list_gibberish( c_ast_list_t const *ast_list,
   decl_flags_t const node_gib_flags =
     gib->gib_flags & ~TO_UNSIGNED_EXPR( C_GIB_OPT_OMIT_TYPE );
 
-  bool comma = false;
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     gib_state_t node_gib;
     gib_init( &node_gib, node_gib_flags, gib->fout );
     node_gib.is_nested_scope = gib->is_nested_scope;
-    fput_sep( ", ", &comma, gib->fout );
     c_ast_gibberish_impl( ast_node->data, &node_gib );
+    if ( ast_node->next != NULL )
+      FPUTS( ", ", gib->fout );
   } // for
 }
 

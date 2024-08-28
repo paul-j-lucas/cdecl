@@ -801,10 +801,10 @@ void c_sname_list_dump( slist_t const *list, FILE *fout ) {
 
   FPUTS( "[ ", fout );
 
-  bool comma = false;
   FOREACH_SLIST_NODE( node, list ) {
-    fput_sep( ", ", &comma, fout );
     c_sname_dump( node->data, fout );
+    if ( node->next != NULL )
+      FPUTS( ", ", fout );
   } // for
 
   FPUTS( " ]", fout );
