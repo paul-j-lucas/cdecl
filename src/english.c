@@ -102,7 +102,7 @@ static inline void c_ast_visit_english( c_ast_t const *ast,
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Prints a #K_ARRAY \ast as pseudo-English.
+ * Prints a #K_ARRAY \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -463,7 +463,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
 }
 
 /**
- * Prints a #K_BUILTIN \ast as pseudo-English.
+ * Prints a #K_BUILTIN \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -494,7 +494,7 @@ static void c_builtin_ast_english( c_ast_t const *ast,
 }
 
 /**
- * Prints a #K_CAST \ast as pseudo-English.
+ * Prints a #K_CAST \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -515,7 +515,7 @@ static void c_cast_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
 }
 
 /**
- * Prints a #K_CONCEPT \ast as pseudo-English.
+ * Prints a #K_CONCEPT \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -534,7 +534,7 @@ static void c_concept_ast_english( c_ast_t const *ast,
 }
 
 /**
- * Prints a #K_CLASS_STRUCT_UNION \ast as pseudo-English.
+ * Prints a #K_CLASS_STRUCT_UNION \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -549,7 +549,7 @@ static void c_csu_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
 }
 
 /**
- * Prints a #K_ENUM \ast as pseudo-English.
+ * Prints a #K_ENUM \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -569,7 +569,7 @@ static void c_enum_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
 
 /**
  * Prints a #K_APPLE_BLOCK, #K_CONSTRUCTOR, #K_DESTRUCTOR, #K_FUNCTION,
- * #K_OPERATOR, or #K_UDEF_LIT \ast as pseudo-English.
+ * #K_OPERATOR, or #K_UDEF_LIT \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -610,7 +610,7 @@ static void c_func_like_ast_english( c_ast_t const *ast,
 }
 
 /**
- * Prints a #K_NAME \ast as pseudo-English.
+ * Prints a #K_NAME \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -637,7 +637,7 @@ static void c_name_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
 }
 
 /**
- * Prints a #K_LAMBDA \ast as pseudo-English.
+ * Prints a #K_LAMBDA \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -663,7 +663,7 @@ static void c_lambda_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
 }
 
 /**
- * Prints a #K_POINTER_TO_MEMBER \ast as pseudo-English.
+ * Prints a #K_POINTER_TO_MEMBER \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -682,7 +682,7 @@ static void c_ptr_mbr_ast_english( c_ast_t const *ast,
 }
 
 /**
- * Prints a #K_POINTER or #K_ANY_REFERENCE \ast as pseudo-English.
+ * Prints a #K_POINTER or #K_ANY_REFERENCE \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -737,7 +737,7 @@ static void c_sname_english( c_sname_t const *sname, FILE *fout ) {
 }
 
 /**
- * Prints a #K_STRUCTURED_BINDING \ast as pseudo-English.
+ * Prints a #K_STRUCTURED_BINDING \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -770,7 +770,7 @@ static void c_type_name_nobase_english( c_type_t const *type, FILE *fout ) {
 }
 
 /**
- * Prints a #K_TYPEDEF \ast as pseudo-English.
+ * Prints a #K_TYPEDEF \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -795,7 +795,7 @@ static void c_typedef_ast_english( c_ast_t const *ast,
 }
 
 /**
- * Prints a #K_UDEF_CONV \ast as pseudo-English.
+ * Prints a #K_UDEF_CONV \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -830,6 +830,89 @@ static void eng_init( eng_state_t *eng, FILE *fout ) {
   *eng = (eng_state_t){
     .fout = fout
   };
+}
+
+/**
+ * Create a list of AST lists where each list is a set of "like" C/C++
+ * declarations that can all be declared in the same `declare` statement, i.e.,
+ * all having the same base type.
+ *
+ * @remarks
+ * @parblock
+ * For example, given:
+ *
+ *      explain int i, a[2], *p, j, f(), b[2]
+ *
+ * we want:
+ *
+ *      declare i, j as integer
+ *      declare a, b as array 2 of integer
+ *      declare p as pointer to integer
+ *      declare f as function returning integer
+ *
+ * To do this, first split the declarations into separate lists where each list
+ * only contains ASTs that are all equal.
+ *
+ * However, we can coalesce only objects, functions, or operators; everything
+ * else must get its own "declare" statement.
+ * @endparblock
+ *
+ * @param ast_list The list of AST nodes to use.
+ * @return Returns said list.
+ */
+NODISCARD
+static slist_t make_declare_ast_lists( c_ast_list_t const *ast_list ) {
+  assert( ast_list != NULL );
+
+  slist_t declare_lists;
+  slist_init( &declare_lists );
+
+  FOREACH_SLIST_NODE( ast_node, ast_list ) {
+    c_ast_t *const list_ast = ast_node->data;
+    slist_t *equal_ast_list = NULL;
+
+    if ( (list_ast->kind & (K_ANY_OBJECT | K_FUNCTION | K_OPERATOR)) != 0 ) {
+      FOREACH_SLIST_NODE( declare_node, &declare_lists ) {
+        slist_t *const maybe_equal_ast_list = declare_node->data;
+        c_ast_t const *const ast = slist_front( maybe_equal_ast_list );
+        if ( c_ast_equal( list_ast, ast ) ) {
+          equal_ast_list = maybe_equal_ast_list;
+          break;
+        }
+      } // for
+    }
+
+    if ( equal_ast_list == NULL ) {
+      equal_ast_list = MALLOC( slist_t, 1 );
+      slist_init( equal_ast_list );
+      slist_push_back( &declare_lists, equal_ast_list );
+    }
+    else {
+      //
+      // Even though we found an equal AST list, we have to look through it for
+      // an AST having the same name.  (This can happen for "tentative
+      // declarations" in C.)  If we find a match, don't add the AST to the
+      // list because we want only a single "declare" statement for it:
+      //
+      //      cdecl> explain int x, x   // legal "tentative declaration" in C
+      //      declare x as integer
+      //
+      bool found_equal_name = false;
+      FOREACH_SLIST_NODE( equal_node, equal_ast_list ) {
+        c_ast_t const *const equal_ast = equal_node->data;
+        if ( c_sname_cmp( &list_ast->sname, &equal_ast->sname ) == 0 ) {
+          found_equal_name = true;
+          break;
+        }
+      } // for
+      if ( found_equal_name )
+        continue;
+    }
+
+    slist_push_back( equal_ast_list, list_ast );
+  } // for
+
+  return declare_lists;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -910,73 +993,7 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *fout ) {
       return;
   } // switch
 
-  slist_t declare_list;
-  slist_init( &declare_list );
-
-  //
-  // We want to coalesce "like" declarations so that we print those having the
-  // same base type together in the same "declare" statement.  For example,
-  // given:
-  //
-  //      explain int i, a[2], *p, j, f(), b[2]
-  //
-  // we want:
-  //
-  //      declare i, j as integer
-  //      declare a, b as array 2 of integer
-  //      declare p as pointer to integer
-  //      declare f as function returning integer
-  //
-  // To do this, first split the declarations into separate lists where each
-  // list only contains ASTs that are all equal.
-  //
-  // However, we can coalesce only objects, functions, or operators; everything
-  // else must get its own "declare" statement.
-  //
-  FOREACH_SLIST_NODE( ast_node, ast_list ) {
-    c_ast_t *const list_ast = ast_node->data;
-    slist_t *equal_ast_list = NULL;
-
-    if ( (list_ast->kind & (K_ANY_OBJECT | K_FUNCTION | K_OPERATOR)) != 0 ) {
-      FOREACH_SLIST_NODE( declare_node, &declare_list ) {
-        slist_t *const maybe_equal_ast_list = declare_node->data;
-        c_ast_t const *const ast = slist_front( maybe_equal_ast_list );
-        if ( c_ast_equal( list_ast, ast ) ) {
-          equal_ast_list = maybe_equal_ast_list;
-          break;
-        }
-      } // for
-    }
-
-    if ( equal_ast_list == NULL ) {
-      equal_ast_list = MALLOC( slist_t, 1 );
-      slist_init( equal_ast_list );
-      slist_push_back( &declare_list, equal_ast_list );
-    }
-    else {
-      //
-      // Even though we found an equal AST list, we have to look through it for
-      // an AST having the same name.  (This can happen for "tentative
-      // declarations" in C.)  If we find a match, don't add the AST to the
-      // list because we want only a single "declare" statement for it:
-      //
-      //      cdecl> explain int x, x   // legal "tentative declaration" in C
-      //      declare x as integer
-      //
-      bool found_equal_name = false;
-      FOREACH_SLIST_NODE( equal_node, equal_ast_list ) {
-        c_ast_t const *const equal_ast = equal_node->data;
-        if ( c_sname_cmp( &list_ast->sname, &equal_ast->sname ) == 0 ) {
-          found_equal_name = true;
-          break;
-        }
-      } // for
-      if ( found_equal_name )
-        continue;
-    }
-
-    slist_push_back( equal_ast_list, list_ast );
-  } // for
+  slist_t declare_list = make_declare_ast_lists( ast_list );
 
   //
   // Now print one "declare" statement for each list of equal declarations in
