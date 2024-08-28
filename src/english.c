@@ -615,9 +615,11 @@ void c_ast_english( c_ast_t const *ast, decl_flags_t eng_flags, FILE *fout ) {
 
       case K_CAPTURE:
       case K_CAST:
-      case K_PLACEHOLDER:
       case K_VARIADIC:
         UNEXPECTED_INT_VALUE( ast->kind );
+
+      case K_PLACEHOLDER:
+        unreachable();
     } // switch
   }
 

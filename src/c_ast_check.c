@@ -3017,9 +3017,11 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_CAPTURE:               // checked in c_ast_check_lambda_captures()
-    case K_PLACEHOLDER:           // should never occur
     case K_VARIADIC:              // checked in c_ast_check_func_params()
       unreachable();
+
+    case K_PLACEHOLDER:
+      UNEXPECTED_INT_VALUE( ast->kind );
   } // switch
 
   if ( ast->kind != K_FUNCTION &&
@@ -3282,6 +3284,8 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_PLACEHOLDER:
+      UNEXPECTED_INT_VALUE( raw_ast->kind );
+
     case K_TYPEDEF:                     // impossible after c_ast_untypedef()
       unreachable();
   } // switch

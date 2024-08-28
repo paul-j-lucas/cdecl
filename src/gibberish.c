@@ -638,10 +638,12 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       case K_CONCEPT:
       case K_ENUM:
       case K_NAME:
-      case K_PLACEHOLDER:
       case K_STRUCTURED_BINDING:
       case K_VARIADIC:
         UNEXPECTED_INT_VALUE( parent_ast->kind );
+
+      case K_PLACEHOLDER:
+        unreachable();
     } // switch
   } else {
     //
@@ -972,8 +974,10 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 
     case K_CAPTURE:
     case K_LAMBDA:
-    case K_PLACEHOLDER:
       UNEXPECTED_INT_VALUE( ast->kind );
+
+    case K_PLACEHOLDER:
+      unreachable();
   } // switch
 }
 
