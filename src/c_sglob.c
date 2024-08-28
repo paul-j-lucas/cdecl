@@ -62,17 +62,17 @@ void c_sglob_parse( char const *s, c_sglob_t *rv_sglob ) {
       return;                           // LCOV_EXCL_LINE
     case '*':
       if ( s[1] == '*' ) {              // starts with "**": match in any scope
-        s += 2 /* "**" */;
+        s += STRLITLEN( "**" );
         SKIP_WS( s );
         assert( s[0] == ':' && s[1] == ':' );
-        s += 2 /* "::" */;
+        s += STRLITLEN( "::" );
         SKIP_WS( s );
         rv_sglob->match_in_any_scope = true;
       }
       break;
     case ':':
       assert( s[1] == ':' );            // starts with "::": global scope
-      s += 2 /* "::" */;
+      s += STRLITLEN( "::" );
       SKIP_WS( s );
       break;
   } // switch
@@ -108,7 +108,7 @@ void c_sglob_parse( char const *s, c_sglob_t *rv_sglob ) {
       check_strndup( glob_begin, glob_len );
     if ( *s == '\0' )
       break;
-    s += 2 /* "::" */;
+    s += STRLITLEN( "::" );
     glob_begin = SKIP_WS( s );
   } // for
 
