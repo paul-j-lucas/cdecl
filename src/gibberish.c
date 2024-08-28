@@ -208,7 +208,7 @@ static void c_ast_alignas_gibberish( c_ast_t const *ast, FILE *fout ) {
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints an array's size.
+ * Prints an array's size as part of a C/C++ declaration.
  *
  * @param ast The AST that is a #K_ARRAY whose size to print.
  * @param gib The gib_state to use.
@@ -243,8 +243,7 @@ static void c_ast_array_size_gibberish( c_ast_t const *ast,
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a bit-field width,
- * if any.
+ * Prints a bit-field width, if any, as part of a C/C++ declaration.
  *
  * @param ast The AST to print the bit-field width of.
  * @param gib The gib_state to use.
@@ -702,9 +701,8 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a pointer, pointer-
- * to-member, reference, or rvalue reference, its qualifier, if any, and the
- * name, if any.
+ * Prints a pointer, pointer-to-member, reference, or rvalue reference, its
+ * qualifier, if any, and the name, if any, as part of a C/C++ declaration.
  *
  * @param ast The AST that is one of #K_POINTER, #K_POINTER_TO_MEMBER,
  * #K_REFERENCE, or #K_RVALUE_REFERENCE whose qualifier, if any, and name, if
@@ -892,9 +890,8 @@ static bool c_ast_space_before_ptr_ref( c_ast_t const *ast,
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a space (if it hasn't
- * printed one before) and an AST node's name, if any; but only if we're
- * printing a declaration (not a cast).
+ * Prints a space (if one hasn't printed one before) and an AST node's name, if
+ * any; but only if we're printing a declaration (not a cast).
  *
  * @param ast The AST to print the name of, if any.
  * @param gib The gib_state to use.
@@ -982,9 +979,9 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a #K_BUILTIN AST.
+ * Prints a #K_BUILTIN AST as a C/C++ declaration.
  *
- * @param ast The #K_BUILTIN AST to print.
+ * @param ast The AST to print.
  * @param type The \ref c_type to use instead of \ref c_ast::type.
  * @param gib The gib_state to use.
  */
@@ -1005,9 +1002,9 @@ static void c_builtin_ast_gibberish( c_ast_t const *ast, c_type_t const *type,
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a #K_CAPTURE AST.
+ * Prints a #K_CAPTURE AST as part of a #K_LAMBDA declaration.
  *
- * @param ast The #K_CAPTURE AST to print.
+ * @param ast The AST to print.
  * @param gib The gib_state to use.
  */
 static void c_capture_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
@@ -1039,9 +1036,9 @@ static void c_capture_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a #K_CAST AST.
+ * Prints a #K_CAST AST.
  *
- * @param ast The #K_CAST AST to print.
+ * @param ast The AST to print.
  * @param gib The gib_state to use.
  */
 static void c_cast_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
@@ -1065,9 +1062,9 @@ static void c_cast_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a #K_CONCEPT AST.
+ * Prints a #K_CONCEPT AST as part of a C++ declaration.
  *
- * @param ast The #K_CONCEPT AST to print.
+ * @param ast The AST to print.
  * @param type The \ref c_type to use instead of \ref c_ast::type.
  * @param gib The gib_state to use.
  */
@@ -1095,10 +1092,9 @@ static void c_concept_ast_gibberish( c_ast_t const *ast, c_type_t *type,
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a #K_ENUM or
- * #K_CLASS_STRUCT_UNION AST.
+ * Prints a #K_ENUM or #K_CLASS_STRUCT_UNION AST as a C/C++ declaration.
  *
- * @param ast The #K_ENUM or #K_CLASS_STRUCT_UNION AST to print.
+ * @param ast The AST to print.
  * @param type The \ref c_type to use instead of \ref c_ast::type.
  * @param gib The gib_state to use.
  */
@@ -1186,9 +1182,9 @@ static void c_ecsu_ast_gibberish( c_ast_t const *ast, c_type_t *type,
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a #K_LAMBDA AST.
+ * Prints a #K_LAMBDA AST as a C++ declaration.
  *
- * @param ast The #K_LAMBDA AST to print.
+ * @param ast The AST to print.
  * @param type The \ref c_type to use instead of \ref c_ast::type.
  * @param gib The gib_state to use.
  */
@@ -1220,9 +1216,9 @@ static void c_lambda_ast_gibberish( c_ast_t const *ast, c_type_t const *type,
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a #K_NAME AST.
+ * Prints a #K_NAME AST as part of a C/C++ declaration.
  *
- * @param ast The #K_NAME AST to print.
+ * @param ast The AST to print.
  * @param gib The gib_state to use.
  */
 static void c_name_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
@@ -1291,10 +1287,9 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a
- * #K_POINTER_TO_MEMBER AST.
+ * Prints a #K_POINTER_TO_MEMBER AST as a C++ declaration.
  *
- * @param ast The #K_POINTER_TO_MEMBER AST to print.
+ * @param ast The AST to print.
  * @param gib The gib_state to use.
  */
 static void c_ptr_mbr_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
@@ -1309,10 +1304,9 @@ static void c_ptr_mbr_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a #K_POINTER or
- * #K_ANY_REFERENCE AST.
+ * Prints a #K_POINTER or #K_ANY_REFERENCE AST as a C/C++ declaration.
  *
- * @param ast The #K_POINTER or #K_ANY_REFERENCE AST to print.
+ * @param ast The AST to print.
  * @param type The \ref c_type to use instead of \ref c_ast::type.
  * @param gib The gib_state to use.
  */
@@ -1393,9 +1387,9 @@ static void c_struct_bind_ast_gibberish( c_ast_t const *ast,
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a #K_TYPEDEF AST.
+ * Prints a #K_TYPEDEF AST as a C/C++ declaration.
  *
- * @param ast The #K_TYPEDEF AST to print.
+ * @param ast The AST to print.
  * @param type The \ref c_type to use instead of \ref c_ast::type.
  * @param gib The gib_state to use.
  */
