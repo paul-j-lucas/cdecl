@@ -383,12 +383,15 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         //
         FPRINTF( gib->fout, " %s", c_tid_gibberish( msc_call_atids ) );
       }
+
       if ( false_set( &gib->is_postfix ) ) {
         if ( (gib->gib_flags & (C_GIB_PRINT_CAST | C_GIB_USING)) == 0 )
           gib_print_space_once( gib );
         c_ast_postfix_gibberish( ast, gib );
       }
+
       fputsp_s( c_tid_gibberish( cv_qual_stids ), gib->fout );
+
       if ( ref_qual_stids != TS_NONE ) {
         FPRINTF( gib->fout, " %s",
           other_token_c(
@@ -396,6 +399,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
           )
         );
       }
+
       if ( is_noexcept )
         FPUTS( " noexcept", gib->fout );
       else if ( is_throw )
@@ -404,6 +408,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         FPUTS( " override", gib->fout );
       else if ( is_final )
         FPUTS( " final", gib->fout );
+
       if ( is_trailing_ret ) {
         FPUTS( " -> ", gib->fout );
         //
@@ -418,6 +423,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_gibberish_impl( ret_ast, &child_gib );
         ret_ast->parent_ast = orig_ret_ast_parent_ast;
       }
+
       if ( is_pure_virtual )
         FPUTS( " = 0", gib->fout );
       else if ( is_default )
