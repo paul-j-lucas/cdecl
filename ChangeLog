@@ -1,5 +1,11 @@
 2024-08-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * english.c: Factored out c_ast_alignas_english().
+   * english.c: Refactoring.
+   * english.c: Factored out c_array_ast_english().
+   * c_ast_check.c, english.c, gibberish.c: More consistent handline of
+     K_PLACEHOLDER.
+   * gibberish.c: Factored out c_ast_alignas_gibberish().
    * gibberish.c: Factored out c_ecsu_ast_gibberish().
    * gibberish.c: Factored out c_builtint_ast_gibberish().
    * gibberish.c: Factored out c_concept_ast_gibberish().
