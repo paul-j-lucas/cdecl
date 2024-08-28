@@ -1,3 +1,8 @@
+2024-08-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Factored out check_options().
+   * c_type.c: Eliminated hard-coding of CPP_MIN(23).
+
 2024-08-27  Paul J. Lucas <paul@lucasmail.org>
 
    * english.c: Factored out c_ast_alignas_english().
