@@ -112,6 +112,7 @@ static void c_array_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
   assert( eng != NULL );
 
   c_type_name_nobase_english( &ast->type, eng->fout );
+
   switch ( ast->array.kind ) {
     case C_ARRAY_SIZE_NAME:
       //
@@ -150,6 +151,7 @@ static void c_array_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
     case C_ARRAY_SIZE_INT:
       break;
   } // switch
+
   FPUTS( "array ", eng->fout );
   switch ( ast->array.kind ) {
     case C_ARRAY_SIZE_INT:
