@@ -1289,9 +1289,9 @@ static void c_typedef_ast_gibberish( c_ast_t const *ast, c_type_t const *type,
       FPUTS( c_type_gibberish( type ), gib->fout );
 
     //
-    // Special case: C++23 adds an _Atomic(T) macro for compatibility with
-    // C11, but while _Atomic can be printed without () in C, they're
-    // required in C++:
+    // Special case: C++23 adds an _Atomic(T) macro for compatibility with C11,
+    // but while _Atomic can be printed without () in C, they're required in
+    // C++:
     //
     //      _Atomic size_t x;       // C11 only
     //      _Atomic(size_t) y;      // C11 or C++23
@@ -1309,9 +1309,9 @@ static void c_typedef_ast_gibberish( c_ast_t const *ast, c_type_t const *type,
       FPUTC( ' ', gib->fout );
 
     //
-    // Temporarily turn off C_GIB_USING to force printing of the type's
-    // name.  This is necessary for when printing the name of a typedef of
-    // a typedef as a "using" declaration:
+    // Temporarily turn off C_GIB_USING to force printing of the type's name.
+    // This is necessary for when printing the name of a typedef of a typedef
+    // as a "using" declaration:
     //
     //      c++decl> typedef int32_t foo_t
     //      c++decl> show foo_t as using
