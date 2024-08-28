@@ -63,7 +63,8 @@ typedef struct eng_state eng_state_t;
 
 // local functions
 NODISCARD
-static bool c_ast_visitor_english( c_ast_t const*, user_data_t );
+static bool c_ast_is_likely_vla( c_ast_t const*, eng_state_t const* ),
+            c_ast_visitor_english( c_ast_t const*, user_data_t );
 
 static void c_builtin_ast_english( c_ast_t const*, eng_state_t const* );
 static void c_cast_ast_english( c_ast_t const*, eng_state_t const* );
@@ -113,46 +114,10 @@ static void c_array_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
 
   c_type_name_nobase_english( &ast->type, eng->fout );
 
-  switch ( ast->array.kind ) {
-    case C_ARRAY_SIZE_NAME:
-      //
-      // Just because an array has a named size doesn't mean it's a VLA.
-      //
-      if ( eng->func_ast == NULL ) {
-        //
-        // Named size is presumably some previously declared name, e.g.:
-        //
-        //      int a[n]                // not necessarily a VLA
-        //      int a[const n]          // not necessarily a VLA
-        //
-        break;
-      }
-      if ( !c_ast_find_param_named( eng->func_ast, ast->array.size_name,
-                                    ast ) ) {
-        //
-        // Named size doesn't equal any previous parameter's name, e.g.:
-        //
-        //      void f(int n, int a[x]) // not necessarily a VLA
-        //
-        break;
-      }
-      //
-      // Named size equals a previous parameter's name, e.g.:
-      //
-      //      void f(int n, int a[n])  // definitely a VLA
-      //
-      FALLTHROUGH;
-
-    case C_ARRAY_SIZE_VLA:
-      FPUTS( "variable length ", eng->fout );
-      break;
-
-    case C_ARRAY_SIZE_NONE:
-    case C_ARRAY_SIZE_INT:
-      break;
-  } // switch
-
+  if ( c_ast_is_likely_vla( ast, eng ) )
+    FPUTS( "variable length ", eng->fout );
   FPUTS( "array ", eng->fout );
+
   switch ( ast->array.kind ) {
     case C_ARRAY_SIZE_INT:
       FPRINTF( eng->fout, "%u ", ast->array.size_int );
@@ -268,6 +233,60 @@ static void c_ast_func_params_english( c_ast_t const *ast,
   } // for
 
   FPUTC( ')', eng->fout );
+}
+
+/**
+ * Gets whether \a ast is likely a VLA.
+ *
+ * @param ast The AST to check.
+ * @param eng The eng_state to use.
+ * @return Returns `true` only if \a ast is likely a VLA.
+ */
+NODISCARD
+static bool c_ast_is_likely_vla( c_ast_t const *ast, eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_ARRAY );
+  assert( eng != NULL );
+
+  switch ( ast->array.kind ) {
+    case C_ARRAY_SIZE_NAME:
+      //
+      // Just because an array has a named size doesn't mean it's a VLA.
+      //
+      if ( eng->func_ast == NULL ) {
+        //
+        // Named size is presumably some previously declared name, e.g.:
+        //
+        //      int a[n]                // not necessarily a VLA
+        //      int a[const n]          // not necessarily a VLA
+        //
+        break;
+      }
+      if ( !c_ast_find_param_named( eng->func_ast, ast->array.size_name,
+                                    ast ) ) {
+        //
+        // Named size doesn't equal any previous parameter's name, e.g.:
+        //
+        //      void f(int n, int a[x]) // not necessarily a VLA
+        //
+        break;
+      }
+      //
+      // Named size equals a previous parameter's name, e.g.:
+      //
+      //      void f(int n, int a[n])  // definitely a VLA
+      //
+      FALLTHROUGH;
+
+    case C_ARRAY_SIZE_VLA:
+      return true;
+
+    case C_ARRAY_SIZE_NONE:
+    case C_ARRAY_SIZE_INT:
+      break;
+  } // switch
+
+  return false;
 }
 
 /**
