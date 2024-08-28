@@ -286,6 +286,57 @@ static void check_opt_mutually_exclusive( char opt, char const *opts ) {
 }
 
 /**
+ * Chekcs option combinations for semantic errors.
+ */
+static void check_options( void ) {
+  check_opt_exclusive( COPT(HELP) );
+  check_opt_exclusive( COPT(VERSION) );
+
+  check_opt_mutually_exclusive( COPT(COMMANDS),
+    SOPT(ALT_TOKENS)
+    SOPT(COLOR)
+    SOPT(DIGRAPHS)
+    SOPT(EAST_CONST)
+    SOPT(EXPLICIT_ECSU)
+    SOPT(EXPLICIT_INT)
+    SOPT(FILE)
+    SOPT(INFER_COMMAND)
+    SOPT(NO_ENGLISH_TYPES)
+    SOPT(NO_PROMPT)
+    SOPT(NO_SEMICOLON)
+    SOPT(NO_TYPEDEFS)
+    SOPT(NO_USING)
+    SOPT(OPTIONS)
+    SOPT(TRAILING_RETURN)
+    SOPT(TRIGRAPHS)
+    SOPT(WEST_DECL)
+  );
+
+  check_opt_mutually_exclusive( COPT(OPTIONS),
+    SOPT(ALT_TOKENS)
+    SOPT(COLOR)
+    SOPT(COMMANDS)
+    SOPT(DIGRAPHS)
+    SOPT(EAST_CONST)
+    SOPT(EXPLICIT_ECSU)
+    SOPT(EXPLICIT_INT)
+    SOPT(FILE)
+    SOPT(INFER_COMMAND)
+    SOPT(NO_ENGLISH_TYPES)
+    SOPT(NO_PROMPT)
+    SOPT(NO_SEMICOLON)
+    SOPT(NO_TYPEDEFS)
+    SOPT(NO_USING)
+    SOPT(TRAILING_RETURN)
+    SOPT(TRIGRAPHS)
+    SOPT(WEST_DECL)
+  );
+
+  check_opt_mutually_exclusive( COPT(DIGRAPHS), SOPT(TRIGRAPHS) );
+  check_opt_mutually_exclusive( COPT(FILE), SOPT(LINENO) );
+}
+
+/**
  * Formats an option as `[--%%s/]-%%c` where `%%s` is the long option (if any)
  * and `%%c` is the short option.
  *
@@ -625,51 +676,7 @@ static void parse_options( int *const pargc, char const *const *pargv[const] ) {
   *pargc -= optind;
   *pargv += optind;
 
-  check_opt_exclusive( COPT(HELP) );
-  check_opt_exclusive( COPT(VERSION) );
-
-  check_opt_mutually_exclusive( COPT(COMMANDS),
-    SOPT(ALT_TOKENS)
-    SOPT(COLOR)
-    SOPT(DIGRAPHS)
-    SOPT(EAST_CONST)
-    SOPT(EXPLICIT_ECSU)
-    SOPT(EXPLICIT_INT)
-    SOPT(FILE)
-    SOPT(INFER_COMMAND)
-    SOPT(NO_ENGLISH_TYPES)
-    SOPT(NO_PROMPT)
-    SOPT(NO_SEMICOLON)
-    SOPT(NO_TYPEDEFS)
-    SOPT(NO_USING)
-    SOPT(OPTIONS)
-    SOPT(TRAILING_RETURN)
-    SOPT(TRIGRAPHS)
-    SOPT(WEST_DECL)
-  );
-
-  check_opt_mutually_exclusive( COPT(OPTIONS),
-    SOPT(ALT_TOKENS)
-    SOPT(COLOR)
-    SOPT(COMMANDS)
-    SOPT(DIGRAPHS)
-    SOPT(EAST_CONST)
-    SOPT(EXPLICIT_ECSU)
-    SOPT(EXPLICIT_INT)
-    SOPT(FILE)
-    SOPT(INFER_COMMAND)
-    SOPT(NO_ENGLISH_TYPES)
-    SOPT(NO_PROMPT)
-    SOPT(NO_SEMICOLON)
-    SOPT(NO_TYPEDEFS)
-    SOPT(NO_USING)
-    SOPT(TRAILING_RETURN)
-    SOPT(TRIGRAPHS)
-    SOPT(WEST_DECL)
-  );
-
-  check_opt_mutually_exclusive( COPT(DIGRAPHS), SOPT(TRIGRAPHS) );
-  check_opt_mutually_exclusive( COPT(FILE), SOPT(LINENO) );
+  check_options();
 
   if ( strcmp( opt_file, "-" ) != 0 && !freopen( opt_file, "r", stdin ) )
     fatal_error( EX_NOINPUT, "\"%s\": %s\n", opt_file, STRERROR() );
