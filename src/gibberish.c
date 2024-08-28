@@ -74,6 +74,8 @@ static void c_ast_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_postfix_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_qual_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_space_name_gibberish( c_ast_t const*, gib_state_t* );
+static void c_builtint_ast_gibberish( c_ast_t const*, c_type_t const*,
+                                      gib_state_t* );
 static void c_capture_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_cast_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_concept_ast_gibberish( c_ast_t const*, c_type_t*, gib_state_t* );
@@ -397,13 +399,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_BUILTIN:
-      if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 ) {
-        FPUTS( c_type_gibberish( &type ), gib->fout );
-        if ( c_ast_is_tid_any( ast, TB__BitInt ) )
-          FPRINTF( gib->fout, "(%u)", ast->builtin.BitInt.width );
-      }
-      c_ast_space_name_gibberish( ast, gib );
-      c_ast_bit_width_gibberish( ast, gib );
+      c_builtint_ast_gibberish( ast, &type, gib );
       break;
 
     case K_CAPTURE:
@@ -1023,6 +1019,29 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_PLACEHOLDER:
       UNEXPECTED_INT_VALUE( ast->kind );
   } // switch
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a #K_BUILTIN AST.
+ *
+ * @param ast The #K_BUILTIN AST to print.
+ * @param type The \ref c_type to use instead of \ref c_ast::type.
+ * @param gib The gib_state to use.
+ */
+static void c_builtint_ast_gibberish( c_ast_t const *ast, c_type_t const *type,
+                                      gib_state_t *gib ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_BUILTIN );
+  assert( type != NULL );
+  assert( gib != NULL );
+
+  if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 ) {
+    FPUTS( c_type_gibberish( type ), gib->fout );
+    if ( c_ast_is_tid_any( ast, TB__BitInt ) )
+      FPRINTF( gib->fout, "(%u)", ast->builtin.BitInt.width );
+  }
+  c_ast_space_name_gibberish( ast, gib );
+  c_ast_bit_width_gibberish( ast, gib );
 }
 
 /**
