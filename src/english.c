@@ -65,8 +65,21 @@ typedef struct eng_state eng_state_t;
 NODISCARD
 static bool c_ast_visitor_english( c_ast_t const*, user_data_t );
 
+static void c_builtin_ast_english( c_ast_t const*, eng_state_t const* );
+static void c_cast_ast_english( c_ast_t const*, eng_state_t const* );
+static void c_concept_ast_english( c_ast_t const*, eng_state_t const* );
+static void c_csu_ast_english( c_ast_t const*, eng_state_t const* );
+static void c_enum_ast_english( c_ast_t const*, eng_state_t const* );
+static void c_func_like_ast_english( c_ast_t const*, eng_state_t const* );
+static void c_lambda_ast_english( c_ast_t const*, eng_state_t const* );
+static void c_name_ast_english( c_ast_t const*, eng_state_t const* );
+static void c_ptr_mbr_ast_english( c_ast_t const*, eng_state_t const* );
+static void c_ptr_ref_ast_english( c_ast_t const*, eng_state_t const* );
 static void c_sname_english( c_sname_t const*, FILE* );
+static void c_struct_bind_ast_english( c_ast_t const*, eng_state_t const* );
 static void c_type_name_nobase_english( c_type_t const*, FILE* );
+static void c_typedef_ast_english( c_ast_t const*, eng_state_t const* );
+static void c_udef_conv_ast_english( c_ast_t const*, eng_state_t const* );
 static void eng_init( eng_state_t*, FILE* );
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -90,11 +103,12 @@ static inline void c_ast_visit_english( c_ast_t const *ast,
 /**
  * Prints a #K_ARRAY \ast as pseudo-English.
  *
- * @param ast The #K_ARRAY AST to print.
+ * @param ast The AST to print.
  * @param eng The eng_state to use.
  */
 static void c_array_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
   assert( ast != NULL );
+  assert( ast->kind == K_ARRAY );
   assert( eng != NULL );
 
   c_type_name_nobase_english( &ast->type, eng->fout );
@@ -331,51 +345,11 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_UDEF_LIT:
-      c_type_name_nobase_english( &ast->type, eng->fout );
-      switch ( ast->kind ) {
-        case K_FUNCTION:
-          if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
-            FPUTS( "member ", eng->fout );
-          break;
-        case K_OPERATOR:
-          NO_OP;
-          c_func_member_t const op_mbr = c_ast_op_overload( ast );
-          char const *const op_literal =
-            op_mbr == C_FUNC_MEMBER     ? "member "     :
-            op_mbr == C_FUNC_NON_MEMBER ? "non-member " :
-            "";
-          FPUTS( op_literal, eng->fout );
-          break;
-        default:
-          /* suppress warning */;
-      } // switch
-
-      FPUTS( c_kind_name( ast->kind ), eng->fout );
-      if ( !slist_empty( &ast->func.param_ast_list ) ) {
-        FPUTC( ' ', eng->fout );
-        c_ast_func_params_english( ast, eng );
-      }
-      if ( ast->func.ret_ast != NULL )
-        FPUTS( " returning ", eng->fout );
+      c_func_like_ast_english( ast, eng );
       break;
 
     case K_BUILTIN:
-      if ( c_ast_root( ast )->is_param_pack ) {
-        //
-        // Special case: if the root AST is a parameter pack, print that
-        // instead of this AST's type.
-        //
-        c_type_t type = ast->type;
-        assert( type.btids == TB_auto );
-        type.btids = TB_NONE;
-        fputs_sp( c_type_english( &type ), eng->fout );
-        FPUTS( "parameter pack", eng->fout );
-      } else {
-        FPUTS( c_type_english( &ast->type ), eng->fout );
-        if ( c_ast_is_tid_any( ast, TB__BitInt ) )
-          FPRINTF( eng->fout, " width %u bits", ast->builtin.BitInt.width );
-        c_ast_bit_width_english( ast, eng->fout );
-      }
+      c_builtin_ast_english( ast, eng );
       break;
 
     case K_CAPTURE:
@@ -384,118 +358,49 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       UNEXPECTED_INT_VALUE( ast->kind );
 
     case K_CAST:
-      if ( ast->cast.kind != C_CAST_C )
-        FPRINTF( eng->fout, "%s ", c_cast_english( ast->cast.kind ) );
-      FPUTS( L_cast, eng->fout );
-      if ( !c_sname_empty( &ast->sname ) ) {
-        FPUTC( ' ', eng->fout );
-        c_sname_english( &ast->sname, eng->fout );
-      }
-      FPUTS( " into ", eng->fout );
+      c_cast_ast_english( ast, eng );
       break;
 
     case K_CLASS_STRUCT_UNION:
-      FPRINTF( eng->fout, "%s ", c_type_english( &ast->type ) );
-      c_sname_english( &ast->csu.csu_sname, eng->fout );
+      c_csu_ast_english( ast, eng );
       break;
 
     case K_CONCEPT:
-      fputs_sp( c_type_english( &ast->type ), eng->fout );
-      FPUTS( "concept ", eng->fout );
-      c_sname_english( &ast->concept.concept_sname, eng->fout );
-      if ( c_ast_root( ast )->is_param_pack )
-        FPUTS( " parameter pack", eng->fout );
+      c_concept_ast_english( ast, eng );
       break;
 
     case K_ENUM:
-      FPRINTF( eng->fout, "%s ", c_type_english( &ast->type ) );
-      c_sname_english( &ast->enum_.enum_sname, eng->fout );
-      if ( ast->enum_.of_ast != NULL )
-        FPUTS( " of type ", eng->fout );
-      else
-        c_ast_bit_width_english( ast, eng->fout );
+      c_enum_ast_english( ast, eng );
       break;
 
     case K_LAMBDA:
-      if ( !c_type_is_none( &ast->type ) )
-        FPRINTF( eng->fout, "%s ", c_type_english( &ast->type ) );
-      FPUTS( L_lambda, eng->fout );
-      if ( !slist_empty( &ast->lambda.capture_ast_list ) ) {
-        FPUTS( " capturing ", eng->fout );
-        c_ast_lambda_captures_english( ast, eng->fout );
-      }
-      if ( !slist_empty( &ast->lambda.param_ast_list ) ) {
-        FPUTC( ' ', eng->fout );
-        c_ast_func_params_english( ast, eng );
-      }
-      if ( ast->lambda.ret_ast != NULL )
-        FPUTS( " returning ", eng->fout );
+      c_lambda_ast_english( ast, eng );
       break;
 
     case K_NAME:
-      if ( !opt_permissive_types && OPT_LANG_IS( PROTOTYPES ) &&
-           ast->param_of_ast != NULL ) {
-        //
-        // A name can occur as an untyped K&R C function parameter.  In
-        // C89-C17, it's implicitly int:
-        //
-        //      cdecl> explain char f(x)
-        //      declare f as function (x as integer) returning char
-        //
-        FPUTS( c_tid_english( TB_int ), eng->fout );
-      }
-      else {
-        c_sname_english( &ast->name.sname, eng->fout );
-      }
+      c_name_ast_english( ast, eng );
       break;
 
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      c_type_name_nobase_english( &ast->type, eng->fout );
-      FPRINTF( eng->fout, "%s to ", c_kind_name( ast->kind ) );
+      c_ptr_ref_ast_english( ast, eng );
       break;
 
     case K_POINTER_TO_MEMBER:
-      c_type_name_nobase_english( &ast->type, eng->fout );
-      FPRINTF( eng->fout, "%s of ", c_kind_name( ast->kind ) );
-      fputs_sp( c_tid_english( ast->type.btids ), eng->fout );
-      c_sname_english( &ast->ptr_mbr.class_sname, eng->fout );
-      FPUTC( ' ', eng->fout );
+      c_ptr_mbr_ast_english( ast, eng );
       break;
 
     case K_STRUCTURED_BINDING:
-      fputs_sp( c_tid_english( ast->type.stids ), eng->fout );
-      if ( c_tid_is_any( ast->type.stids, TS_ANY_REFERENCE ) )
-        FPUTS( "to ", eng->fout );
-      FPUTS( c_kind_name( ast->kind ), eng->fout );
+      c_struct_bind_ast_english( ast, eng );
       break;
 
     case K_TYPEDEF:
-      NO_OP;
-      c_type_t type = ast->type;
-      bool print_type = type.atids != TA_NONE || type.stids != TS_NONE;
-      c_ast_t const *const raw_ast = c_ast_untypedef( ast );
-      if ( c_tid_is_any( raw_ast->type.btids, opt_explicit_ecsu_btids ) ) {
-        type.btids = raw_ast->type.btids;
-        print_type = true;
-      }
-      if ( print_type )
-        FPRINTF( eng->fout, "%s ", c_type_english( &type ) );
-      c_sname_english( &ast->tdef.for_ast->sname, eng->fout );
-      c_ast_bit_width_english( ast, eng->fout );
+      c_typedef_ast_english( ast, eng );
       break;
 
     case K_UDEF_CONV:
-      fputs_sp( c_type_english( &ast->type ), eng->fout );
-      FPUTS( c_kind_name( ast->kind ), eng->fout );
-      if ( !c_sname_empty( &ast->sname ) ) {
-        FPRINTF( eng->fout,
-          " of %s ", c_type_english( c_sname_local_type( &ast->sname ) )
-        );
-        c_sname_english( &ast->sname, eng->fout );
-      }
-      FPUTS( " returning ", eng->fout );
+      c_udef_conv_ast_english( ast, eng );
       break;
 
     case K_VARIADIC:
@@ -507,6 +412,241 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
   } // switch
 
   return /*stop=*/false;
+}
+
+/**
+ * Prints a #K_BUILTIN \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_builtin_ast_english( c_ast_t const *ast,
+                                   eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_BUILTIN );
+  assert( eng != NULL );
+
+  if ( c_ast_root( ast )->is_param_pack ) {
+    //
+    // Special case: if the root AST is a parameter pack, print that instead of
+    // this AST's type.
+    //
+    c_type_t type = ast->type;
+    assert( type.btids == TB_auto );
+    type.btids = TB_NONE;
+    fputs_sp( c_type_english( &type ), eng->fout );
+    FPUTS( "parameter pack", eng->fout );
+  }
+  else {
+    FPUTS( c_type_english( &ast->type ), eng->fout );
+    if ( c_ast_is_tid_any( ast, TB__BitInt ) )
+      FPRINTF( eng->fout, " width %u bits", ast->builtin.BitInt.width );
+    c_ast_bit_width_english( ast, eng->fout );
+  }
+}
+
+/**
+ * Prints a #K_CAST \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_cast_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_CAST );
+  assert( eng != NULL );
+
+  if ( ast->cast.kind != C_CAST_C )
+    FPRINTF( eng->fout, "%s ", c_cast_english( ast->cast.kind ) );
+  FPUTS( L_cast, eng->fout );
+  if ( !c_sname_empty( &ast->sname ) ) {
+    FPUTC( ' ', eng->fout );
+    c_sname_english( &ast->sname, eng->fout );
+  }
+  FPUTS( " into ", eng->fout );
+}
+
+/**
+ * Prints a #K_CONCEPT \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_concept_ast_english( c_ast_t const *ast,
+                                   eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_CONCEPT );
+  assert( eng != NULL );
+
+  fputs_sp( c_type_english( &ast->type ), eng->fout );
+  FPUTS( "concept ", eng->fout );
+  c_sname_english( &ast->concept.concept_sname, eng->fout );
+  if ( c_ast_root( ast )->is_param_pack )
+    FPUTS( " parameter pack", eng->fout );
+}
+
+/**
+ * Prints a #K_CLASS_STRUCT_UNION \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_csu_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_CLASS_STRUCT_UNION );
+  assert( eng != NULL );
+
+  FPRINTF( eng->fout, "%s ", c_type_english( &ast->type ) );
+  c_sname_english( &ast->csu.csu_sname, eng->fout );
+}
+
+/**
+ * Prints a #K_ENUM \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_enum_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_ENUM );
+  assert( eng != NULL );
+
+  FPRINTF( eng->fout, "%s ", c_type_english( &ast->type ) );
+  c_sname_english( &ast->enum_.enum_sname, eng->fout );
+  if ( ast->enum_.of_ast != NULL )
+    FPUTS( " of type ", eng->fout );
+  else
+    c_ast_bit_width_english( ast, eng->fout );
+}
+
+/**
+ * Prints a #K_APPLE_BLOCK, #K_CONSTRUCTOR, #K_DESTRUCTOR, #K_FUNCTION,
+ * #K_OPERATOR, or #K_UDEF_LIT \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_func_like_ast_english( c_ast_t const *ast,
+                                     eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( (ast->kind & (K_APPLE_BLOCK | K_CONSTRUCTOR | K_DESTRUCTOR |
+                        K_FUNCTION | K_OPERATOR | K_UDEF_LIT)) != 0 );
+  assert( eng != NULL );
+
+  c_type_name_nobase_english( &ast->type, eng->fout );
+  switch ( ast->kind ) {
+    case K_FUNCTION:
+      if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
+        FPUTS( "member ", eng->fout );
+      break;
+    case K_OPERATOR:
+      NO_OP;
+      c_func_member_t const op_mbr = c_ast_op_overload( ast );
+      char const *const op_literal =
+        op_mbr == C_FUNC_MEMBER     ? "member "     :
+        op_mbr == C_FUNC_NON_MEMBER ? "non-member " :
+        "";
+      FPUTS( op_literal, eng->fout );
+      break;
+    default:
+      /* suppress warning */;
+  } // switch
+
+  FPUTS( c_kind_name( ast->kind ), eng->fout );
+  if ( !slist_empty( &ast->func.param_ast_list ) ) {
+    FPUTC( ' ', eng->fout );
+    c_ast_func_params_english( ast, eng );
+  }
+  if ( ast->func.ret_ast != NULL )
+    FPUTS( " returning ", eng->fout );
+}
+
+/**
+ * Prints a #K_NAME \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_name_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_NAME );
+  assert( eng != NULL );
+
+  if ( !opt_permissive_types && OPT_LANG_IS( PROTOTYPES ) &&
+        ast->param_of_ast != NULL ) {
+    //
+    // A name can occur as an untyped K&R C function parameter.  In C89-C17,
+    // it's implicitly int:
+    //
+    //      cdecl> explain char f(x)
+    //      declare f as function (x as integer) returning char
+    //
+    FPUTS( c_tid_english( TB_int ), eng->fout );
+  }
+  else {
+    c_sname_english( &ast->name.sname, eng->fout );
+  }
+}
+
+/**
+ * Prints a #K_LAMBDA \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_lambda_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_LAMBDA );
+  assert( eng != NULL );
+
+  if ( !c_type_is_none( &ast->type ) )
+    FPRINTF( eng->fout, "%s ", c_type_english( &ast->type ) );
+  FPUTS( L_lambda, eng->fout );
+  if ( !slist_empty( &ast->lambda.capture_ast_list ) ) {
+    FPUTS( " capturing ", eng->fout );
+    c_ast_lambda_captures_english( ast, eng->fout );
+  }
+  if ( !slist_empty( &ast->lambda.param_ast_list ) ) {
+    FPUTC( ' ', eng->fout );
+    c_ast_func_params_english( ast, eng );
+  }
+  if ( ast->lambda.ret_ast != NULL )
+    FPUTS( " returning ", eng->fout );
+}
+
+/**
+ * Prints a #K_POINTER_TO_MEMBER \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_ptr_mbr_ast_english( c_ast_t const *ast,
+                                   eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_POINTER_TO_MEMBER );
+  assert( eng != NULL );
+
+  c_type_name_nobase_english( &ast->type, eng->fout );
+  FPRINTF( eng->fout, "%s of ", c_kind_name( ast->kind ) );
+  fputs_sp( c_tid_english( ast->type.btids ), eng->fout );
+  c_sname_english( &ast->ptr_mbr.class_sname, eng->fout );
+  FPUTC( ' ', eng->fout );
+}
+
+/**
+ * Prints a #K_POINTER or #K_ANY_REFERENCE \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_ptr_ref_ast_english( c_ast_t const *ast,
+                                   eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( (ast->kind & (K_POINTER | K_ANY_REFERENCE)) != 0 );
+  assert( eng != NULL );
+
+  c_type_name_nobase_english( &ast->type, eng->fout );
+  FPRINTF( eng->fout, "%s to ", c_kind_name( ast->kind ) );
 }
 
 /**
@@ -549,6 +689,24 @@ static void c_sname_english( c_sname_t const *sname, FILE *fout ) {
 }
 
 /**
+ * Prints a #K_STRUCTURED_BINDING \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_struct_bind_ast_english( c_ast_t const *ast,
+                                       eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_STRUCTURED_BINDING );
+  assert( eng != NULL );
+
+  fputs_sp( c_tid_english( ast->type.stids ), eng->fout );
+  if ( c_tid_is_any( ast->type.stids, TS_ANY_REFERENCE ) )
+    FPUTS( "to ", eng->fout );
+  FPUTS( c_kind_name( ast->kind ), eng->fout );
+}
+
+/**
  * Prints the non-base (attribute(s), storage class, qualifier(s), etc.) parts
  * of \a type, if any.
  *
@@ -561,6 +719,54 @@ static void c_type_name_nobase_english( c_type_t const *type, FILE *fout ) {
 
   c_type_t const nobase_type = { TB_NONE, type->stids, type->atids };
   fputs_sp( c_type_english( &nobase_type ), fout );
+}
+
+/**
+ * Prints a #K_TYPEDEF \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_typedef_ast_english( c_ast_t const *ast,
+                                   eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_TYPEDEF );
+  assert( eng != NULL );
+
+  c_type_t type = ast->type;
+  bool print_type = type.atids != TA_NONE || type.stids != TS_NONE;
+  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+  if ( c_tid_is_any( raw_ast->type.btids, opt_explicit_ecsu_btids ) ) {
+    type.btids = raw_ast->type.btids;
+    print_type = true;
+  }
+  if ( print_type )
+    FPRINTF( eng->fout, "%s ", c_type_english( &type ) );
+  c_sname_english( &ast->tdef.for_ast->sname, eng->fout );
+  c_ast_bit_width_english( ast, eng->fout );
+}
+
+/**
+ * Prints a #K_UDEF_CONV \ast as pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_udef_conv_ast_english( c_ast_t const *ast,
+                                     eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_UDEF_CONV );
+  assert( eng != NULL );
+
+  fputs_sp( c_type_english( &ast->type ), eng->fout );
+  FPUTS( c_kind_name( ast->kind ), eng->fout );
+  if ( !c_sname_empty( &ast->sname ) ) {
+    FPRINTF( eng->fout,
+      " of %s ", c_type_english( c_sname_local_type( &ast->sname ) )
+    );
+    c_sname_english( &ast->sname, eng->fout );
+  }
+  FPUTS( " returning ", eng->fout );
 }
 
 /**
