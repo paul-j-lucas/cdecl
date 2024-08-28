@@ -168,6 +168,36 @@ static void c_array_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
 }
 
 /**
+ * Prints the alignment of \a ast in pseudo-English.
+ *
+ * @param ast The AST to print the alignment of.
+ * @param eng The eng_state to use.
+ */
+static void c_ast_alignas_english( c_ast_t const *ast,
+                                   eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( eng != NULL );
+
+  switch ( ast->align.kind ) {
+    case C_ALIGNAS_NONE:
+      break;
+    case C_ALIGNAS_BYTES:
+      if ( ast->align.bytes > 0 )
+        FPRINTF( eng->fout, " aligned as %u bytes", ast->align.bytes );
+      break;
+    case C_ALIGNAS_SNAME:
+      FPUTS( " aligned as ", eng->fout );
+      c_sname_english( &ast->align.sname, eng->fout );
+      FPUTS( " bytes", eng->fout );
+      break;
+    case C_ALIGNAS_TYPE:
+      FPUTS( " aligned as ", eng->fout );
+      c_ast_visit_english( ast->align.type_ast, eng );
+      break;
+  } // switch
+}
+
+/**
  * Helper function for c_ast_visitor_english() that prints a bit-field width,
  * if any.
  *
@@ -847,24 +877,7 @@ void c_ast_english( c_ast_t const *ast, decl_flags_t eng_flags, FILE *fout ) {
   eng_state_t eng;
   eng_init( &eng, fout );
   c_ast_visit_english( ast, &eng );
-
-  switch ( ast->align.kind ) {
-    case C_ALIGNAS_NONE:
-      break;
-    case C_ALIGNAS_BYTES:
-      if ( ast->align.bytes > 0 )
-        FPRINTF( fout, " aligned as %u bytes", ast->align.bytes );
-      break;
-    case C_ALIGNAS_SNAME:
-      FPUTS( " aligned as ", fout );
-      c_sname_english( &ast->align.sname, fout );
-      FPUTS( " bytes", fout );
-      break;
-    case C_ALIGNAS_TYPE:
-      FPUTS( " aligned as ", fout );
-      c_ast_visit_english( ast->align.type_ast, &eng );
-      break;
-  } // switch
+  c_ast_alignas_english( ast, &eng );
 }
 
 void c_ast_list_english( c_ast_list_t const *ast_list, FILE *fout ) {
