@@ -179,6 +179,35 @@ static char const* alt_token_c( char const *token ) {
 }
 
 /**
+ * Prints the alignment of \a ast in C/C++.
+ *
+ * @param ast The AST to print the alignment of.
+ * @param file The `FILE` to print to.
+ */
+static void c_ast_alignas_gibberish( c_ast_t const *ast, FILE *fout ) {
+  assert( ast != NULL );
+  assert( fout != NULL );
+
+  switch ( ast->align.kind ) {
+    case C_ALIGNAS_NONE:
+      break;
+    case C_ALIGNAS_BYTES:
+      FPRINTF( fout, "%s(%u) ", alignas_name(), ast->align.bytes );
+      break;
+    case C_ALIGNAS_SNAME:
+      FPRINTF( fout,
+        "%s(%s) ", alignas_name(), c_sname_gibberish( &ast->align.sname )
+      );
+      break;
+    case C_ALIGNAS_TYPE:
+      FPRINTF( fout, "%s(", alignas_name() );
+      c_ast_gibberish( ast->align.type_ast, C_GIB_PRINT_DECL, fout );
+      FPUTS( ") ", fout );
+      break;
+  } // switch
+}
+
+/**
  * Helper function for c_ast_gibberish_impl() that prints an array's size.
  *
  * @param ast The AST that is a #K_ARRAY whose size to print.
@@ -1548,23 +1577,7 @@ void c_ast_gibberish( c_ast_t const *ast, decl_flags_t gib_flags, FILE *fout ) {
       //
       // print the alignment (and "int") only for "i" and not again for "j".
       //
-      switch ( ast->align.kind ) {
-        case C_ALIGNAS_NONE:
-          break;
-        case C_ALIGNAS_BYTES:
-          FPRINTF( fout, "%s(%u) ", alignas_name(), ast->align.bytes );
-          break;
-        case C_ALIGNAS_SNAME:
-          FPRINTF( fout,
-            "%s(%s) ", alignas_name(), c_sname_gibberish( &ast->align.sname )
-          );
-          break;
-        case C_ALIGNAS_TYPE:
-          FPRINTF( fout, "%s(", alignas_name() );
-          c_ast_gibberish( ast->align.type_ast, C_GIB_PRINT_DECL, fout );
-          FPUTS( ") ", fout );
-          break;
-      } // switch
+      c_ast_alignas_gibberish( ast, fout );
     }
 
     gib_state_t gib;
