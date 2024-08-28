@@ -74,8 +74,8 @@ static void c_ast_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_postfix_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_qual_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_space_name_gibberish( c_ast_t const*, gib_state_t* );
-static void c_builtint_ast_gibberish( c_ast_t const*, c_type_t const*,
-                                      gib_state_t* );
+static void c_builtin_ast_gibberish( c_ast_t const*, c_type_t const*,
+                                     gib_state_t* );
 static void c_capture_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_cast_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_concept_ast_gibberish( c_ast_t const*, c_type_t*, gib_state_t* );
@@ -399,7 +399,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_BUILTIN:
-      c_builtint_ast_gibberish( ast, &type, gib );
+      c_builtin_ast_gibberish( ast, &type, gib );
       break;
 
     case K_CAPTURE:
@@ -1028,7 +1028,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
  * @param type The \ref c_type to use instead of \ref c_ast::type.
  * @param gib The gib_state to use.
  */
-static void c_builtint_ast_gibberish( c_ast_t const *ast, c_type_t const *type,
+static void c_builtin_ast_gibberish( c_ast_t const *ast, c_type_t const *type,
                                       gib_state_t *gib ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
