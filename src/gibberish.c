@@ -79,6 +79,7 @@ static void c_builtin_ast_gibberish( c_ast_t const*, c_type_t const*,
 static void c_capture_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_cast_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_concept_ast_gibberish( c_ast_t const*, c_type_t*, gib_state_t* );
+static void c_ecsu_ast_gibberish( c_ast_t const*, c_type_t*, gib_state_t* );
 static void c_lambda_ast_gibberish( c_ast_t const*, c_type_t const*,
                                     gib_state_t* );
 static void c_name_ast_gibberish( c_ast_t const*, gib_state_t* );
@@ -255,7 +256,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
   bool    is_default      = false;
   bool    is_delete       = false;
   bool    is_final        = false;
-  bool    is_fixed_enum   = false;
   bool    is_noexcept     = false;
   bool    is_override     = false;
   bool    is_pure_virtual = false;
@@ -411,7 +411,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_ENUM:
-      is_fixed_enum = ast->enum_.of_ast != NULL;
       //
       // Special case: an enum class must be written as just "enum" when doing
       // an elaborated-type-specifier:
@@ -423,79 +422,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       FALLTHROUGH;
 
     case K_CLASS_STRUCT_UNION:
-      if ( opt_east_const ) {
-        cv_qual_stids = type.stids & TS_CV;
-        type.stids &= c_tid_compl( TS_CV );
-      }
-
-      char const *const type_name =
-        (gib->gib_flags & (C_GIB_PRINT_CAST | C_GIB_PRINT_DECL)) != 0 &&
-        //
-        // Special case: a fixed type enum must always have "enum" printed, so
-        // we don't call c_type_name_ecsu() that may omit it by applying
-        // opt_explicit_ecsu_btids.
-        //
-        !is_fixed_enum ?
-          c_type_name_ecsu( &type ) :
-          c_type_gibberish( &type );
-
-      FPUTS( type_name, gib->fout );
-
-      if ( (gib->gib_flags & C_GIB_TYPEDEF) == 0 || gib->printed_typedef ) {
-        //
-        // For enum, class, struct, or union (ECSU) types, we need to print the
-        // ECSU name when either:
-        //
-        //  + The AST is not a typedef, e.g.:
-        //
-        //          cdecl> declare x as struct S
-        //          struct S x;         // ast->sname = "x"; escu_name = "S"
-        //
-        //    (See the printed_typedef comment in c_typedef_gibberish() first.)
-        //    Or:
-        //
-        //  + We're printing an ECSU type in C only, e.g.:
-        //
-        //          typedef struct S T; // ast->sname ="T"; escu_name = "S"
-        //
-        FPRINTF( gib->fout,
-          "%s%s",
-          type_name[0] != '\0' ? " " : "",
-          c_sname_gibberish( &ast->csu.csu_sname )
-        );
-      }
-
-      bool printed_name = false;
-
-      if ( is_fixed_enum ) {
-        if ( (gib->gib_flags & C_GIB_TYPEDEF) != 0 ) {
-          //
-          // Special case: a fixed type enum needs to have its underlying type
-          // printed before east-const qualifiers (if any); but, if it's a type
-          // declaration, then we also need to print its name before the
-          // qualifiers:
-          //
-          //      c++decl> define E as enum E of type int
-          //      c++decl> show typedef
-          //      enum E : int;
-          //
-          // But if we print its name now, we can't print it again later, so
-          // set a flag.
-          //
-          c_ast_space_name_gibberish( ast, gib );
-          printed_name = true;
-        }
-        FPUTS( " : ", gib->fout );
-        c_ast_gibberish_impl( ast->enum_.of_ast, gib );
-      }
-
-      fputsp_s( c_tid_gibberish( cv_qual_stids ), gib->fout );
-
-      if ( !printed_name )
-        c_ast_space_name_gibberish( ast, gib );
-
-      if ( ast->kind == K_ENUM )
-        c_ast_bit_width_gibberish( ast, gib );
+      c_ecsu_ast_gibberish( ast, &type, gib );
       break;
 
     case K_CONCEPT:
@@ -1132,6 +1059,97 @@ static void c_concept_ast_gibberish( c_ast_t const *ast, c_type_t *type,
   );
   fputsp_s( c_tid_gibberish( cv_qual_stids ), gib->fout );
   c_ast_space_name_gibberish( ast, gib );
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a #K_ENUM or
+ * #K_CLASS_STRUCT_UNION AST.
+ *
+ * @param ast The #K_ENUM or #K_CLASS_STRUCT_UNION AST to print.
+ * @param type The \ref c_type to use instead of \ref c_ast::type.
+ * @param gib The gib_state to use.
+ */
+static void c_ecsu_ast_gibberish( c_ast_t const *ast, c_type_t *type,
+                                  gib_state_t *gib ) {
+  assert( ast != NULL );
+  assert( (ast->kind & K_ANY_ECSU) != 0 );
+  assert( type != NULL );
+  assert( gib != NULL );
+
+  c_tid_t cv_qual_stids = TS_NONE;
+  bool const is_fixed_enum = ast->kind == K_ENUM && ast->enum_.of_ast != NULL;
+
+  if ( opt_east_const ) {
+    cv_qual_stids = type->stids & TS_CV;
+    type->stids &= c_tid_compl( TS_CV );
+  }
+
+  char const *const type_name =
+    (gib->gib_flags & (C_GIB_PRINT_CAST | C_GIB_PRINT_DECL)) != 0 &&
+    //
+    // Special case: a fixed type enum must always have "enum" printed, so
+    // we don't call c_type_name_ecsu() that may omit it by applying
+    // opt_explicit_ecsu_btids.
+    //
+    !is_fixed_enum ? c_type_name_ecsu( type ) : c_type_gibberish( type );
+
+  FPUTS( type_name, gib->fout );
+
+  if ( (gib->gib_flags & C_GIB_TYPEDEF) == 0 || gib->printed_typedef ) {
+    //
+    // For enum, class, struct, or union (ECSU) types, we need to print the
+    // ECSU name when either:
+    //
+    //  + The AST is not a typedef, e.g.:
+    //
+    //          cdecl> declare x as struct S
+    //          struct S x;         // ast->sname = "x"; escu_name = "S"
+    //
+    //    (See the printed_typedef comment in c_typedef_gibberish() first.)
+    //    Or:
+    //
+    //  + We're printing an ECSU type in C only, e.g.:
+    //
+    //          typedef struct S T; // ast->sname ="T"; escu_name = "S"
+    //
+    FPRINTF( gib->fout,
+      "%s%s",
+      type_name[0] != '\0' ? " " : "",
+      c_sname_gibberish( &ast->csu.csu_sname )
+    );
+  }
+
+  bool printed_name = false;
+
+  if ( is_fixed_enum ) {
+    if ( (gib->gib_flags & C_GIB_TYPEDEF) != 0 ) {
+      //
+      // Special case: a fixed type enum needs to have its underlying type
+      // printed before east-const qualifiers (if any); but, if it's a type
+      // declaration, then we also need to print its name before the
+      // qualifiers:
+      //
+      //      c++decl> define E as enum E of type int
+      //      c++decl> show typedef
+      //      enum E : int;
+      //
+      // But if we print its name now, we can't print it again later, so set a
+      // flag.
+      //
+      c_ast_space_name_gibberish( ast, gib );
+      printed_name = true;
+    }
+    FPUTS( " : ", gib->fout );
+    c_ast_gibberish_impl( ast->enum_.of_ast, gib );
+  }
+
+  fputsp_s( c_tid_gibberish( cv_qual_stids ), gib->fout );
+
+  if ( !printed_name )
+    c_ast_space_name_gibberish( ast, gib );
+
+  if ( ast->kind == K_ENUM )
+    c_ast_bit_width_gibberish( ast, gib );
 }
 
 /**
