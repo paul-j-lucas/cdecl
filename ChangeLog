@@ -1,5 +1,8 @@
 2024-08-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * english.c: Factored out make_declare_ast_lists().
+   * dump.c, english.c, gibberish.c: Eliminated some comma variables.
+   * english.c: Factored out c_ast_is_likely_vla().
    * cli_options.c: Factored out check_options().
    * c_type.c: Eliminated hard-coding of CPP_MIN(23).
 
