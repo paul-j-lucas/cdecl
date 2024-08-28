@@ -88,6 +88,70 @@ static inline void c_ast_visit_english( c_ast_t const *ast,
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Prints a #K_ARRAY \ast as pseudo-English.
+ *
+ * @param ast The #K_ARRAY AST to print.
+ * @param eng The eng_state to use.
+ */
+static void c_array_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
+  assert( ast != NULL );
+  assert( eng != NULL );
+
+  c_type_name_nobase_english( &ast->type, eng->fout );
+  switch ( ast->array.kind ) {
+    case C_ARRAY_SIZE_NAME:
+      //
+      // Just because an array has a named size doesn't mean it's a VLA.
+      //
+      if ( eng->func_ast == NULL ) {
+        //
+        // Named size is presumably some previously declared name, e.g.:
+        //
+        //      int a[n]                // not necessarily a VLA
+        //      int a[const n]          // not necessarily a VLA
+        //
+        break;
+      }
+      if ( !c_ast_find_param_named( eng->func_ast, ast->array.size_name,
+                                    ast ) ) {
+        //
+        // Named size doesn't equal any previous parameter's name, e.g.:
+        //
+        //      void f(int n, int a[x]) // not necessarily a VLA
+        //
+        break;
+      }
+      //
+      // Named size equals a previous parameter's name, e.g.:
+      //
+      //      void f(int n, int a[n])  // definitely a VLA
+      //
+      FALLTHROUGH;
+
+    case C_ARRAY_SIZE_VLA:
+      FPUTS( "variable length ", eng->fout );
+      break;
+
+    case C_ARRAY_SIZE_NONE:
+    case C_ARRAY_SIZE_INT:
+      break;
+  } // switch
+  FPUTS( "array ", eng->fout );
+  switch ( ast->array.kind ) {
+    case C_ARRAY_SIZE_INT:
+      FPRINTF( eng->fout, "%u ", ast->array.size_int );
+      break;
+    case C_ARRAY_SIZE_NAME:
+      FPRINTF( eng->fout, "%s ", ast->array.size_name );
+      break;
+    case C_ARRAY_SIZE_NONE:
+    case C_ARRAY_SIZE_VLA:
+      break;
+  } // switch
+  FPUTS( "of ", eng->fout );
+}
+
+/**
  * Helper function for c_ast_visitor_english() that prints a bit-field width,
  * if any.
  *
@@ -258,58 +322,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      c_type_name_nobase_english( &ast->type, eng->fout );
-      switch ( ast->array.kind ) {
-        case C_ARRAY_SIZE_NAME:
-          //
-          // Just because an array has a named size doesn't mean it's a VLA.
-          //
-          if ( eng->func_ast == NULL ) {
-            //
-            // Named size is presumably some previously declared name, e.g.:
-            //
-            //      int a[n]                // not necessarily a VLA
-            //      int a[const n]          // not necessarily a VLA
-            //
-            break;
-          }
-          if ( !c_ast_find_param_named( eng->func_ast, ast->array.size_name,
-                                        ast ) ) {
-            //
-            // Named size doesn't equal any previous parameter's name, e.g.:
-            //
-            //      void f(int n, int a[x]) // not necessarily a VLA
-            //
-            break;
-          }
-          //
-          // Named size equals a previous parameter's name, e.g.:
-          //
-          //      void f(int n, int a[n])  // definitely a VLA
-          //
-          FALLTHROUGH;
-
-        case C_ARRAY_SIZE_VLA:
-          FPUTS( "variable length ", eng->fout );
-          break;
-
-        case C_ARRAY_SIZE_NONE:
-        case C_ARRAY_SIZE_INT:
-          break;
-      } // switch
-      FPUTS( "array ", eng->fout );
-      switch ( ast->array.kind ) {
-        case C_ARRAY_SIZE_INT:
-          FPRINTF( eng->fout, "%u ", ast->array.size_int );
-          break;
-        case C_ARRAY_SIZE_NAME:
-          FPRINTF( eng->fout, "%s ", ast->array.size_name );
-          break;
-        case C_ARRAY_SIZE_NONE:
-        case C_ARRAY_SIZE_VLA:
-          break;
-      } // switch
-      FPUTS( "of ", eng->fout );
+      c_array_ast_english( ast, eng );
       break;
 
     case K_APPLE_BLOCK:
