@@ -76,6 +76,8 @@ static void c_ast_qual_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_space_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_capture_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_cast_ast_gibberish( c_ast_t const*, gib_state_t* );
+static void c_lambda_ast_gibberish( c_ast_t const*, c_type_t const*,
+                                    gib_state_t* );
 static void c_name_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ptr_mbr_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ptr_ref_ast_gibberish( c_ast_t const*, c_type_t const*,
@@ -514,22 +516,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_LAMBDA:
-      FPUTS( other_token_c( "[" ), gib->fout );
-      c_ast_list_gibberish( &ast->lambda.capture_ast_list, gib );
-      FPUTS( other_token_c( "]" ), gib->fout );
-      if ( !slist_empty( &ast->lambda.param_ast_list ) ) {
-        FPUTC( '(', gib->fout );
-        c_ast_list_gibberish( &ast->lambda.param_ast_list, gib );
-        FPUTC( ')', gib->fout );
-      }
-      fputsp_s( c_tid_gibberish( type.stids ), gib->fout );
-      fputsp_s( c_tid_gibberish( type.atids ), gib->fout );
-
-      if ( ast->lambda.ret_ast != NULL &&
-           !c_ast_is_builtin_any( ast->lambda.ret_ast, TB_auto | TB_void ) ) {
-        FPUTS( " -> ", gib->fout );
-        c_ast_gibberish_impl( ast->lambda.ret_ast, gib );
-      }
+      c_lambda_ast_gibberish( ast, &type, gib );
       break;
 
     case K_NAME:
@@ -1104,6 +1091,40 @@ static void c_cast_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     FPRINTF( gib->fout, "%s<", c_cast_gibberish( ast->cast.kind ) );
     c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
     FPRINTF( gib->fout, ">(%s)\n", c_sname_gibberish( &ast->sname ) );
+  }
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a #K_LAMBDA AST.
+ *
+ * @param ast The #K_LAMBDA AST to print.
+ * @param type The \ref c_type to use instead of \ref c_ast::type.
+ * @param gib The gib_state to use.
+ */
+static void c_lambda_ast_gibberish( c_ast_t const *ast, c_type_t const *type,
+                                    gib_state_t *gib ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_LAMBDA );
+  assert( type != NULL );
+  assert( gib != NULL );
+
+  FPUTS( other_token_c( "[" ), gib->fout );
+  c_ast_list_gibberish( &ast->lambda.capture_ast_list, gib );
+  FPUTS( other_token_c( "]" ), gib->fout );
+
+  if ( !slist_empty( &ast->lambda.param_ast_list ) ) {
+    FPUTC( '(', gib->fout );
+    c_ast_list_gibberish( &ast->lambda.param_ast_list, gib );
+    FPUTC( ')', gib->fout );
+  }
+
+  fputsp_s( c_tid_gibberish( type->stids ), gib->fout );
+  fputsp_s( c_tid_gibberish( type->atids ), gib->fout );
+
+  if ( ast->lambda.ret_ast != NULL &&
+        !c_ast_is_builtin_any( ast->lambda.ret_ast, TB_auto | TB_void ) ) {
+    FPUTS( " -> ", gib->fout );
+    c_ast_gibberish_impl( ast->lambda.ret_ast, gib );
   }
 }
 
