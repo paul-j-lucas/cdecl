@@ -1231,8 +1231,8 @@ static void c_name_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   if ( OPT_LANG_IS( PROTOTYPES ) ) {
     if ( ast->param_of_ast != NULL && c_ast_is_untyped( ast ) ) {
       //
-      // A name can occur as an untyped K&R C function parameter.  In
-      // C89-C17, it's implicitly int:
+      // A name can occur as an untyped K&R C function parameter.  In C89-C17,
+      // it's implicitly int:
       //
       //      cdecl> declare f as function (x) returning char
       //      char f(int x)
