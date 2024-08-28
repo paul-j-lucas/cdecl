@@ -77,6 +77,7 @@ static void c_ast_space_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_capture_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_cast_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_name_ast_gibberish( c_ast_t const*, gib_state_t* );
+static void c_ptr_mbr_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ptr_ref_ast_gibberish( c_ast_t const*, c_type_t const*,
                                      gib_state_t* );
 static void c_struct_bind_ast_gibberish( c_ast_t const*, gib_state_t* );
@@ -542,10 +543,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_POINTER_TO_MEMBER:
-      c_ast_gibberish_impl( ast->ptr_mbr.to_ast, gib );
-      gib_print_space_once( gib );
-      if ( !gib->is_postfix )
-        c_ast_qual_name_gibberish( ast, gib );
+      c_ptr_mbr_ast_gibberish( ast, gib );
       break;
 
     case K_STRUCTURED_BINDING:
@@ -1178,6 +1176,24 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
   } // for
 
   return empty_if_null( sbuf->str );
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a
+ * #K_POINTER_TO_MEMBER AST.
+ *
+ * @param ast The #K_POINTER_TO_MEMBER AST to print.
+ * @param gib The gib_state to use.
+ */
+static void c_ptr_mbr_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_POINTER_TO_MEMBER );
+  assert( gib != NULL );
+
+  c_ast_gibberish_impl( ast->ptr_mbr.to_ast, gib );
+  gib_print_space_once( gib );
+  if ( !gib->is_postfix )
+    c_ast_qual_name_gibberish( ast, gib );
 }
 
 /**
