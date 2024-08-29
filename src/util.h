@@ -646,7 +646,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #IS_SIGNED_EXPR()
  * @sa #IS_UNSIGNED_TYPE()
  */
-#define IS_SIGNED_TYPE(TYPE)      !( (TYPE)-1 > 0 || (TYPE)-1 == 0 )
+#define IS_SIGNED_TYPE(TYPE)      !IS_UNSIGNED_TYPE(TYPE)
 
 /**
  * Checks (at compile-time) whether the type of \a EXPR is an unsigned integral
