@@ -1,5 +1,6 @@
 2024-08-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l, p_predefine.c, util.h: Added MAX_DEC_INT_DIGITS().
    * english.c: Factored out make_declare_ast_lists().
    * dump.c, english.c, gibberish.c: Eliminated some comma variables.
    * english.c: Factored out c_ast_is_likely_vla().
