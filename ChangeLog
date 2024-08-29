@@ -1,3 +1,9 @@
+2024-08-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.h, config_file.c, config_file.h: Added CDECL_ENV_VAR_NAME.
+   * util.h: Better IS_INTEGRAL_TYPE().
+   * util.h: Better IS_SIGNED_TYPE().
+
 2024-08-28  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Fix warning.
