@@ -1,5 +1,6 @@
 2024-08-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * pjl_config.h: Fixed needing of declaration for rl_gnu_readline_p.
    * lexer.l, p_predefine.c, util.h: Added MAX_DEC_INT_DIGITS().
    * english.c: Factored out make_declare_ast_lists().
    * dump.c, english.c, gibberish.c: Eliminated some comma variables.
