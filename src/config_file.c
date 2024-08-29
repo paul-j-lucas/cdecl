@@ -47,7 +47,7 @@
 /// @endcond
 
 /**
- * @ingroup conf-file-group
+ * @ingroup config-file-group
  * @{
  */
 

@@ -27,7 +27,7 @@
  */
 
 /**
- * @defgroup conf-file-group Configuration File
+ * @defgroup config-file-group Configuration File
  * Functions for reading **cdecl**'s configuration file.
  * @{
  */
