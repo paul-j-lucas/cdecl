@@ -85,7 +85,7 @@ void config_init( void ) {
 
   char const *config_path = opt_config_path;
   if ( config_path == NULL )
-    config_path = null_if_empty( getenv( "CDECLRC" ) );
+    config_path = null_if_empty( getenv( CDECL_ENV_VAR_NAME ) );
 
   strbuf_t sbuf;
   strbuf_init( &sbuf );

@@ -36,11 +36,16 @@
 
 /**
  * Reads the configuration file, if any.
- * In priority order:
  *
- *  1. Either the `--config` or `-c` command-line option; or:
- *  2. The value of the `CDECLRC` environment variable; or:
- *  3. `~/.cdeclrc`
+ * @remarks
+ * @parblock
+ * The path of the configuration file is determined as follows (in priority
+ * order):
+ *
+ *  1. The value of either the `--config` or `-c` command-line option; or:
+ *  2. The value of #CDECL_ENV_VAR_NAME or:
+ *  3. <code>~/</code>#CONF_FILE_NAME_DEFAULT.
+ * @endparblock
  *
  * @note This function must be called as most once.
  */

@@ -45,7 +45,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/** Default configuration file name. */
+/** Default configuration file (not path) name. */
 #define CONF_FILE_NAME_DEFAULT    "." CDECL "rc"
 
 /**
@@ -60,6 +60,11 @@
  * **cdecl** latest copyright year.
  */
 #define CDECL_COPYRIGHT_YEAR      "2024"
+
+/**
+ * The name of the **cdecl** environment variable.
+ */
+#define CDECL_ENV_VAR_NAME        "CDECLRC"
 
 /**
  * **cdecl** license.
