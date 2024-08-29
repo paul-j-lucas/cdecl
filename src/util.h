@@ -599,8 +599,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #IS_SIGNED_TYPE()
  * @sa #IS_UNSIGNED_TYPE()
  */
-#define IS_INTEGRAL_TYPE(TYPE) \
-  (IS_SIGNED_EXPR( (TYPE)0 ) || IS_UNSIGNED_EXPR( (TYPE)0 ))
+#define IS_INTEGRAL_TYPE(TYPE)    IS_INTEGRAL_EXPR( *(TYPE*)0 )
 
 /**
  * Checks (at compile-time) whether \a EXPR is a pointer to `const`.
