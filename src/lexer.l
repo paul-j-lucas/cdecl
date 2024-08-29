@@ -122,12 +122,6 @@
   BLOCK( token_column -= STATIC_CAST( c_loc_num_t, yyleng ); REJECT; )
 
 /**
- * The maximum number of decimal digits in the unsigned 64-bit integer
- * 18446744073709551615.
- */
-#define MAX_DIGITS_64             20u
-
-/**
  * C++ raw string delimiter maximum length.
  */
 #define RSTR_DELIM_LEN_MAX        16u
@@ -399,7 +393,7 @@ static int parse_int( int base ) {
     s += 2;
   }
 
-  char no_digit_seps[ MAX_DIGITS_64 + 1/*\0*/ ];
+  char no_digit_seps[ MAX_DEC_INT_DIGITS(uintmax_t) + 1/*\0*/ ];
 
   if ( strchr( s, '\'' ) != NULL ) {
     // Strip digit separator (') characters since strtol(3) doesn't understand

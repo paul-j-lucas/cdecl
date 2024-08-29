@@ -580,11 +580,26 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns 1 (true) only if \a EXPR is an integral type; 0 (false)
  * otherwise.
  *
+ * @sa #IS_INTEGRAL_TYPE()
  * @sa #IS_SIGNED_EXPR()
  * @sa #IS_UNSIGNED_EXPR()
  */
 #define IS_INTEGRAL_EXPR(EXPR) \
   (IS_SIGNED_EXPR((EXPR)) || IS_UNSIGNED_EXPR((EXPR)))
+
+/**
+ * Checks (at compile-time) whether \a TYPE is an integral type.
+ *
+ * @param TYPE A type.
+ * @return Returns 1 (true) only if \a TYPE is an integral type; 0 (false)
+ * otherwise.
+ *
+ * @sa #IS_INTEGRAL_EXPR()
+ * @sa #IS_SIGNED_TYPE()
+ * @sa #IS_UNSIGNED_TYPE()
+ */
+#define IS_INTEGRAL_TYPE(TYPE) \
+  (IS_SIGNED_EXPR( (TYPE)0 ) || IS_UNSIGNED_EXPR( (TYPE)0 ))
 
 /**
  * Checks (at compile-time) whether \a EXPR is a pointer to `const`.
@@ -622,10 +637,11 @@ _GL_INLINE_HEADER_BEGIN
   )
 
 /**
- * Checks (at compile-time) whether \a TYPE is a signed or unsigned type.
+ * Checks (at compile-time) whether \a TYPE is a signed type.
  *
  * @return Returns 1 (true) only if \a TYPE is signed; 0 (false) otherwise.
  *
+ * @sa #IS_INTEGRAL_TYPE()
  * @sa #IS_SIGNED_EXPR()
  * @sa #IS_UNSIGNED_TYPE()
  */
@@ -655,10 +671,11 @@ _GL_INLINE_HEADER_BEGIN
   )
 
 /**
- * Checks (at compile-time) whether \a TYPE is a signed or unsigned type.
+ * Checks (at compile-time) whether \a TYPE is an unsigned type.
  *
  * @return Returns 1 (true) only if \a TYPE is signed; 0 (false) otherwise.
  *
+ * @sa #IS_INTEGRAL_TYPE()
  * @sa #IS_SIGNED_TYPE()
  * @sa #IS_UNSIGNED_EXPR()
  */
@@ -707,6 +724,20 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define MALLOC(TYPE,N) \
   check_realloc( /*p=*/NULL, sizeof(TYPE) * STATIC_CAST( size_t, (N) ) )
+
+/**
+ * Gets the number of characters needed to represent the largest magnitide
+ * value of the integral \a TYPE in decimal.
+ *
+ * @param TYPE The integral type.
+ *
+ * @sa https://stackoverflow.com/a/13546502/99089
+ */
+#define MAX_DEC_INT_DIGITS(TYPE)                                \
+  (((sizeof(TYPE) * CHAR_BIT * 1233) >> 12)                     \
+    + STATIC_ASSERT_EXPR( IS_INTEGRAL_TYPE(TYPE),               \
+                          #TYPE " must be an integral type " )  \
+    + IS_SIGNED_TYPE(TYPE))
 
 /**
  * Concatenate \a A and \a B together to form a single token.

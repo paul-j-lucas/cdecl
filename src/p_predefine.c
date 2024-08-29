@@ -97,7 +97,7 @@ static char const* get___LINE___str( void ) {
   if ( cdecl_is_testing )
     return "42";
   // LCOV_EXCL_START
-  static char buf[ ARRAY_SIZE( "-9223372036854775808" ) ];
+  static char buf[ MAX_DEC_INT_DIGITS(int) + 1/*\0*/ ];
   check_snprintf( buf, sizeof buf, "%d", yylineno );
   return buf;
   // LCOV_EXCL_STOP
