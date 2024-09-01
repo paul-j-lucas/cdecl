@@ -382,6 +382,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
 
   c_ast_t const *const of_ast = ast->array.of_ast;
   c_ast_t const *const raw_of_ast = c_ast_untypedef( of_ast );
+
   switch ( raw_of_ast->kind ) {
     case K_ARRAY:
       if ( of_ast->array.kind == C_ARRAY_SIZE_NONE ) {
