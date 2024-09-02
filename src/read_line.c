@@ -177,7 +177,7 @@ static char const* read_line( FILE *fin, char const *prompt,
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
-                       char const *const prompts[const], int *line_no ) {
+                       char const *const prompts[const], int *pline_no ) {
   assert( sbuf != NULL );
   assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
@@ -197,8 +197,8 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
     }
 
     is_cont_line = is_continued_line( line, &line_len );
-    if ( is_cont_line && line_no != NULL )
-      ++*line_no;
+    if ( is_cont_line && pline_no != NULL )
+      ++*pline_no;
 
     strbuf_putsn( sbuf, line, line_len );
   } while ( is_cont_line );
