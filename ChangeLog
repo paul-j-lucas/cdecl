@@ -1,3 +1,8 @@
+2024-09-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * read_line.c: Added TRI_BS.
+   * read_line.c: Added missing #include.
+
 2024-09-01  Paul J. Lucas <paul@lucasmail.org>
 
    * read_line.c: Made signature of getline_wrapper() match readline_wrapper().
