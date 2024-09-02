@@ -77,11 +77,11 @@ static char const* getline_wrapper( FILE *fin, char const *prompt,
   static char *line;  // must be distinct from "line" in readline_wrapper()
   static size_t line_cap;
 
-  ssize_t const rv = getline( &line, &line_cap, fin );
-  if ( rv == -1 )
+  ssize_t const line_len = getline( &line, &line_cap, fin );
+  if ( line_len == -1 )
     return NULL;
 
-  *pline_len = STATIC_CAST( size_t, rv );
+  *pline_len = STATIC_CAST( size_t, line_len );
   // Note: getline() DOES include a '\n', so chop it off so it's consistent
   // with readline().
   strn_rtrim( line, pline_len );
