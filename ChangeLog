@@ -1,5 +1,6 @@
 2024-09-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * read_line.c: Made signature of getline_wrapper() match readline_wrapper().
    * share/man/man1/cdecl.1, c_lang.c, c_lang.h, help.c, parser.y,
      cli_options-error.out, help.out: Initial support for C++26 has been added,
      specifically `= delete("reason")` is now supported.
