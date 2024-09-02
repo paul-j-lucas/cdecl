@@ -458,9 +458,9 @@ static char const *const* command_ac_keywords( char const *command ) {
  */
 NODISCARD
 static char const* determine_command( void ) {
-  size_t const rl_size = STATIC_CAST( size_t, rl_end );
-  size_t const leading_spaces = strnspn( rl_line_buffer, " ", rl_size );
-  size_t const buf_len = rl_size - leading_spaces;
+  size_t const rl_len = STATIC_CAST( size_t, rl_end );
+  size_t const leading_spaces = strnspn( rl_line_buffer, " ", rl_len );
+  size_t const buf_len = rl_len - leading_spaces;
   if ( buf_len == 0 )
     return NULL;
   char const *const buf = rl_line_buffer + leading_spaces;
