@@ -1,3 +1,9 @@
+2024-09-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1, c_lang.c, c_lang.h, help.c, parser.y,
+     cli_options-error.out, help.out: Initial support for C++26 has been added,
+     specifically `= delete("reason")` is now supported.
+
 2024-08-29  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.h, config_file.c, config_file.h: Added CDECL_ENV_VAR_NAME.
