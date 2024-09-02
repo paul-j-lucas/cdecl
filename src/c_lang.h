@@ -1427,36 +1427,6 @@ typedef struct c_lang_lit c_lang_lit_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets the value of the `__cplusplus` macro for \a lang_id.
- *
- * @param lang_id The language.  _Exactly one_ language _must_ be set.
- * @return Returns said value or NULL if `__cplusplus` does not have a value
- * for \a lang_id.
- *
- * @sa c_lang_coarse_name()
- * @sa c_lang_name()
- * @sa c_lang___STDC__()
- * @sa c_lang___STDC_VERSION__()
- */
-NODISCARD
-char const* c_lang___cplusplus( c_lang_id_t lang_id );
-
-/**
- * Gets the value of the `__STDC_VERSION__` macro for \a lang_id.
- *
- * @param lang_id The language.  _Exactly one_ language _must_ be set.
- * @return Returns said value or NULL if `__STDC_VERSION__` does not have a
- * value for \a lang_id.
- *
- * @sa c_lang_coarse_name()
- * @sa c_lang___cplusplus()
- * @sa c_lang_name()
- * @sa c_lang___STDC__()
- */
-NODISCARD
-char const* c_lang___STDC_VERSION__( c_lang_id_t lang_id );
-
-/**
  * Gets all the language(s) \a lang_id and \ref c-lang-order "newer".
  *
  * @param lang_id The language.  _Exactly one_ language _must_ be set.
@@ -1490,6 +1460,21 @@ c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
  */
 NODISCARD
 char const* c_lang_coarse_name( c_lang_id_t lang_ids );
+
+/**
+ * Gets the value of the `__cplusplus` macro for \a lang_id.
+ *
+ * @param lang_id The language.  _Exactly one_ language _must_ be set.
+ * @return Returns said value or NULL if `__cplusplus` does not have a value
+ * for \a lang_id.
+ *
+ * @sa c_lang_coarse_name()
+ * @sa c_lang_name()
+ * @sa c_lang___STDC__()
+ * @sa c_lang___STDC_VERSION__()
+ */
+NODISCARD
+char const* c_lang___cplusplus( c_lang_id_t lang_id );
 
 /**
  * Gets the \ref c_lang_id_t corresponding to \a name.
@@ -1597,6 +1582,39 @@ NODISCARD
 c_lang_t const* c_lang_next( c_lang_t const *lang );
 
 /**
+ * Gets the value of the `__STDC__` macro for \a lang_id.
+ *
+ * @param lang_id The language.  _Exactly one_ language _must_ be set.
+ * @return Returns `"1"` only if \a lang_id is any version of C _except_
+ * K&R&nbsp;C; NULL only if \a lang_id is K&R&nbsp;C.
+ *
+ * @sa c_lang_coarse_name()
+ * @sa c_lang___cplusplus()
+ * @sa c_lang_name()
+ * @sa c_lang___STDC_VERSION__()
+ */
+NODISCARD C_LANG_H_INLINE
+char const* c_lang___STDC__( c_lang_id_t lang_id ) {
+  assert( is_1_bit( lang_id ) );
+  return (lang_id & LANG___STDC__) != LANG_NONE  ? "1" : NULL;
+}
+
+/**
+ * Gets the value of the `__STDC_VERSION__` macro for \a lang_id.
+ *
+ * @param lang_id The language.  _Exactly one_ language _must_ be set.
+ * @return Returns said value or NULL if `__STDC_VERSION__` does not have a
+ * value for \a lang_id.
+ *
+ * @sa c_lang_coarse_name()
+ * @sa c_lang___cplusplus()
+ * @sa c_lang_name()
+ * @sa c_lang___STDC__()
+ */
+NODISCARD
+char const* c_lang___STDC_VERSION__( c_lang_id_t lang_id );
+
+/**
  * Gets the \ref c-lang-order "oldest" language among \a lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s).
@@ -1686,24 +1704,6 @@ c_lang_id_t is_reserved_name( char const *name );
 NODISCARD C_LANG_H_INLINE
 bool opt_lang_is_any( c_lang_id_t lang_ids ) {
   return (opt_lang_id & lang_ids) != LANG_NONE;
-}
-
-/**
- * Gets the value of the `__STDC__` macro for \a lang_id.
- *
- * @param lang_id The language.  _Exactly one_ language _must_ be set.
- * @return Returns `"1"` only if \a lang_id is any version of C _except_
- * K&R&nbsp;C; NULL only if \a lang_id is K&R&nbsp;C.
- *
- * @sa c_lang_coarse_name()
- * @sa c_lang___cplusplus()
- * @sa c_lang_name()
- * @sa c_lang___STDC_VERSION__()
- */
-NODISCARD C_LANG_H_INLINE
-char const* c_lang___STDC__( c_lang_id_t lang_id ) {
-  assert( is_1_bit( lang_id ) );
-  return (lang_id & LANG___STDC__) != LANG_NONE  ? "1" : NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
