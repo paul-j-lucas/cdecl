@@ -59,13 +59,20 @@
  * Wrapper around **getline**(3).
  *
  * @param fin The file to read from.
+ * @param prompt The prompt to use.  May be NULL.
  * @param pline_len A pointer to receive the length of the line read.
  * @return Returns the line read or NULL for EOF.
  */
 NODISCARD
-static char const* getline_wrapper( FILE *fin, size_t *pline_len ) {
+static char const* getline_wrapper( FILE *fin, char const *prompt,
+                                    size_t *pline_len ) {
   assert( fin != NULL );
   assert( pline_len != NULL );
+
+  if ( prompt != NULL ) {
+    PUTS( prompt );
+    FFLUSH( stdout );
+  }
 
   static char *line;  // must be distinct from "line" in readline_wrapper()
   static size_t line_cap;
@@ -156,17 +163,15 @@ static char const* read_line( FILE *fin, char const *prompt,
   assert( fin != NULL );
   assert( pline_len != NULL );
 
-  if ( prompt != NULL ) {
 #ifdef WITH_READLINE
+  if ( prompt != NULL ) {
     // LCOV_EXCL_START -- tests are not interactive
     return readline_wrapper( fin, prompt, pline_len );
     // LCOV_EXCL_STOP
-#else /* WITH_READLINE */
-    PUTS( prompt );
-    FFLUSH( stdout );
-#endif /* WITH_READLINE */
   }
-  return getline_wrapper( fin, pline_len );
+#endif /* WITH_READLINE */
+
+  return getline_wrapper( fin, prompt, pline_len );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
