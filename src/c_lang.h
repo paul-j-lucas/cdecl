@@ -114,7 +114,17 @@ _GL_INLINE_HEADER_BEGIN
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// languages supported
+//
+// Languages supported
+//
+// If you add a language, update:
+//
+//  + \ref C_LANG
+//  + c_lang_name()
+//  + c_lang___STDC_VERSION__() or c_lang___cplusplus()
+//  + `lang:` in print_help_set_options()
+//
+
 #define LANG_NONE     0u                /**< No languages. */
 #define LANG_ANY      (~LANGX_MASK)     /**< Any supported language. */
 
@@ -137,6 +147,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CPP_17   (1u << 13)        /**< C++ 17. */
 #define LANG_CPP_20   (1u << 14)        /**< C++ 20. */
 #define LANG_CPP_23   (1u << 15)        /**< C++ 23. */
+#define LANG_CPP_26   (1u << 16)        /**< C++ 26. */
 #define LANG_CPP_NEW  LANG_CPP_23       /**< Newest supported C++ language. */
 #define LANG_CPP_ANY  LANG_MIN(CPP_OLD) /**< Any C++ language. */
 
@@ -658,6 +669,12 @@ _GL_INLINE_HEADER_BEGIN
  * Languages the `default` keyword for relational operators are supported in.
  */
 #define LANG_default_RELOPS             LANG_CPP_MIN(20)
+
+/**
+ * Languages <code>delete(&quot;</code><i>reason</i><code>&quot;)</code> is
+ * supported in.
+ */
+#define LANG_delete_REASON              LANG_CPP_MIN(26)
 
 /**
  * Languages the `__deprecated__` attribute is supported in.

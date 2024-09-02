@@ -135,7 +135,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -261,7 +261,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -371,7 +371,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -481,7 +481,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -593,7 +593,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -714,7 +714,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -835,7 +835,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1025,7 +1025,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1179,7 +1179,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1314,7 +1314,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1469,7 +1469,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1624,7 +1624,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1780,7 +1780,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1937,7 +1937,7 @@ option:
   [no]using
   [no]west-decl[={{bflostr}+|*|-}]
 lang:
-  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23|26]
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

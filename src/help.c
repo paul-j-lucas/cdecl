@@ -709,7 +709,7 @@ static void print_help_set_options( void ) {
   print_h( "  [no]%s\n", L_OPT_using );
   print_h( "  [no]%s[={{%sr}+|\\*|-}]\n", L_OPT_west_decl, OPT_WEST_DECL_ALL );
   print_h( "lang:\n" );
-  print_h( "  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C\\+\\+[98|03|11|14|17|20|23]\n" );
+  print_h( "  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C\\+\\+[98|03|11|14|17|20|23|26]\n" );
   print_h( "types:\n" );
   print_h( "  i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*\n" );
 

@@ -27,7 +27,7 @@
 /** @cond DOXYGEN_IGNORE */
 
 %define api.header.include { "parser.h" }
-%expect 22
+%expect 23
 
 %{
 /** @endcond */
@@ -5446,7 +5446,10 @@ trailing_return_type_c_ast_opt
 func_equals_c_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
   | '=' Y_default                 { $$ = $2; }
-  | '=' Y_delete                  { $$ = $2; }
+  | '=' Y_delete delete_reason_opt
+    {
+      $$ = $2;
+    }
   | '=' uint_lit
     {
       if ( $2 != 0 ) {
@@ -5461,6 +5464,25 @@ func_equals_c_stid_opt
         elaborate_error( "'0', \"default\", or \"delete\" expected" );
       else
         elaborate_error( "'0' expected" );
+    }
+  ;
+
+delete_reason_opt
+  : /* empty */
+  | '(' str_lit_exp[reason] rparen_exp
+    {
+      FREE( $reason );
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST since we ignore the reason string.
+      //
+      if ( !OPT_LANG_IS( delete_REASON ) ) {
+        print_error( &@reason,
+          "\"delete\" with reason not supported%s\n",
+          C_LANG_WHICH( delete_REASON )
+        );
+        PARSE_ABORT();
+      }
     }
   ;
 

@@ -12,6 +12,13 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 18.4
 
+** C++26
+Initial support for C++26 has been added, specifically `= delete("reason")` is
+now supported.
+
+However, since C++26 is (at least) 2 years away, the default language for C++
+is still C++23.
+
 ** Placemarker for empty macro argument
 Macros that can take a single argument can also accept no arguments since it's
 interpreted as an argument of a placemarker, e.g.:

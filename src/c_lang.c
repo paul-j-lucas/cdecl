@@ -90,6 +90,7 @@ static c_lang_t const C_LANG[] = {
   { "C++17",  false,  LANG_CPP_17  },
   { "C++20",  false,  LANG_CPP_20  },
   { "C++23",  false,  LANG_CPP_23  },
+  { "C++26",  false,  LANG_CPP_26  },
 
   { NULL,     false,  LANG_NONE    },
 };
@@ -107,6 +108,7 @@ char const* c_lang___cplusplus( c_lang_id_t lang_id ) {
     case LANG_CPP_17: return "201703L";
     case LANG_CPP_20: return "202002L";
     case LANG_CPP_23: return "202302L";
+    case LANG_CPP_26: return "202601L";
     default         : return NULL;
   } // switch
 }
@@ -166,6 +168,7 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
     case LANG_CPP_17  : return "C++17";
     case LANG_CPP_20  : return "C++20";
     case LANG_CPP_23  : return "C++23";
+    case LANG_CPP_26  : return "C++26";
   } // switch
   UNEXPECTED_INT_VALUE( lang_id );
 }
