@@ -1693,7 +1693,7 @@ bool opt_lang_is_any( c_lang_id_t lang_ids ) {
  *
  * @param lang_id The language.  _Exactly one_ language _must_ be set.
  * @return Returns `"1"` only if \a lang_id is any version of C _except_
- * K&R&nbsp;C; NULL if \a lang_id is K&R&nbsp;C.
+ * K&R&nbsp;C; NULL only if \a lang_id is K&R&nbsp;C.
  *
  * @sa c_lang_coarse_name()
  * @sa c_lang___cplusplus()
