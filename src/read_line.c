@@ -54,6 +54,8 @@
 
 /// @endcond
 
+#define TRI_BS  "?\?/"                  /**< Trigraph <code>"\\"</code>. */
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -110,8 +112,9 @@ static bool is_continued_line( char const *s, size_t *ps_len ) {
       --*ps_len;
       return true;
     }
-    if ( *ps_len >= 3 && STRNCMPLIT( s + *ps_len - 3, "?\?/" ) == 0 ) {
-      *ps_len -= 3;
+    if ( *ps_len >= STRLITLEN( TRI_BS ) &&
+         STRNCMPLIT( s + *ps_len - STRLITLEN( TRI_BS ), TRI_BS ) == 0 ) {
+      *ps_len -= STRLITLEN( TRI_BS );
       return true;
     }
   }
