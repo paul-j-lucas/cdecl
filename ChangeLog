@@ -1,3 +1,7 @@
+2024-09-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: Put %s back to eliminatw warning.
+
 2024-09-02  Paul J. Lucas <paul@lucasmail.org>
 
    * read_line.c: Added TRI_BS.
