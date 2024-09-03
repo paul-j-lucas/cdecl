@@ -1,5 +1,6 @@
 2024-09-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Updated version.
    * c_ast_check.c: Put %s back to eliminatw warning.
 
 2024-09-02  Paul J. Lucas <paul@lucasmail.org>
