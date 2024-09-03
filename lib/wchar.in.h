@@ -95,7 +95,7 @@
    that can be freed by passing them as the Ith argument to the
    function F.  */
 #ifndef _GL_ATTRIBUTE_DEALLOC
-# if __GNUC__ >= 11
+# if __GNUC__ >= 11 && !defined __clang__
 #  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
 # else
 #  define _GL_ATTRIBUTE_DEALLOC(f, i)
@@ -855,11 +855,12 @@ _GL_CXXALIAS_SYS_CAST2 (wmemchr,
                         wchar_t *, (const wchar_t *, wchar_t, size_t),
                         const wchar_t *, (const wchar_t *, wchar_t, size_t));
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
-     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4))
+     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)) \
+     && !defined __clang__
 _GL_CXXALIASWARN1 (wmemchr, wchar_t *, (wchar_t *s, wchar_t c, size_t n));
 _GL_CXXALIASWARN1 (wmemchr, const wchar_t *,
                    (const wchar_t *s, wchar_t c, size_t n));
-# elif __GLIBC__ >= 2
+# elif __GLIBC__ >= 2 && !defined __CORRECT_ISO_CPP_WCHAR_H_PROTO
 _GL_CXXALIASWARN (wmemchr);
 # endif
 #elif defined GNULIB_POSIXCHECK
@@ -1325,7 +1326,8 @@ _GL_CXXALIAS_MDA (wcsdup, wchar_t *, (const wchar_t *s));
 /* On Solaris 11.3, the header files declare the function in the std::
    namespace, not in the global namespace.  So, force a declaration in
    the global namespace.  */
-#  if !@HAVE_WCSDUP@ || (defined __sun && defined __cplusplus) || __GNUC__ >= 11
+#  if !@HAVE_WCSDUP@ || (defined __sun && defined __cplusplus) \
+      || (__GNUC__ >= 11 && !defined __clang__)
 #   if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (wcsdup, wchar_t *,
                   (const wchar_t *s),
@@ -1341,7 +1343,7 @@ _GL_CXXALIAS_SYS (wcsdup, wchar_t *, (const wchar_t *s));
 # endif
 _GL_CXXALIASWARN (wcsdup);
 #else
-# if __GNUC__ >= 11 && !defined wcsdup
+# if (__GNUC__ >= 11 && !defined __clang__) && !defined wcsdup
 /* For -Wmismatched-dealloc: Associate wcsdup with free or rpl_free.  */
 #  if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (wcsdup, wchar_t *,
@@ -1407,10 +1409,11 @@ _GL_CXXALIAS_SYS_CAST2 (wcschr,
                         wchar_t *, (const wchar_t *, wchar_t),
                         const wchar_t *, (const wchar_t *, wchar_t));
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
-     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4))
+     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)) \
+     && !defined __clang__
 _GL_CXXALIASWARN1 (wcschr, wchar_t *, (wchar_t *wcs, wchar_t wc));
 _GL_CXXALIASWARN1 (wcschr, const wchar_t *, (const wchar_t *wcs, wchar_t wc));
-# elif __GLIBC__ >= 2
+# elif __GLIBC__ >= 2 && !defined __CORRECT_ISO_CPP_WCHAR_H_PROTO
 _GL_CXXALIASWARN (wcschr);
 # endif
 #elif defined GNULIB_POSIXCHECK
@@ -1437,10 +1440,11 @@ _GL_CXXALIAS_SYS_CAST2 (wcsrchr,
                         wchar_t *, (const wchar_t *, wchar_t),
                         const wchar_t *, (const wchar_t *, wchar_t));
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
-     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4))
+     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)) \
+     && !defined __clang__
 _GL_CXXALIASWARN1 (wcsrchr, wchar_t *, (wchar_t *wcs, wchar_t wc));
 _GL_CXXALIASWARN1 (wcsrchr, const wchar_t *, (const wchar_t *wcs, wchar_t wc));
-# elif __GLIBC__ >= 2
+# elif __GLIBC__ >= 2 && !defined __CORRECT_ISO_CPP_WCHAR_H_PROTO
 _GL_CXXALIASWARN (wcsrchr);
 # endif
 #elif defined GNULIB_POSIXCHECK
@@ -1508,12 +1512,13 @@ _GL_CXXALIAS_SYS_CAST2 (wcspbrk,
                         wchar_t *, (const wchar_t *, const wchar_t *),
                         const wchar_t *, (const wchar_t *, const wchar_t *));
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
-     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4))
+     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)) \
+     && !defined __clang__
 _GL_CXXALIASWARN1 (wcspbrk, wchar_t *,
                    (wchar_t *wcs, const wchar_t *accept));
 _GL_CXXALIASWARN1 (wcspbrk, const wchar_t *,
                    (const wchar_t *wcs, const wchar_t *accept));
-# elif __GLIBC__ >= 2
+# elif __GLIBC__ >= 2 && !defined __CORRECT_ISO_CPP_WCHAR_H_PROTO
 _GL_CXXALIASWARN (wcspbrk);
 # endif
 #elif defined GNULIB_POSIXCHECK
@@ -1558,14 +1563,15 @@ _GL_CXXALIAS_SYS_CAST2 (wcsstr,
                         (const wchar_t *restrict, const wchar_t *restrict));
 # endif
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
-     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4))
+     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)) \
+     && !defined __clang__
 _GL_CXXALIASWARN1 (wcsstr, wchar_t *,
                    (wchar_t *restrict haystack,
                     const wchar_t *restrict needle));
 _GL_CXXALIASWARN1 (wcsstr, const wchar_t *,
                    (const wchar_t *restrict haystack,
                     const wchar_t *restrict needle));
-# elif __GLIBC__ >= 2
+# elif __GLIBC__ >= 2 && !defined __CORRECT_ISO_CPP_WCHAR_H_PROTO
 _GL_CXXALIASWARN (wcsstr);
 # endif
 #elif defined GNULIB_POSIXCHECK

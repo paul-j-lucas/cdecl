@@ -314,7 +314,7 @@
     _GL_WARN_ON_USE (func, \
                      "The symbol ::" #func " refers to the system function. " \
                      "Use " #namespace "::" #func " instead.")
-# elif __GNUC__ >= 3 && GNULIB_STRICT_CHECKING
+# elif (__GNUC__ >= 3 || defined __clang__) && GNULIB_STRICT_CHECKING
 #  define _GL_CXXALIASWARN_2(func,namespace) \
      extern __typeof__ (func) func
 # else

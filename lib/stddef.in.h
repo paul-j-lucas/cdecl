@@ -194,7 +194,7 @@ typedef union
 # ifndef _GL_HAS_BUILTIN_UNREACHABLE
 #  if defined __clang_major__ && __clang_major__ < 5
 #   define _GL_HAS_BUILTIN_UNREACHABLE 0
-#  elif 4 < __GNUC__ + (5 <= __GNUC_MINOR__)
+#  elif 4 < __GNUC__ + (5 <= __GNUC_MINOR__) && !defined __clang__
 #   define _GL_HAS_BUILTIN_UNREACHABLE 1
 #  elif defined __has_builtin
 #   define _GL_HAS_BUILTIN_UNREACHABLE __has_builtin (__builtin_unreachable)

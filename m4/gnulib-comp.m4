@@ -992,6 +992,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/libunistring-base.m4
   m4/limits-h.m4
   m4/localcharset.m4
+  m4/locale-en.m4
   m4/locale-fr.m4
   m4/locale-ja.m4
   m4/locale-zh.m4

@@ -79,7 +79,7 @@
    that can be freed by passing them as the Ith argument to the
    function F.  */
 #ifndef _GL_ATTRIBUTE_DEALLOC
-# if __GNUC__ >= 11
+# if __GNUC__ >= 11 && !defined __clang__
 #  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
 # else
 #  define _GL_ATTRIBUTE_DEALLOC(f, i)
@@ -621,7 +621,8 @@ _GL_CXXALIAS_MDA (strdup, char *, (char const *__s));
     /* strdup exists as a function and as a macro.  Get rid of the macro.  */
 #   undef strdup
 #  endif
-#  if (!@HAVE_DECL_STRDUP@ || __GNUC__ >= 11) && !defined strdup
+#  if (!@HAVE_DECL_STRDUP@ || (__GNUC__ >= 11 && !defined __clang__)) \
+      && !defined strdup
 #   if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (strdup, char *,
                   (char const *__s),
@@ -639,7 +640,7 @@ _GL_CXXALIAS_SYS (strdup, char *, (char const *__s));
 # endif
 _GL_CXXALIASWARN (strdup);
 #else
-# if __GNUC__ >= 11 && !defined strdup
+# if (__GNUC__ >= 11 && !defined __clang__) && !defined strdup
 /* For -Wmismatched-dealloc: Associate strdup with free or rpl_free.  */
 #  if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (strdup, char *,
@@ -720,7 +721,8 @@ _GL_FUNCDECL_RPL (strndup, char *,
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
 _GL_CXXALIAS_RPL (strndup, char *, (char const *__s, size_t __n));
 # else
-#  if !@HAVE_DECL_STRNDUP@ || (__GNUC__ >= 11 && !defined strndup)
+#  if !@HAVE_DECL_STRNDUP@ \
+      || ((__GNUC__ >= 11 && !defined __clang__) && !defined strndup)
 #   if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (strndup, char *,
                   (char const *__s, size_t __n),
@@ -738,7 +740,7 @@ _GL_CXXALIAS_SYS (strndup, char *, (char const *__s, size_t __n));
 # endif
 _GL_CXXALIASWARN (strndup);
 #else
-# if __GNUC__ >= 11 && !defined strndup
+# if (__GNUC__ >= 11 && !defined __clang__) && !defined strndup
 /* For -Wmismatched-dealloc: Associate strndup with free or rpl_free.  */
 #  if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (strndup, char *,
