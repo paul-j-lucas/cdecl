@@ -254,7 +254,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
   c_ast_t const *const raw_ast = c_ast_untypedef( ast );
 
   if ( (raw_ast->kind & K_ANY_OBJECT) == 0 ) {
-    print_error( &ast->align.loc, "" );
+    print_error( &ast->align.loc, "%s", "" );
     print_ast_kind_aka( ast, stderr );
     EPUTS( " can not be aligned\n" );
     return false;
@@ -268,7 +268,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
 
   if ( (raw_ast->kind & K_CLASS_STRUCT_UNION) != 0 &&
        !OPT_LANG_IS( ALIGNED_CSUS ) ) {
-    print_error( &ast->align.loc, "" );
+    print_error( &ast->align.loc, "%s", "" );
     print_ast_kind_aka( ast, stderr );
     EPRINTF( " can not be aligned%s\n", C_LANG_WHICH( ALIGNED_CSUS ) );
     return false;
