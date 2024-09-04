@@ -1078,11 +1078,6 @@ _GL_INLINE_HEADER_BEGIN
 #define STRNCMPLIT(S,LIT)         strncmp( (S), (LIT), STRLITLEN( (LIT) ) )
 
 /**
- * The return value from check_strtoull() indicating an error.
- */
-#define STRTOULL_ERROR            STATIC_CAST( unsigned long long, -1 )
-
-/**
  * Casts the result of \a N to an unsigned type whose size is
  * <code>sizeof(</code>\a N<code>)</code>.
  *
@@ -1306,7 +1301,7 @@ char* check_strndup( char const *s, size_t n );
  * @param min The minimum allowed value.
  * @param max The maximum allowed value.
  * @return Returns \a s convervted to an unsigned integer upon success or
- * #STRTOULL_ERROR upon failure.
+ * `ULLONG_MAX` upon failure.
  * @par
  * Additionally, `errno` is set to:
  *  + `EILSEQ` if \a s contains non-decimal digits; or:

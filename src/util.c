@@ -191,15 +191,17 @@ unsigned long long check_strtoull( char const *s, unsigned long long min,
 
   if ( !str_is_digits( s ) ) {
     errno = EILSEQ;
-    return STRTOULL_ERROR;
+    return ULLONG_MAX;
   }
+
   errno = 0;
   unsigned long long const rv = strtoull( s, /*endptr=*/NULL, 10 );
-  if ( rv < min || rv > max )
-    errno = ERANGE;
-  if ( errno == ERANGE )
-    return STRTOULL_ERROR;
-  return rv;
+  if ( errno != 0 )
+    return ULLONG_MAX;
+  if ( rv >= min && rv <= max )
+    return rv;
+  errno = ERANGE;
+  return ULLONG_MAX;
 }
 
 #ifdef __GNUC__
