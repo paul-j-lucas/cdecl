@@ -1,3 +1,7 @@
+2024-09-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c, util.c, util.h: Eliminated STRTOULL_ERROR.
+
 2024-09-03  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Updated version.
