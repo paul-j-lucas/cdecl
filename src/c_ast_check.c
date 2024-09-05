@@ -2050,23 +2050,24 @@ rel_2par: print_error( c_ast_params_loc( ast ),
       break;
   } // switch
 
-  c_ast_t const *const ret_ast = ast->oper.ret_ast;
-
   if ( op->op_id == C_OP_LESS_EQUAL_GREATER ) {
     if ( !c_ast_check_op_less_equal_greater_ret_type( ast ) )
       return false;
   }
-  else if ( !c_ast_is_builtin_any( ret_ast, TB_bool ) ) {
-    print_error( &ret_ast->loc,
-      "invalid operator \"%s\" return type ",
-      op->literal
-    );
-    print_ast_type_aka( ret_ast, stderr );
-    EPRINTF(
-      "; must be \"%s\" or a typedef thereof\n",
-      c_tid_error( TB_bool )
-    );
-    return false;
+  else {
+    c_ast_t const *const ret_ast = ast->oper.ret_ast;
+    if ( !c_ast_is_builtin_any( ret_ast, TB_bool ) ) {
+      print_error( &ret_ast->loc,
+        "invalid operator \"%s\" return type ",
+        op->literal
+      );
+      print_ast_type_aka( ret_ast, stderr );
+      EPRINTF(
+        "; must be \"%s\" or a typedef thereof\n",
+        c_tid_error( TB_bool )
+      );
+      return false;
+    }
   }
 
   return true;
