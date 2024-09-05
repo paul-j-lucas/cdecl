@@ -151,31 +151,40 @@ NODISCARD
 static char const* alt_token_c( char const *token ) {
   assert( token != NULL );
 
-  if ( opt_alt_tokens ) {
-    switch ( token[0] ) {
-      case '!': switch ( token[1] ) {
-                  case '=': return L_not_eq;
-                  default : return L_not;
-                }
-      case '&': switch ( token[1] ) {
-                  case '&': return L_and;
-                  case '=': return L_and_eq;
-                  default : return L_bitand;
-                } // switch
-      case '|': switch ( token[1] ) {
-                  case '|': return L_or;
-                  case '=': return L_or_eq;
-                  default : return L_bitor;
-                } // switch
-      case '~': return L_compl;
-      case '^': switch ( token[1] ) {
-                  case '=': return L_xor_eq;
-                  default : return L_xor;
-                } // switch
-    } // switch
-  }
+  if ( !opt_alt_tokens )
+    return token;
 
-  return token;
+  switch ( token[0] ) {
+    case '!': switch ( token[1] ) {
+                case '=' : return L_not_eq;
+                case '\0': return L_not;
+              }
+              break;
+    case '&': switch ( token[1] ) {
+                case '&' : return L_and;
+                case '=' : return L_and_eq;
+                case '\0': return L_bitand;
+              } // switch
+              break;
+    case '|': switch ( token[1] ) {
+                case '|' : return L_or;
+                case '=' : return L_or_eq;
+                case '\0': return L_bitor;
+              } // switch
+              break;
+    case '~': switch ( token[1] ) {
+                case '\0': return L_compl;
+              } // switch
+              break;
+    case '^': switch ( token[1] ) {
+                case '=' : return L_xor_eq;
+                case '\0': return L_xor;
+              } // switch
+              break;
+    default : return token;
+  } // switch
+
+  UNEXPECTED_INT_VALUE( token[1] );
 }
 
 /**
