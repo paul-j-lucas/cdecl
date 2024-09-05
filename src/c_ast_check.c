@@ -617,9 +617,8 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
         print_error( &to_ast->loc, "invalid const_cast type " );
         print_ast_type_aka( to_ast, stderr );
         EPRINTF(
-          "; must be a pointer, pointer to member, %s\n",
-          OPT_LANG_IS( RVALUE_REFERENCES ) ?
-            "reference, or rvalue reference" : "or reference"
+          "; must be a pointer, pointer to member, %s reference\n",
+          OPT_LANG_IS( RVALUE_REFERENCES ) ? "reference, or rvalue" : "or"
         );
         return false;
       }
