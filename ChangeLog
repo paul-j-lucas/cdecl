@@ -1,3 +1,8 @@
+2024-09-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: graph_token_c() now rigorously checks token[1].
+   * gibberish.c: alt_token_c() now rigorously checks token[1].
+
 2024-09-04  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c: Factored out c_ast_check_oper_member().
