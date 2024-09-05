@@ -1148,31 +1148,32 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 
     case 2:                             // main(int, char *argv[])
     case 3:                             // main(int, char *argv[], char *envp[])
-      if ( OPT_LANG_IS( PROTOTYPES ) ) {
-        param_ast = c_param_ast( param );
-        if ( !c_ast_is_builtin_any( param_ast, TB_int ) ) {
-          print_error( &param_ast->loc,
-            "invalid main() first parameter type "
-          );
-          print_ast_type_aka( param_ast, stderr );
-          EPRINTF(
-            "; must be \"%s\" or a typedef thereof\n",
-            c_tid_error( TB_int )
-          );
-          return false;
-        }
+      if ( !OPT_LANG_IS( PROTOTYPES ) )
+        break;
 
+      param_ast = c_param_ast( param );
+      if ( !c_ast_is_builtin_any( param_ast, TB_int ) ) {
+        print_error( &param_ast->loc,
+          "invalid main() first parameter type "
+        );
+        print_ast_type_aka( param_ast, stderr );
+        EPRINTF(
+          "; must be \"%s\" or a typedef thereof\n",
+          c_tid_error( TB_int )
+        );
+        return false;
+      }
+
+      param = param->next;
+      param_ast = c_param_ast( param );
+      if ( !c_ast_check_func_main_char_ptr_param( param_ast ) )
+        return false;
+
+      if ( n_params == 3 ) {          // char *envp[]
         param = param->next;
         param_ast = c_param_ast( param );
         if ( !c_ast_check_func_main_char_ptr_param( param_ast ) )
           return false;
-
-        if ( n_params == 3 ) {          // char *envp[]
-          param = param->next;
-          param_ast = c_param_ast( param );
-          if ( !c_ast_check_func_main_char_ptr_param( param_ast ) )
-            return false;
-        }
       }
       break;
 
