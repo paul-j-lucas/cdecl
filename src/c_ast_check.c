@@ -166,9 +166,11 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_oper_params( c_ast_t const* ),
                     c_ast_check_upc( c_ast_t const* ),
                     c_ast_check_visitor( c_ast_t const*, c_ast_visit_fn_t ),
+                    c_ast_has_escu_param( c_ast_t const* ),
                     c_ast_visitor_error( c_ast_t const*, user_data_t ),
                     c_ast_visitor_type( c_ast_t const*, user_data_t ),
                     c_op_is_new_delete( c_op_id_t );
+
 
 NODISCARD
 static char const*  c_ast_member_or_nonmember_str( c_ast_t const* );
@@ -2117,6 +2119,70 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks that a #K_OPERATOR AST is valid when either a member or non-member.
+ *
+ * @param ast The #K_OPERATOR AST to check.
+ * @return Returns `true` only if all checks passed.
+ *
+ * @sa c_ast_check_oper_params()
+ */
+NODISCARD
+static bool c_ast_check_oper_member( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_OPERATOR );
+
+  switch ( c_ast_op_overload( ast ) ) {
+    case C_FUNC_NON_MEMBER:
+      if ( c_op_is_new_delete( ast->oper.operator->op_id ) )
+        break;                          // checks don't apply for new & delete
+
+      //
+      // Ensure non-member operators (except new, new[], delete, and delete[])
+      // have at least one enum, class, struct, or union parameter.
+      //
+      if ( !c_ast_has_escu_param( ast ) ) {
+        print_error( c_ast_params_loc( ast ),
+          "at least 1 parameter of a non-member operator must be an "
+          "enum, class, struct, or union"
+          ", or a reference thereto"
+          ", or a typedef thereof\n"
+        );
+        return false;
+      }
+      break;
+
+    case C_FUNC_MEMBER:
+      //
+      // Ensure member operators are not friend, e.g.:
+      //
+      //      friend bool operator!()   // error
+      //
+      // Note that if an operator has a scoped name, e.g.:
+      //
+      //      friend bool S::operator!()
+      //
+      // then it's a member of S and not a member of the class that it's
+      // presumably being declared within.
+      //
+      if ( c_tid_is_any( ast->type.stids, TS_friend ) &&
+           c_sname_empty( &ast->sname ) ) {
+        print_error( &ast->loc,
+          "member operators can not be \"%s\"\n",
+          c_tid_error( TS_friend )
+        );
+        return false;
+      }
+      break;
+
+    case C_FUNC_UNSPECIFIED:
+      // nothing to do
+      break;
+  } // switch
+
+  return true;
+}
+
+/**
  * Checks that a #K_OPERATOR AST has the correct number of parameters.
  *
  * @param ast The #K_OPERATOR AST to check.
@@ -2177,69 +2243,11 @@ NODISCARD
 static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   if ( !c_ast_check_oper_num_params( ast ) )
     return false;
+  if ( !c_ast_check_oper_member( ast ) )
+    return false;
 
-  c_operator_t const *const op = ast->oper.operator;
-
-  c_func_member_t const member = c_ast_op_overload( ast );
-  switch ( member ) {
-    case C_FUNC_NON_MEMBER:
-      NO_OP;
-      //
-      // Count the number of enum, class, struct, or union parameters, or
-      // references thereto.
-      //
-      bool any_ecsu_params = false;
-      FOREACH_AST_FUNC_PARAM( param, ast ) {
-        c_ast_t const *param_ast = c_ast_unreference_any( c_param_ast( param ) );
-        if ( (param_ast->kind & K_ANY_ECSU) != 0 ) {
-          any_ecsu_params = true;
-          break;
-        }
-      } // for
-      //
-      // Ensure non-member operators (except new, new[], delete, and delete[])
-      // have at least one enum, class, struct, or union parameter.
-      //
-      if ( !c_op_is_new_delete( op->op_id ) && !any_ecsu_params ) {
-        print_error( c_ast_params_loc( ast ),
-          "at least 1 parameter of a non-member operator must be an "
-          "enum, class, struct, or union"
-          ", or a reference thereto"
-          ", or a typedef thereof\n"
-        );
-        return false;
-      }
-      break;
-
-    case C_FUNC_MEMBER:
-      //
-      // Ensure member operators are not friend, e.g.:
-      //
-      //      friend bool operator!()   // error
-      //
-      // Note that if an operator has a scoped name, e.g.:
-      //
-      //      friend bool S::operator!()
-      //
-      // then it's a member of S and not a member of the class that it's
-      // presumably being declared within.
-      //
-      if ( c_tid_is_any( ast->type.stids, TS_friend ) &&
-           c_sname_empty( &ast->sname ) ) {
-        print_error( &ast->loc,
-          "member operators can not be \"%s\"\n",
-          c_tid_error( TS_friend )
-        );
-        return false;
-      }
-      break;
-
-    case C_FUNC_UNSPECIFIED:
-      // nothing to do
-      break;
-  } // switch
-
-  switch ( op->op_id ) {
+  // Perform additional checks for certain operators.
+  switch ( ast->oper.operator->op_id ) {
     case C_OP_MINUS_MINUS:
     case C_OP_PLUS_PLUS:
       return c_ast_check_op_minus_minus_plus_plus_params( ast );
@@ -2858,6 +2866,28 @@ static bool c_ast_check_visitor( c_ast_t const *ast,
   return NULL == c_ast_visit(
     ast, C_VISIT_DOWN, check_fn, (user_data_t){ .pc = &(check_state_t){ 0 } }
   );
+}
+
+/**
+ * Checks whether a function-like AST has at least one `enum,` `class`,
+ * `struct`, or `union` parameter or reference thereto.
+ *
+ * @param ast The #K_ANY_FUNCTION_LIKE AST to check.
+ * @return Returns `true` only if \a ast has at least one `enum`, `class`,
+ * `struct`, or `union` parameter or reference thereto.
+ */
+NODISCARD
+static bool c_ast_has_escu_param( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
+
+  FOREACH_AST_FUNC_PARAM( param, ast ) {
+    c_ast_t const *param_ast = c_ast_unreference_any( c_param_ast( param ) );
+    if ( (param_ast->kind & K_ANY_ECSU) != 0 )
+      return true;
+  } // for
+
+  return false;
 }
 
 /**
