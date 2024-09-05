@@ -2175,9 +2175,6 @@ must_have_exactly_n_params:
  */
 NODISCARD
 static bool c_ast_check_oper_params( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  assert( ast->kind == K_OPERATOR );
-
   if ( !c_ast_check_oper_num_params( ast ) )
     return false;
 
