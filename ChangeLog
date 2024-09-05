@@ -1,5 +1,9 @@
 2024-09-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c: Factored out c_ast_check_oper_member().
+   * c_ast_check.c: Removed uncessary asserts.
+   * c_ast_check.c: Factored out c_ast_check_oper_num_params().
+   * c_ast_check.c: Moved declaration of ret_ast.
    * cli_options.c, util.c, util.h: Eliminated STRTOULL_ERROR.
 
 2024-09-03  Paul J. Lucas <paul@lucasmail.org>
