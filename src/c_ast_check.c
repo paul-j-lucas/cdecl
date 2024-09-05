@@ -2164,24 +2164,26 @@ same: print_error( c_ast_params_loc( ast ),
     return false;
   }
 
-  //
-  // Count the number of enum, class, struct, or union parameters, or
-  // references thereto.
-  //
-  unsigned ecsu_param_count = 0;
-  FOREACH_AST_FUNC_PARAM( param, ast ) {
-    c_ast_t const *param_ast = c_ast_unreference_any( c_param_ast( param ) );
-    if ( (param_ast->kind & K_ANY_ECSU) != 0 )
-      ++ecsu_param_count;
-  } // for
-
   switch ( member ) {
     case C_FUNC_NON_MEMBER:
+      NO_OP;
+      //
+      // Count the number of enum, class, struct, or union parameters, or
+      // references thereto.
+      //
+      bool any_ecsu_params = false;
+      FOREACH_AST_FUNC_PARAM( param, ast ) {
+        c_ast_t const *param_ast = c_ast_unreference_any( c_param_ast( param ) );
+        if ( (param_ast->kind & K_ANY_ECSU) != 0 ) {
+          any_ecsu_params = true;
+          break;
+        }
+      } // for
       //
       // Ensure non-member operators (except new, new[], delete, and delete[])
       // have at least one enum, class, struct, or union parameter.
       //
-      if ( !c_op_is_new_delete( op->op_id ) && ecsu_param_count == 0 ) {
+      if ( !c_op_is_new_delete( op->op_id ) && !any_ecsu_params ) {
         print_error( c_ast_params_loc( ast ),
           "at least 1 parameter of a non-member operator must be an "
           "enum, class, struct, or union"
