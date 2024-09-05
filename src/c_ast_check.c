@@ -2117,6 +2117,57 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks that a #K_OPERATOR AST has the correct number of parameters.
+ *
+ * @param ast The #K_OPERATOR AST to check.
+ * @return Returns `true` only if all checks passed.
+ *
+ * @sa c_ast_check_oper_params()
+ */
+NODISCARD
+static bool c_ast_check_oper_num_params( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_OPERATOR );
+
+  c_operator_t const *const op = ast->oper.operator;
+
+  unsigned params_min, params_max;
+  c_ast_op_params_min_max( ast, &params_min, &params_max );
+
+  size_t const n_params = slist_len( &ast->oper.param_ast_list );
+  if ( n_params < params_min ) {
+    if ( params_min == params_max )
+      goto must_have_exactly_n_params;
+    print_error( c_ast_params_loc( ast ),
+      "%soperator \"%s\" must have at least %u parameter%s\n",
+      c_ast_member_or_nonmember_str( ast ), op->literal,
+      params_min, plural_s( params_min )
+    );
+    return false;
+  }
+  if ( n_params > params_max ) {
+    if ( op->params_min == params_max )
+      goto must_have_exactly_n_params;
+    print_error( c_ast_params_loc( ast ),
+      "%soperator \"%s\" can have at most %u parameter%s\n",
+      c_ast_member_or_nonmember_str( ast ), op->literal,
+      op->params_max, plural_s( op->params_max )
+    );
+    return false;
+  }
+
+  return true;
+
+must_have_exactly_n_params:
+  print_error( c_ast_params_loc( ast ),
+    "%soperator \"%s\" must have exactly %u parameter%s\n",
+    c_ast_member_or_nonmember_str( ast ), op->literal,
+    params_min, plural_s( params_min )
+  );
+  return false;
+}
+
+/**
  * Checks all #K_OPERATOR AST parameters for semantic errors.
  *
  * @param ast The #K_OPERATOR AST to check.
@@ -2127,43 +2178,12 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
 
+  if ( !c_ast_check_oper_num_params( ast ) )
+    return false;
+
   c_operator_t const *const op = ast->oper.operator;
+
   c_func_member_t const member = c_ast_op_overload( ast );
-
-  unsigned params_min, params_max;
-  c_ast_op_params_min_max( ast, &params_min, &params_max );
-
-  //
-  // Ensure the operator has the required number of parameters.
-  //
-  size_t const n_params = slist_len( &ast->oper.param_ast_list );
-  if ( n_params < params_min ) {
-    if ( params_min == params_max ) {
-same: print_error( c_ast_params_loc( ast ),
-        "%soperator \"%s\" must have exactly %u parameter%s\n",
-        c_ast_member_or_nonmember_str( ast ), op->literal,
-        params_min, plural_s( params_min )
-      );
-    } else {
-      print_error( c_ast_params_loc( ast ),
-        "%soperator \"%s\" must have at least %u parameter%s\n",
-        c_ast_member_or_nonmember_str( ast ), op->literal,
-        params_min, plural_s( params_min )
-      );
-    }
-    return false;
-  }
-  if ( n_params > params_max ) {
-    if ( op->params_min == params_max )
-      goto same;
-    print_error( c_ast_params_loc( ast ),
-      "%soperator \"%s\" can have at most %u parameter%s\n",
-      c_ast_member_or_nonmember_str( ast ), op->literal,
-      op->params_max, plural_s( op->params_max )
-    );
-    return false;
-  }
-
   switch ( member ) {
     case C_FUNC_NON_MEMBER:
       NO_OP;
