@@ -1505,53 +1505,101 @@ static char const* graph_token_c( char const *token ) {
 
   switch ( opt_graph ) {
     case C_GRAPH_NONE:
-      break;
-    //
+      return token;
+
     // Even though this could be done character-by-character, it's easier for
     // the calling code if multi-character tokens containing graph characters
     // are returned as a single string.
-    //
+
     case C_GRAPH_DI:
-      if ( OPT_LANG_IS( DIGRAPHS ) ) {
-        switch ( token[0] ) {
-          case '#'  : return token[1] == '#' ? "%:%:" : "%:";
-          case '['  : switch ( token[1] ) {
-                        case '[': return "<:<:";
-                        case ']': return "<::>";
-                        default : return "<:";
-                      } // switch
-          case ']'  : return token[1] == ']' ? ":>:>" : ":>";
-          case '{'  : return "<%";
-          case '}'  : return "%>";
-        } // switch
-      }
+      if ( !OPT_LANG_IS( DIGRAPHS ) )
+        return token;
+
+      switch ( token[0] ) {
+        case '#'  : switch ( token[1] ) {
+                      case '#' : return "%:%:";
+                      case '\0': return "%:";
+                    } // switch
+                    break;
+        case '['  : switch ( token[1] ) {
+                      case '[' : return "<:<:";
+                      case ']' : return "<::>";
+                      case '\0': return "<:";
+                    } // switch
+                    break;
+        case ']'  : switch ( token[1] ) {
+                      case ']' : return ":>:>";
+                      case '\0': return ":>";
+                    } // switch
+                    break;
+        case '{'  : switch ( token[1] ) {
+                      case '\0': return "<%";
+                    } // switch
+                    break;
+        case '}'  : switch ( token[1] ) {
+                      case '\0': return "%>";
+                    } // switch
+                    break;
+        default   : return token;
+      } // switch
       break;
+
     case C_GRAPH_TRI:
-      if ( OPT_LANG_IS( TRIGRAPHS ) ) {
-        switch ( token[0] ) {
-          case '#'  : return token[1] == '#' ? "?\?=?\?=" : "?\?=";
-          case '['  : switch ( token[1] ) {
-                        case '[': return "?\?(?\?(";
-                        case ']': return "?\?(?\?)";
-                        default : return "?\?(";
-                      } // switch
-          case '\\' : return "?\?/";    // LCOV_EXCL_LINE
-          case ']'  : return token[1] == ']' ? "?\?)?\?)" : "?\?)";
-          case '^'  : return token[1] == '=' ? "?\?'=" : "?\?'";
-          case '{'  : return "?\?<";
-          case '|'  : switch ( token[1] ) {
-                        case '=': return "?\?!=";
-                        case '|': return "?\?!?\?!";
-                        default : return "?\?!";
-                      } // switch
-          case '}'  : return "?\?>";
-          case '~'  : return "?\?-";
-        } // switch
-      }
+      if ( !OPT_LANG_IS( TRIGRAPHS ) )
+        return token;
+
+      switch ( token[0] ) {
+        case '#'  : switch ( token[1] ) {
+                      case '#' : return "?\?=?\?=";
+                      case '\0': return "?\?=";
+                    } // switch
+                    break;
+        case '['  : switch ( token[1] ) {
+                      case '[' : return "?\?(?\?(";
+                      case ']' : return "?\?(?\?)";
+                      case '\0': return "?\?(";
+                    } // switch
+                    break;
+        case '\\' : // LCOV_EXCL_START
+                    switch ( token[1] ) {
+                      case '\0': return "?\?/";
+                    } // switch
+                    break;
+                    // LCOV_EXCL_STOP
+        case ']'  : switch ( token[1] ) {
+                      case ']' : return "?\?)?\?)";
+                      case '\0': return "?\?)";
+                    } // switch
+                    break;
+        case '^'  : switch ( token[1] ) {
+                      case '=' : return "?\?'=";
+                      case '\0': return "?\?'";
+                    } // switch
+                    break;
+        case '{'  : switch ( token[1] ) {
+                      case '\0': return "?\?<";
+                    } // switch
+                    break;
+        case '|'  : switch ( token[1] ) {
+                      case '=' : return "?\?!=";
+                      case '|' : return "?\?!?\?!";
+                      case '\0': return "?\?!";
+                    } // switch
+                    break;
+        case '}'  : switch ( token[1] ) {
+                      case '\0': return "?\?>";
+                    } // switch
+                    break;
+        case '~'  : switch ( token[1] ) {
+                      case '\0': return "?\?-";
+                    } // switch
+                    break;
+        default   : return token;
+      } // switch
       break;
   } // switch
 
-  return token;
+  UNEXPECTED_INT_VALUE( token[1] );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
