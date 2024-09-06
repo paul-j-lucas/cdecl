@@ -46,6 +46,7 @@
 
 // local functions
 static void c_ast_warn_name( c_ast_t const* );
+static void c_ast_warn_func_params( c_ast_t const* );
 static void c_ast_warn_func_ret_type( c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -135,18 +136,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       FALLTHROUGH;
 
     case K_CONSTRUCTOR:
-      FOREACH_AST_FUNC_PARAM( param, raw_ast ) {
-        c_ast_t const *const param_ast = c_param_ast( param );
-        c_ast_warn_visitor( param_ast, &c_ast_visitor_warning );
-        if ( c_tid_is_any( param_ast->type.stids, TS_volatile ) &&
-             !OPT_LANG_IS( volatile_PARAMS_NOT_DEPRECATED ) ) {
-          print_warning( &param_ast->loc,
-            "\"%s\" parameter types are deprecated%s\n",
-            c_tid_error( TS_volatile ),
-            C_LANG_WHICH( volatile_PARAMS_NOT_DEPRECATED )
-          );
-        }
-      } // for
+      c_ast_warn_func_params( raw_ast );
       FALLTHROUGH;
 
     case K_DESTRUCTOR:
@@ -204,6 +194,29 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
   c_ast_warn_name( ast );
 
   return /*stop=*/false;
+}
+
+/**
+ * Checks the parameters of a function-like AST for warnings.
+ *
+ * @param ast The function-like AST to check.
+ */
+static void c_ast_warn_func_params( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
+
+  FOREACH_AST_FUNC_PARAM( param, ast ) {
+    c_ast_t const *const param_ast = c_param_ast( param );
+    c_ast_warn_visitor( param_ast, &c_ast_visitor_warning );
+    if ( c_tid_is_any( param_ast->type.stids, TS_volatile ) &&
+          !OPT_LANG_IS( volatile_PARAMS_NOT_DEPRECATED ) ) {
+      print_warning( &param_ast->loc,
+        "\"%s\" parameter types are deprecated%s\n",
+        c_tid_error( TS_volatile ),
+        C_LANG_WHICH( volatile_PARAMS_NOT_DEPRECATED )
+      );
+    }
+  } // for
 }
 
 /**
