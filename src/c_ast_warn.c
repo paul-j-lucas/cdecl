@@ -110,11 +110,12 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
     case K_ENUM:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
-      if ( c_ast_is_register( raw_ast ) && OPT_LANG_IS( MIN(CPP_11) ) ) {
+      if ( c_ast_is_register( raw_ast ) &&
+           !OPT_LANG_IS( register_NOT_DEPRECATED ) ) {
         print_warning( &ast->loc,
           "\"%s\" is deprecated%s\n",
           c_tid_error( TS_register ),
-          C_LANG_WHICH( MAX(CPP_03) )
+          C_LANG_WHICH( register_NOT_DEPRECATED )
         );
       }
       break;

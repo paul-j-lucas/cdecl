@@ -1134,8 +1134,17 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Languages `register` variables are supported in.
+ *
+ * @sa #LANG_register_NOT_DEPRECATED
  */
 #define LANG_register                   LANG_MAX(CPP_14)
+
+/**
+ * Languages `register` is _not_ deprecated in.
+ *
+ * @sa #LANG_register
+ */
+#define LANG_register_NOT_DEPRECATED    LANG_MAX(CPP_03)
 
 /**
  * Languages the `reproducible` attribute is supported in.
