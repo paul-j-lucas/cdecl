@@ -1496,6 +1496,108 @@ static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks the return type of a function-like AST for errors.
+ *
+ * @param ast The function-like AST to check the return type of.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_check_func_ret_type( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
+
+  c_ast_t const *const ret_ast = ast->func.ret_ast;
+  if ( ret_ast == NULL )
+    return true;
+
+  char const *const kind_name = c_kind_name( ast->kind );
+  c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
+
+  switch ( raw_ret_ast->kind ) {
+    case K_ARRAY:
+      print_error( &ret_ast->loc, "%s returning array", kind_name );
+      print_hint( "%s returning pointer", kind_name );
+      return false;
+
+    case K_BUILTIN:
+      if ( c_tid_is_any( raw_ret_ast->type.btids, TB_auto ) &&
+           !OPT_LANG_IS( auto_RETURN_TYPES ) ) {
+        print_error( &ret_ast->loc,
+          "%s returning \"%s\" not supported%s\n",
+          kind_name,
+          c_tid_error( TB_auto ),
+          C_LANG_WHICH( auto_RETURN_TYPES )
+        );
+        return false;
+      }
+      break;
+
+    case K_CLASS_STRUCT_UNION:
+      if ( !OPT_LANG_IS( CSU_RETURN_TYPES ) ) {
+        print_error( &ret_ast->loc, "%s returning ", kind_name );
+        print_ast_kind_aka( ret_ast, stderr );
+        EPRINTF( " not supported%s\n", C_LANG_WHICH( CSU_RETURN_TYPES ) );
+        return false;
+      }
+      break;
+
+    case K_FUNCTION:
+      print_error( &ret_ast->loc, "%s returning ", kind_name );
+      print_ast_kind_aka( ret_ast, stderr );
+      EPUTS( " is illegal" );
+      print_hint( "%s returning pointer to function", kind_name );
+      return false;
+
+    case K_STRUCTURED_BINDING:
+      print_error( &ret_ast->loc,
+        "%s returning %s is illegal\n",
+        kind_name, c_kind_name( ret_ast->kind )
+      );
+      return false;
+
+    case K_APPLE_BLOCK:
+    case K_ENUM:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_TYPEDEF:
+      // nothing to check
+      break;
+
+    case K_CAPTURE:
+    case K_CAST:
+    case K_CONCEPT:
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
+    case K_LAMBDA:
+    case K_NAME:
+    case K_OPERATOR:
+    case K_PLACEHOLDER:
+    case K_UDEF_CONV:
+    case K_UDEF_LIT:
+    case K_VARIADIC:
+      UNEXPECTED_INT_VALUE( raw_ret_ast->kind );
+  } // switch
+
+  if ( c_tid_is_any( ast->type.stids, TS_explicit ) ) {
+    c_lang_id_t which_lang_ids = LANG_NONE;
+    switch ( ast->kind ) {
+      case K_UDEF_CONV:
+        if ( OPT_LANG_IS( explicit_USER_DEF_CONVS ) )
+          break;
+        which_lang_ids = LANG_explicit_USER_DEF_CONVS;
+        FALLTHROUGH;
+      default:
+        error_kind_not_tid( ast, TS_explicit, which_lang_ids, "\n" );
+        return false;
+    } // switch
+  }
+
+  return true;
+}
+
+/**
  * Checks a #K_LAMBDA AST for semantic errors.
  *
  * @param ast The #K_LAMBDA AST to check.
@@ -2570,108 +2672,6 @@ static bool c_ast_check_restrict( c_ast_t const *ast ) {
 }
 
 /**
- * Checks the return type of a function-like AST for errors.
- *
- * @param ast The function-like AST to check the return type of.
- * @return Returns `true` only if all checks passed.
- */
-NODISCARD
-static bool c_ast_check_ret_type( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
-
-  c_ast_t const *const ret_ast = ast->func.ret_ast;
-  if ( ret_ast == NULL )
-    return true;
-
-  char const *const kind_name = c_kind_name( ast->kind );
-  c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
-
-  switch ( raw_ret_ast->kind ) {
-    case K_ARRAY:
-      print_error( &ret_ast->loc, "%s returning array", kind_name );
-      print_hint( "%s returning pointer", kind_name );
-      return false;
-
-    case K_BUILTIN:
-      if ( c_tid_is_any( raw_ret_ast->type.btids, TB_auto ) &&
-           !OPT_LANG_IS( auto_RETURN_TYPES ) ) {
-        print_error( &ret_ast->loc,
-          "%s returning \"%s\" not supported%s\n",
-          kind_name,
-          c_tid_error( TB_auto ),
-          C_LANG_WHICH( auto_RETURN_TYPES )
-        );
-        return false;
-      }
-      break;
-
-    case K_CLASS_STRUCT_UNION:
-      if ( !OPT_LANG_IS( CSU_RETURN_TYPES ) ) {
-        print_error( &ret_ast->loc, "%s returning ", kind_name );
-        print_ast_kind_aka( ret_ast, stderr );
-        EPRINTF( " not supported%s\n", C_LANG_WHICH( CSU_RETURN_TYPES ) );
-        return false;
-      }
-      break;
-
-    case K_FUNCTION:
-      print_error( &ret_ast->loc, "%s returning ", kind_name );
-      print_ast_kind_aka( ret_ast, stderr );
-      EPUTS( " is illegal" );
-      print_hint( "%s returning pointer to function", kind_name );
-      return false;
-
-    case K_STRUCTURED_BINDING:
-      print_error( &ret_ast->loc,
-        "%s returning %s is illegal\n",
-        kind_name, c_kind_name( ret_ast->kind )
-      );
-      return false;
-
-    case K_APPLE_BLOCK:
-    case K_ENUM:
-    case K_POINTER:
-    case K_POINTER_TO_MEMBER:
-    case K_REFERENCE:
-    case K_RVALUE_REFERENCE:
-    case K_TYPEDEF:
-      // nothing to check
-      break;
-
-    case K_CAPTURE:
-    case K_CAST:
-    case K_CONCEPT:
-    case K_CONSTRUCTOR:
-    case K_DESTRUCTOR:
-    case K_LAMBDA:
-    case K_NAME:
-    case K_OPERATOR:
-    case K_PLACEHOLDER:
-    case K_UDEF_CONV:
-    case K_UDEF_LIT:
-    case K_VARIADIC:
-      UNEXPECTED_INT_VALUE( raw_ret_ast->kind );
-  } // switch
-
-  if ( c_tid_is_any( ast->type.stids, TS_explicit ) ) {
-    c_lang_id_t which_lang_ids = LANG_NONE;
-    switch ( ast->kind ) {
-      case K_UDEF_CONV:
-        if ( OPT_LANG_IS( explicit_USER_DEF_CONVS ) )
-          break;
-        which_lang_ids = LANG_explicit_USER_DEF_CONVS;
-        FALLTHROUGH;
-      default:
-        error_kind_not_tid( ast, TS_explicit, which_lang_ids, "\n" );
-        return false;
-    } // switch
-  }
-
-  return true;
-}
-
-/**
  * Checks a #K_STRUCTURED_BINDING AST for errors.
  *
  * @param ast The #K_STRUCTURED_BINDING AST to check.
@@ -2749,7 +2749,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
     return false;
   }
 
-  return  c_ast_check_ret_type( ast ) &&
+  return  c_ast_check_func_ret_type( ast ) &&
           c_ast_check_func( ast ) &&
           c_ast_check_func_params( ast );
 }
@@ -2976,7 +2976,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
 
     case K_APPLE_BLOCK:
     case K_FUNCTION:
-      if ( !c_ast_check_ret_type( ast ) )
+      if ( !c_ast_check_func_ret_type( ast ) )
         return VISITOR_ERROR_FOUND;
       FALLTHROUGH;
 
@@ -3013,7 +3013,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
     case K_LAMBDA:
       if ( !(c_ast_check_lambda( ast ) &&
              c_ast_check_func_params( ast ) &&
-             c_ast_check_ret_type( ast )) ) {
+             c_ast_check_func_ret_type( ast )) ) {
         return VISITOR_ERROR_FOUND;
       }
       break;
@@ -3070,7 +3070,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_UDEF_LIT:
-      if ( !(c_ast_check_ret_type( ast ) &&
+      if ( !(c_ast_check_func_ret_type( ast ) &&
              c_ast_check_func( ast ) &&
              c_ast_check_udef_lit_params( ast )) ) {
         return VISITOR_ERROR_FOUND;
