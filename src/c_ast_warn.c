@@ -46,7 +46,7 @@
 
 // local functions
 static void c_ast_warn_name( c_ast_t const* );
-static void c_ast_warn_ret_type( c_ast_t const* );
+static void c_ast_warn_func_ret_type( c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -131,7 +131,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
     case K_FUNCTION:
     case K_LAMBDA:
     case K_OPERATOR:
-      c_ast_warn_ret_type( raw_ast );
+      c_ast_warn_func_ret_type( raw_ast );
       FALLTHROUGH;
 
     case K_CONSTRUCTOR:
@@ -207,32 +207,11 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
 }
 
 /**
- * Checks an AST's name(s) for warnings.
- *
- * @param ast The AST to check.
- *
- * @sa c_ast_check_name()
- */
-static void c_ast_warn_name( c_ast_t const *ast ) {
-  assert( ast != NULL );
-
-  c_sname_warn( &ast->sname, &ast->loc );
-
-  if ( ast->align.kind == C_ALIGNAS_SNAME )
-    c_sname_warn( &ast->align.sname, &ast->align.loc );
-
-  if ( (ast->kind & K_ANY_NAME) != 0 &&
-       c_sname_cmp( &ast->sname, &ast->name.sname ) != 0 ) {
-    c_sname_warn( &ast->name.sname, &ast->loc );
-  }
-}
-
-/**
  * Checks the return type of a function-like AST for warnings.
  *
  * @param ast The function-like AST to check.
  */
-static void c_ast_warn_ret_type( c_ast_t const *ast ) {
+static void c_ast_warn_func_ret_type( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_RETURN ) );
 
@@ -259,6 +238,27 @@ static void c_ast_warn_ret_type( c_ast_t const *ast ) {
       c_tid_error( TA_nodiscard ),
       c_kind_name( ast->kind )
     );
+  }
+}
+
+/**
+ * Checks an AST's name(s) for warnings.
+ *
+ * @param ast The AST to check.
+ *
+ * @sa c_ast_check_name()
+ */
+static void c_ast_warn_name( c_ast_t const *ast ) {
+  assert( ast != NULL );
+
+  c_sname_warn( &ast->sname, &ast->loc );
+
+  if ( ast->align.kind == C_ALIGNAS_SNAME )
+    c_sname_warn( &ast->align.sname, &ast->align.loc );
+
+  if ( (ast->kind & K_ANY_NAME) != 0 &&
+       c_sname_cmp( &ast->sname, &ast->name.sname ) != 0 ) {
+    c_sname_warn( &ast->name.sname, &ast->loc );
   }
 }
 
