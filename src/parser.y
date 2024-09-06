@@ -801,7 +801,7 @@ static bool define_type( c_ast_t const *type_ast, decl_flags_t decl_flags ) {
   assert( type_ast != NULL );
   assert( is_1_bit_only_in_set( decl_flags, C_TYPE_DECL_ANY ) );
 
-  if ( !c_ast_check_typedef( type_ast ) )
+  if ( !c_type_ast_check( type_ast ) )
     return false;
 
   c_typedef_t *const tdef = c_typedef_add( type_ast, decl_flags )->data;

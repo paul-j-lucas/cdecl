@@ -640,6 +640,17 @@ c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
+ * Gets whether \a ast has the `register` storage class.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast has the `register` storage class.
+ */
+NODISCARD C_AST_UTIL_H_INLINE
+bool c_ast_is_register( c_ast_t const *ast ) {
+  return c_tid_is_any( ast->type.stids, TS_register );
+}
+
+/**
  * Checks if the type of \a ast is equivalent to `size_t`.
  *
  * @param ast The AST to check.

@@ -57,6 +57,7 @@ cdecl_SOURCES =	parser.y \
 		c_ast.c c_ast.h \
 		c_ast_check.c c_ast_check.h \
 		c_ast_util.c c_ast_util.h \
+		c_ast_warn.c c_ast_warn.h \
 		c_keyword.c c_keyword.h \
 		c_kind.c c_kind.h \
 		c_lang.c c_lang.h \
