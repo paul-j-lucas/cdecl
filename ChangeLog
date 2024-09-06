@@ -1,5 +1,13 @@
+2024-09-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_warn.c: Factored out c_ast_warn_func_params().
+   * c_ast_warn.c: s/ast/raw_ast/
+   * src/Makefile.am, c_ast_check.c, c_ast_check.h, c_ast_util.h, c_ast_warn.c,
+     c_ast_warn.h, parser.y: Split warning code into c_ast_warn.[ch].
+
 2024-09-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c: Factored out c_ast_check_func_default_delete().
    * gibberish.c: graph_token_c() now rigorously checks token[1].
    * gibberish.c: alt_token_c() now rigorously checks token[1].
 
