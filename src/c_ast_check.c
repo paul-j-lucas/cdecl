@@ -171,7 +171,6 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_visitor_type( c_ast_t const*, user_data_t ),
                     c_op_is_new_delete( c_op_id_t );
 
-
 NODISCARD
 static char const*  c_ast_member_or_nonmember_str( c_ast_t const* );
 
