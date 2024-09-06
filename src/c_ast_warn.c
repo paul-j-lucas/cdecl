@@ -151,7 +151,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_NAME:
-      if ( OPT_LANG_IS( PROTOTYPES ) && raw_ast->param_of_ast != NULL &&
+      if ( OPT_LANG_IS( PROTOTYPES ) && c_ast_is_param( raw_ast ) &&
            c_ast_is_untyped( raw_ast ) ) {
         //
         // A name can occur as an untyped K&R C function parameter.  In

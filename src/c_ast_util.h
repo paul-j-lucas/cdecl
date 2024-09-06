@@ -640,6 +640,17 @@ c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
+ * Gets whether \a ast is a parameter of a function-like AST.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast is a parameter.
+ */
+NODISCARD C_AST_UTIL_H_INLINE
+bool c_ast_is_param( c_ast_t const *ast ) {
+  return ast->param_of_ast != NULL;
+}
+
+/**
  * Gets whether \a ast has the `register` storage class.
  *
  * @param ast The AST to check.

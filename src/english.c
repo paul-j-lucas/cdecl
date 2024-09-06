@@ -621,7 +621,7 @@ static void c_name_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
   assert( eng != NULL );
 
   if ( !opt_permissive_types && OPT_LANG_IS( PROTOTYPES ) &&
-        ast->param_of_ast != NULL ) {
+        c_ast_is_param( ast ) ) {
     //
     // A name can occur as an untyped K&R C function parameter.  In C89-C17,
     // it's implicitly int:

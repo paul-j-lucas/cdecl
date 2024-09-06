@@ -189,7 +189,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
       "parent_id: " PRId_C_AST_ID_T,
       ast->parent_ast != NULL ? ast->parent_ast->unique_id : 0
     );
-    if ( ast->param_of_ast != NULL ) {
+    if ( c_ast_is_param( ast ) ) {
       DUMP_KEY( dump,
         "param_of_id: " PRId_C_AST_ID_T, ast->param_of_ast->unique_id
       );

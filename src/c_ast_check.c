@@ -348,7 +348,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
       break;
 
     case C_ARRAY_SIZE_NAME:
-      if ( ast->param_of_ast == NULL )
+      if ( !c_ast_is_param( ast ) )
         break;
       c_ast_t const *const size_param_ast =
         c_ast_find_param_named( ast->param_of_ast, ast->array.size_name, ast );
@@ -2613,7 +2613,7 @@ static bool c_ast_check_restrict( c_ast_t const *ast ) {
   c_ast_t const *const raw_ast = c_ast_untypedef( ast );
   switch ( raw_ast->kind ) {
     case K_ARRAY:                     // legal in C; __restrict legal in C++
-      if ( ast->param_of_ast == NULL ) {
+      if ( !c_ast_is_param( ast ) ) {
         print_error( &ast->loc,
           "%s can not be \"%s\" except as function parameter\n",
           c_kind_name( raw_ast->kind ),
