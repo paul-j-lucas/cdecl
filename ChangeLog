@@ -1,5 +1,7 @@
 2024-09-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, c_ast_util.h, c_ast_warn.c, dump.c, english.c, gibberish.c:
+     Added c_ast_is_param().
    * c_ast_warn.c: Factored out c_ast_warn_func_params().
    * c_ast_warn.c: s/ast/raw_ast/
    * src/Makefile.am, c_ast_check.c, c_ast_check.h, c_ast_util.h, c_ast_warn.c,
