@@ -154,6 +154,7 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 // local functions
 NODISCARD
 static bool         c_ast_check_emc( c_ast_t const* ),
+                    c_ast_check_func_default_delete( c_ast_t const* ),
                     c_ast_check_func_main( c_ast_t const* ),
                     c_ast_check_func_main_char_ptr_param( c_ast_t const* ),
                     c_ast_check_func_params_knr( c_ast_t const* ),
@@ -958,100 +959,8 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
       break;
   } // switch
 
-  if ( c_tid_is_any( ast->type.stids, TS_default | TS_delete ) ) {
-    switch ( ast->kind ) {
-      case K_CONSTRUCTOR:
-        switch ( slist_len( &ast->ctor.param_ast_list ) ) {
-          case 0:                     // C()
-            break;
-          case 1:                     // C(C const&)
-            if ( c_ast_is_ref_to_class_sname( param_ast, &ast->sname ) )
-              break;
-            FALLTHROUGH;
-          default:
-            //
-            // This isn't correct since copy constructors can have more than
-            // one parameter if the additional ones all have default arguments;
-            // but cdecl doesn't support default arguments.
-            //
-            goto only_special;
-        } // switch
-        break;
-
-      case K_FUNCTION:
-      case K_UDEF_CONV:
-        if ( c_tid_is_any( ast->type.stids, TS_default ) )
-          goto only_special;
-        break;
-
-      case K_OPERATOR:
-        switch ( ast->oper.operator->op_id ) {
-          case C_OP_EQUAL:              // C& operator=(C const&)
-            NO_OP;
-            //
-            // For C& operator=(C const&), the parameter and the return type
-            // must both be a reference to the same class, struct, or union.
-            //
-            c_ast_t const *const ret_ast =
-              c_ast_is_ref_to_tid_any( ast->oper.ret_ast, TB_ANY_CLASS );
-            if ( ret_ast == NULL ||
-                 slist_len( &ast->oper.param_ast_list ) != 1 ) {
-              goto only_special;
-            }
-            param_ast = c_ast_is_ref_to_tid_any( param_ast, TB_ANY_CLASS );
-            if ( !c_ast_equal( param_ast, ret_ast ) )
-              goto only_special;
-            break;
-
-          case C_OP_EQUAL_EQUAL:
-          case C_OP_EXCLAMATION_EQUAL:
-          case C_OP_GREATER:
-          case C_OP_GREATER_EQUAL:
-          case C_OP_LESS:
-          case C_OP_LESS_EQUAL:
-          case C_OP_LESS_EQUAL_GREATER:
-            if ( c_tid_is_any( ast->type.stids, TS_delete ) )
-              goto only_special;
-            //
-            // Detailed checks for defaulted overloaded relational operators
-            // are done in c_ast_check_op_relational_default().
-            //
-            break;
-
-          default:
-            goto only_special;
-        } // switch
-        break;
-
-      case K_APPLE_BLOCK:
-      case K_ARRAY:
-      case K_BUILTIN:
-      case K_CAPTURE:
-      case K_CAST:
-      case K_CLASS_STRUCT_UNION:
-      case K_CONCEPT:
-      case K_DESTRUCTOR:
-      case K_ENUM:
-      case K_LAMBDA:
-      case K_NAME:
-      case K_PLACEHOLDER:
-      case K_POINTER:
-      case K_POINTER_TO_MEMBER:
-      case K_REFERENCE:
-      case K_RVALUE_REFERENCE:
-      case K_STRUCTURED_BINDING:
-      case K_TYPEDEF:
-      case K_UDEF_LIT:
-      case K_VARIADIC:
-        //
-        // The grammar allows only functions, operators, constructors,
-        // destructors, and user-defined conversion operators to be either
-        // `default` or `delete`.  This function isn't called for destructors
-        // and the others have cases above.
-        //
-        UNEXPECTED_INT_VALUE( ast->kind );
-    } // switch
-  }
+  if ( !c_ast_check_func_default_delete( ast ) )
+    return false;
 
   c_tid_t const not_func_atids = ast->type.atids & c_tid_compl( TA_FUNC );
   if ( not_func_atids != TA_NONE ) {
@@ -1077,6 +986,119 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     );
     return false;
   }
+
+  return true;
+}
+
+/**
+ * Checks a function-like AST that is marked with either #TS_default or
+ * #TS_delete.
+ *
+ * @param ast The function-like AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_check_func_default_delete( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
+
+  if ( !c_tid_is_any( ast->type.stids, TS_default | TS_delete ) )
+    return true;
+
+  c_ast_t const *param_ast = c_param_ast( c_ast_params( ast ) );
+
+  switch ( ast->kind ) {
+    case K_CONSTRUCTOR:
+      switch ( slist_len( &ast->ctor.param_ast_list ) ) {
+        case 0:                         // C()
+          break;
+        case 1:                         // C(C const&)
+          if ( c_ast_is_ref_to_class_sname( param_ast, &ast->sname ) )
+            break;
+          FALLTHROUGH;
+        default:
+          //
+          // This isn't correct since copy constructors can have more than one
+          // parameter if the additional ones all have default arguments; but
+          // cdecl doesn't support default arguments.
+          //
+          goto only_special;
+      } // switch
+      break;
+
+    case K_FUNCTION:
+    case K_UDEF_CONV:
+      if ( c_tid_is_any( ast->type.stids, TS_default ) )
+        goto only_special;
+      break;
+
+    case K_OPERATOR:
+      switch ( ast->oper.operator->op_id ) {
+        case C_OP_EQUAL:                // C& operator=(C const&)
+          NO_OP;
+          //
+          // For C& operator=(C const&), the parameter and the return type must
+          // both be a reference to the same class, struct, or union.
+          //
+          c_ast_t const *const ret_ast =
+            c_ast_is_ref_to_tid_any( ast->oper.ret_ast, TB_ANY_CLASS );
+          if ( ret_ast == NULL ||
+                slist_len( &ast->oper.param_ast_list ) != 1 ) {
+            goto only_special;
+          }
+          param_ast = c_ast_is_ref_to_tid_any( param_ast, TB_ANY_CLASS );
+          if ( !c_ast_equal( param_ast, ret_ast ) )
+            goto only_special;
+          break;
+
+        case C_OP_EQUAL_EQUAL:
+        case C_OP_EXCLAMATION_EQUAL:
+        case C_OP_GREATER:
+        case C_OP_GREATER_EQUAL:
+        case C_OP_LESS:
+        case C_OP_LESS_EQUAL:
+        case C_OP_LESS_EQUAL_GREATER:
+          if ( c_tid_is_any( ast->type.stids, TS_delete ) )
+            goto only_special;
+          //
+          // Detailed checks for defaulted overloaded relational operators are
+          // done in c_ast_check_op_relational_default().
+          //
+          break;
+
+        default:
+          goto only_special;
+      } // switch
+      break;
+
+    case K_APPLE_BLOCK:
+    case K_ARRAY:
+    case K_BUILTIN:
+    case K_CAPTURE:
+    case K_CAST:
+    case K_CLASS_STRUCT_UNION:
+    case K_CONCEPT:
+    case K_DESTRUCTOR:
+    case K_ENUM:
+    case K_LAMBDA:
+    case K_NAME:
+    case K_PLACEHOLDER:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_STRUCTURED_BINDING:
+    case K_TYPEDEF:
+    case K_UDEF_LIT:
+    case K_VARIADIC:
+      //
+      // The grammar allows only functions, operators, constructors,
+      // destructors, and user-defined conversion operators to be either
+      // `default` or `delete`.  This function isn't called for destructors and
+      // the others have cases above.
+      //
+      UNEXPECTED_INT_VALUE( ast->kind );
+  } // switch
 
   return true;
 
