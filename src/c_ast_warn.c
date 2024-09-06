@@ -109,7 +109,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
     case K_ENUM:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
-      if ( c_ast_is_register( ast ) && OPT_LANG_IS( MIN(CPP_11) ) ) {
+      if ( c_ast_is_register( raw_ast ) && OPT_LANG_IS( MIN(CPP_11) ) ) {
         print_warning( &ast->loc,
           "\"%s\" is deprecated%s\n",
           c_tid_error( TS_register ),
@@ -119,7 +119,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_UDEF_LIT:
-      if ( c_sname_local_name( &ast->sname )[0] != '_' ) {
+      if ( c_sname_local_name( &raw_ast->sname )[0] != '_' ) {
         print_warning( &ast->loc,
           "%ss not starting with '_' are reserved\n",
           c_kind_name( K_UDEF_LIT )
@@ -135,7 +135,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       FALLTHROUGH;
 
     case K_CONSTRUCTOR:
-      FOREACH_AST_FUNC_PARAM( param, ast ) {
+      FOREACH_AST_FUNC_PARAM( param, raw_ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
         c_ast_warn_visitor( param_ast, &c_ast_visitor_warning );
         if ( c_tid_is_any( param_ast->type.stids, TS_volatile ) &&
@@ -150,7 +150,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       FALLTHROUGH;
 
     case K_DESTRUCTOR:
-      if ( c_tid_is_any( ast->type.stids, TS_throw ) &&
+      if ( c_tid_is_any( raw_ast->type.stids, TS_throw ) &&
            OPT_LANG_IS( noexcept ) ) {
         print_warning( &ast->loc,
           "\"throw\" is deprecated%s",
@@ -161,8 +161,8 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_NAME:
-      if ( OPT_LANG_IS( PROTOTYPES ) && ast->param_of_ast != NULL &&
-           c_ast_is_untyped( ast ) ) {
+      if ( OPT_LANG_IS( PROTOTYPES ) && raw_ast->param_of_ast != NULL &&
+           c_ast_is_untyped( raw_ast ) ) {
         //
         // A name can occur as an untyped K&R C function parameter.  In
         // C89-C17, it's implicitly int:
@@ -178,7 +178,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_STRUCTURED_BINDING:
-      if ( c_tid_is_any( ast->type.stids, TS_volatile ) &&
+      if ( c_tid_is_any( raw_ast->type.stids, TS_volatile ) &&
            !OPT_LANG_IS( volatile_STRUCTURED_BINDINGS_NOT_DEPRECATED ) ) {
         print_warning( &ast->loc,
           "\"%s\" structured bindings are deprecated%s\n",
