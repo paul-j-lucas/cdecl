@@ -175,7 +175,7 @@ char* strbuf_puts( strbuf_t *sbuf, char const *s ) {
 }
 
 /**
- * Appends \a s, quoted with \a quote and with non-space whitespace,
+ * Appends \a s, quoted with \a quote, and with non-space whitespace,
  * backslashes, and \a quote escaped, onto the end of \a sbuf growing the
  * buffer if necessary.
  *
