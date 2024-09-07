@@ -40,7 +40,7 @@
 
 // standard
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL */
+#include <stddef.h>                     /* for NULL, size_t */
 
 #ifdef WITH_READLINE
 # ifdef HAVE_READLINE_READLINE_H

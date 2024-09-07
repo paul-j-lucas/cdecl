@@ -47,6 +47,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <limits.h>
+#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

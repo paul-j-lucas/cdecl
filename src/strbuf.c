@@ -36,6 +36,7 @@
 // standard
 #include <assert.h>
 #include <stdarg.h>
+#include <stddef.h>                     /* for NULL, size_t */
 #include <stdlib.h>                     /* for free(3) */
 
 /// @endcond

@@ -33,7 +33,7 @@
 
 // standard
 #include <assert.h>
-#include <stddef.h>                     /* for NULL */
+#include <stddef.h>                     /* for NULL, size_t */
 #include <string.h>
 
 /// @cond DOXYGEN_IGNORE

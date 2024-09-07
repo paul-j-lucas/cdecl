@@ -43,6 +43,7 @@
 #include <signal.h>                     /* for raise(3) */
 #endif /* NDEBUG */
 #include <stdarg.h>
+#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

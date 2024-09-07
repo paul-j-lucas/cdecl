@@ -32,7 +32,7 @@
 #include <assert.h>
 #include <stdalign.h>
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL */
+#include <stddef.h>                     /* for NULL, size_t */
 #include <string.h>
 
 ////////// inline functions ///////////////////////////////////////////////////

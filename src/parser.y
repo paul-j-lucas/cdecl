@@ -71,6 +71,7 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdbool.h>
+#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -36,7 +36,7 @@
 // standard
 #include <assert.h>
 #include <stdbool.h>
-#include <stddef.h>                     /* for offsetof() */
+#include <stddef.h>                     /* for NULL, size_t, offsetof() */
 
 /// @endcond
 

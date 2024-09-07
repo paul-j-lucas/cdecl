@@ -37,7 +37,7 @@
 
 // standard
 #include <stdbool.h>
-#include <stddef.h>                     /* for size_t */
+#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>                      /* for FILE */
 
 _GL_INLINE_HEADER_BEGIN

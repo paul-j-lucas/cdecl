@@ -51,6 +51,7 @@
 #include <assert.h>
 #include <ctype.h>                      /* for isspace(3) */
 #include <stdarg.h>
+#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <string.h>
 

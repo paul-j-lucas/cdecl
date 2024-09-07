@@ -65,6 +65,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <stdlib.h>                     /* for strtol(3) */
 #include <string.h>
