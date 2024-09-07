@@ -2019,12 +2019,11 @@ static char const* mex_expanding_set_key( mex_state_t const *mex ) {
 
   strbuf_puts( &sbuf, mex->macro->name );
   if ( mex->arg_list != NULL ) {
-    bool comma = false;
     strbuf_putc( &sbuf, '(' );
     FOREACH_SLIST_NODE( arg_node, mex->arg_list ) {
-      strbuf_sepc_puts(
-        &sbuf, ',', &comma, p_token_list_str( arg_node->data )
-      );
+      strbuf_puts( &sbuf, p_token_list_str( arg_node->data ) );
+      if ( arg_node->next != NULL )
+        strbuf_putc( &sbuf, ',' );
     } // for
     strbuf_putc( &sbuf, ')' );
   }
