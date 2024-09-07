@@ -1,5 +1,9 @@
 2024-09-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * strbuf.c, strbuf.h: Eliminated strbuf_sepsn().
+   * gibberish.c: Eliminated colon2.
+   * p_macro.c, strbuf.h: Eliminated strbuf_sepc_putsn().
+   * c_ast_warn.c, c_lang.h: Added LANG_register_NOT_DEPRECATED.
    * c_ast_check.c, c_ast_util.h, c_ast_warn.c, dump.c, english.c, gibberish.c:
      Added c_ast_is_param().
    * c_ast_warn.c: Factored out c_ast_warn_func_params().
