@@ -1,3 +1,11 @@
+2024-09-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_sglob.c,
+     c_sname.c, c_sname.h, c_type.c, cdecl_command.c, cli_options.c, dam_lev.c,
+     did_you_mean.c, gibberish.c, lexer.l, p_macro.c, p_token.c, p_token.h,
+     parse.c, parser.y, print.c, prompt.c, read_line.c, set_options.c, slist.c,
+     strbuf.c, util.c, util.h: #include <stddef.h> clean-up.
+
 2024-09-06  Paul J. Lucas <paul@lucasmail.org>
 
    * strbuf.c, strbuf.h: Eliminated strbuf_sepsn().
