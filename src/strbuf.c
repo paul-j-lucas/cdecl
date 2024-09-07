@@ -224,16 +224,15 @@ void strbuf_reset( strbuf_t *sbuf ) {
   sbuf->len = 0;
 }
 
-void strbuf_sepsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
-                   bool *sep_flag ) {
-  assert( sep_flag != NULL );
-  if ( true_or_set( sep_flag ) )
-    strbuf_putsn( sbuf, sep, sep_len );
-}
-
 void strbuf_sepsn_putsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
                          bool *sep_flag, char const *s, size_t s_len ) {
-  strbuf_sepsn( sbuf, sep, sep_len, sep_flag );
+  assert( sep_flag != NULL );
+
+  if ( true_or_set( sep_flag ) ) {
+    strbuf_reserve( sbuf, sep_len + s_len );
+    strbuf_putsn( sbuf, sep, sep_len );
+  }
+
   strbuf_putsn( sbuf, s, s_len );
 }
 

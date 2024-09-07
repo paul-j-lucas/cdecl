@@ -216,24 +216,6 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len );
 void strbuf_reset( strbuf_t *sbuf );
 
 /**
- * Possibly appends \a sep_len bytes of \a sep onto the end of \a sbuf growing
- * the buffer if necessary.
- *
- * @param sbuf A pointer to the \ref strbuf to append onto.
- * @param sep The separator string to append.
- * @param sep_len The number of bytes of \a sep to append.
- * @param sep_flag A pointer to a flag to determine whether \a sep should be
- * appended: if `false`, \a sep is _not_ appended and it is set to `true`; if
- * `true`, \a sep is appended.
- *
- * @sa strbuf_sepc_puts()
- * @sa strbuf_sepsn_puts()
- * @sa strbuf_sepsn_putsn()
- */
-void strbuf_sepsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
-                   bool *sep_flag );
-
-/**
  * Possibly appends \a sep_len bytes of \a sep followed by \a s_len bytes of \a
  * s onto the end of \a sbuf growing the buffer if necessary.
  *
@@ -246,7 +228,6 @@ void strbuf_sepsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @param s The string to append.
  * @param s_len The number of bytes of \a s to append.
  *
- * @sa strbuf_sepsn()
  * @sa strbuf_sepc_puts()
  * @sa strbuf_sepsn_puts()
  */
@@ -266,7 +247,6 @@ void strbuf_sepsn_putsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @param s The string to append.
  *
  * @sa strbuf_sepc_puts()
- * @sa strbuf_sepsn()
  * @sa strbuf_sepsn_putsn()
  */
 STRBUF_H_INLINE
@@ -286,7 +266,6 @@ void strbuf_sepsn_puts( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * to `true`; if `true`, \a sep is appended.
  * @param s The string to append.
  *
- * @sa strbuf_sepsn()
  * @sa strbuf_sepsn_puts()
  * @sa strbuf_sepsn_putsn()
  */
