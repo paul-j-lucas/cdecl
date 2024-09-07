@@ -1286,16 +1286,16 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
   assert( sname != NULL );
 
   strbuf_reset( sbuf );
-  bool colon2 = false;
 
   FOREACH_SNAME_SCOPE_UNTIL( scope, sname, end_scope ) {
-    strbuf_sepsn( sbuf, "::", 2, &colon2 );
     c_scope_data_t const *const data = c_scope_data( scope );
     if ( data->type.stids != TS_NONE ) {
       // For nested inline namespaces, e.g., namespace A::inline B::C.
       strbuf_printf( sbuf, "%s ", c_tid_gibberish( data->type.stids ) );
     }
     strbuf_puts( sbuf, data->name );
+    if ( scope->next != end_scope )
+      strbuf_putsn( sbuf, "::", 2 );
   } // for
 
   return empty_if_null( sbuf->str );
