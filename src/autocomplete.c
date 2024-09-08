@@ -47,7 +47,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <readline/readline.h>          /* must go last */
+#include <readline/readline.h>          /* must go after stdio.h */
 
 #if !HAVE_DECL_RL_COMPLETION_MATCHES
 # define rl_completion_matches    completion_matches

@@ -44,7 +44,8 @@
 
 #ifdef WITH_READLINE
 # ifdef HAVE_READLINE_READLINE_H
-#   include <readline/readline.h>       /* for rl_gnu_readline_p */
+#   include <stdio.h>                   /* needed by readline.h */
+#   include <readline/readline.h>       /* must go after stdio.h */
 # endif /* HAVE_READLINE_READLINE_H */
 
 # if !HAVE_DECL_RL_PROMPT_START_IGNORE
