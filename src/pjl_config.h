@@ -56,13 +56,15 @@
  * Library](https://tiswww.case.edu/php/chet/readline/rltop.html)
  * @sa http://stackoverflow.com/a/31333315/99089
  */
-#if defined(HAVE_DECL_RL_GNU_READLINE_P) && HAVE_DECL_RL_GNU_READLINE_P
-# include <stdio.h>                     /* needed by readline.h */
-# include <readline/readline.h>         /* must go after stdio.h */
-# define HAVE_GENUINE_GNU_READLINE  (rl_gnu_readline_p == 1)
-#else
-# define HAVE_GENUINE_GNU_READLINE  0
+#ifdef WITH_READLINE
+# if defined(HAVE_DECL_RL_GNU_READLINE_P) && HAVE_DECL_RL_GNU_READLINE_P
+#   include <stdio.h>                   /* needed by readline.h */
+#   include <readline/readline.h>       /* must go after stdio.h */
+#   define HAVE_GENUINE_GNU_READLINE    (rl_gnu_readline_p == 1)
+# else
+#   define HAVE_GENUINE_GNU_READLINE    0
 #endif /* HAVE_DECL_RL_GNU_READLINE_P */
+#endif /* WITH_READLINE */
 
 ////////// compiler attributes ////////////////////////////////////////////////
 
