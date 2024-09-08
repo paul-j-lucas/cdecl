@@ -1,5 +1,6 @@
 2024-09-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * pjl_config.h: Added #ifdef WITH_READLINE.
    * autocomplete.c, pjl_config.h, prompt.c: Added #include <stdio.h> for
      broken readline.h versions.
 
