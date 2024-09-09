@@ -114,6 +114,7 @@ _GL_INLINE_HEADER_BEGIN
  * Gets the number of elements of the given array.
  *
  * @param ARRAY The array to get the number of elements of.
+ * @return Returns the number of elements of \a ARRAY.
  *
  * @note \a ARRAY _must_ be a statically allocated array.
  *
