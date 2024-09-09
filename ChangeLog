@@ -1,3 +1,7 @@
+2024-09-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Added ARRAY_END().
+
 2024-09-08  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Compensating for the apparent fact that genuine GNU
