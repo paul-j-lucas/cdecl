@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.4.1
+
+** readline.h & stdio.h fix
+Compensating for the apparent fact that genuine GNU readline.h (wrongly)
+requires a manual #include <stdio.h>.
+
+
 * Changes in Cdecl 18.4
 
 ** C++26
