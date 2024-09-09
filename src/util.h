@@ -111,6 +111,19 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
+ * Gets a pointer to one element past the last of the given array.
+ *
+ * @param ARRAY The array to use.
+ * @return Returns a pointer to one element past the last of \a ARRAY.
+ *
+ * @note \a ARRAY _must_ be a statically allocated array.
+ *
+ * @sa #ARRAY_SIZE()
+ * @sa #FOREACH_ARRAY_ELEMENT()
+ */
+#define ARRAY_END(ARRAY)          ( (ARRAY) + ARRAY_SIZE( (ARRAY) ) )
+
+/**
  * Gets the number of elements of the given array.
  *
  * @param ARRAY The array to get the number of elements of.
@@ -118,6 +131,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @note \a ARRAY _must_ be a statically allocated array.
  *
+ * @sa #ARRAY_END()
  * @sa #FOREACH_ARRAY_ELEMENT()
  */
 #define ARRAY_SIZE(ARRAY) (                 \
@@ -395,13 +409,12 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @note \a ARRAY _must_ be a statically allocated array.
  *
+ * @sa #ARRAY_END()
  * @sa #ARRAY_SIZE()
  * @sa #FOR_N_TIMES()
  */
-#define FOREACH_ARRAY_ELEMENT(TYPE,VAR,ARRAY)   \
-  for ( TYPE const *VAR = (ARRAY);              \
-        VAR < (ARRAY) + ARRAY_SIZE( (ARRAY) );  \
-        ++VAR )
+#define FOREACH_ARRAY_ELEMENT(TYPE,VAR,ARRAY) \
+  for ( TYPE const *VAR = (ARRAY); VAR < ARRAY_END(ARRAY); ++VAR )
 
 /**
  * Convenience macro for iterating \a N times.
