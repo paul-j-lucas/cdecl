@@ -153,9 +153,9 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #ARRAY_NEXT()
  * @sa #FOREACH_ARRAY_ELEMENT()
  */
-#define ARRAY_SIZE(ARRAY) (                 \
-  sizeof( (ARRAY) ) / sizeof(0[ (ARRAY) ])  \
-  * STATIC_ASSERT_EXPR( IS_ARRAY_EXPR( (ARRAY) ), #ARRAY " must be an array" ))
+#define ARRAY_SIZE(ARRAY) (                                                   \
+  STATIC_ASSERT_EXPR( IS_ARRAY_EXPR( (ARRAY) ), #ARRAY " must be an array" )  \
+  * sizeof( (ARRAY) ) / sizeof(0[ (ARRAY) ]) )
 
 /**
  * Like **assert**(3) except can be used in an expression.
