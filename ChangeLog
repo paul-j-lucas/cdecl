@@ -1,3 +1,9 @@
+2024-09-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c, c_lang.c, cdecl_command.c, cdecl_keyword.c, help.c,
+     set_options.c, util.h: Added ARRAY_ITERATOR().
+   * c_keyword.c, cdecl_keyword.c: Eliminated empty array entries.
+
 2024-09-09  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Added ARRAY_END().
