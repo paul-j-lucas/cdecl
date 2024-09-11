@@ -1756,9 +1756,7 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *literal ) {
 }
 
 cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *cdk ) {
-  return  cdk == NULL ? CDECL_KEYWORDS :
-          ++cdk < ARRAY_END( CDECL_KEYWORDS ) ? cdk :
-          NULL;
+  return ARRAY_NEXT( CDECL_KEYWORDS, cdk );
 }
 
 void cdecl_keywords_init( void ) {

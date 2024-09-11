@@ -511,7 +511,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
 }
 
 c_keyword_t const* c_keyword_next( c_keyword_t const *ck ) {
-  return ck == NULL ? C_KEYWORDS : ++ck < ARRAY_END( C_KEYWORDS ) ? ck : NULL;
+  return ARRAY_NEXT( C_KEYWORDS, ck );
 }
 
 void c_keywords_init( void ) {

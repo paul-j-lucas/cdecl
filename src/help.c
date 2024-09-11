@@ -57,16 +57,6 @@ static void print_help_where( void );
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
-
-// local constants
-static char const *const HELP_OPTIONS[] = {
-  L_commands,
-  L_english,
-  L_options,
-  NULL
-};
-
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
@@ -723,7 +713,12 @@ static void print_help_where( void ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 char const* const* help_option_next( char const *const *option ) {
-  return option == NULL ? HELP_OPTIONS : *++option == NULL ? NULL : option;
+  static char const *const HELP_OPTIONS[] = {
+    L_commands,
+    L_english,
+    L_options,
+  };
+  return ARRAY_NEXT( HELP_OPTIONS, option );
 }
 
 bool print_help( char const *what, c_loc_t const *what_loc ) {

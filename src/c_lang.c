@@ -51,8 +51,6 @@
 
 /**
  * Array of c_lang for all supported languages.
- *
- * @note The last entry is `{ NULL, false, LANG_NONE }`.
  */
 static c_lang_t const C_LANG[] = {
   // Even though "C" is an alias for "the latest supported C," set is_alias to
@@ -91,8 +89,6 @@ static c_lang_t const C_LANG[] = {
   { "C++20",  false,  LANG_CPP_20  },
   { "C++23",  false,  LANG_CPP_23  },
   { "C++26",  false,  LANG_CPP_26  },
-
-  { NULL,     false,  LANG_NONE    },
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -131,7 +127,7 @@ c_lang_id_t c_lang_find( char const *name ) {
   assert( name != NULL );
 
   // the list is small, so linear search is good enough
-  for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
+  FOREACH_ARRAY_ELEMENT( c_lang_t, lang, C_LANG ) {
     if ( strcasecmp( name, lang->name ) == 0 )
       return lang->lang_id;
   } // for
@@ -174,7 +170,7 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
 }
 
 c_lang_t const* c_lang_next( c_lang_t const *lang ) {
-  return lang == NULL ? C_LANG : (++lang)->name == NULL ? NULL : lang;
+  return ARRAY_NEXT( C_LANG, lang );
 }
 
 char const* c_lang_coarse_name( c_lang_id_t lang_ids ) {

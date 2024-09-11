@@ -89,7 +89,6 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
   { L_typedef,              FIRST_ARG,  LANG_SAME(ANY)                },
   { L_union,                FIRST_ARG,  LANG_SAME(ANY)                },
   { L_using,                FIRST_ARG,  LANG_SAME(using_DECLS)        },
-  { NULL,                   0,          LANG_SAME(NONE)               },
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -161,9 +160,7 @@ cdecl_command_t const* cdecl_command_find( char const *s ) {
 }
 
 cdecl_command_t const* cdecl_command_next( cdecl_command_t const *command ) {
-  return command == NULL ?
-    CDECL_COMMANDS :
-    (++command)->literal == NULL ? NULL : command;
+  return ARRAY_NEXT( CDECL_COMMANDS, command );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

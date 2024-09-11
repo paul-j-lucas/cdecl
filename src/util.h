@@ -118,10 +118,28 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @note \a ARRAY _must_ be a statically allocated array.
  *
+ * @sa #ARRAY_NEXT()
  * @sa #ARRAY_SIZE()
  * @sa #FOREACH_ARRAY_ELEMENT()
  */
 #define ARRAY_END(ARRAY)          ( (ARRAY) + ARRAY_SIZE( (ARRAY) ) )
+
+/**
+ * Gets a pointer to either the first or next element of \a ARRAY.
+ *
+ * @param ARRAY The array to iterate over.
+ * @param VAR A pointer to an array element.  It _must_ be NULL initially.
+ * Upon return, it is incremented.
+ * @return Returns a pointer to the next element of \a ARRAY or NULL if none.
+ *
+ * @note \a ARRAY _must_ be a statically allocated array.
+ *
+ * @sa #ARRAY_END()
+ * @sa #ARRAY_SIZE()
+ * @sa #FOREACH_ARRAY_ELEMENT()
+ */
+#define ARRAY_NEXT(ARRAY,VAR) \
+  ((VAR) == NULL ? (ARRAY) : ++(VAR) < ARRAY_END( (ARRAY) ) ? (VAR) : NULL)
 
 /**
  * Gets the number of elements of the given array.
@@ -132,6 +150,7 @@ _GL_INLINE_HEADER_BEGIN
  * @note \a ARRAY _must_ be a statically allocated array.
  *
  * @sa #ARRAY_END()
+ * @sa #ARRAY_NEXT()
  * @sa #FOREACH_ARRAY_ELEMENT()
  */
 #define ARRAY_SIZE(ARRAY) (                 \
@@ -410,6 +429,7 @@ _GL_INLINE_HEADER_BEGIN
  * @note \a ARRAY _must_ be a statically allocated array.
  *
  * @sa #ARRAY_END()
+ * @sa #ARRAY_NEXT()
  * @sa #ARRAY_SIZE()
  * @sa #FOR_N_TIMES()
  */

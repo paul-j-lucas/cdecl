@@ -270,12 +270,6 @@ static set_option_t const SET_OPTIONS[] = {
     .has_arg = required_argument,
     &set_west_decl
   },
-
-  { NULL,
-    SET_OPTION_TOGGLE,
-    .has_arg = no_argument,
-    NULL
-  }
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -928,7 +922,7 @@ opt_takes_no_value:
 }
 
 set_option_t const* set_option_next( set_option_t const *opt ) {
-  return opt == NULL ? SET_OPTIONS : (++opt)->name == NULL ? NULL : opt;
+  return ARRAY_NEXT( SET_OPTIONS, opt );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
