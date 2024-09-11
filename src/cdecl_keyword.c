@@ -1726,15 +1726,6 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
       AC_NO_NEXT_KEYWORDS
     )
   },
-
-  { NULL,
-    LANG_NONE,
-    TOKEN( 0 ),
-    AC_SETTINGS(
-      AC_POLICY_DEFAULT,
-      AC_NO_NEXT_KEYWORDS
-    )
-  }
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -1759,20 +1750,22 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *literal ) {
   assert( literal != NULL );
   return bsearch(
     &(cdecl_keyword_t){ .literal = literal }, CDECL_KEYWORDS,
-    ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/, sizeof( CDECL_KEYWORDS[0] ),
+    ARRAY_SIZE( CDECL_KEYWORDS ), sizeof( CDECL_KEYWORDS[0] ),
     POINTER_CAST( bsearch_cmp_fn_t, &cdecl_keyword_cmp )
   );
 }
 
 cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *cdk ) {
-  return cdk == NULL ? CDECL_KEYWORDS : (++cdk)->literal == NULL ? NULL : cdk;
+  return  cdk == NULL ? CDECL_KEYWORDS :
+          ++cdk < ARRAY_END( CDECL_KEYWORDS ) ? cdk :
+          NULL;
 }
 
 void cdecl_keywords_init( void ) {
   ASSERT_RUN_ONCE();
   qsort(                                // don't rely on manual sorting above
     CDECL_KEYWORDS,
-    ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/, sizeof( CDECL_KEYWORDS[0] ),
+    ARRAY_SIZE( CDECL_KEYWORDS ), sizeof( CDECL_KEYWORDS[0] ),
     POINTER_CAST( qsort_cmp_fn_t, &cdecl_keyword_cmp )
   );
 }

@@ -61,6 +61,7 @@
  * @note There are two rows for `auto` since it has two meanings (one as a
  * storage class in C and C++ up to C++03 and the other as an automatically
  * deduced type in C++11 and later).
+ *
  * @note This is not declared `const` because it's sorted once.
  */
 static c_keyword_t C_KEYWORDS[] = {
@@ -446,9 +447,6 @@ static c_keyword_t C_KEYWORDS[] = {
     LANG_MSC_CALL_CONVS,    AC_LANG(MSC_CALL_CONVS)                       },
   { L_MSC___vectorcall,     Y_MSC___vectorcall,   KC_D, TA_MSC___vectorcall,
     LANG_MSC_CALL_CONVS,    AC_LANG(MSC_CALL_CONVS)                       },
-
-  { NULL,                   0,                    KC_D, TX_NONE,
-    LANG_NONE,              AC_LANG(NONE)                                 }
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -474,7 +472,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
   assert( lang_ids != LANG_NONE );
 
   // the list is small, so linear search is good enough
-  for ( c_keyword_t const *ck = C_KEYWORDS; ck->literal != NULL; ++ck ) {
+  FOREACH_ARRAY_ELEMENT( c_keyword_t, ck, C_KEYWORDS ) {
     int const cmp = strcmp( literal, ck->literal );
     if ( cmp > 0 )
       continue;
@@ -513,13 +511,13 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
 }
 
 c_keyword_t const* c_keyword_next( c_keyword_t const *ck ) {
-  return ck == NULL ? C_KEYWORDS : (++ck)->literal == NULL ? NULL : ck;
+  return ck == NULL ? C_KEYWORDS : ++ck < ARRAY_END( C_KEYWORDS ) ? ck : NULL;
 }
 
 void c_keywords_init( void ) {
   ASSERT_RUN_ONCE();
   qsort(                                // so we can stop the search early
-    C_KEYWORDS, ARRAY_SIZE( C_KEYWORDS ) - 1/*NULL*/, sizeof( C_KEYWORDS[0] ),
+    C_KEYWORDS, ARRAY_SIZE( C_KEYWORDS ), sizeof( C_KEYWORDS[0] ),
     POINTER_CAST( qsort_cmp_fn_t, &c_keyword_cmp )
   );
 }
