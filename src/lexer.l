@@ -391,7 +391,7 @@ static int parse_int( int base ) {
     // skip over it.
     assert( s[0] == '0' );              // String should start with "0b" ...
     assert( tolower( s[1] ) == 'b' );   // ... since it was just lex'd as such.
-    s += 2;
+    s += STRLITLEN( "0b" );
   }
 
   char no_digit_seps[ MAX_DEC_INT_DIGITS(uintmax_t) + 1/*\0*/ ];
