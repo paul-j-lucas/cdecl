@@ -1,3 +1,8 @@
+2024-09-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c: Now using DUMP_INDENT.
+   * c_sname.c, cli_options.c, lexer.l: s/2/STRLITLEN(...)/
+
 2024-09-11  Paul J. Lucas <paul@lucasmail.org>
 
    * c_keyword.c, c_lang.c, cdecl_command.c, cdecl_keyword.c, help.c,
