@@ -214,7 +214,7 @@ static inline bool c_ast_is_capture_this( c_ast_t const *ast ) {
 NODISCARD
 static inline c_loc_t const* c_ast_params_loc( c_ast_t const *ast ) {
   c_ast_t const *const param_ast = c_param_ast( c_ast_params( ast ) );
-  return &IF_ELSE( param_ast, ast )->loc;
+  return &IF_ELSE_EXPR( param_ast, ast )->loc;
 }
 
 /**

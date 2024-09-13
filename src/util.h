@@ -555,7 +555,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @warning If \a EXPR1 is non-zero, it is evaluated twice.
  */
-#define IF_ELSE(EXPR1,EXPR2)      ( (EXPR1) ? (EXPR1) : (EXPR2) )
+#define IF_ELSE_EXPR(EXPR1,EXPR2) ( (EXPR1) ? (EXPR1) : (EXPR2) )
 
 /**
  * A special-case of fatal_error() that additionally prints the file and line

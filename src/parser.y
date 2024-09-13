@@ -4308,7 +4308,7 @@ lambda_return_type_c_ast_opt
       DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
-      $$ = IF_ELSE( $cast_astp.ast, $type_ast );
+      $$ = IF_ELSE_EXPR( $cast_astp.ast, $type_ast );
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
@@ -5137,7 +5137,9 @@ func_decl_c_astp
           target_ast = NULL;
         }
         else {
-          ret_ast = IF_ELSE( $trailing_ret_ast, ia_type_spec_ast( type_ast ) );
+          ret_ast = IF_ELSE_EXPR(
+            $trailing_ret_ast, ia_type_spec_ast( type_ast )
+          );
         }
 
         if ( target_ast != NULL ) {
@@ -5411,7 +5413,7 @@ trailing_return_type_c_ast_opt
       DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
-      $$ = IF_ELSE( $cast_astp.ast, $type_ast );
+      $$ = IF_ELSE_EXPR( $cast_astp.ast, $type_ast );
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
@@ -5678,7 +5680,7 @@ oper_decl_c_astp
       oper_ast->oper.operator = operator;
 
       c_ast_t *const ret_ast =
-        IF_ELSE( $trailing_ret_ast, ia_type_spec_ast( type_ast ) );
+        IF_ELSE_EXPR( $trailing_ret_ast, ia_type_spec_ast( type_ast ) );
 
       $$ = (c_ast_pair_t){
         c_ast_add_func( type_ast, oper_ast, ret_ast ),
@@ -6045,7 +6047,7 @@ user_defined_conversion_decl_c_astp
       );
       if ( type_ast != NULL )
         c_type_or_eq( &udc_ast->type, &type_ast->type );
-      udc_ast->udef_conv.to_ast = IF_ELSE( $decl_ast, $to_ast );
+      udc_ast->udef_conv.to_ast = IF_ELSE_EXPR( $decl_ast, $to_ast );
 
       $$ = (c_ast_pair_t){ udc_ast, udc_ast->udef_conv.to_ast };
 
@@ -6088,7 +6090,7 @@ user_defined_literal_decl_c_astp
         c_ast_add_func(
           type_ast,
           udl_ast,
-          IF_ELSE( $trailing_ret_ast, type_ast )
+          IF_ELSE_EXPR( $trailing_ret_ast, type_ast )
         ),
         udl_ast->udef_lit.ret_ast
       };
@@ -6180,7 +6182,7 @@ array_cast_c_astp
           c_ast_add_array( $cast_astp.target_ast, $array_ast, of_ast )
         };
       } else {
-        c_ast_t *const ast = IF_ELSE( $cast_astp.ast, of_ast );
+        c_ast_t *const ast = IF_ELSE_EXPR( $cast_astp.ast, of_ast );
         $$ = (c_ast_pair_t){
           c_ast_add_array( ast, $array_ast, of_ast ),
           .target_ast = NULL
@@ -6299,7 +6301,8 @@ func_cast_c_astp
       // c_ast_check_ret_type().
       //
       c_ast_t *const ret_ast = cast_ast->kind == K_FUNCTION ?
-        cast_ast : IF_ELSE( $trailing_ret_ast, ia_type_spec_ast( type_ast ) );
+        cast_ast :
+        IF_ELSE_EXPR( $trailing_ret_ast, ia_type_spec_ast( type_ast ) );
 
       if ( $cast_astp.target_ast != NULL ) {
         $$ = (c_ast_pair_t){
@@ -6715,7 +6718,7 @@ atomic_specifier_type_c_ast
       DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
-      $$ = IF_ELSE( $cast_astp.ast, $type_ast );
+      $$ = IF_ELSE_EXPR( $cast_astp.ast, $type_ast );
       $$->loc = @$;
 
       //
