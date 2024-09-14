@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /usr/bin/env bash
 ##
 #       cdecl -- C gibberish translator
 #       test/not_in_Makefile.sh
@@ -37,7 +37,7 @@ done
 # Prints *.out files that exist but have no corresponding test in Makefile.am.
 ls expected/*.out | while read EXPECTED
 do
-  TEST=`local_basename "$EXPECTED" | sed s/out/test/`
+  TEST=$(local_basename "$EXPECTED" | sed s/out/test/)
   fgrep $TEST Makefile.am >/dev/null 2>&1 || echo $EXPECTED
 done
 
