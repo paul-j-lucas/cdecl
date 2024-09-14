@@ -579,14 +579,14 @@ void c_ast_cleanup( void );
  * Duplicates \a ast.
  *
  * @param ast The AST to duplicate.
- * @param node_list The list to append the duplicated AST nodes onto.
+ * @param dst_list The list to append the duplicated AST nodes onto.
  * @return Returns the duplicated AST or NULL only if \a ast is NULL.
  *
  * @sa c_ast_free()
  * @sa c_ast_new()
  */
 NODISCARD
-c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list );
+c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *dst_list );
 
 /**
  * Checks whether two ASTs are equal _except_ for their names.
@@ -693,7 +693,7 @@ void c_ast_list_set_param_of( c_ast_list_t *param_ast_list, c_ast_t *func_ast );
  * @param kind The kind of AST to create.
  * @param depth How deep within `()` it is.
  * @param loc A pointer to the token location data.
- * @param node_list The list to append the new AST node onto.
+ * @param dst_list The list to append the new AST node onto.
  * @return Returns a pointer to a new AST.
  *
  * @sa c_ast_cleanup()
@@ -702,7 +702,7 @@ void c_ast_list_set_param_of( c_ast_list_t *param_ast_list, c_ast_t *func_ast );
  */
 NODISCARD
 c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
-                    c_ast_list_t *node_list );
+                    c_ast_list_t *dst_list );
 
 /**
  * Convenience function for getting function-like parameters.

@@ -230,7 +230,7 @@ static bool c_ast_has_cycle( c_ast_t const *ast ) {
  * Duplicates \a src_list.
  *
  * @param src_list The AST list to duplicate; may be NULL.
- * @param node_list The list to append the duplicated AST nodes onto.
+ * @param dst_list The list to append the duplicated AST nodes onto.
  * @return Returns the duplicated AST list or an empty list only if \a src_list
  * is NULL.
  *
@@ -239,14 +239,14 @@ static bool c_ast_has_cycle( c_ast_t const *ast ) {
  */
 NODISCARD
 static c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
-                                    c_ast_list_t *node_list ) {
+                                    c_ast_list_t *dst_list ) {
   slist_t dup_list;
   slist_init( &dup_list );
 
   if ( src_list != NULL ) {
     FOREACH_SLIST_NODE( src_node, src_list ) {
       c_ast_t const *const src_ast = src_node->data;
-      c_ast_t *const dup_ast = c_ast_dup( src_ast, node_list );
+      c_ast_t *const dup_ast = c_ast_dup( src_ast, dst_list );
       slist_push_back( &dup_list, dup_ast );
     } // for
   }
@@ -278,11 +278,11 @@ void c_ast_cleanup( void ) {
   assert( c_ast_count == 0 );
 }
 
-c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
+c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *dst_list ) {
   assert( ast != NULL );
 
   c_ast_t *const dup_ast =
-    c_ast_new( ast->kind, ast->depth, &ast->loc, node_list );
+    c_ast_new( ast->kind, ast->depth, &ast->loc, dst_list );
 
   dup_ast->align = c_alignas_dup( &ast->align );
   dup_ast->dup_from_ast = ast;
@@ -341,15 +341,15 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
     case K_CONSTRUCTOR:
     case K_UDEF_LIT:
       dup_ast->func.param_ast_list =
-        c_ast_list_dup( &ast->func.param_ast_list, node_list );
+        c_ast_list_dup( &ast->func.param_ast_list, dst_list );
       break;
 
     case K_LAMBDA:
       // ret_ast duplicated by referrer code below
       dup_ast->func.param_ast_list =
-        c_ast_list_dup( &ast->func.param_ast_list, node_list );
+        c_ast_list_dup( &ast->func.param_ast_list, dst_list );
       dup_ast->lambda.capture_ast_list =
-        c_ast_list_dup( &ast->lambda.capture_ast_list, node_list );
+        c_ast_list_dup( &ast->lambda.capture_ast_list, dst_list );
       break;
 
     case K_STRUCTURED_BINDING:
@@ -376,7 +376,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
     c_ast_t *const child_ast = ast->parent.of_ast;
     if ( child_ast != NULL ) {
       if ( c_ast_is_parent( ast ) ) {
-        c_ast_set_parent( c_ast_dup( child_ast, node_list ), dup_ast );
+        c_ast_set_parent( c_ast_dup( child_ast, dst_list ), dup_ast );
       } else {
         //
         // A non-parent referrer (e.g., K_TYPEDEF) merely refers to another
@@ -583,10 +583,10 @@ void c_ast_list_set_param_of( c_ast_list_t *param_ast_list,
 }
 
 c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
-                    c_ast_list_t *node_list ) {
+                    c_ast_list_t *dst_list ) {
   assert( is_1_bit( kind ) );
   assert( loc != NULL );
-  assert( node_list != NULL );
+  assert( dst_list != NULL );
 
   static c_ast_id_t next_id;
 
@@ -602,7 +602,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
 #ifndef NDEBUG
   ++c_ast_count;
 #endif /* NDEBUG */
-  slist_push_back( node_list, ast );
+  slist_push_back( dst_list, ast );
   return ast;
 }
 
