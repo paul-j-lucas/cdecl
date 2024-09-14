@@ -1,5 +1,7 @@
 2024-09-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Fixed small memory leak of $comma_arg_list.
+   * c_ast.c, c_ast.h: Made c_ast_list_cleanup() be inline.
    * lines.sh: Made bash.
    * not_in_Makefile.sh: Made bash.
    * Makefile.am, makedoc.sh: Added DOCS_DIR; now passing PACKAGE and DOCS_DIR
