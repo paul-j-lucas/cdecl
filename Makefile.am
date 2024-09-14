@@ -38,6 +38,8 @@ EXTRA_DIST =	bootstrap \
 COVERAGE_INFO =	$(top_builddir)/coverage.info
 COVERAGE_DIR =	coverage
 
+DOCS_DIR = 	docs
+
 LCOV_FLAGS =	--capture \
 		--config-file "$(top_srcdir)/lcovrc" \
 		--directory "$(abs_top_builddir)" \
@@ -58,7 +60,7 @@ GENHTML_FLAGS =	--legend \
 	update-gnulib
 
 doc docs:
-	@./makedoc.sh
+	./makedoc.sh $(PACKAGE) $(DOCS_DIR)
 
 check-coverage:
 if ENABLE_COVERAGE
@@ -73,7 +75,7 @@ else
 endif
 
 clean-local: clean-coverage-local
-	rm -fr docs
+	rm -fr $(DOCS_DIR)
 
 clean-coverage-local:
 	rm -f $(COVERAGE_INFO)
