@@ -164,17 +164,24 @@ static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
  *
  * @remarks
  * @parblock
- * For example, given the following ordered tree, perform a left rotation on
- * node **N**:
+ * For example, given the following ordered trees:
  *
- *        N            T
- *       / \          / \
- *      M   T   =>   N   U
- *         / \      / \
- *        S   U    M   S
+ *        B                  D
+ *       / \    left -->    / \
+ *      A   D              B   E
+ *         / \  <- right  / \
+ *        C   E          A   C
  *
- * **N** is rotated left (and down); **T** is rotated left (and up).  Note that
- * the order is preserved.  A right rotation is the mirror image.
+ *       (1)                (2)
+ *
+ * perform either rotation:
+ *
+ * 1. **B** is rotated left (and down) and **D** is rotated left (and up) to
+ *    yield (2).
+ * 2. **D** is rotated right (and down) and **B** is rotated right (and up) to
+ *    yield (1).
+ *
+ * Note that in both cases, the order of the nodes is preserved.
  * @endparblock
  *
  * @param tree A pointer rb_tree to manipulate.
