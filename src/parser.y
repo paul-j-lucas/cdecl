@@ -2867,7 +2867,9 @@ p_arg_list
     {
       $$ = $arg_list;
 
-      if ( !slist_empty( $comma_arg_list ) )
+      if ( slist_empty( $comma_arg_list ) )
+        free( $comma_arg_list );
+      else
         slist_push_list_back( $$, $comma_arg_list );
 
       slist_push_back( $$, $arg_tokens );
