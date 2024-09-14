@@ -1,5 +1,7 @@
 2024-09-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * lines.sh: Made bash.
+   * not_in_Makefile.sh: Made bash.
    * Makefile.am, makedoc.sh: Added DOCS_DIR; now passing PACKAGE and DOCS_DIR
      to makedoc.sh.
 
