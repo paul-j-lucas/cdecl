@@ -672,7 +672,12 @@ bool c_ast_is_referrer( c_ast_t const *ast ) {
  *
  * @sa c_ast_free()
  */
-void c_ast_list_cleanup( c_ast_list_t *list );
+C_AST_H_INLINE
+void c_ast_list_cleanup( c_ast_list_t *list ) {
+  // Do not pass &c_ast_free as the second argument since all ASTs are free'd
+  // independently. Just free the list nodes.
+  slist_cleanup( list, /*free_fn=*/NULL );
+}
 
 /**
  * Sets that all AST nodes in \a param_ast_list are parameters of \a func_ast.

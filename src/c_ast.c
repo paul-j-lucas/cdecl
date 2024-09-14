@@ -563,12 +563,6 @@ void c_ast_free( c_ast_t *ast ) {
   }
 }
 
-void c_ast_list_cleanup( c_ast_list_t *list ) {
-  // Do not pass &c_ast_free as the second argument since all ASTs are free'd
-  // independently. Just free the list nodes.
-  slist_cleanup( list, /*free_fn=*/NULL );
-}
-
 void c_ast_list_set_param_of( c_ast_list_t *param_ast_list,
                               c_ast_t *func_ast ) {
   assert( param_ast_list != NULL );
