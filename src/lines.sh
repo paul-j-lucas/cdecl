@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /usr/bin/env bash
 ##
 #       cdecl -- C gibberish translator
 #       lines.sh
@@ -27,7 +27,7 @@
 set -e
 
 CH_EXCLUDE='^(config\.h|lexer\.c|parser\.[ch]|.*test\.[ch])$'
-CH_FILES=`ls *.[ch] | egrep -v "$CH_EXCLUDE"`
+CH_FILES=$(ls *.[ch] | egrep -v "$CH_EXCLUDE")
 
 HANSEN_cdgram_y=855
 HANSEN_cdlex_l=75
@@ -43,7 +43,7 @@ count_lines() {
   ' $*
 }
 
-HANSEN_total=`expr $HANSEN_cdgram_y + $HANSEN_cdlex_l + $HANSEN_cdecl_c`
+HANSEN_total=$(expr $HANSEN_cdgram_y + $HANSEN_cdlex_l + $HANSEN_cdecl_c)
 {
   count_lines $HANSEN_cdgram_y parser.y
   count_lines $HANSEN_cdlex_l lexer.l 
