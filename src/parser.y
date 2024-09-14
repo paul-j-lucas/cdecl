@@ -631,6 +631,9 @@ static inline c_ast_t* c_ast_new_gc( c_ast_kind_t kind, c_loc_t const *loc ) {
 
 /**
  * Set our mode to deciphering gibberish into English.
+ *
+ * @sa is_english_to_gibberish()
+ * @sa is_gibberish_to_english()
  */
 static inline void gibberish_to_english( void ) {
   lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
