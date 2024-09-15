@@ -67,7 +67,7 @@ typedef c_lang_id_t (*p_macro_dyn_fn_t)( p_token_t **ptoken );
  * @param v_data Optional data passed to the visitor.
  * @return Returning `true` will cause traversal to stop and a pointer to the
  * \ref p_macro the visitor stopped on to be returned to the caller of
- * c_macro_visit().
+ * p_macro_visit().
  */
 typedef bool (*p_macro_visit_fn_t)( p_macro_t const *macro, void *v_data );
 
