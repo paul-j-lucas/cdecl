@@ -21,7 +21,8 @@ Care must be taken when naming files that differ only in case
 because of case-insensitive (but preserving) filesystems
 like those generally used on macOS.
 
-For example, tests such as these:
+For example,
+tests such as these:
 
     cdecl-i.test
     cdecl-I.test
@@ -55,7 +56,8 @@ Valid status codes are given in **cdecl**(1).
 
 After the `EXPECTED_EXIT` line,
 the remaing lines are more free-form.
-However, the exit status of the test script as a whole
+However,
+the exit status of the test script as a whole
 is considered its _actual exit status_
 and is compared against the value of `EXPECTED_EXIT`.
 The test is considered failed if those values are unequal
