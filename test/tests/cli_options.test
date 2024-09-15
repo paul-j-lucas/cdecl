@@ -2,6 +2,7 @@ EXPECTED_EXIT=0
 
 test_cdecl() {
   echo '$ cdecl' $*
+  # The EOF from the pipe will cause cdecl to exit rather than be interactive.
   echo | cdecl $* || exit 1
   echo
 }
