@@ -92,21 +92,21 @@ static unsigned get_columns_via_tigetnum( void ) {
   char const *const term = null_if_empty( getenv( "TERM" ) );
   if ( unlikely( term == NULL ) ) {
     reason = "TERM environment variable not set";
-    goto error;
+    goto done;
   }
 
   char const *const cterm_path = null_if_empty( ctermid( /*buf=*/NULL ) );
   if ( unlikely( cterm_path == NULL ) ) {
     // LCOV_EXCL_START
     reason = "ctermid(3) failed to get controlling terminal";
-    goto error;
+    goto done;
     // LCOV_EXCL_STOP
   }
 
   if ( unlikely( (cterm_fd = open( cterm_path, O_RDWR )) == -1 ) ) {
     // LCOV_EXCL_START
     reason = STRERROR();
-    goto error;
+    goto done;
     // LCOV_EXCL_STOP
   }
 
@@ -133,7 +133,7 @@ static unsigned get_columns_via_tigetnum( void ) {
           "setupterm(3) returned error code %d", sut_err
         );
     } // switch
-    goto error;
+    goto done;
     // LCOV_EXCL_STOP
   }
 
@@ -150,7 +150,7 @@ static unsigned get_columns_via_tigetnum( void ) {
       rv = STATIC_CAST( unsigned, tigetnum_rv );
   } // switch
 
-error:
+done:
   if ( likely( cterm_fd != -1 ) )
     close( cterm_fd );
   if ( unlikely( reason != NULL ) )

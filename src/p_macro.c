@@ -1603,7 +1603,7 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
     mex_cleanup( &param_mex );
     if ( !ok ) {
       rv = MEX_ERROR;
-      goto error;
+      goto done;
     }
 
 append:
@@ -1618,7 +1618,7 @@ next:
       prev_node = token_node;
   } // for
 
-error:
+done:
   rb_tree_cleanup( &param_cache, &free );
   return rv;
 }
@@ -1776,7 +1776,7 @@ static mex_rv_t mex_expand_identifier( mex_state_t *mex,
   if ( p_token_node_is_punct( next_node, '(' ) ) {
     token_node = parse_args( next_node, &arg_list );
     if ( token_node == NULL )
-      goto error;
+      goto done;
     looks_func_like = true;
   }
 
@@ -1808,7 +1808,7 @@ static mex_rv_t mex_expand_identifier( mex_state_t *mex,
 
   mex_cleanup( &macro_mex );
 
-error:
+done:
   p_arg_list_cleanup( &arg_list );
   return rv;
 }
@@ -3022,7 +3022,7 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
   bool ok = false;
 
   if ( !mex_prep_args( &mex ) || !mex_preliminary_check( &mex ) )
-    goto error;
+    goto done;
 
   //
   // For non-dynamic macros, we have to relocate the tokens comprising the
@@ -3051,7 +3051,7 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
   // Do the primary expansion.
   //
   if ( mex_expand( &mex, &token ) == MEX_ERROR )
-    goto error;
+    goto done;
 
   if ( extra_list != NULL && !p_token_list_emptyish( extra_list ) ) {
     //
@@ -3062,12 +3062,12 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
     mex_relocate_expand_list( &mex );
     mex_swap_lists( &mex );
     if ( mex_expand( &mex, &token ) == MEX_ERROR )
-      goto error;
+      goto done;
   }
 
   ok = true;
 
-error:
+done:
   print_params.opt_no_print_input_line = orig_no_print_input_line;
   mex_cleanup( &mex );
   return ok;
