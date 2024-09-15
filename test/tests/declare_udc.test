@@ -4,8 +4,6 @@ declare user-defined conversion operator of class C returning int
 declare overridden virtual constant user-defined conversion operator returning int
 declare user-defined conversion operator returning int
 
-declare user defined conversion operator returning int
-
 class C
 declare user-defined conversion operator returning reference to constant C
 END
