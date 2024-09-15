@@ -1,32 +1,62 @@
+$ cdecl --color
 cdecl: "--color/-k" requires an argument
+$ cdecl -k
 cdecl: "--color/-k" requires an argument
+$ cdecl --color=X
 cdecl: "X": invalid value for --color/-k; must be always, auto, isatty, never, not_file, not_isreg, tty
+$ cdecl -kX
 cdecl: "X": invalid value for --color/-k; must be always, auto, isatty, never, not_file, not_isreg, tty
+$ cdecl --config
 cdecl: "--config/-c" requires an argument
+$ cdecl --config=
 cdecl: "--config/-c" requires an argument
+$ cdecl -c
 cdecl: "--config/-c" requires an argument
+$ cdecl --digraphs --trigraphs
 cdecl: --digraphs/-2 and --trigraphs/-3 are mutually exclusive
+$ cdecl -23
 cdecl: --digraphs/-2 and --trigraphs/-3 are mutually exclusive
+$ cdecl -9
 cdecl: '9': invalid option; use --help or -h for help
+$ cdecl --debug=X
 cdecl: "X": invalid value for --debug/-d; must be [u]+|*|-
+$ cdecl -dX
 cdecl: "X": invalid value for --debug/-d; must be [u]+|*|-
+$ cdecl --explicit-ecsu
 cdecl: "--explicit-ecsu/-S" requires an argument
+$ cdecl -S
 cdecl: "--explicit-ecsu/-S" requires an argument
+$ cdecl --explicit-ecsu=X
 cdecl: "X": invalid value for --explicit-ecsu/-S; must be [ecsu]+|*|-
+$ cdecl -SX
 cdecl: "X": invalid value for --explicit-ecsu/-S; must be [ecsu]+|*|-
+$ cdecl --explicit-int
 cdecl: "--explicit-int/-i" requires an argument
+$ cdecl -i
 cdecl: "--explicit-int/-i" requires an argument
+$ cdecl --explicit-int=X
 cdecl: "X": invalid value for --explicit-int/-i; must be i|u|{[u]{i|s|l[l]}[,]}+|*|-
+$ cdecl -iX
 cdecl: "X": invalid value for --explicit-int/-i; must be i|u|{[u]{i|s|l[l]}[,]}+|*|-
+$ cdecl --file
 cdecl: "--file/-f" requires an argument
+$ cdecl --file=
 cdecl: "--file/-f" requires an argument
+$ cdecl -f
 cdecl: "--file/-f" requires an argument
+$ cdecl --lineno
 cdecl: "--lineno/-L" requires an argument
+$ cdecl -L
 cdecl: "--lineno/-L" requires an argument
+$ cdecl --lineno=0
 cdecl: "0": invalid value for --lineno/-L; must be in range 1-65535
+$ cdecl -L0
 cdecl: "0": invalid value for --lineno/-L; must be in range 1-65535
+$ cdecl --lineno=X
 cdecl: "X": invalid value for --lineno/-L; must be in range 1-65535
+$ cdecl -LX
 cdecl: "X": invalid value for --lineno/-L; must be in range 1-65535
+$ cdecl --help X
 usage: cdecl [options] [command...]
 options:
   --alt-tokens        (-a) Print alternative tokens.
@@ -61,6 +91,7 @@ options:
 
 cdecl home page: https://github.com/paul-j-lucas/cdecl
 Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
+$ cdecl -h X
 usage: cdecl [options] [command...]
 options:
   --alt-tokens        (-a) Print alternative tokens.
@@ -95,21 +126,37 @@ options:
 
 cdecl home page: https://github.com/paul-j-lucas/cdecl
 Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
+$ cdecl --help=X
 cdecl: "help=X": invalid option; use --help or -h for help
+$ cdecl -hX
 cdecl: 'X': invalid option; use --help or -h for help
+$ cdecl --help --version
 cdecl: --help/-h can be given only by itself
+$ cdecl -hv
 cdecl: --help/-h can be given only by itself
+$ cdecl --lang
 cdecl: "--language/-x" requires an argument
+$ cdecl -X
 cdecl: 'X': invalid option; use --help or -h for help
+$ cdecl --lang=X
 cdecl: "X": invalid value for --language/-x; must be C, K&RC, C89, C95, C99, C11, C17, C23, C++, C++98, C++03, C++11, C++14, C++17, C++20, C++23, C++26
+$ cdecl -xX
 cdecl: "X": invalid value for --language/-x; must be C, K&RC, C89, C95, C99, C11, C17, C23, C++, C++98, C++03, C++11, C++14, C++17, C++20, C++23, C++26
+$ cdecl --output
 cdecl: "--output/-o" requires an argument
+$ cdecl --output=
 cdecl: "--output/-o" requires an argument
+$ cdecl -xo
 cdecl: "o": invalid value for --language/-x; must be C, K&RC, C89, C95, C99, C11, C17, C23, C++, C++98, C++03, C++11, C++14, C++17, C++20, C++23, C++26
+$ cdecl --west-decl
 cdecl: "--west-decl/-w" requires an argument
+$ cdecl -w
 cdecl: "--west-decl/-w" requires an argument
+$ cdecl --west-decl=X
 cdecl: "X": invalid value for --west-decl/-w; must be [bflost]+|*|-
+$ cdecl -wX
 cdecl: "X": invalid value for --west-decl/-w; must be [bflost]+|*|-
+$ cdecl --version X
 usage: cdecl [options] [command...]
 options:
   --alt-tokens        (-a) Print alternative tokens.
@@ -144,6 +191,7 @@ options:
 
 cdecl home page: https://github.com/paul-j-lucas/cdecl
 Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
+$ cdecl -v X
 usage: cdecl [options] [command...]
 options:
   --alt-tokens        (-a) Print alternative tokens.
@@ -178,5 +226,7 @@ options:
 
 cdecl home page: https://github.com/paul-j-lucas/cdecl
 Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
+$ cdecl --version=X
 cdecl: "version=X": invalid option; did you mean "version"?
+$ cdecl -vX
 cdecl: 'X': invalid option; use --help or -h for help

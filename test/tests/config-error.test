@@ -1,2 +1,6 @@
 EXPECTED_EXIT=65
-cdecl -bE --config=data/error.cdeclrc
+# The EOF from the pipe will cause cdecl to exit rather than be interactive in
+# the event it doesn't exit from the error.
+echo | cdecl -bE --config=data/error.cdeclrc
+
+# vim:set syntax=sh et sw=2 ts=2:
