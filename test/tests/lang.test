@@ -99,3 +99,5 @@ set
 set lang=c++23
 set
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

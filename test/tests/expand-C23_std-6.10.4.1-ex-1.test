@@ -16,4 +16,5 @@ cdecl -bEL$LINENO <<END
 #define F(R, X, ...)              __VA_OPT__(G R X) )
 expand F(LPAREN(), 0, <:-);
 END
+
 # vim:set et sw=2 ts=2:

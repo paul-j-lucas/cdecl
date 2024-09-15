@@ -44,3 +44,5 @@ explain C auto const *...x
 
 explain std::integral auto x
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

@@ -2,3 +2,5 @@ EXPECTED_EXIT=65
 cdecl -bE --file=data/cast-error.cdeclrc
 cdecl -bE --file=data/declare-error.cdeclrc
 cdecl -bE --file=data/explain-error.cdeclrc
+
+# vim:set syntax=sh et sw=2 ts=2:

@@ -53,3 +53,5 @@ set c++14
 namespace A14 { namespace B14 { typedef int Int; } }
 show A14::*::Int
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

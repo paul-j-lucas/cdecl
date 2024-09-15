@@ -24,4 +24,5 @@ expand str(strncmp("abc\0d", "abc", '\4') == 0)
 expand glue(HIGH, LOW)
 expand xglue(HIGH, LOW)
 END
+
 # vim:set et sw=2 ts=2:

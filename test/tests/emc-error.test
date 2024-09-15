@@ -5,3 +5,5 @@ explain long long _Fract x
 explain _Sat x
 explain _Sat int x
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

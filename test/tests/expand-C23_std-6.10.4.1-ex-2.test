@@ -41,4 +41,5 @@ expand H4(, 1)
 #define H5C(X)                    H5B(X)
 expand H5C(H5A())
 END
+
 # vim:set et sw=2 ts=2:

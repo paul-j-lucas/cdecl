@@ -145,3 +145,5 @@ declare x as long long
 declare x as unsigned
 declare x as unsigned long
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

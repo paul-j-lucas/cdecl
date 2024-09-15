@@ -3,3 +3,5 @@ cdecl -bEL$LINENO -xc++ <<END
 typedef int A4[4]
 declare user-defined conversion operator returning A4
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

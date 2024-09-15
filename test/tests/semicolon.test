@@ -22,3 +22,5 @@ declare user-defined conversion operator returning bool
 show as typedef
 show as using
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

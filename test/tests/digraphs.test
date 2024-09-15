@@ -28,3 +28,5 @@ declare a as array 9 of int
 
 set c89 digraphs
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

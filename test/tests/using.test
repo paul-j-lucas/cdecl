@@ -7,3 +7,5 @@ set nousing
 set c++03
 set using
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

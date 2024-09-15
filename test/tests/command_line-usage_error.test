@@ -1,3 +1,5 @@
 EXPECTED_EXIT=64
 cdecl exit
 cdecl quit
+
+# vim:set syntax=sh et sw=2 ts=2:

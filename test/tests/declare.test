@@ -355,3 +355,5 @@ declare C as non-throwing destructor
 set c++14
 declare f as throw function
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

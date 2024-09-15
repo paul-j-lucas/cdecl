@@ -128,3 +128,5 @@ declare || as operator (reference to const S, reference to const S) returning bo
 declare ~ as operator (reference to const S) returning S
 declare ~ as operator returning S
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

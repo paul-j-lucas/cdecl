@@ -19,3 +19,5 @@ explain int *const __attribute__(( foo )) __attribute__(( bar )) p
 explain int *volatile __attribute__(( foo )) const p
 explain int *volatile __attribute__(( foo )) const __attribute__(( bar )) p
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

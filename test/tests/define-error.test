@@ -12,3 +12,5 @@ define SI as auto int
 set c++
 define Int of namespace X of class C as int
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

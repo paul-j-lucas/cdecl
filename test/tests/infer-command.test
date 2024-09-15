@@ -26,3 +26,5 @@ set
 int x
 q
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

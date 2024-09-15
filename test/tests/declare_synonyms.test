@@ -57,3 +57,5 @@ declare n as no unique address int
 declare n as no-unique-address int
 declare n as non-unique-address int
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

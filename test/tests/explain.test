@@ -453,4 +453,5 @@ END
 export TERM=$ORIG_TERM
 
 CDECL_TEST=true
-# vim:set syntax=sh:
+
+# vim:set syntax=sh et sw=2 ts=2:

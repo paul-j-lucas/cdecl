@@ -2,3 +2,5 @@ EXPECTED_EXIT=65
 cdecl -bEL$LINENO -xc99 <<END
 explain relaxed int x
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

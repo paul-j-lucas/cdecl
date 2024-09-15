@@ -14,3 +14,5 @@ explain operator C const&()
 explain operator int()
 explain operator int() const override
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

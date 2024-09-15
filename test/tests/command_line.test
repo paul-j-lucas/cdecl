@@ -18,3 +18,5 @@ cdecl   -bEL$LINENO 'struct S; show'
 cdecl   -bEL$LINENO 'typedef int Int; show'
 cdecl   -bEL$LINENO 'union U; show'
 c++decl -bEL$LINENO 'using Int = int; show'
+
+# vim:set syntax=sh et sw=2 ts=2:

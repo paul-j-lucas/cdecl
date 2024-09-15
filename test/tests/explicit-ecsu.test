@@ -32,3 +32,5 @@ declare c as class C
 set c
 set explicit-ecsu=su
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

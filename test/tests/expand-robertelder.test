@@ -27,4 +27,5 @@ expand foo(boo())
 #define recur1(F, X)              F(recur3, X)
 expand recur1(recur2, recur1(recur2, 1))
 END
+
 # vim:set et sw=2 ts=2:

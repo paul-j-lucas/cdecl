@@ -99,3 +99,5 @@ set west-decl=*
 set
 set west-decl=-
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

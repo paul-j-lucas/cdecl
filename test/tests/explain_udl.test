@@ -21,3 +21,5 @@ explain int operator"" _x(const wchar_t*, size_t)
 explain int operator"" _x(unsigned long long)
 explain int operator"" _x(wchar_t)
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

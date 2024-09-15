@@ -16,3 +16,5 @@ explain shared[*] int a[4]
 explain strict shared int *p
 explain strict shared int x
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

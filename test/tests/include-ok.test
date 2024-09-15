@@ -3,3 +3,5 @@ cdecl -bEL$LINENO <<END
 include "data/config_tdu.cdeclrc"
 show
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

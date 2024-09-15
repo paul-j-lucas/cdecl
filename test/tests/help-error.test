@@ -15,3 +15,5 @@ help static
 help static cast
 help using
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

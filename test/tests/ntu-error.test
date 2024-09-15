@@ -52,3 +52,5 @@ using SI = static int
 set c++14
 namespace A::B { typedef int Int; }
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

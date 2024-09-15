@@ -12,3 +12,5 @@ show using
 show __STDC__
 show __STDC_VERSION__
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

@@ -35,3 +35,5 @@ explain int const x
 explain struct S
 explain wchar_t x
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

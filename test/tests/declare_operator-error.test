@@ -39,3 +39,5 @@ declare <=> as operator (reference to const S, reference to const S) returning a
 set c++20
 declare [] as operator (int, int) returning int
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

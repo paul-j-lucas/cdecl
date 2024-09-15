@@ -6,3 +6,5 @@ declare y as int
 set echo-commands
 declare z as int
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

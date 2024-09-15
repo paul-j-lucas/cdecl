@@ -18,4 +18,5 @@ cdecl -bEL$LINENO <<END
 
 expand join(x, y)
 END
+
 # vim:set et sw=2 ts=2:

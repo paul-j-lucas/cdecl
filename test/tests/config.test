@@ -10,3 +10,5 @@ END
 cdecl -bEL$LINENO --config=data/config_using_i.cdeclrc <<END
 declare i as Int
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

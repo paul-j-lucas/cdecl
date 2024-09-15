@@ -6,3 +6,5 @@ explain friend operator int()
 explain operator A4()
 explain static operator int()
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

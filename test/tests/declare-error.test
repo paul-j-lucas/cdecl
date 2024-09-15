@@ -139,3 +139,5 @@ declare x as char8_t
 set c++20
 declare x as atomic int
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

@@ -78,3 +78,5 @@ show __cplusplus
 set c++23
 show __cplusplus
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

@@ -68,4 +68,5 @@ set c
 
 #define STRINGIFY_BAD_FOLLOW(A)   #
 END
+
 # vim:set et sw=2 ts=2:

@@ -15,3 +15,5 @@ set prompt=x
 set west-decl=x
 set xxx
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

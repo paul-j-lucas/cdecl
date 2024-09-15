@@ -2,3 +2,5 @@ EXPECTED_EXIT=0
 cdecl -bE --file=data/cast.cdeclrc
 cdecl -bE --file=data/declare.cdeclrc
 cdecl -bE --file=data/explain.cdeclrc
+
+# vim:set syntax=sh et sw=2 ts=2:

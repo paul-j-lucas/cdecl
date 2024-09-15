@@ -6,3 +6,5 @@ explain int operator"" _x(char, char, char)
 explain int operator"" _x(int*, unsigned long)
 explain int operator"" _x(unsigned long)
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

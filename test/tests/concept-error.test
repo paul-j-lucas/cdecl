@@ -9,3 +9,5 @@ explain S::C auto x
 namespace N { struct NS; }
 explain N::NS::C auto x
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

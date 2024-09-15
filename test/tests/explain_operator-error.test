@@ -58,3 +58,5 @@ set c++20
 explain int operator[](int, int)
 explain static void operator()(int, int)
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

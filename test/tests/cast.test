@@ -60,3 +60,5 @@ static cast S::x into int
 static cast x into int
 static cast x into Int
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

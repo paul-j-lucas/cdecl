@@ -184,3 +184,5 @@ explain void* operator new(std::size_t n)
 explain void* operator new[](std::size_t n)
 explain ~S() = delete
 END
+
+# vim:set syntax=sh et sw=2 ts=2:

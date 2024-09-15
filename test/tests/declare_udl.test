@@ -24,3 +24,5 @@ declare _x of scope S as user-defined literal (character) returning integer
 
 declare m as user-defined literal (character) returning integer
 END
+
+# vim:set syntax=sh et sw=2 ts=2:
