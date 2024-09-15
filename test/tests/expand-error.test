@@ -31,4 +31,5 @@ expand UNTERMINATED_MACRO(a)
 set c89
 expand VARIADIC(x)
 END
-# vim:set et sw=2 ts=2:
+
+# vim:set syntax=sh et sw=2 ts=2:
