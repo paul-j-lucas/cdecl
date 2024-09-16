@@ -180,10 +180,10 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #RUN_ONCE
  */
 #ifndef NDEBUG
-# define ASSERT_RUN_ONCE() BLOCK(     \
-    static bool UNIQUE_NAME(called);  \
-    assert( !UNIQUE_NAME(called) );   \
-    UNIQUE_NAME(called) = true; )
+# define ASSERT_RUN_ONCE() BLOCK(       \
+    static bool UNIQUE_NAME(run_once);  \
+    assert( !UNIQUE_NAME(run_once) );   \
+    UNIQUE_NAME(run_once) = true; )
 #else
 # define ASSERT_RUN_ONCE()        NO_OP
 #endif /* NDEBUG */
