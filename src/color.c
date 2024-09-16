@@ -102,13 +102,13 @@ char const *color_capabilities;         ///< Parsed color capabilities.
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Frees all memory used by colors at program termination.
+ * Cleans-up all memory used by colors at program termination.
  *
  * @note This function is called only via **atexit**(3).
  *
  * @sa colors_init()
  */
-static void colors_free( void ) {
+static void colors_cleanup( void ) {
   FREE( color_capabilities );
 }
 
@@ -335,7 +335,7 @@ void colors_init( void ) {
   assert( color_capabilities != NULL );
 
 done:
-  ATEXIT( &colors_free );
+  ATEXIT( &colors_cleanup );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
