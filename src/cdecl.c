@@ -68,7 +68,11 @@ char const *me;
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Cleans up **cdecl** data.
+ * Cleans-up **cdecl** data at program termination.
+ *
+ * @note This function is called only via **atexit**(3).
+ *
+ * @sa main()
  */
 static void cdecl_cleanup( void ) {
   c_ast_cleanup();

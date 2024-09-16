@@ -107,7 +107,11 @@ static inline bool color_prompt( void ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Cleans-up prompt strings.
+ * Cleans-up prompt strings at program termination.
+ *
+ * @note This function is called only via **atexit**(3).
+ *
+ * @sa cdecl_prompt_init()
  */
 static void prompt_cleanup( void ) {
   strbuf_cleanup( &prompt_buf[0] );

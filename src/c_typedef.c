@@ -1037,7 +1037,9 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast,
 }
 
 /**
- * Cleans up \ref c_typedef data.
+ * Cleans-up all \ref c_typedef data at program termination.
+ *
+ * @note This function is called only via **atexit**(3).
  *
  * @sa c_typedefs_init()
  */

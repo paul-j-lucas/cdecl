@@ -54,6 +54,10 @@ unsigned    test_failures;
  * Called at unit-test program termination via **atexit**(3) to print the
  * number of test failures and exits with either `EX_OK` if all tests passed or
  * `EX_SOFTWARE` if at least one test failed.
+ *
+ * @note This function is called only via **atexit**(3).
+ *
+ * @sa test_prog_init()
  */
 _Noreturn
 static void test_prog_exit( void ) {

@@ -9661,7 +9661,11 @@ static void l_elaborate_error( int line, dym_kind_t dym_kinds,
 }
 
 /**
- * Cleans up global parser data at program termination.
+ * Cleans up all global parser data at program termination.
+ *
+ * @note This function is called only via **atexit**(3).
+ *
+ * @sa parser_init()
  */
 static void parser_cleanup( void ) {
   c_ast_list_cleanup_gc( &typedef_ast_list );

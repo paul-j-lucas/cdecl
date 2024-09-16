@@ -301,7 +301,9 @@ cdecl_keyword_t const* lexer_cdecl_keyword_find( char const *literal ) {
 }
 
 /**
- * Cleans up lexer data.
+ * Cleans up lexer data at program termination.
+ *
+ * @note This function is called only via **atexit**(3).
  *
  * @sa lexer_init()
  */

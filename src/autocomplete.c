@@ -162,7 +162,11 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
 }
 
 /**
- * Cleans-up autocompletion data.
+ * Cleans-up all autocompletion data at program termination.
+ *
+ * @note This function is called only via **atexit**(3).
+ *
+ * @sa autocomplete_init()
  */
 static void ac_cleanup( void ) {
   // The keywords in the array are literals, so just free the array itself.

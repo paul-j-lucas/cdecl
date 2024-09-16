@@ -102,7 +102,11 @@ char const *color_capabilities;         ///< Parsed color capabilities.
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Frees all memory used by colors.
+ * Frees all memory used by colors at program termination.
+ *
+ * @note This function is called only via **atexit**(3).
+ *
+ * @sa colors_init()
  */
 static void colors_free( void ) {
   FREE( color_capabilities );

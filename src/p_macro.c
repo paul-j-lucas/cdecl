@@ -2814,7 +2814,9 @@ static p_token_node_t* parse_args( p_token_node_t *token_node,
 }
 
 /**
- * Cleans up C preprocessor macro data.
+ * Cleans up C preprocessor macro data at program termination.
+ *
+ * @note This function is called only via **atexit**(3).
  *
  * @sa p_macros_init()
  */
