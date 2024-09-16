@@ -155,7 +155,7 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define ARRAY_SIZE(ARRAY) (                                                   \
   STATIC_ASSERT_EXPR( IS_ARRAY_EXPR( (ARRAY) ), #ARRAY " must be an array" )  \
-  * sizeof( (ARRAY) ) / sizeof(0[ (ARRAY) ]) )
+  * sizeof( (ARRAY) ) / sizeof( 0[ (ARRAY) ] ) )
 
 /**
  * Like **assert**(3) except can be used in an expression.
