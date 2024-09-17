@@ -51,17 +51,15 @@ END
 
 ME=$(local_basename "$0")
 
+(( $# == 2 )) || usage
 PACKAGE=$1
 DOCS_DIR=$2
 
-[ "$PACKAGE"  ] || usage
-[ "$DOCS_DIR" ] || usage
+########## Begin ##############################################################
 
 INDEX_HTML="$DOCS_DIR/index.html"
 
-########## Begin ##############################################################
-
-echo "Generating $PACKAGE documentation..."
+echo "Generating $PACKAGE documentation ..."
 doxygen
 echo "... HTML documentation generated at: $INDEX_HTML"
 
