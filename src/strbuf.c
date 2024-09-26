@@ -100,21 +100,8 @@ char* strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   assert( sbuf != NULL );
   assert( format != NULL );
 
-  char *buf;
-  size_t buf_rem;
-
-  if ( sbuf->str == NULL ) {
-    //
-    // Avoid the undefined behavior of adding an offset to a null pointer.  We
-    // have to check for this only in this function since we don't initially
-    // call strbuf_reserve() like in every other function.
-    //
-    buf = NULL;
-    buf_rem = 0;
-  } else {
-    buf = sbuf->str + sbuf->len;
-    buf_rem = sbuf->cap - sbuf->len;
-  }
+  char *buf = sbuf->str == NULL ? NULL: sbuf->str + sbuf->len;
+  size_t const buf_rem = sbuf->cap - sbuf->len;
 
   //
   // Attempt to concatenate onto the existing buffer: vsnprintf() returns the
@@ -137,9 +124,8 @@ char* strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   size_t const args_len = STATIC_CAST( size_t, raw_len );
   if ( strbuf_reserve( sbuf, args_len ) ) {
     buf = sbuf->str + sbuf->len;
-    buf_rem = sbuf->cap - sbuf->len;
     va_start( args, format );
-    raw_len = vsnprintf( buf, buf_rem, format, args );
+    raw_len = vsnprintf( buf, args_len + 1/*'\0'*/, format, args );
     va_end( args );
     PERROR_EXIT_IF( raw_len < 0, EX_IOERR );
   }
