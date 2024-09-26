@@ -101,7 +101,6 @@ char* strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   assert( format != NULL );
 
   char *buf = sbuf->str == NULL ? NULL: sbuf->str + sbuf->len;
-  size_t const buf_rem = sbuf->cap - sbuf->len;
 
   //
   // Attempt to concatenate onto the existing buffer: vsnprintf() returns the
@@ -110,7 +109,7 @@ char* strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   //
   va_list args;
   va_start( args, format );
-  int raw_len = vsnprintf( buf, buf_rem, format, args );
+  int raw_len = vsnprintf( buf, sbuf->cap - sbuf->len, format, args );
   va_end( args );
   PERROR_EXIT_IF( raw_len < 0, EX_IOERR );
 
@@ -192,8 +191,7 @@ char* strbuf_puts_quoted( strbuf_t *sbuf, char quote, char const *s ) {
 
 bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
   assert( sbuf != NULL );
-  size_t const buf_rem = sbuf->cap - sbuf->len;
-  if ( res_len < buf_rem )
+  if ( res_len < sbuf->cap - sbuf->len )
     return false;
   //
   // We don't need to add +1 for the terminating '\0' since next_pow_2(n) is
