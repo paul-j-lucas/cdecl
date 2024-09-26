@@ -1,3 +1,16 @@
+2024-09-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * strbuf.c: Eliminated buf_rem.
+   * strbuf.c: Eliminated recalculation of buf_rem.
+
+2024-09-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * makedoc.sh: Now using ((...)).
+
+2024-09-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1: Added mention of "structured binding" in caveat.
+
 2024-09-15  Paul J. Lucas <paul@lucasmail.org>
 
    * declare_udc.out, declare_udc.test: Removed duplicate test.
