@@ -9,7 +9,6 @@
 /cast
 /cdecl
 /config.h
-/declare
 /explain
 /lexer.c
 /parser.[ch]
