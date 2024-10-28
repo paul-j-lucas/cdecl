@@ -1,3 +1,7 @@
+2024-10-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * strbuf.c: Eliminated next_pow_2().
+
 2024-09-26  Paul J. Lucas <paul@lucasmail.org>
 
    * strbuf.c: Eliminated buf_rem.
