@@ -46,23 +46,6 @@
  * @{
  */
 
-////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Calculates the next power of 2 &gt; \a n.
- *
- * @param n The initial value.
- * @return Returns said power of 2.
- */
-NODISCARD
-static size_t next_pow_2( size_t n ) {
-  if ( n == 0 )
-    return 1;                           // LCOV_EXCL_LINE
-  while ( (n & (n - 1)) != 0 )
-    n &= n - 1;
-  return n << 1;
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 void strbuf_cleanup( strbuf_t *sbuf ) {
@@ -193,11 +176,11 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
   assert( sbuf != NULL );
   if ( res_len < sbuf->cap - sbuf->len )
     return false;
-  //
-  // We don't need to add +1 for the terminating '\0' since next_pow_2(n) is
-  // guaranteed to be at least n+1.
-  //
-  sbuf->cap = next_pow_2( sbuf->len + res_len );
+  if ( sbuf->cap == 0 )
+    sbuf->cap = 2;
+  size_t const new_len = sbuf->len + res_len;
+  while ( sbuf->cap <= new_len )
+    sbuf->cap <<= 1;
   REALLOC( sbuf->str, sbuf->cap );
   return true;
 }
