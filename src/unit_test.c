@@ -65,13 +65,16 @@ static void test_prog_exit( void ) {
   _Exit( test_failures > 0 ? EX_SOFTWARE : EX_OK );
 }
 
-// LCOV_EXCL_START
+/**
+ * Prints the usage message to standard error and exits.
+ */
 _Noreturn
 static void test_prog_usage( void ) {
+  // LCOV_EXCL_START
   EPRINTF( "usage: %s\n", me );
   exit( EX_USAGE );
+  // LCOV_EXCL_STOP
 }
-// LCOV_EXCL_STOP
 
 ////////// extern functions ///////////////////////////////////////////////////
 
