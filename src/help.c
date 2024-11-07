@@ -81,41 +81,38 @@ static inline bool command_is( cdecl_command_t const *command,
  * Checks whether **cdecl** \a command is any of the given literals.
  *
  * @param command The **cdecl** command to check.
- * @param ... A NULL-terminated list of string literal arguments to compare
- * against.
+ * @param commands A NULL-terminated array of string literal arguments to
+ * compare against.
  * @return Returns `true` only if \a command is either NULL or equal to one of
- * \a ... .
+ * \a commands.
  *
  * @sa command_is()
  */
 NODISCARD
-ATTRIBUTE_SENTINEL()
-static bool command_is_any( cdecl_command_t const *command, ... ) {
+static bool command_is_any( cdecl_command_t const *command,
+                            char const *commands[static 1] ) {
   if ( command == NULL )
     return true;
 
-  va_list args;
-  va_start( args, command );
-
   bool found = false;
   do {
-    char const *const arg = va_arg( args, char const* );
+    char const *const arg = *commands++;
     if ( arg == NULL )
       break;
     found = command->literal == arg;
   } while ( !found );
 
-  va_end( args );
   return found;
 }
 
 /**
- * Convenience macro for calling the function of the same name ensuring the
- * arguments always end with NULL.
+ * Convenience macro for calling the function of the same name constructing the
+ * compound literal and ensuring it always end with NULL.
  *
  * @param ... The function's arguments.
  */
-#define command_is_any(...)       command_is_any( __VA_ARGS__, NULL )
+#define command_is_any(COMMAND,...) \
+  command_is_any( (COMMAND), (char const*[]){ __VA_ARGS__ VA_OPT( (,), __VA_ARGS__ ) NULL } )
 
 /**
  * Checks whether the string \a s is a title.

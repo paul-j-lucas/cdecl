@@ -66,7 +66,7 @@
 #define INVALID_OPT_VALUE(OPT,ARGS,FORMAT,...)                  \
   print_error( (ARGS)->opt_value_loc,                           \
     "\"%s\": invalid value for " OPT "; must be " FORMAT "\n",  \
-    (ARGS)->opt_value VA_OPT( (,), __VA_ARGS__ )                \
+    (ARGS)->opt_value VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__    \
   )
 
 ///////////////////////////////////////////////////////////////////////////////

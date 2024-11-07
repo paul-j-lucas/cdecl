@@ -188,7 +188,7 @@
 #define IGNORING(LOC,WHAT,...)                      \
   print_warning( (LOC),                             \
     WHAT " not supported by " CDECL " (ignoring)\n" \
-    VA_OPT( (,), __VA_ARGS__ )                      \
+    VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__          \
   )
 
 /**
@@ -277,11 +277,11 @@
  *
  * @sa #IGNORING()
  */
-#define UNSUPPORTED(LOC,WHAT,...) BLOCK(  \
-  print_error( (LOC),                     \
-    WHAT " not supported by " CDECL "\n"  \
-    VA_OPT( (,), __VA_ARGS__ )            \
-  );                                      \
+#define UNSUPPORTED(LOC,WHAT,...) BLOCK(    \
+  print_error( (LOC),                       \
+    WHAT " not supported by " CDECL "\n"    \
+    VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__  \
+  );                                        \
   PARSE_ABORT(); )
 
 /** @} */

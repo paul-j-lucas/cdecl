@@ -112,10 +112,11 @@
  * @param FORMAT The `printf()` format string literal to use.
  * @param ... The `printf()` arguments.
  */
-#define INVALID_OPT_VALUE(OPT,VALUE,FORMAT,...)                     \
-  fatal_error( EX_USAGE,                                            \
-    "\"%s\": invalid value for %s; must be " FORMAT "\n",           \
-    (VALUE), get_opt_format( COPT(OPT) ) VA_OPT( (,), __VA_ARGS__ ) \
+#define INVALID_OPT_VALUE(OPT,VALUE,FORMAT,...)           \
+  fatal_error( EX_USAGE,                                  \
+    "\"%s\": invalid value for %s; must be " FORMAT "\n", \
+    (VALUE), get_opt_format( COPT(OPT) )                  \
+    VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__                \
   )
 
 ///////////////////////////////////////////////////////////////////////////////

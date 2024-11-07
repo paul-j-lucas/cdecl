@@ -569,10 +569,10 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()
  */
-#define INTERNAL_ERROR(FORMAT,...)                \
-  fatal_error( EX_SOFTWARE,                       \
-    "%s:%d: internal error: " FORMAT,             \
-    __FILE__, __LINE__ VA_OPT( (,), __VA_ARGS__ ) \
+#define INTERNAL_ERROR(FORMAT,...)                            \
+  fatal_error( EX_SOFTWARE,                                   \
+    "%s:%d: internal error: " FORMAT,                         \
+    __FILE__, __LINE__ VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__ \
   )
 
 /**
@@ -868,7 +868,7 @@ _GL_INLINE_HEADER_BEGIN
   STATIC_IF( IS_PTR_TO_CONST_EXPR( (PTR) ), \
     FN,                                     \
     NAME2(nonconst_,FN)                     \
-  )( (PTR) VA_OPT( (,), __VA_ARGS__ ) )
+  )( (PTR) VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__ )
 
 /**
  * If \a EXPR is `true`, prints an error message for `errno` to standard error
@@ -1176,12 +1176,13 @@ _GL_INLINE_HEADER_BEGIN
  * For compilers that don't yet support `__VA_OPT__`, instead of doing
  * something like:
  *
- *      ARG __VA_OPT__(,) __VA_ARGS__   // C23/C++20 way
+ *      ARG __VA_OPT__(,) __VA_ARGS__               // C23/C++20 way
  *
  * do this instead:
  *
- *      ARG VA_OPT( (,), __VA_ARGS__ )  // substitute way
+ *      ARG VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__  // substitute way
  *
+ * (It's unfortunately necessary to specify `__VA_ARGS__` twice.)
  * @endparblock
  *
  * @param TOKENS The token(s) possibly to be returned.  They _must_ be enclosed
@@ -1193,13 +1194,13 @@ _GL_INLINE_HEADER_BEGIN
  */
 #ifdef HAVE___VA_OPT__
 # define VA_OPT(TOKENS,...) \
-    __VA_OPT__( STRIP_PARENS( TOKENS ) ) __VA_ARGS__
+    __VA_OPT__( STRIP_PARENS( TOKENS ) )
 #else
 # define VA_OPT(TOKENS,...) \
     NAME2( VA_OPT_EMPTY_, ARGS_IS_EMPTY( __VA_ARGS__ ) )( TOKENS, __VA_ARGS__ )
 
   /// @cond DOXYGEN_IGNORE
-# define VA_OPT_EMPTY_0(TOKENS,...) STRIP_PARENS(TOKENS) __VA_ARGS__
+# define VA_OPT_EMPTY_0(TOKENS,...) STRIP_PARENS(TOKENS)
 # define VA_OPT_EMPTY_1(TOKENS,...) /* nothing */
   /// @endcond
 #endif /* HAVE___VA_OPT__ */
