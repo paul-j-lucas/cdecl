@@ -1,3 +1,8 @@
+2024-11-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c, help.c, parser.y, set_options.c, util.h: Better
+     implementation of VA_OPT().
+
 2024-10-28  Paul J. Lucas <paul@lucasmail.org>
 
    * strbuf.c: Eliminated next_pow_2().
