@@ -231,7 +231,7 @@ struct c_bit_field_ast {
   /// @cond DOXYGEN_IGNORE
   /// So bit_width is at the same offset as in c_builtin_ast, c_enum_ast, and
   /// c_typedef_ast.
-  DECL_UNUSED(c_ast_t*);
+  DECL_UNUSED(c_ast_t*,1);
   /// @endcond
 
   unsigned  bit_width;                  ///< Bit-field width when &gt; 0.
@@ -247,7 +247,7 @@ struct c_builtin_ast {
   /// @cond DOXYGEN_IGNORE
   /// So bit_width is at the same offset as in c_bit_field_ast, c_enum_ast, and
   /// c_typedef_ast.
-  DECL_UNUSED(c_ast_t*);
+  DECL_UNUSED(c_ast_t*,1);
   /// @endcond
 
   unsigned      bit_width;              ///< Bit-field width when &gt; 0.
@@ -285,8 +285,8 @@ struct c_concept_ast {
   /// @cond DOXYGEN_IGNORE
   /// Concepts have neither an "of" type nor a bit width, but concept_sname
   /// needs to be at the same offset as csu_sname, class_sname, and enum_sname.
-  DECL_UNUSED(c_ast_t*);
-  DECL_UNUSED(unsigned);
+  DECL_UNUSED(c_ast_t*,1);
+  DECL_UNUSED(unsigned,1);
   /// @endcond
 
   c_sname_t   concept_sname;            ///< Concept name.
@@ -302,7 +302,7 @@ struct c_constructor_ast {
   /// @cond DOXYGEN_IGNORE
   /// Constructors don't have a return type, but we need an unused pointer so
   /// param_ast_list is at the same offset as in c_function_ast.
-  DECL_UNUSED(c_ast_t*);
+  DECL_UNUSED(c_ast_t*,1);
   /// @endcond
 
   c_ast_list_t  param_ast_list;         ///< Constructor parameter(s), if any.
@@ -319,8 +319,8 @@ struct c_csu_ast {
   /// Class, struct, and union types have neither an "of" type nor a bit width,
   /// but csu_sname needs to be at the same offset as class_sname,
   /// concept_sname, and enum_sname.
-  DECL_UNUSED(c_ast_t*);
-  DECL_UNUSED(unsigned);
+  DECL_UNUSED(c_ast_t*,1);
+  DECL_UNUSED(unsigned,1);
   /// @endcond
 
   c_sname_t   csu_sname;                ///< Class, struct, or union name.
@@ -371,8 +371,8 @@ struct c_name_ast {
   /// @cond DOXYGEN_IGNORE
   /// So sname is at the same offset as class_sname, concept_sname, csu_sname,
   /// and enum_sname.
-  DECL_UNUSED(c_ast_t*);
-  DECL_UNUSED(unsigned);
+  DECL_UNUSED(c_ast_t*,1);
+  DECL_UNUSED(unsigned,1);
   /// @endcond
 
   c_sname_t   sname;                    ///< Name.
@@ -427,7 +427,7 @@ struct c_ptr_mbr_ast {
   /// @cond DOXYGEN_IGNORE
   /// So class_sname is at the same offset as in concept_sname, csu_sname, and
   /// enum_sname.
-  DECL_UNUSED(unsigned);
+  DECL_UNUSED(unsigned,1);
   /// @endcond
 
   c_sname_t   class_sname;              ///< Class pointer-to-member of.
@@ -492,7 +492,7 @@ struct c_udef_conv_ast {
   /// So any future additions to this struct are _not_ at the same offset as
   /// param_ast_list in c_apple_block_ast, c_constructor_ast, c_function_ast,
   /// c_lambda_ast, c_operator_ast, and c_udef_lit_ast.
-  DECL_UNUSED(c_ast_list_t);
+  DECL_UNUSED(c_ast_list_t,1);
   /// @endcond
 };
 

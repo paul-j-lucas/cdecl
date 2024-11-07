@@ -350,13 +350,15 @@ _GL_INLINE_HEADER_BEGIN
 #define CONST_CAST(TYPE,EXPR)     ((TYPE)(EXPR))
 
 /**
- * Declares a object with an unspecified name both aligned and sized as a \a
- * TYPE intended to be used inside a `struct` declaration to add padding.
+ * Declares an array of \a N objects of type \a TYPE aligned as \a TYPE with an
+ * implementation defined name intended to be used inside a `struct`
+ * declaration to add padding.
  *
  * @param TYPE The type of the object.
+ * @param N The array size.
  */
-#define DECL_UNUSED(TYPE) \
-  _Alignas(TYPE) char UNIQUE_NAME(unused)[ sizeof(TYPE) ]
+#define DECL_UNUSED(TYPE,N) \
+  _Alignas(TYPE) char UNIQUE_NAME(unused)[ sizeof(TYPE) * (N) ]
 
 /**
  * Shorthand for printing to standard error.
