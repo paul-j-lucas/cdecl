@@ -67,7 +67,7 @@ NODISCARD
 static void** matrix2d_new( size_t esize, size_t ealign, size_t idim,
                             size_t jdim ) {
   // ensure &elements[0] is suitably aligned
-  size_t const ptrs_size = round_up_to( sizeof(void*) * idim, ealign );
+  size_t const ptrs_size = round_up_pow_2( sizeof(void*) * idim, ealign );
   size_t const row_size = esize * jdim;
   // allocate the row pointers followed by the elements
   void **const rows = MALLOC( char, ptrs_size + idim * row_size );
