@@ -49,19 +49,6 @@ static inline size_t min_dist( size_t i, size_t j ) {
   return i < j ? i : j;
 }
 
-/**
- * Rounds \a n up to a multiple of \a multiple.
- *
- * @param n The number to round up.  Must be &gt; 0.
- * @param multiple The multiple to round up to.
- * @return Returns \a n rounded up to a multiple of \a multiple.
- */
-NODISCARD
-static inline size_t round_up_to( size_t n, size_t multiple ) {
-  size_t const remainder = n % multiple;
-  return remainder == 0 ? n : n + multiple - remainder;
-}
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**

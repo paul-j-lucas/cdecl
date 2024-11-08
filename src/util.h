@@ -1700,6 +1700,19 @@ NODISCARD
 bool path_is_file( char const *path );
 
 /**
+ * Rounds \a n up to a multiple of \a multiple.
+ *
+ * @param n The number to round up.  Must be &gt; 0.
+ * @param multiple The multiple to round up to.
+ * @return Returns \a n rounded up to a multiple of \a multiple.
+ */
+NODISCARD C_UTIL_H_INLINE
+size_t round_up_to( size_t n, size_t multiple ) {
+  size_t const remainder = n % multiple;
+  return remainder == 0 ? n : n + multiple - remainder;
+}
+
+/**
  * Checks whether \a s is an affirmative value.  An affirmative value is one of
  * 1, t, true, y, or yes, case-insensitive.
  *
