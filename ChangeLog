@@ -1,5 +1,6 @@
 2024-11-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_type.c: Added static_asserts.
    * dam_lev.c, util.h: s/round_up_to/round_up_pow_2/
    * dam_lev.c, util.h: Moved round_up_to() to util.h.
 
