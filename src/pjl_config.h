@@ -33,11 +33,9 @@
 
 // local
 #include "config.h"                     /* must go first */
-#ifdef VERSION
-  // Undefine this since it clashes with our VERSION command-line option.  We
-  // don't need this since PACKAGE_VERSION is also defined.
-# undef VERSION
-#endif /* VERSION */
+// Undefine this since it clashes with our VERSION command-line option.  We
+// don't need this since PACKAGE_VERSION is also defined.
+#undef VERSION
 
 // standard
 #include <attribute.h>
