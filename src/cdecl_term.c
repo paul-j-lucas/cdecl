@@ -36,9 +36,9 @@
 #ifdef ENABLE_TERM_SIZE
 # include <fcntl.h>                     /* for open(2) */
 # define _BOOL /* nothing */            /* prevent bool clash on AIX/Solaris */
-# if defined(HAVE_CURSES_H)
+# if HAVE_CURSES_H
 #   include <curses.h>
-# elif defined(HAVE_NCURSES_H)
+# elif HAVE_NCURSES_H
 #   include <ncurses.h>
 # endif
 # include <stdlib.h>                    /* for getenv(3) */
