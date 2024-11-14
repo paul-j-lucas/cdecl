@@ -253,7 +253,7 @@ static void print_h( char const *format, ... ) {
           switch ( *++s ) {
             case 'c':
               // LCOV_EXCL_START
-              PRINTF( "%c", va_arg( args, int ) );
+              PUTC( va_arg( args, int ) );
               break;
               // LCOV_EXCL_STOP
             case 'd':
