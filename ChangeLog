@@ -1,3 +1,16 @@
+2024-11-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c: s/PRINTF/PUTC/
+
+2024-11-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_term.c: Eliminated use of defined.
+
+2024-11-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl_config.h: Removed unnecessary defined(HAVE_DECL_RL_GNU_READLINE_P).
+   * pjl_config.h: Removed #ifdef VERSION -- not needed.
+
 2024-11-08  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.c: Added static_asserts.
