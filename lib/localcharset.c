@@ -380,7 +380,7 @@ static const struct table_entry alias_table[] =
 #  if defined OS2                                           /* OS/2 */
     /* The list of encodings is taken from "List of OS/2 Codepages"
        by Alex Taylor:
-       <http://altsan.org/os2/toolkits/uls/index.html#codepages>.
+       <https://altsan.org/os2/toolkits/uls/index.html#codepages>.
        See also "__convcp() of kLIBC":
        <https://github.com/bitwiseworks/libc/blob/master/src/emx/src/lib/locale/__convcp.c>.  */
     { "CP1004",        "CP1252" },
