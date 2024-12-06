@@ -35,7 +35,9 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <stdalign.h>
 #include <stdbool.h>
+#include <stddef.h>                     /* for max_align_t */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef RED_BLACK_H_INLINE
@@ -53,6 +55,40 @@ _GL_INLINE_HEADER_BEGIN
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
+/**
+ * Gets a pointer to the internal data of \a NODE for when #RB_DLOC_INT was
+ * used with rb_tree_init().
+ *
+ * @param NODE The rb_node to get a pointer to the data of.
+ * @return Returns a pointer to the data internal to \a NODE.
+ *
+ * @warning The node's \ref rb_node::data "data" _must not_ be modified if that
+ * would change the node's position within the tree according to its \ref
+ * rb_tree::cmp_fn "cmp_fn".
+ *
+ * @sa #RB_DATA_PTR()
+ */
+#define RB_DATA_INT(NODE)       ( (void*)(NODE)->data )
+
+/**
+ * Gets an lvalue reference to a pointer to the external data of \a NODE for
+ * when #RB_DLOC_PTR was used with rb_tree_init(). Being an lvalue reference
+ * means `RB_DATA_PTR` can appear on the left-hand side of an `=` and be
+ * assigned to.
+ *
+ * @param NODE The rb_node to get a pointer to the data of.
+ * @return Returns a pointer to the data \a NODE points to.
+ *
+ * @warning The node's \ref rb_node::data "data" _must not_ be modified if that
+ * would change the node's position within the tree according to its \ref
+ * rb_tree::cmp_fn "cmp_fn".
+ *
+ * @sa #RB_DATA_INT()
+ */
+#define RB_DATA_PTR(NODE)       ( *(void**)RB_DATA_INT( (NODE) ) )
+
 ////////// enumerations ///////////////////////////////////////////////////////
 
 /**
@@ -63,9 +99,46 @@ enum rb_color {
   RB_RED                                ///< Red.
 };
 
+/**
+ * Red-black tree node data location.
+ */
+enum rb_dloc {
+  /**
+   * Nodes contain data internally.  The advantages are:
+   *
+   *  + No separate call to `malloc()` is needed to allocate the data and no
+   *    separate call to `free()` is needed to deallocate it.
+   *  + The data can be accessed faster since it's already been loaded with the
+   *    node (cache hit).
+   *
+   * The disadvantages are:
+   *
+   *  - Inserting data into a tree requires copying it into a node.
+   *  - If you want to delete a node from the tree but keep its data, you have
+   *    to copy it out first.
+   */
+  RB_DLOC_INT,
+
+  /**
+   * Nodes contain a pointer to the data.  The advantages are:
+   *
+   *  + Inserting data into a tree requires copying only a pointer into a node.
+   *  + Hence, the lifetime of data is separate from the tree.
+   *
+   * The disadvantages are:
+   *
+   *  - A separate call to `malloc()` is needed to allocate the data and a
+   *    separate call to `free()` is needed to deallocate it.
+   *  - Accessing the data is slower since it's in a different memory location
+   *    than the node (cache miss).
+   */
+  RB_DLOC_PTR
+};
+
 ////////// typedefs ///////////////////////////////////////////////////////////
 
 typedef enum   rb_color     rb_color_t;
+typedef enum   rb_dloc      rb_dloc_t;
 typedef struct rb_insert_rv rb_insert_rv_t;
 typedef struct rb_node      rb_node_t;
 typedef struct rb_tree      rb_tree_t;
@@ -109,13 +182,16 @@ typedef bool (*rb_visit_fn_t)( void *node_data, void *v_data );
  * are for internal use only.
  */
 struct rb_node {
+  rb_node_t  *child[2];                 ///< Left/right (internal use only).
+  rb_node_t  *parent;                   ///< Parent (internal use only).
+  rb_color_t  color;                    ///< Node color (internal use only).
+
   /**
    * User data.
    *
-   * @warning The data pointed to _must not_ be modified if that would change
-   * the node's position within the tree according to the tree's \ref
-   * rb_tree::cmp_fn "cmp_fn".  For example, if `data` points to a `struct`
-   * like:
+   * @warning The data _must not_ be modified if that would change the node's
+   * position within the tree according to the tree's \ref rb_tree::cmp_fn
+   * "cmp_fn".  For example, if `data` is a `struct` like:
    *
    *      struct word_count {
    *          char     *word;
@@ -125,11 +201,7 @@ struct rb_node {
    * then, assuming the tree's \ref rb_tree::cmp_fn "cmp_fn" compares only
    * `word`, client code may then only safely modify `count`.
    */
-  void       *data;
-
-  rb_node_t  *child[2];                 ///< Left/right (internal use only).
-  rb_node_t  *parent;                   ///< Parent (internal use only).
-  rb_color_t  color;                    ///< Node color (internal use only).
+  alignas( max_align_t ) char data[];
 };
 
 /**
@@ -145,13 +217,24 @@ struct rb_tree {
   rb_node_t  *root;
 
   /**
+   * Data comparison function.
+   *
+   * @warning This value may be changed _only_ when the tree is empty.
+   */
+  rb_cmp_fn_t cmp_fn;
+
+  /**
+   * Node data location.
+   */
+  rb_dloc_t   dloc;
+
+  /**
    * A convenience sentinel for all leaf nodes.
    *
    * @remarks
    * @parblock
    * Its only invariant is that its \ref rb_node::color "color" _must_ be
-   * #RB_BLACK.  Its children, parent, and even data can take on arbitrary
-   * values.
+   * #RB_BLACK.  Its children and parent can take on arbitrary values.
    *
    * There is one nil per tree instead of a single static nil for all trees
    * because those values can change.  In a multithreaded program, updates to
@@ -160,13 +243,6 @@ struct rb_tree {
    * @endparblock
    */
   rb_node_t   nil;
-
-  /**
-   * Data comparison function.
-   *
-   * @warning This value may be changed _only_ when the tree is empty.
-   */
-  rb_cmp_fn_t cmp_fn;
 };
 
 /**
@@ -195,6 +271,25 @@ struct rb_insert_rv {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Gets a pointer to \a node's data.
+ *
+ * @param tree A pointer to the rb_tree of \a node.
+ * @param node The rb_node to get the data of.
+ * @return Returns said data.
+ *
+ * @note Normally, either #RB_DATA_INT or #RB_DATA_PTR is used to get a pointer
+ * to a node's data.  This function would only be used in code that should work
+ * with a tree using either data location.
+ *
+ * @sa #RB_DATA_INT
+ * @sa #RB_DATA_PTR
+ */
+NODISCARD RED_BLACK_H_INLINE
+void* rb_node_data( rb_tree_t const *tree, rb_node_t const *node ) {
+  return tree->dloc == RB_DLOC_INT ? RB_DATA_INT( node ) : RB_DATA_PTR( node );
+}
+
+/**
  * Cleans-up all memory associated with \a tree but does _not_ free \a tree
  * itself.
  *
@@ -212,13 +307,10 @@ void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn );
  *
  * @param tree A pointer to the rb_tree to delete \a node from.
  * @param node A pointer to the rb_node to delete.
- * @return Returns a pointer to the data of \a node.  The caller is responsible
- * for deleting said data if necessary.
  *
  * @sa rb_tree_insert()
  */
-NODISCARD
-void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
+void rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
 
 /**
  * Gets whether \a tree is empty.
@@ -251,17 +343,25 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data );
  * Initializes a red-black tree.
  *
  * @param tree The red-black tree to initialize.
+ * @param dloc Where data for each node is stored.
  * @param cmp_fn A pointer to a function used to compare data between nodes.
  *
  * @sa rb_tree_cleanup()
  */
-void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn );
+void rb_tree_init( rb_tree_t *tree, rb_dloc_t dloc, rb_cmp_fn_t cmp_fn );
 
 /**
  * Inserts \a data into \a tree.
  *
  * @param tree A pointer to the rb_tree to insert into.
  * @param data A pointer to the data to insert.
+ * @param data_size If \a tree's \ref rb_tree::dloc "dloc" is:
+ *  + #RB_DLOC_INT: The size of \a data.  If a node is inserted, then this
+ *    number of bytes are copied from \a data into the new node's \ref
+ *    rb_node::data "data".
+ *  + #RB_DLOC_PTR: Not used.  If a node is inserted, then the pointer value of
+ *    \a data itself is copied into the new node's \ref rb_node::data "data".
+ *
  * @return Returns an \ref rb_insert_rv where its \ref rb_insert_rv::node
  * "node" points to either the newly inserted node or the existing node having
  * the same \ref rb_node::data "data" and \ref rb_insert_rv::inserted
@@ -275,7 +375,7 @@ void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn );
  * @sa rb_tree_delete()
  */
 NODISCARD
-rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data );
+rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size );
 
 /**
  * Performs an in-order traversal of \a tree.

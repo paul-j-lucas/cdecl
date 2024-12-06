@@ -808,7 +808,7 @@ static bool define_type( c_ast_t const *type_ast, decl_flags_t decl_flags ) {
   if ( !c_type_ast_check( type_ast ) )
     return false;
 
-  c_typedef_t *const tdef = c_typedef_add( type_ast, decl_flags )->data;
+  c_typedef_t *const tdef = (void*)c_typedef_add( type_ast, decl_flags )->data;
 
   if ( tdef->ast == type_ast ) {
     //
@@ -5213,7 +5213,7 @@ pc99_func_or_constructor_declaration_c
         csu_ast->sname = c_sname_dup( &csu_ast->csu.csu_sname );
 
         in_attr.tdef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
-        MAYBE_UNUSED c_typedef_t const *const csu_tdef = in_attr.tdef_rb->data;
+        MAYBE_UNUSED c_typedef_t const *const csu_tdef = (void*)in_attr.tdef_rb->data;
         assert( csu_tdef->ast == csu_ast );
       }
     }
@@ -5234,12 +5234,9 @@ pc99_func_or_constructor_declaration_c
 
       if ( OPT_LANG_IS( CONSTRUCTORS ) ) {
         //
-        // Free the temporary typedef for the class.
+        // Remove the temporary typedef for the class.
         //
-        // Note that we free only the typedef and not its AST; its AST will be
-        // garbage collected.
-        //
-        free( c_typedef_remove( in_attr.tdef_rb ) );
+        c_typedef_remove( in_attr.tdef_rb );
 
         //
         // In C++, encountering a name followed by '(' declares an in-class

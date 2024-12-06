@@ -277,7 +277,11 @@ static void include_cleanup( void ) {
  * @sa include_cleanup()
  */
 static void include_init( void ) {
-  rb_tree_init( &include_set, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
+  // Must pass RB_DLOC_PTR since the resolved include path strings are shared
+  // with and owned by include_stack.
+  rb_tree_init(
+    &include_set, RB_DLOC_PTR, POINTER_CAST( rb_cmp_fn_t, &strcmp )
+  );
 }
 
 /**
@@ -441,9 +445,9 @@ static bool pop_file( void ) {
 
   rb_node_t *const found_rb = rb_tree_find( &include_set, ifi->curr_real_path );
   assert( found_rb != NULL );
-  // Ignore the curr_real_path returned by rb_tree_delete() since it's shared
-  // with and owned by ifi.
-  PJL_DISCARD_RV( rb_tree_delete( &include_set, found_rb ) );
+  // No need to delete found_rb->node.data since it's shared with and owned by
+  // ifi.
+  rb_tree_delete( &include_set, found_rb );
 
   cdecl_input_path = ifi->prev_orig_path;
   opt_lineno = ifi->orig_opt_lineno;
@@ -533,7 +537,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   // plain file, and we can open it, we can insert it into include_set.
   //
   PJL_DISCARD_RV(
-    rb_tree_insert( &include_set, CONST_CAST( void*, real_path ) )
+    rb_tree_insert( &include_set, CONST_CAST( char*, real_path ), 0 )
   );
 
   include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );

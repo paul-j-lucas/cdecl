@@ -126,13 +126,10 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname );
  * Removes a `typedef` (or `using`) from the global set.
  *
  * @param node The rb_node containing the `typedef` to remove.
- * @return Returns the removed `typedef`.  The caller is responsible for
- * deleting it if necessary.
  *
  * @sa c_typedef_add()
  */
-NODISCARD
-c_typedef_t* c_typedef_remove( rb_node_t *node );
+void c_typedef_remove( rb_node_t *node );
 
 /**
  * Does an in-order traversal of all \ref c_typedef.

@@ -1006,20 +1006,19 @@ static int c_typedef_cmp( c_typedef_t const *i_tdef,
 /**
  * Creates a new \ref c_typedef.
  *
+ * @param tdef The \ref c_typedef to initialize.
  * @param ast The AST of the type.
  * @param decl_flags The declaration flags to use; must only be one of
  * #C_ENG_DECL, #C_GIB_TYPEDEF, or #C_GIB_USING.
- * @return Returns said \ref c_typedef.
  */
-NODISCARD
-static c_typedef_t* c_typedef_new( c_ast_t const *ast,
-                                   decl_flags_t decl_flags ) {
+static void c_typedef_init( c_typedef_t *tdef, c_ast_t const *ast,
+                            decl_flags_t decl_flags ) {
+  assert( tdef != NULL );
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( decl_flags, C_TYPE_DECL_ANY ) );
 
   bool const is_predefined = predef_lang_ids != LANG_NONE;
 
-  c_typedef_t *const tdef = MALLOC( c_typedef_t, 1 );
   *tdef = (c_typedef_t){
     .ast = ast,
     .decl_flags = decl_flags,
@@ -1032,8 +1031,6 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast,
     .lang_ids = is_predefined ?
       predef_lang_ids : c_lang_and_newer( opt_lang_id )
   };
-
-  return tdef;
 }
 
 /**
@@ -1051,7 +1048,7 @@ static void c_typedefs_cleanup( void ) {
   // the red-black tree, its nodes, and the c_typedef_t data each node points
   // to, but not the AST nodes the c_typedef_t data points to.
   //
-  rb_tree_cleanup( &typedef_set, &free );
+  rb_tree_cleanup( &typedef_set, /*free_fn=*/NULL );
 }
 
 /**
@@ -1099,18 +1096,9 @@ rb_node_t* c_typedef_add( c_ast_t const *ast, decl_flags_t decl_flags ) {
   assert( ast != NULL );
   assert( !c_sname_empty( &ast->sname ) );
 
-  c_typedef_t find_tdef = { .ast = ast };
-  rb_insert_rv_t rbi_rv = rb_tree_insert( &typedef_set, &find_tdef );
-  if ( rbi_rv.inserted ) {
-    //
-    // Now that we know the typedef has been inserted, replace the find_tdef
-    // key used to test for insertion with a dynamically allocated one.  Doing
-    // it this way means we do the look-up only once and the dynamic allocation
-    // only if inserted.
-    //
-    rbi_rv.node->data = c_typedef_new( ast, decl_flags );
-  }
-  return rbi_rv.node;
+  c_typedef_t tdef;
+  c_typedef_init( &tdef, ast, decl_flags );
+  return rb_tree_insert( &typedef_set, &tdef, sizeof tdef ).node;
 }
 
 c_typedef_t const* c_typedef_find_name( char const *name ) {
@@ -1128,11 +1116,11 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
   assert( sname != NULL );
   c_typedef_t const tdef = { .ast = &(c_ast_t const){ .sname = *sname } };
   rb_node_t const *const found_rb = rb_tree_find( &typedef_set, &tdef );
-  return found_rb != NULL ? found_rb->data : NULL;
+  return found_rb != NULL ? RB_DATA_INT( found_rb ) : NULL;
 }
 
-c_typedef_t* c_typedef_remove( rb_node_t *node ) {
-  return rb_tree_delete( &typedef_set, node );
+void c_typedef_remove( rb_node_t *node ) {
+  rb_tree_delete( &typedef_set, node );
 }
 
 void c_typedef_visit( c_typedef_visit_fn_t visit_fn, void *v_data ) {
@@ -1144,7 +1132,10 @@ void c_typedef_visit( c_typedef_visit_fn_t visit_fn, void *v_data ) {
 void c_typedefs_init( void ) {
   ASSERT_RUN_ONCE();
 
-  rb_tree_init( &typedef_set, POINTER_CAST( rb_cmp_fn_t, &c_typedef_cmp ) );
+  rb_tree_init(
+    &typedef_set, RB_DLOC_INT,
+    POINTER_CAST( rb_cmp_fn_t, &c_typedef_cmp )
+  );
   ATEXIT( &c_typedefs_cleanup );
 
 #ifdef ENABLE_BISON_DEBUG

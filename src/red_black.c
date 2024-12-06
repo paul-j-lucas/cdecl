@@ -136,12 +136,27 @@ static inline bool is_red( rb_node_t const *node ) {
   return node->color == RB_RED;
 }
 
+/**
+ * Compares the data between \a node's data and \a data.
+ *
+ * @param tree A pointer to the rb_tree of \a node.
+ * @param node The rb_node whose data to compare.
+ * @param data A pointer to the data to compare against.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a node's data
+ * is less than, equal to, or greater than \a data, respectively.
+ */
+NODISCARD
+static inline int rb_tree_cmp( rb_tree_t const *tree, rb_node_t *node,
+                               void const *data ) {
+  return (*tree->cmp_fn)( data, rb_node_data( tree, node ) );
+}
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Frees all memory associated with \a node _including_ \a node itself.
  *
- * @param tree A pointer rb_tree to free \a node from.
+ * @param tree A pointer to the rb_tree to free \a node from.
  * @param node A pointer to the rb_node to free.
  * @param free_fn A pointer to a function used to free data associated with \a
  * node or NULL if unnecessary.
@@ -154,7 +169,7 @@ static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
     rb_node_free( tree, node->child[RB_L], free_fn );
     rb_node_free( tree, node->child[RB_R], free_fn );
     if ( free_fn != NULL )
-      (*free_fn)( node->data );
+      (*free_fn)( rb_node_data( tree, node ) );
     free( node );
   }
 }
@@ -396,7 +411,7 @@ static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
       rb_node_visit( tree, node->child[RB_L], visit_fn, v_data );
     if ( stopped_node != NULL )
       return stopped_node;
-    if ( (*visit_fn)( node->data, v_data ) )
+    if ( (*visit_fn)( rb_node_data( tree, node ), v_data ) )
       return node;
     node = node->child[RB_R];
   } // while
@@ -462,7 +477,6 @@ static void rb_tree_reset( rb_tree_t *tree ) {
   assert( tree != NULL );
 
   tree->nil = (rb_node_t){
-    .data = NULL,
     .child = { RB_NIL(tree), RB_NIL(tree) },
     .parent = RB_NIL(tree),
     .color = RB_BLACK
@@ -481,7 +495,7 @@ void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn ) {
   }
 }
 
-void* rb_tree_delete( rb_tree_t *tree, rb_node_t *z_delete ) {
+void rb_tree_delete( rb_tree_t *tree, rb_node_t *z_delete ) {
   assert( tree != NULL );
   assert( z_delete != NULL );
   assert( z_delete != RB_NIL(tree) );
@@ -521,9 +535,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *z_delete ) {
     rb_delete_fixup( tree, x_node );
   rb_tree_check( tree );
 
-  void *const data = z_delete->data;
   free( z_delete );
-  return data;
 }
 
 rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
@@ -531,7 +543,7 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
   assert( data != NULL );
 
   for ( rb_node_t *node = tree->root; node != RB_NIL(tree); ) {
-    int const cmp = (*tree->cmp_fn)( data, node->data );
+    int const cmp = rb_tree_cmp( tree, node, data );
     if ( cmp == 0 )
       return node;
     node = node->child[ cmp >= 0 ];
@@ -539,16 +551,21 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
   return NULL;
 }
 
-void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn ) {
+void rb_tree_init( rb_tree_t *tree, rb_dloc_t dloc, rb_cmp_fn_t cmp_fn ) {
   assert( tree != NULL );
   assert( cmp_fn != NULL );
   rb_tree_reset( tree );
+  tree->dloc = dloc;
   tree->cmp_fn = cmp_fn;
 }
 
-rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
+rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
   assert( tree != NULL );
   assert( data != NULL );
+  assert( tree->dloc == RB_DLOC_PTR || data_size > 0 );
+
+  if ( tree->dloc == RB_DLOC_PTR )
+    data_size = sizeof( void* );
 
   // See "Introduction to Algorithms," 4th ed., &sect; 13.3, p. 338.
 
@@ -560,27 +577,35 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
   // new node.
   //
   while ( x_node != RB_NIL(tree) ) {
-    int const cmp = (*tree->cmp_fn)( data, x_node->data );
+    int const cmp = rb_tree_cmp( tree, x_node, data );
     if ( cmp == 0 )
       return (rb_insert_rv_t){ x_node, .inserted = false };
     y_parent = x_node;
     x_node = x_node->child[ cmp >= 0 ];
   } // while
 
-  rb_node_t *const z_new_node = MALLOC( rb_node_t, 1 );
+  rb_node_t *const z_new_node = malloc( sizeof( rb_node_t ) + data_size );
   *z_new_node = (rb_node_t){
-    .data = data,
     .child = { RB_NIL(tree), RB_NIL(tree) },
     .parent = y_parent,
     .color = RB_RED                     // new nodes are always red
   };
+
+  switch ( tree->dloc ) {
+    case RB_DLOC_INT:
+      memcpy( z_new_node->data, data, data_size );
+      break;
+    case RB_DLOC_PTR:
+      RB_DATA_PTR( z_new_node ) = data;
+      break;
+  } // switch
 
   if ( y_parent == RB_NIL(tree) ) {
     tree->root = z_new_node;            // tree was empty
   } else {
     // Determine which child of the parent the new node should be.
     rb_dir_t const dir =
-      STATIC_CAST( rb_dir_t, (*tree->cmp_fn)( data, y_parent->data ) >= 0 );
+      STATIC_CAST( rb_dir_t, rb_tree_cmp( tree, y_parent, data ) >= 0 );
     assert( y_parent->child[dir] == RB_NIL(tree) );
     y_parent->child[dir] = z_new_node;
   }
