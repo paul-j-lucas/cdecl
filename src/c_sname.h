@@ -252,6 +252,8 @@ void c_sname_cleanup( c_sname_t *sname );
  * @param j_sname The second scoped name to compare.
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_sname is
  * less than, equal to, or greater than \a j_sname, respectively.
+ *
+ * @sa c_sname_equal()
  */
 NODISCARD C_SNAME_H_INLINE
 int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
@@ -298,6 +300,22 @@ c_sname_t c_sname_dup( c_sname_t const *sname ) {
 NODISCARD C_SNAME_H_INLINE
 bool c_sname_empty( c_sname_t const *sname ) {
   return slist_empty( sname );
+}
+
+/**
+ * Compares two scoped name for equality.
+ *
+ * @param i_sname The first scoped name to compare.
+ * @param j_sname The second scoped name to compare.
+ * @return Returns `true` only if \a i_sname equals \a j_sname.
+ *
+ * @sa c_sname_cmp()
+ */
+NODISCARD C_SNAME_H_INLINE
+bool c_sname_equal( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
+  return slist_equal(
+    i_sname, j_sname, POINTER_CAST( slist_equal_fn_t, &str_equal )
+  );
 }
 
 /**

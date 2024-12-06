@@ -376,6 +376,14 @@ void perror_exit( int status ) {
 }
 // LCOV_EXCL_STOP
 
+bool str_equal( char const *is, char const *js ) {
+  if ( is == js )
+    return true;
+  if ( is == NULL || js == NULL )
+    return false;
+  return strcmp( is, js ) == 0;
+}
+
 bool str_is_affirmative( char const *s ) {
   static char const *const AFFIRMATIVES[] = {
     "1",

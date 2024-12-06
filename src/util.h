@@ -1713,6 +1713,15 @@ size_t round_up_pow_2( size_t n, size_t multiple ) {
 }
 
 /**
+ * Compares two strings for equality.
+ *
+ * @param is The first string.
+ * @param js The second string.
+ * @return Returns `true` only if \a is equals \a js.
+ */
+bool str_equal( char const *is, char const *js );
+
+/**
  * Checks whether \a s is an affirmative value.  An affirmative value is one of
  * 1, t, true, y, or yes, case-insensitive.
  *
