@@ -1,3 +1,7 @@
+2024-12-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c: s/(void*)/RB_DATA_INT()/
+
 2024-12-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_sname.h, util.c, util.h: Fixed improper equality comparison for
