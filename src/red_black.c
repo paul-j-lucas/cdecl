@@ -554,8 +554,8 @@ void rb_tree_init( rb_tree_t *tree, rb_dloc_t dloc, rb_cmp_fn_t cmp_fn ) {
   assert( tree != NULL );
   assert( cmp_fn != NULL );
   rb_tree_reset( tree );
-  tree->dloc = dloc;
   tree->cmp_fn = cmp_fn;
+  tree->dloc = dloc;
 }
 
 rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
