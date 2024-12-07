@@ -664,7 +664,7 @@ static void mex_check_identifier( mex_state_t *mex,
       //                  ^
       //      13: warning: "__DATE__" not supported until C89; will not expand
       //
-      rb_insert_rv_t rbi_rv = rb_tree_insert(
+      rb_insert_rv_t const rbi_rv = rb_tree_insert(
         mex->no_expand_set, CONST_CAST( char*, found_macro->name ),
         strlen( found_macro->name ) + 1
       );
@@ -764,7 +764,7 @@ static void mex_check_identifier( mex_state_t *mex,
   }
 
   strbuf_t const *const mnes_key = mex_no_expand_set_key( mex, found_macro );
-  rb_insert_rv_t rbi_rv = rb_tree_insert(
+  rb_insert_rv_t const rbi_rv = rb_tree_insert(
     mex->no_expand_set, CONST_CAST( char*, mnes_key->str ), mnes_key->len + 1
   );
 
@@ -1508,16 +1508,16 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
     // param_expand_t node.
     //
     param_expand_t ins_pe = { .name = token->ident.name };
-    rb_insert_rv_t rbi_rv =
+    rb_insert_rv_t const rbi_rv =
       rb_tree_insert( &param_cache, &ins_pe, sizeof ins_pe );
 
     if ( !rbi_rv.inserted ) {
-      param_expand_t const *const found_pe = (void*)rbi_rv.node->data;
+      param_expand_t const *const found_pe = RB_DATA_INT( rbi_rv.node );
       arg_tokens = found_pe->expand_list;
       goto append;
     }
 
-    param_expand_t *const new_pe = (void*)rbi_rv.node->data;
+    param_expand_t *const new_pe = RB_DATA_INT( rbi_rv.node );
 
     mex_state_t param_mex;
     mex_init( &param_mex,
