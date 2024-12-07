@@ -476,14 +476,13 @@ static rb_node_t* rb_tree_minimum( rb_tree_t *tree, rb_node_t *x_node ) {
 static void rb_tree_reset( rb_tree_t *tree ) {
   assert( tree != NULL );
 
+  tree->root = RB_NIL(tree);
+  tree->cmp_fn = NULL;
   tree->nil = (rb_node_t){
     .child = { RB_NIL(tree), RB_NIL(tree) },
     .parent = RB_NIL(tree),
     .color = RB_BLACK
   };
-
-  tree->root = RB_NIL(tree);
-  tree->cmp_fn = NULL;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
