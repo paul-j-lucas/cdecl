@@ -234,7 +234,7 @@ bool fd_is_file( int fd ) {
 FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   assert( buf != NULL );
   assert( mode != NULL );
-  assert( strchr( mode, 'r' ) != NULL );
+  assert( mode[0] == 'r' );
 #ifdef NDEBUG
   (void)mode;
 #endif /* NDEBUG */
