@@ -157,42 +157,23 @@ bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *data ) {
 
   size_t const orig_len = list->len;
 
-  // special case: predicate matches list->head
+  slist_node_t **pelem = &list->head, *prev = NULL;;
   for (;;) {
-    slist_node_t *const curr = list->head;
-    if ( curr == NULL )
-      goto done;
-    if ( !(*pred_fn)( curr, data ) )
+    slist_node_t *const elem = *pelem;
+    if ( elem == NULL )
       break;
-    if ( list->tail == curr )
-      list->tail = NULL;
-    list->head = curr->next;
-    free( curr );
-    --list->len;
-  } // for
-
-  assert( list->head != NULL );
-  assert( list->tail != NULL );
-  assert( list->len > 0 );
-
-  // general case: predicate matches any node except list->head
-  slist_node_t *prev = list->head;
-  for (;;) {
-    slist_node_t *const curr = prev->next;
-    if ( curr == NULL )
-      break;
-    if ( !(*pred_fn)( curr, data ) ) {
-      prev = curr;
+    if ( !(*pred_fn)( elem, data ) ) {
+      prev = *pelem;
+      pelem = &elem->next;
       continue;
     }
-    if ( list->tail == curr )
+    if ( elem == list->tail )
       list->tail = prev;
-    prev->next = curr->next;
-    free( curr );
+    *pelem = elem->next;
+    free( elem );
     --list->len;
   } // for
 
-done:
   return list->len < orig_len;
 }
 
