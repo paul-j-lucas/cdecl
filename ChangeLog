@@ -1,5 +1,7 @@
 2024-12-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * slist.c: s/*pelem/elem/
+   * slist.c: s/;;/;/
    * slist.c: Rewrote slist_free_if() to be in "good taste" (Torvalds).
 
 2024-12-10  Paul J. Lucas <paul@lucasmail.org>
