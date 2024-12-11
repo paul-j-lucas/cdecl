@@ -163,7 +163,7 @@ bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *data ) {
     if ( elem == NULL )
       break;
     if ( !(*pred_fn)( elem, data ) ) {
-      prev = *pelem;
+      prev = elem;
       pelem = &elem->next;
       continue;
     }
