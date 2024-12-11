@@ -157,7 +157,7 @@ bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *data ) {
 
   size_t const orig_len = list->len;
 
-  slist_node_t **pelem = &list->head, *prev = NULL;;
+  slist_node_t **pelem = &list->head, *prev = NULL;
   for (;;) {
     slist_node_t *const elem = *pelem;
     if ( elem == NULL )
