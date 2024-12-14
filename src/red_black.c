@@ -52,17 +52,6 @@
  */
 
 /**
- * Gets an lvalue reference to the root node of \a TREE.
- *
- * @param TREE A pointer rb_tree to get the root node of.
- * @return Returns said lvalue reference.
- *
- * @note This is a macro instead of an inline function so it'll work with
- * either a `const` or non-`const` \a TREE.
- */
-#define RB_NIL(TREE)              (&(TREE)->nil)
-
-/**
  * Gets an lvalue reference to the child node pointer of \a NODE's parent,
  * i.e., the parent's pointer to \a NODE.
  *
@@ -165,7 +154,7 @@ static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
                           rb_free_fn_t free_fn ) {
   assert( node != NULL );
 
-  if ( node != RB_NIL(tree) ) {
+  if ( node != &tree->nil ) {
     rb_node_free( tree, node->child[RB_L], free_fn );
     rb_node_free( tree, node->child[RB_R], free_fn );
     if ( free_fn != NULL )
@@ -212,11 +201,11 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *x_node, rb_dir_t dir ) {
   rb_node_t *const y_node = x_node->child[!dir];
   x_node->child[!dir] = y_node->child[dir];
 
-  if ( y_node->child[dir] != RB_NIL(tree) )
+  if ( y_node->child[dir] != &tree->nil )
     y_node->child[dir]->parent = x_node;
 
   y_node->parent = x_node->parent;
-  if ( x_node->parent == RB_NIL(tree) )
+  if ( x_node->parent == &tree->nil )
     tree->root = y_node;
   else
     RB_PARENT_CHILD( x_node ) = y_node;
@@ -237,7 +226,7 @@ static void rb_node_check( rb_tree_t const *tree, rb_node_t const *node ) {
   assert( tree != NULL );
   assert( node != NULL );
 
-  if ( node == RB_NIL(tree) )
+  if ( node == &tree->nil )
     return;
 
   if ( is_red( node ) ) {
@@ -281,7 +270,7 @@ static void rb_tree_check( rb_tree_t const *tree ) {
   assert( tree != NULL );
   assert( tree->root != NULL );
   assert( tree->root->color == RB_BLACK );
-  assert( RB_NIL(tree)->color == RB_BLACK );
+  assert( tree->nil.color == RB_BLACK );
   rb_node_check( tree, tree->root );
 }
 
@@ -406,7 +395,7 @@ static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
   assert( tree != NULL );
   assert( node != NULL );
 
-  while ( node != RB_NIL(tree) ) {
+  while ( node != &tree->nil ) {
     rb_node_t *const stopped_node =
       rb_node_visit( tree, node->child[RB_L], visit_fn, user_data );
     if ( stopped_node != NULL )
@@ -435,7 +424,7 @@ static void rb_transplant( rb_tree_t *tree, rb_node_t *u_node,
   assert( u_node != NULL );
   assert( v_node != NULL );
 
-  if ( u_node->parent == RB_NIL(tree) )
+  if ( u_node->parent == &tree->nil )
     tree->root = v_node;
   else
     RB_PARENT_CHILD( u_node ) = v_node;
@@ -456,7 +445,7 @@ static rb_node_t* rb_tree_minimum( rb_tree_t *tree, rb_node_t *x_node ) {
   assert( tree != NULL );
   assert( x_node != NULL );
 
-  while ( x_node->child[RB_L] != RB_NIL(tree) )
+  while ( x_node->child[RB_L] != &tree->nil )
     x_node = x_node->child[RB_L];
   return x_node;
 }
@@ -476,11 +465,11 @@ static rb_node_t* rb_tree_minimum( rb_tree_t *tree, rb_node_t *x_node ) {
 static void rb_tree_reset( rb_tree_t *tree ) {
   assert( tree != NULL );
 
-  tree->root = RB_NIL(tree);
+  tree->root = &tree->nil;
   tree->cmp_fn = NULL;
   tree->nil = (rb_node_t){
-    .child = { RB_NIL(tree), RB_NIL(tree) },
-    .parent = RB_NIL(tree),
+    .child = { &tree->nil, &tree->nil },
+    .parent = &tree->nil,
     .color = RB_BLACK
   };
 }
@@ -497,7 +486,7 @@ void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn ) {
 void rb_tree_delete( rb_tree_t *tree, rb_node_t *z_delete ) {
   assert( tree != NULL );
   assert( z_delete != NULL );
-  assert( z_delete != RB_NIL(tree) );
+  assert( z_delete != &tree->nil );
 
   // See "Introduction to Algorithms," 4th ed., &sect; 13.4, p. 348.
 
@@ -505,11 +494,11 @@ void rb_tree_delete( rb_tree_t *tree, rb_node_t *z_delete ) {
   rb_node_t *y_node = z_delete;
   rb_color_t y_original_color = y_node->color;
 
-  if ( z_delete->child[RB_L] == RB_NIL(tree) ) {
+  if ( z_delete->child[RB_L] == &tree->nil ) {
     x_node = z_delete->child[RB_R];
     rb_transplant( tree, z_delete, z_delete->child[RB_R] );
   }
-  else if ( z_delete->child[RB_R] == RB_NIL(tree) ) {
+  else if ( z_delete->child[RB_R] == &tree->nil ) {
     x_node = z_delete->child[RB_L];
     rb_transplant( tree, z_delete, z_delete->child[RB_L] );
   }
@@ -541,7 +530,7 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
   assert( tree != NULL );
   assert( data != NULL );
 
-  for ( rb_node_t *node = tree->root; node != RB_NIL(tree); ) {
+  for ( rb_node_t *node = tree->root; node != &tree->nil; ) {
     int const cmp = rb_tree_cmp( tree, node, data );
     if ( cmp == 0 )
       return node;
@@ -569,13 +558,13 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
   // See "Introduction to Algorithms," 4th ed., &sect; 13.3, p. 338.
 
   rb_node_t *x_node = tree->root;
-  rb_node_t *y_parent = RB_NIL(tree);
+  rb_node_t *y_parent = &tree->nil;
 
   //
   // Find either the existing node having the same data -OR- the parent for the
   // new node.
   //
-  while ( x_node != RB_NIL(tree) ) {
+  while ( x_node != &tree->nil ) {
     int const cmp = rb_tree_cmp( tree, x_node, data );
     if ( cmp == 0 )
       return (rb_insert_rv_t){ x_node, .inserted = false };
@@ -585,7 +574,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
 
   rb_node_t *const z_new_node = malloc( sizeof( rb_node_t ) + data_size );
   *z_new_node = (rb_node_t){
-    .child = { RB_NIL(tree), RB_NIL(tree) },
+    .child = { &tree->nil, &tree->nil },
     .parent = y_parent,
     .color = RB_RED                     // new nodes are always red
   };
@@ -599,13 +588,13 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
       break;
   } // switch
 
-  if ( y_parent == RB_NIL(tree) ) {
+  if ( y_parent == &tree->nil ) {
     tree->root = z_new_node;            // tree was empty
   } else {
     // Determine which child of the parent the new node should be.
     rb_dir_t const dir =
       STATIC_CAST( rb_dir_t, rb_tree_cmp( tree, y_parent, data ) >= 0 );
-    assert( y_parent->child[dir] == RB_NIL(tree) );
+    assert( y_parent->child[dir] == &tree->nil );
     y_parent->child[dir] = z_new_node;
   }
 
