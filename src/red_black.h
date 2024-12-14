@@ -68,14 +68,14 @@ _GL_INLINE_HEADER_BEGIN
  * would change the node's position within the tree according to its \ref
  * rb_tree::cmp_fn "cmp_fn".
  *
- * @sa #RB_DATA_PTR()
+ * @sa #RB_DPTR()
  */
-#define RB_DATA_INT(NODE)       ( (void*)(NODE)->data )
+#define RB_DINT(NODE)             ( (void*)(NODE)->data )
 
 /**
  * Gets an lvalue reference to a pointer to the external data of \a NODE for
  * when #RB_DLOC_PTR was used with rb_tree_init(). Being an lvalue reference
- * means `RB_DATA_PTR` can appear on the left-hand side of an `=` and be
+ * means `RB_DPTR` can appear on the left-hand side of an `=` and be
  * assigned to.
  *
  * @param NODE The rb_node to get a pointer to the data of.
@@ -85,9 +85,9 @@ _GL_INLINE_HEADER_BEGIN
  * would change the node's position within the tree according to its \ref
  * rb_tree::cmp_fn "cmp_fn".
  *
- * @sa #RB_DATA_INT()
+ * @sa #RB_DINT()
  */
-#define RB_DATA_PTR(NODE)       ( *(void**)RB_DATA_INT( (NODE) ) )
+#define RB_DPTR(NODE)             ( *(void**)RB_DINT( (NODE) ) )
 
 ////////// enumerations ///////////////////////////////////////////////////////
 
@@ -277,16 +277,16 @@ struct rb_insert_rv {
  * @param node The rb_node to get the data of.
  * @return Returns said data.
  *
- * @note Normally, either #RB_DATA_INT or #RB_DATA_PTR is used to get a pointer
- * to a node's data.  This function would only be used in code that should work
- * with a tree using either data location.
+ * @note Normally, either #RB_DINT or #RB_DPTR is used to get a pointer to a
+ * node's data.  This function would only be used in code that should work with
+ * a tree using either data location.
  *
- * @sa #RB_DATA_INT
- * @sa #RB_DATA_PTR
+ * @sa #RB_DINT
+ * @sa #RB_DPTR
  */
 NODISCARD RED_BLACK_H_INLINE
 void* rb_node_data( rb_tree_t const *tree, rb_node_t const *node ) {
-  return tree->dloc == RB_DLOC_INT ? RB_DATA_INT( node ) : RB_DATA_PTR( node );
+  return tree->dloc == RB_DLOC_INT ? RB_DINT( node ) : RB_DPTR( node );
 }
 
 /**

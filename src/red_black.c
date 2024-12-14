@@ -595,7 +595,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
       memcpy( z_new_node->data, data, data_size );
       break;
     case RB_DLOC_PTR:
-      RB_DATA_PTR( z_new_node ) = data;
+      RB_DPTR( z_new_node ) = data;
       break;
   } // switch
 

@@ -1512,12 +1512,12 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
       rb_tree_insert( &param_cache, &ins_pe, sizeof ins_pe );
 
     if ( !rbi_rv.inserted ) {
-      param_expand_t const *const found_pe = RB_DATA_INT( rbi_rv.node );
+      param_expand_t const *const found_pe = RB_DINT( rbi_rv.node );
       arg_tokens = found_pe->expand_list;
       goto append;
     }
 
-    param_expand_t *const new_pe = RB_DATA_INT( rbi_rv.node );
+    param_expand_t *const new_pe = RB_DINT( rbi_rv.node );
 
     mex_state_t param_mex;
     mex_init( &param_mex,
@@ -2945,14 +2945,14 @@ p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
   rb_insert_rv_t const rbi_rv =
     rb_tree_insert( &macro_set, &new_macro, sizeof new_macro );
   if ( !rbi_rv.inserted ) {
-    p_macro_t *const old_macro = RB_DATA_INT( rbi_rv.node );
+    p_macro_t *const old_macro = RB_DINT( rbi_rv.node );
     assert( !old_macro->is_dynamic );
     p_macro_cleanup( old_macro );
     memcpy( rbi_rv.node->data, &new_macro, sizeof new_macro );
     print_warning( name_loc, "\"%s\" already exists; redefined\n", name );
   }
 
-  return RB_DATA_INT( rbi_rv.node );
+  return RB_DINT( rbi_rv.node );
 
 error:
   free( name );
@@ -3055,7 +3055,7 @@ p_macro_t const* p_macro_find( char const *name ) {
   assert( name != NULL );
   p_macro_t const find_macro = { .name = name };
   rb_node_t const *const found_rb = rb_tree_find( &macro_set, &find_macro );
-  return found_rb != NULL ? RB_DATA_INT( found_rb ) : NULL;
+  return found_rb != NULL ? RB_DINT( found_rb ) : NULL;
 }
 
 bool p_macro_undef( char const *name, c_loc_t const *name_loc ) {
@@ -3072,7 +3072,7 @@ bool p_macro_undef( char const *name, c_loc_t const *name_loc ) {
     return false;
   }
 
-  p_macro_t *const macro = RB_DATA_INT( found_rb );
+  p_macro_t *const macro = RB_DINT( found_rb );
   if ( macro->is_dynamic )
     goto predef_macro;
 

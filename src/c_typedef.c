@@ -1116,7 +1116,7 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
   assert( sname != NULL );
   c_typedef_t const tdef = { .ast = &(c_ast_t const){ .sname = *sname } };
   rb_node_t const *const found_rb = rb_tree_find( &typedef_set, &tdef );
-  return found_rb != NULL ? RB_DATA_INT( found_rb ) : NULL;
+  return found_rb != NULL ? RB_DINT( found_rb ) : NULL;
 }
 
 void c_typedef_remove( rb_node_t *node ) {
