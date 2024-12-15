@@ -553,9 +553,6 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
   assert( data != NULL );
   assert( tree->dloc == RB_DLOC_PTR || data_size > 0 );
 
-  if ( tree->dloc == RB_DLOC_PTR )
-    data_size = sizeof( void* );
-
   // See "Introduction to Algorithms," 4th ed., &sect; 13.3, p. 338.
 
   rb_node_t *x_node = tree->root;
@@ -573,6 +570,8 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
     x_node = x_node->child[ cmp >= 0 ];
   } // while
 
+  if ( tree->dloc == RB_DLOC_PTR )
+    data_size = sizeof( void* );
   rb_node_t *const z_new_node = malloc( sizeof( rb_node_t ) + data_size );
   *z_new_node = (rb_node_t){
     .child = { &tree->nil, &tree->nil },
