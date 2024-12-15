@@ -441,6 +441,7 @@ static void rb_transplant( rb_tree_t *tree, rb_node_t *u_node,
  * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
  * 4th ed., &sect; 12.2, p. 318.
  */
+NODISCARD
 static rb_node_t* rb_tree_minimum( rb_tree_t *tree, rb_node_t *x_node ) {
   assert( tree != NULL );
   assert( x_node != NULL );
