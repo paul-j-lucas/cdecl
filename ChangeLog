@@ -1,5 +1,7 @@
 2024-12-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * red_black.c: s/>=/>/
+   * red_black.c: Added NODISCARD.
    * red_black.c: Eliminated RB_NIL.
 
 2024-12-11  Paul J. Lucas <paul@lucasmail.org>
