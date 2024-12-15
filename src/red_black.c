@@ -535,7 +535,7 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
     int const cmp = rb_tree_cmp( tree, node, data );
     if ( cmp == 0 )
       return node;
-    node = node->child[ cmp >= 0 ];
+    node = node->child[ cmp > 0 ];
   } // for
   return NULL;
 }
@@ -567,7 +567,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
     if ( cmp == 0 )
       return (rb_insert_rv_t){ x_node, .inserted = false };
     y_parent = x_node;
-    x_node = x_node->child[ cmp >= 0 ];
+    x_node = x_node->child[ cmp > 0 ];
   } // while
 
   if ( tree->dloc == RB_DLOC_PTR )
