@@ -361,9 +361,9 @@ static void rb_insert_fixup( rb_tree_t *tree, rb_node_t *z_node ) {
     rb_node_t *const y_uncle = z_node->parent->parent->child[!dir];
     if ( is_red( y_uncle ) ) {
       z_node->parent->color = RB_BLACK;
-      y_uncle->color = RB_BLACK;
-      z_node->parent->parent->color = RB_RED;
       z_node = z_node->parent->parent;
+      z_node->color = RB_RED;
+      y_uncle->color = RB_BLACK;
     }
     else {
       if ( is_dir_child( z_node, !dir ) ) {
