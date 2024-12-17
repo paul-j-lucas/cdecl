@@ -58,7 +58,7 @@
  * @param NODE A pointer to the rb_node to get said reference from.
  * @return Returns said lvalue reference.
  */
-#define RB_PARENT_CHILD(NODE)     ((NODE)->parent->child[ child_dir( (NODE) ) ])
+#define RB_PARENT_PTR_TO(NODE)    ((NODE)->parent->child[ child_dir( (NODE) ) ])
 
 /**
  * Red-black tree child direction.
@@ -208,7 +208,7 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *x_node, rb_dir_t dir ) {
   if ( x_node->parent == &tree->nil )
     tree->root = y_node;
   else
-    RB_PARENT_CHILD( x_node ) = y_node;
+    RB_PARENT_PTR_TO( x_node ) = y_node;
   y_node->child[dir] = x_node;
   x_node->parent = y_node;
 }
@@ -427,7 +427,7 @@ static void rb_transplant( rb_tree_t *tree, rb_node_t *u_node,
   if ( u_node->parent == &tree->nil )
     tree->root = v_node;
   else
-    RB_PARENT_CHILD( u_node ) = v_node;
+    RB_PARENT_PTR_TO( u_node ) = v_node;
   v_node->parent = u_node->parent;
 }
 
