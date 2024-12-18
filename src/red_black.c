@@ -200,15 +200,14 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *x_node, rb_dir_t dir ) {
 
   rb_node_t *const y_node = x_node->child[!dir];
   x_node->child[!dir] = y_node->child[dir];
-
-  if ( y_node->child[dir] != &tree->nil )
-    y_node->child[dir]->parent = x_node;
-
+  y_node->child[dir]->parent = x_node;
   y_node->parent = x_node->parent;
+
   if ( x_node->parent == &tree->nil )
     tree->root = y_node;
   else
     RB_PARENT_PTR_TO( x_node ) = y_node;
+
   y_node->child[dir] = x_node;
   x_node->parent = y_node;
 }
