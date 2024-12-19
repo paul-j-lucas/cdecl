@@ -1,3 +1,8 @@
+2024-12-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, lexer.l, p_macro.c, red_black.c, red_black.h,
+     red_black_test.c: s/RB_DLOC_*/RB_D*/
+
 2024-12-18  Paul J. Lucas <paul@lucasmail.org>
 
    * red_black_test.c: Tightened-up test code.
