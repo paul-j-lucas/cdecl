@@ -554,8 +554,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
 
   // See "Introduction to Algorithms," 4th ed., &sect; 13.3, p. 338.
 
-  rb_node_t *x_node = tree->root;
-  rb_node_t *y_parent = &tree->nil;
+  rb_node_t *x_node = tree->root, *y_parent = &tree->nil;
 
   //
   // Find either the existing node having the same data -OR- the parent for the
@@ -578,14 +577,10 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
     .color = RB_RED                     // new nodes are always red
   };
 
-  switch ( tree->dloc ) {
-    case RB_DLOC_INT:
-      memcpy( z_new_node->data, data, data_size );
-      break;
-    case RB_DLOC_PTR:
-      RB_DPTR( z_new_node ) = data;
-      break;
-  } // switch
+  if ( tree->dloc == RB_DLOC_INT )
+    memcpy( z_new_node->data, data, data_size );
+  else
+    RB_DPTR( z_new_node ) = data;
 
   if ( y_parent == &tree->nil ) {
     tree->root = z_new_node;            // tree was empty
