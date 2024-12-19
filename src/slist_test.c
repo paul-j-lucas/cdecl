@@ -44,7 +44,10 @@ static bool slist_node_str_equal( slist_node_t *node, void *data ) {
   return strcmp( s, str_equal_to ) == 0;
 }
 
-static void test_slist_cmp( void ) {
+////////// test functions /////////////////////////////////////////////////////
+
+static bool test_slist_cmp( void ) {
+  TEST_FUNC_BEGIN();
   slist_t list, list2;
   slist_init( &list );
   slist_init( &list2 );
@@ -87,11 +90,14 @@ static void test_slist_cmp( void ) {
   slist_push_back( &list2, (void*)"A" );
   slist_push_back( &list2, (void*)"B" );
   TEST( slist_cmp( &list, &list2, POINTER_CAST( slist_cmp_fn_t, &strcmp ) ) < 0 );
+
   slist_cleanup( &list, /*free_fn=*/NULL );
   slist_cleanup( &list2, /*free_fn=*/NULL );
+  TEST_FUNC_END();
 }
 
-static void test_slist_dup( void ) {
+static bool test_slist_dup( void ) {
+  TEST_FUNC_BEGIN();
   slist_t list, list2;
   slist_init( &list );
   slist_init( &list2 );
@@ -154,11 +160,14 @@ static void test_slist_dup( void ) {
     if ( TEST( p != X ) )
       free( p );
   }
+
   slist_cleanup( &list, /*free_fn=*/NULL );
   slist_cleanup( &list2, /*free_fn=*/NULL );
+  TEST_FUNC_END();
 }
 
-static void test_slist_free_if( void ) {
+static bool test_slist_free_if( void ) {
+  TEST_FUNC_BEGIN();
   slist_t list;
   slist_init( &list );
   char *p;
@@ -234,10 +243,13 @@ static void test_slist_free_if( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_back( &list )) != NULL ) )
     TEST( *p == 'A' );
+
   slist_cleanup( &list, /*free_fn=*/NULL );
+  TEST_FUNC_END();
 }
 
-static void test_slist_at( void ) {
+static bool test_slist_at( void ) {
+  TEST_FUNC_BEGIN();
   slist_t list;
   slist_init( &list );
   char *p;
@@ -252,10 +264,13 @@ static void test_slist_at( void ) {
   if ( TEST( (p = slist_at( &list, 2 )) != NULL ) )
     TEST( *p == 'C' );
   TEST( slist_at( &list, 3 ) == NULL );
+
   slist_cleanup( &list, /*free_fn=*/NULL );
+  TEST_FUNC_END();
 }
 
-static void test_slist_atr( void ) {
+static bool test_slist_atr( void ) {
+  TEST_FUNC_BEGIN();
   slist_t list;
   slist_init( &list );
   char *p;
@@ -270,10 +285,13 @@ static void test_slist_atr( void ) {
   if ( TEST( (p = slist_atr( &list, 2 )) != NULL ) )
     TEST( *p == 'A' );
   TEST( slist_at( &list, 4 ) == NULL );
+
   slist_cleanup( &list, /*free_fn=*/NULL );
+  TEST_FUNC_END();
 }
 
-static void test_slist_pop_front( void ) {
+static bool test_slist_pop_front( void ) {
+  TEST_FUNC_BEGIN();
   slist_t list;
   slist_init( &list );
   char *p;
@@ -293,12 +311,13 @@ static void test_slist_pop_front( void ) {
     TEST( slist_empty( &list ) );
   }
   TEST( slist_pop_front( &list ) == NULL );
+
   slist_cleanup( &list, /*free_fn=*/NULL );
+  TEST_FUNC_END();
 }
 
 static bool test_slist_push_front( void ) {
   TEST_FUNC_BEGIN();
-
   slist_t list;
   slist_init( &list );
   char *p;
@@ -314,12 +333,13 @@ static bool test_slist_push_front( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_back( &list )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, /*free_fn=*/NULL );
 
+  slist_cleanup( &list, /*free_fn=*/NULL );
   TEST_FUNC_END();
 }
 
-static void test_slist_push_list_front( void ) {
+static bool test_slist_push_list_front( void ) {
+  TEST_FUNC_BEGIN();
   slist_t list;
   slist_init( &list );
   char *p;
@@ -448,10 +468,13 @@ static void test_slist_push_list_front( void ) {
     TEST( *p == 'D' );
   if ( TEST( (p = slist_back( &list )) != NULL ) )
     TEST( *p == 'E' );
+
   slist_cleanup( &list, /*free_fn=*/NULL );
+  TEST_FUNC_END();
 }
 
-static void test_slist_push_list_back( void ) {
+static bool test_slist_push_list_back( void ) {
+  TEST_FUNC_BEGIN();
   slist_t list;
   slist_init( &list );
   char *p;
@@ -580,7 +603,9 @@ static void test_slist_push_list_back( void ) {
     TEST( *p == 'D' );
   if ( TEST( (p = slist_back( &list )) != NULL ) )
     TEST( *p == 'E' );
+
   slist_cleanup( &list, /*free_fn=*/NULL );
+  TEST_FUNC_END();
 }
 
 static bool test_slist_push_back( void ) {
@@ -603,8 +628,8 @@ static bool test_slist_push_back( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_back( &list )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, /*free_fn=*/NULL );
 
+  slist_cleanup( &list, /*free_fn=*/NULL );
   TEST_FUNC_END();
 }
 

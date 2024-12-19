@@ -127,9 +127,10 @@ static bool test_rb_visitor( void *node_data, void *v_data ) {
   return false;
 }
 
-////////// tests //////////////////////////////////////////////////////////////
+////////// test functions /////////////////////////////////////////////////////
 
-static void test_insert1_find_delete( rb_dloc_t dloc ) {
+static bool test_insert1_find_delete( rb_dloc_t dloc ) {
+  TEST_FUNC_BEGIN();
   rb_tree_t tree;
   rb_tree_init( &tree, dloc, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
 
@@ -146,9 +147,11 @@ static void test_insert1_find_delete( rb_dloc_t dloc ) {
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
   TEST( rb_tree_empty( &tree ) );
+  TEST_FUNC_END();
 }
 
-static void test_insert2_find_delete( rb_dloc_t dloc ) {
+static bool test_insert2_find_delete( rb_dloc_t dloc ) {
+  TEST_FUNC_BEGIN();
   rb_tree_t tree;
   rb_tree_init( &tree, dloc, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
 
@@ -166,9 +169,11 @@ static void test_insert2_find_delete( rb_dloc_t dloc ) {
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
   TEST( rb_tree_empty( &tree ) );
+  TEST_FUNC_END();
 }
 
-static void test_script( rb_dloc_t dloc ) {
+static bool test_script( rb_dloc_t dloc ) {
+  TEST_FUNC_BEGIN();
   rb_tree_t tree;
   rb_tree_init( &tree, dloc, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
 
@@ -192,9 +197,11 @@ static void test_script( rb_dloc_t dloc ) {
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
   TEST( rb_tree_empty( &tree ) );
+  TEST_FUNC_END();
 }
 
-static void test_various( rb_dloc_t dloc ) {
+static bool test_various( rb_dloc_t dloc ) {
+  TEST_FUNC_BEGIN();
   rb_tree_t tree;
   rb_tree_init( &tree, dloc, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
 
@@ -234,6 +241,7 @@ static void test_various( rb_dloc_t dloc ) {
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
   TEST( rb_tree_empty( &tree ) );
+  TEST_FUNC_END();
 }
 
 ////////// main ///////////////////////////////////////////////////////////////

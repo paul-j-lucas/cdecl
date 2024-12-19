@@ -30,46 +30,68 @@
 
 #define STRLIT_LEN(S)             (S), STRLITLEN( (S) )
 
-////////// local functions ////////////////////////////////////////////////////
+////////// test functions /////////////////////////////////////////////////////
 
-static void test_check_strdup_suffix( void ) {
+static bool test_check_strdup_suffix( void ) {
+  TEST_FUNC_BEGIN();
+
   char *const s = check_strdup_suffix( "hello", STRLIT_LEN( ", world" ) );
   if ( TEST( s != NULL ) ) {
     TEST( strcmp( s, "hello, world" ) == 0 );
     free( s );
   }
+
+  TEST_FUNC_END();
 }
 
-static void test_is_ident_prefix( void ) {
+static bool test_is_ident_prefix( void ) {
+  TEST_FUNC_BEGIN();
+
   TEST( !str_is_ident_prefix( STRLIT_LEN( "HELLO" ), STRLIT_LEN( "HELL" ) ) );
   TEST( !str_is_ident_prefix( STRLIT_LEN( "HELLO" ), STRLIT_LEN( "HELLX" ) ) );
   TEST( str_is_ident_prefix( STRLIT_LEN( "HELLO" ), STRLIT_LEN( "HELLO" ) ) );
   TEST( str_is_ident_prefix( STRLIT_LEN( "HELLO" ), STRLIT_LEN( "HELLO()" ) ) );
+
+  TEST_FUNC_END();
 }
 
-static void test_parse_identifier( void ) {
+static bool test_parse_identifier( void ) {
+  TEST_FUNC_BEGIN();
+
   TEST( parse_identifier( "." ) == NULL );
   TEST( *parse_identifier( "A(" ) == '(' );
+
+  TEST_FUNC_END();
 }
 
-static void test_strdup_tolower( void ) {
+static bool test_strdup_tolower( void ) {
+  TEST_FUNC_BEGIN();
+
   TEST( check_strdup_tolower( NULL ) == NULL );
   char *const s = check_strdup_tolower( "Hello" );
   if ( TEST( s != NULL ) ) {
     TEST( strcmp( s, "hello" ) == 0 );
     free( s );
   }
+
+  TEST_FUNC_END();
 }
 
-static void test_str_is_prefix( void ) {
+static bool test_str_is_prefix( void ) {
+  TEST_FUNC_BEGIN();
+
   TEST( !str_is_prefix( "", "HELLO" ) );
   TEST(  str_is_prefix( "HELL", "HELLO" ) );
   TEST(  str_is_prefix( "HELLO", "HELLO" ) );
   TEST( !str_is_prefix( "HELLX", "HELLO" ) );
   TEST( !str_is_prefix( "HELLOX", "HELLO" ) );
+
+  TEST_FUNC_END();
 }
 
-static void test_strncmp_in_set( void ) {
+static bool test_strncmp_in_set( void ) {
+  TEST_FUNC_BEGIN();
+
   TEST( strncmp_in_set( "", "A", 0, IDENT_CHARS ) == 0 );
   TEST( strncmp_in_set( "A", "", 0, IDENT_CHARS ) == 0 );
   TEST( strncmp_in_set( "", "A", 1, IDENT_CHARS ) < 0 );
@@ -111,9 +133,13 @@ static void test_strncmp_in_set( void ) {
   TEST( strncmp_in_set( "non-empty", "non-e", 5, IDENT_CHARS ) == 0 );
 
   TEST( strncmp_in_set( "no-foo", "nofoo", 6, IDENT_CHARS ) == 0 );
+
+  TEST_FUNC_END();
 }
 
-static void test_strnspn( void ) {
+static bool test_strnspn( void ) {
+  TEST_FUNC_BEGIN();
+
   TEST( strnspn( "", "AB", 0 ) == 0 );
 
   TEST( strnspn( "A",   "AB", 0 ) == 0 );
@@ -132,9 +158,13 @@ static void test_strnspn( void ) {
 
   TEST( strnspn( "ABA", "AB", 2 ) == 2 );
   TEST( strnspn( "ABX", "AB", 2 ) == 2 );
+
+  TEST_FUNC_END();
 }
 
-static void test_str_realloc_pcat( void ) {
+static bool test_str_realloc_pcat( void ) {
+  TEST_FUNC_BEGIN();
+
   char *s = MALLOC( char, STRLITLEN( "FGHI" ) + 1 );
   strcpy( s, "FGHI" );
   s = str_realloc_pcat( "AB", "CDE", s );
@@ -142,6 +172,8 @@ static void test_str_realloc_pcat( void ) {
     TEST( strcmp( s, "ABCDEFGHI" ) == 0 );
     free( s );
   }
+
+  TEST_FUNC_END();
 }
 
 ////////// main ///////////////////////////////////////////////////////////////
