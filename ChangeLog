@@ -1,5 +1,6 @@
 2024-12-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * red_black_test.c: Eliminated RB_NIL.
    * red_black_test.c, slist_test.c, util_test.c: Added TEST_FUNC_BEGIN()/END()
      macros.
    * red_black.c: Removed "if ( y_node->child[dir] != &tree->nil )" check.
