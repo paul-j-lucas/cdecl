@@ -84,7 +84,9 @@ static rb_test_instruction_t const RB_TEST_SCRIPT[] = {
 
 ////////// local functions ////////////////////////////////////////////////////
 
-static void test_check_rb_node( rb_tree_t const *tree, rb_node_t const *node ) {
+static bool test_check_rb_node( rb_tree_t const *tree, rb_node_t const *node ) {
+  TEST_FUNC_BEGIN();
+
   if ( node->color == RB_RED ) {
     TEST( node->child[0]->color == RB_BLACK );
     TEST( node->child[1]->color == RB_BLACK );
@@ -96,7 +98,7 @@ static void test_check_rb_node( rb_tree_t const *tree, rb_node_t const *node ) {
         rb_node_data( tree, node->child[0] ), rb_node_data( tree, node )
       ) <= 0
     );
-    test_check_rb_node( tree, node->child[0] );
+    TEST( test_check_rb_node( tree, node->child[0] ) );
   }
 
   if ( node->child[1] != &tree->nil ) {
@@ -105,15 +107,19 @@ static void test_check_rb_node( rb_tree_t const *tree, rb_node_t const *node ) {
         rb_node_data( tree, node ), rb_node_data( tree, node->child[1] )
       ) <= 0
     );
-    test_check_rb_node( tree, node->child[1] );
+    TEST( test_check_rb_node( tree, node->child[1] ) );
   }
+
+  TEST_FUNC_END();
 }
 
-static void test_check_rb_tree( rb_tree_t const *tree ) {
+static bool test_check_rb_tree( rb_tree_t const *tree ) {
+  TEST_FUNC_BEGIN();
   TEST( tree->root != NULL );
   TEST( tree->root->color == RB_BLACK );
   TEST( tree->nil.color == RB_BLACK );
-  test_check_rb_node( tree, tree->root );
+  TEST( test_check_rb_node( tree, tree->root ) );
+  TEST_FUNC_END();
 }
 
 static bool test_rb_visitor( void *node_data, void *v_data ) {
@@ -132,17 +138,21 @@ static bool test_insert1_find_delete( rb_dloc_t dloc ) {
   rb_tree_t tree;
   rb_tree_init( &tree, dloc, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
 
-  if ( TEST( rb_tree_insert( &tree, (void*)"A", 2 ).inserted ) ) {
-    test_check_rb_tree( &tree );
-    rb_node_t *node = rb_tree_find( &tree, (void*)"A" );
-    if ( TEST( node != NULL ) ) {
-      rb_tree_delete( &tree, node );
-      test_check_rb_tree( &tree );
-      node = rb_tree_find( &tree, (void*)"A" );
-      TEST( node == NULL );
-    }
+  if ( !TEST( rb_tree_insert( &tree, (void*)"A", 2 ).inserted ) )
+    goto end_test;
+  if ( !TEST( test_check_rb_tree( &tree ) ) )
+    goto end_test;
+
+  rb_node_t *node = rb_tree_find( &tree, (void*)"A" );
+  if ( TEST( node != NULL ) ) {
+    rb_tree_delete( &tree, node );
+    if ( !TEST( test_check_rb_tree( &tree ) ) )
+      goto end_test;
+    node = rb_tree_find( &tree, (void*)"A" );
+    TEST( node == NULL );
   }
 
+end_test:
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
   TEST( rb_tree_empty( &tree ) );
   TEST_FUNC_END();
@@ -153,18 +163,25 @@ static bool test_insert2_find_delete( rb_dloc_t dloc ) {
   rb_tree_t tree;
   rb_tree_init( &tree, dloc, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
 
-  if ( TEST( rb_tree_insert( &tree, (void*)"A", 2 ).inserted ) &&
-       TEST( rb_tree_insert( &tree, (void*)"B", 2 ).inserted ) ) {
-    test_check_rb_tree( &tree );
-    rb_node_t *node = rb_tree_find( &tree, (void*)"B" );
-    if ( TEST( node != NULL ) ) {
-      rb_tree_delete( &tree, node );
-      test_check_rb_tree( &tree );
-      node = rb_tree_find( &tree, (void*)"B" );
-      TEST( node == NULL );
-    }
+  if ( !TEST( rb_tree_insert( &tree, (void*)"A", 2 ).inserted ) )
+    goto end_test;
+  if ( !TEST( test_check_rb_tree( &tree ) ) )
+    goto end_test;
+  if ( !TEST( rb_tree_insert( &tree, (void*)"B", 2 ).inserted ) )
+    goto end_test;
+  if ( !TEST( test_check_rb_tree( &tree ) ) )
+    goto end_test;
+
+  rb_node_t *node = rb_tree_find( &tree, (void*)"B" );
+  if ( TEST( node != NULL ) ) {
+    rb_tree_delete( &tree, node );
+    if ( !TEST( test_check_rb_tree( &tree ) ) )
+      goto end_test;
+    node = rb_tree_find( &tree, (void*)"B" );
+    TEST( node == NULL );
   }
 
+end_test:
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
   TEST( rb_tree_empty( &tree ) );
   TEST_FUNC_END();
@@ -180,12 +197,16 @@ static bool test_script( rb_dloc_t dloc ) {
       case RB_TEST_INSERT:;
         size_t const size = dloc == RB_DLOC_INT ? strlen( i->key ) + 1 : 0;
         TEST( rb_tree_insert( &tree, (void*)i->key, size ).inserted );
+        if ( !TEST( test_check_rb_tree( &tree ) ) )
+          goto end_test;
         break;
       case RB_TEST_DELETE:
         NO_OP;
         rb_node_t *found = rb_tree_find( &tree, (void*)i->key );
         if ( TEST( found != NULL ) ) {
           rb_tree_delete( &tree, found );
+          if ( !TEST( test_check_rb_tree( &tree ) ) )
+            goto end_test;
           found = rb_tree_find( &tree, (void*)i->key );
           TEST( found == NULL );
         }
@@ -193,6 +214,7 @@ static bool test_script( rb_dloc_t dloc ) {
     } // switch
   } // for
 
+end_test:
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
   TEST( rb_tree_empty( &tree ) );
   TEST_FUNC_END();
@@ -205,17 +227,22 @@ static bool test_various( rb_dloc_t dloc ) {
 
   // test insertion
   TEST( rb_tree_insert( &tree, (void*)"A", 2 ).inserted );
-  test_check_rb_tree( &tree );
+  if ( !TEST( test_check_rb_tree( &tree ) ) )
+    goto end_test;
   TEST( rb_tree_insert( &tree, (void*)"B", 2 ).inserted );
-  test_check_rb_tree( &tree );
+  if ( !TEST( test_check_rb_tree( &tree ) ) )
+    goto end_test;
   TEST( rb_tree_insert( &tree, (void*)"C", 2 ).inserted );
-  test_check_rb_tree( &tree );
+  if ( !TEST( test_check_rb_tree( &tree ) ) )
+    goto end_test;
   TEST( rb_tree_insert( &tree, (void*)"D", 2 ).inserted );
-  test_check_rb_tree( &tree );
+  if ( !TEST( test_check_rb_tree( &tree ) ) )
+    goto end_test;
 
   // test insertion with existing data
   rb_insert_rv_t rbi_rv = rb_tree_insert( &tree, (void*)"A", 2 );
-  test_check_rb_tree( &tree );
+  if ( !TEST( test_check_rb_tree( &tree ) ) )
+    goto end_test;
   if ( TEST( !rbi_rv.inserted ) )
     TEST( strcmp( rb_node_data( &tree, rbi_rv.node ), "A" ) == 0 );
 
@@ -230,13 +257,15 @@ static bool test_various( rb_dloc_t dloc ) {
 
     // test delete
     rb_tree_delete( &tree, node );
-    test_check_rb_tree( &tree );
+    if ( !TEST( test_check_rb_tree( &tree ) ) )
+      goto end_test;
 
     // test visitor again
     letter_offset = 1; // skip "A"
     TEST( rb_tree_visit( &tree, &test_rb_visitor, &letter_offset ) == NULL );
   }
 
+end_test:
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
   TEST( rb_tree_empty( &tree ) );
   TEST_FUNC_END();
