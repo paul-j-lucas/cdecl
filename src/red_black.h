@@ -58,11 +58,14 @@ _GL_INLINE_HEADER_BEGIN
 ////////// macros /////////////////////////////////////////////////////////////
 
 /**
- * Gets a pointer to the internal data of \a NODE for when #RB_DLOC_INT was
- * used with rb_tree_init().
+ * Gets a pointer to the internal data of \a NODE for when \ref
+ * rb_dloc::RB_DINT "RB_DINT" was used with rb_tree_init().
  *
  * @param NODE The rb_node to get a pointer to the data of.
  * @return Returns a pointer to the data internal to \a NODE.
+ *
+ * @note As a function-like macro, the preprocessor will not expand it if not
+ * followed by `(` in which case it will be the \ref rb_dloc enumeration value.
  *
  * @warning The node's \ref rb_node::data "data" _must not_ be modified if that
  * would change the node's position within the tree according to its \ref
@@ -74,12 +77,15 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Gets an lvalue reference to a pointer to the external data of \a NODE for
- * when #RB_DLOC_PTR was used with rb_tree_init(). Being an lvalue reference
- * means `RB_DPTR` can appear on the left-hand side of an `=` and be
- * assigned to.
+ * when \ref rb_dloc::RB_DPTR "RB_DPTR" was used with rb_tree_init(). As an
+ * lvalue reference, `RB_DPTR` can appear on the left-hand side of an `=` and
+ * be assigned to.
  *
  * @param NODE The rb_node to get a pointer to the data of.
  * @return Returns a pointer to the data \a NODE points to.
+ *
+ * @note As a function-like macro, the preprocessor will not expand it if not
+ * followed by `(` in which case it will be the \ref rb_dloc enumeration value.
  *
  * @warning The node's \ref rb_node::data "data" _must not_ be modified if that
  * would change the node's position within the tree according to its \ref
@@ -117,7 +123,7 @@ enum rb_dloc {
    *  - If you want to delete a node from the tree but keep its data, you have
    *    to copy it out first.
    */
-  RB_DLOC_INT,
+  RB_DINT,
 
   /**
    * Nodes contain a pointer to the data.  The advantages are:
@@ -132,7 +138,7 @@ enum rb_dloc {
    *  - Accessing the data is slower since it's in a different memory location
    *    than the node (cache miss).
    */
-  RB_DLOC_PTR
+  RB_DPTR
 };
 
 ////////// typedefs ///////////////////////////////////////////////////////////
@@ -286,7 +292,7 @@ struct rb_insert_rv {
  */
 NODISCARD RED_BLACK_H_INLINE
 void* rb_node_data( rb_tree_t const *tree, rb_node_t const *node ) {
-  return tree->dloc == RB_DLOC_INT ? RB_DINT( node ) : RB_DPTR( node );
+  return tree->dloc == RB_DINT ? RB_DINT( node ) : RB_DPTR( node );
 }
 
 /**
@@ -356,11 +362,11 @@ void rb_tree_init( rb_tree_t *tree, rb_dloc_t dloc, rb_cmp_fn_t cmp_fn );
  * @param tree A pointer to the rb_tree to insert into.
  * @param data A pointer to the data to insert.
  * @param data_size If \a tree's \ref rb_tree::dloc "dloc" is:
- *  + #RB_DLOC_INT: The size of \a data.  If a node is inserted, then this
- *    number of bytes are copied from \a data into the new node's \ref
- *    rb_node::data "data".
- *  + #RB_DLOC_PTR: Not used.  If a node is inserted, then the pointer value of
- *    \a data itself is copied into the new node's \ref rb_node::data "data".
+ *  + #RB_DINT: The size of \a data.  If a node is inserted, then this number
+ *    of bytes are copied from \a data into the new node's \ref rb_node::data
+ *    "data".
+ *  + #RB_DPTR: Not used.  If a node is inserted, then the pointer value of \a
+ *    data itself is copied into the new node's \ref rb_node::data "data".
  *
  * @return Returns an \ref rb_insert_rv where its \ref rb_insert_rv::node
  * "node" points to either the newly inserted node or the existing node having

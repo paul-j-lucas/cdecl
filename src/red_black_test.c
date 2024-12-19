@@ -195,7 +195,7 @@ static bool test_script( rb_dloc_t dloc ) {
   FOREACH_ARRAY_ELEMENT( rb_test_instruction_t, i, RB_TEST_SCRIPT ) {
     switch ( i->cmd ) {
       case RB_TEST_INSERT:;
-        size_t const size = dloc == RB_DLOC_INT ? strlen( i->key ) + 1 : 0;
+        size_t const size = dloc == RB_DINT ? strlen( i->key ) + 1 : 0;
         TEST( rb_tree_insert( &tree, (void*)i->key, size ).inserted );
         if ( !TEST( test_check_rb_tree( &tree ) ) )
           goto end_test;
@@ -276,16 +276,16 @@ end_test:
 int main( int argc, char const *const argv[] ) {
   test_prog_init( argc, argv );
 
-  test_insert1_find_delete( RB_DLOC_INT );
-  test_insert1_find_delete( RB_DLOC_PTR );
-  test_insert2_find_delete( RB_DLOC_INT );
-  test_insert2_find_delete( RB_DLOC_PTR );
+  test_insert1_find_delete( RB_DINT );
+  test_insert1_find_delete( RB_DPTR );
+  test_insert2_find_delete( RB_DINT );
+  test_insert2_find_delete( RB_DPTR );
 
-  test_various( RB_DLOC_INT );
-  test_various( RB_DLOC_PTR );
+  test_various( RB_DINT );
+  test_various( RB_DPTR );
 
-  test_script( RB_DLOC_INT );
-  test_script( RB_DLOC_PTR );
+  test_script( RB_DINT );
+  test_script( RB_DPTR );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

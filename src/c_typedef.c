@@ -1133,8 +1133,7 @@ void c_typedefs_init( void ) {
   ASSERT_RUN_ONCE();
 
   rb_tree_init(
-    &typedef_set, RB_DLOC_INT,
-    POINTER_CAST( rb_cmp_fn_t, &c_typedef_cmp )
+    &typedef_set, RB_DINT, POINTER_CAST( rb_cmp_fn_t, &c_typedef_cmp )
   );
   ATEXIT( &c_typedefs_cleanup );
 

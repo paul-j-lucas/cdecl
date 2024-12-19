@@ -1485,8 +1485,7 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
   //
   rb_tree_t param_cache;
   rb_tree_init(
-    &param_cache, RB_DLOC_INT,
-    POINTER_CAST( rb_cmp_fn_t, &param_expand_cmp )
+    &param_cache, RB_DINT, POINTER_CAST( rb_cmp_fn_t, &param_expand_cmp )
   );
 
   p_token_node_t const *prev_node = NULL;
@@ -2037,12 +2036,12 @@ static void mex_init( mex_state_t *mex, mex_state_t *parent_mex,
   if ( parent_mex == NULL ) {
     expanding_set = MALLOC( rb_tree_t, 1 );
     rb_tree_init(
-      expanding_set, RB_DLOC_INT, POINTER_CAST( rb_cmp_fn_t, &strcmp )
+      expanding_set, RB_DINT, POINTER_CAST( rb_cmp_fn_t, &strcmp )
     );
     indent = 0;
     no_expand_set = MALLOC( rb_tree_t, 1 );
     rb_tree_init(
-      no_expand_set, RB_DLOC_INT, POINTER_CAST( rb_cmp_fn_t, &strcmp )
+      no_expand_set, RB_DINT, POINTER_CAST( rb_cmp_fn_t, &strcmp )
     );
   }
   else {
@@ -3097,8 +3096,7 @@ void p_macros_init( void ) {
   ASSERT_RUN_ONCE();
 
   rb_tree_init(
-    &macro_set, RB_DLOC_INT,
-    POINTER_CAST( rb_cmp_fn_t, &p_macro_cmp )
+    &macro_set, RB_DINT, POINTER_CAST( rb_cmp_fn_t, &p_macro_cmp )
   );
   ATEXIT( &p_macros_cleanup );
 

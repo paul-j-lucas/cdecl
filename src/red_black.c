@@ -550,7 +550,7 @@ void rb_tree_init( rb_tree_t *tree, rb_dloc_t dloc, rb_cmp_fn_t cmp_fn ) {
 rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
   assert( tree != NULL );
   assert( data != NULL );
-  assert( tree->dloc == RB_DLOC_PTR || data_size > 0 );
+  assert( tree->dloc == RB_DPTR || data_size > 0 );
 
   // See "Introduction to Algorithms," 4th ed., &sect; 13.3, p. 338.
 
@@ -568,7 +568,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
     x_node = x_node->child[ cmp > 0 ];
   } // while
 
-  if ( tree->dloc == RB_DLOC_PTR )
+  if ( tree->dloc == RB_DPTR )
     data_size = sizeof( void* );
   rb_node_t *const z_new_node = malloc( sizeof( rb_node_t ) + data_size );
   *z_new_node = (rb_node_t){
@@ -577,7 +577,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
     .color = RB_RED                     // new nodes are always red
   };
 
-  if ( tree->dloc == RB_DLOC_INT )
+  if ( tree->dloc == RB_DINT )
     memcpy( z_new_node->data, data, data_size );
   else
     RB_DPTR( z_new_node ) = data;

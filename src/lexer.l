@@ -277,11 +277,9 @@ static void include_cleanup( void ) {
  * @sa include_cleanup()
  */
 static void include_init( void ) {
-  // Must pass RB_DLOC_PTR since the resolved include path strings are shared
-  // with and owned by include_stack.
-  rb_tree_init(
-    &include_set, RB_DLOC_PTR, POINTER_CAST( rb_cmp_fn_t, &strcmp )
-  );
+  // Must pass RB_DPTR since the resolved include path strings are shared with
+  // and owned by include_stack.
+  rb_tree_init( &include_set, RB_DPTR, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
 }
 
 /**
