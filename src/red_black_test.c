@@ -31,8 +31,6 @@
 #include <string.h>
 #include <sysexits.h>
 
-#define RB_NIL(TREE)              (&(TREE)->nil)
-
 ///////////////////////////////////////////////////////////////////////////////
 
 enum rb_test_cmd {
@@ -92,7 +90,7 @@ static void test_check_rb_node( rb_tree_t const *tree, rb_node_t const *node ) {
     TEST( node->child[1]->color == RB_BLACK );
   }
 
-  if ( node->child[0] != RB_NIL(tree) ) {
+  if ( node->child[0] != &tree->nil ) {
     TEST(
       (*tree->cmp_fn)(
         rb_node_data( tree, node->child[0] ), rb_node_data( tree, node )
@@ -101,7 +99,7 @@ static void test_check_rb_node( rb_tree_t const *tree, rb_node_t const *node ) {
     test_check_rb_node( tree, node->child[0] );
   }
 
-  if ( node->child[1] != RB_NIL(tree) ) {
+  if ( node->child[1] != &tree->nil ) {
     TEST(
       (*tree->cmp_fn)(
         rb_node_data( tree, node ), rb_node_data( tree, node->child[1] )
@@ -114,7 +112,7 @@ static void test_check_rb_node( rb_tree_t const *tree, rb_node_t const *node ) {
 static void test_check_rb_tree( rb_tree_t const *tree ) {
   TEST( tree->root != NULL );
   TEST( tree->root->color == RB_BLACK );
-  TEST( RB_NIL(tree)->color == RB_BLACK );
+  TEST( tree->nil.color == RB_BLACK );
   test_check_rb_node( tree, tree->root );
 }
 
