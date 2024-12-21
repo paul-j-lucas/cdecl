@@ -1,3 +1,7 @@
+2024-12-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl_compile.m4: Removed extraneous '$' -- don't know how it ever worked.
+
 2024-12-19  Paul J. Lucas <paul@lucasmail.org>
 
    * c_typedef.c, lexer.l, p_macro.c, red_black.c, red_black.h,
