@@ -15,7 +15,6 @@
 /stdint.h
 /stdio.h
 /stdlib.h
-/stdnoreturn.h
 /string.h
 /sys
 /sysexits.h
