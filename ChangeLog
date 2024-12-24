@@ -1,3 +1,7 @@
+2024-12-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: Sorted functions.
+
 2024-12-21  Paul J. Lucas <paul@lucasmail.org>
 
    * pjl_compile.m4: Removed extraneous '$' -- don't know how it ever worked.
