@@ -69,6 +69,8 @@ enum rb_dir {
 };
 typedef enum rb_dir rb_dir_t;
 
+static void rb_node_rotate( rb_tree_t*, rb_node_t*, rb_dir_t );
+
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
@@ -141,141 +143,6 @@ static inline int rb_tree_cmp( rb_tree_t const *tree, rb_node_t *node,
 }
 
 ////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Frees all memory associated with \a node _including_ \a node itself.
- *
- * @param tree A pointer to the rb_tree to free \a node from.
- * @param node A pointer to the rb_node to free.
- * @param free_fn A pointer to a function used to free data associated with \a
- * node or NULL if unnecessary.
- */
-static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
-                          rb_free_fn_t free_fn ) {
-  assert( node != NULL );
-
-  if ( node != &tree->nil ) {
-    rb_node_free( tree, node->child[RB_L], free_fn );
-    rb_node_free( tree, node->child[RB_R], free_fn );
-    if ( free_fn != NULL )
-      (*free_fn)( rb_node_data( tree, node ) );
-    free( node );
-  }
-}
-
-/**
- * Rotates a subtree of \a tree rooted at \a node.
- *
- * @remarks
- * @parblock
- * For example, given the following ordered trees:
- *
- *        B                  D
- *       / \    left -->    / \
- *      A   D              B   E
- *         / \  <- right  / \
- *        C   E          A   C
- *
- *       (1)                (2)
- *
- * perform either rotation:
- *
- * 1. **B** is rotated left (and down) and **D** is rotated left (and up) to
- *    yield (2).
- * 2. **D** is rotated right (and down) and **B** is rotated right (and up) to
- *    yield (1).
- *
- * Note that in both cases, the order of the nodes is preserved.
- * @endparblock
- *
- * @param tree A pointer rb_tree to manipulate.
- * @param x_node A pointer to the rb_node to rotate.
- * @param dir The direction to rotate.
- *
- * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/), 4th ed., &sect; 13.2, p. 336.
- */
-static void rb_node_rotate( rb_tree_t *tree, rb_node_t *x_node, rb_dir_t dir ) {
-  assert( tree != NULL );
-  assert( x_node != NULL );
-
-  rb_node_t *const y_node = x_node->child[!dir];
-  x_node->child[!dir] = y_node->child[dir];
-  y_node->child[dir]->parent = x_node;
-  y_node->parent = x_node->parent;
-
-  if ( x_node->parent == &tree->nil )
-    tree->root = y_node;
-  else
-    RB_PARENT_PTR_TO( x_node ) = y_node;
-
-  y_node->child[dir] = x_node;
-  x_node->parent = y_node;
-}
-
-#ifndef NDEBUG
-
-#ifdef RB_CHECK_ALL_NODES
-/**
- * Checks that a node's properties hold.
- *
- * @param tree A pointer rb_tree to check.
- * @param node A pointer to the rb_node to check.
- */
-static void rb_node_check( rb_tree_t const *tree, rb_node_t const *node ) {
-  assert( tree != NULL );
-  assert( node != NULL );
-
-  if ( node == &tree->nil )
-    return;
-
-  if ( is_red( node ) ) {
-    assert( is_black( node->child[RB_L] ) );
-    assert( is_black( node->child[RB_R] ) );
-  }
-
-  rb_node_check( tree, node->child[RB_L] );
-  rb_node_check( tree, node->child[RB_R] );
-}
-#else
-# define rb_node_check(TREE,NODE) (void)0
-#endif /* RB_CHECK_ALL_NODES */
-
-/**
- * Checks that some properties of \a tree hold.
- *
- * @remarks
- * @parblock
- * From [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
- * 4th ed., &sect; 13.1, p. 331:
- *
- * > A red-black tree is a binary search tree that satisfies the following
- * > _red-black properties_:
- * >
- * >  1. Every node is either red or black.
- * >  2. The root is black.
- * >  3. Every leaf (NIL) is black.
- * >  4. If a node is red, then both its children are black.
- * >  5. For each node, all simple paths from the node to descendant leaves
- * >     contain the same number of black nodes.
- *
- * For this code, (1) can never not be true; we check (2) and (3) by default;
- * we check (4) only if <code>%RB_CHECK_ALL_NODES</code> is defined; we don't
- * check (5).
- * @endparblock
- *
- * @param tree A pointer rb_tree to check.
- */
-static void rb_tree_check( rb_tree_t const *tree ) {
-  assert( tree != NULL );
-  assert( tree->root != NULL );
-  assert( tree->root->color == RB_BLACK );
-  assert( tree->nil.color == RB_BLACK );
-  rb_node_check( tree, tree->root );
-}
-
-#else
-# define rb_tree_check(TREE)      (void)0
-#endif /* NDEBUG */
 
 /**
  * Repairs a tree after a node has been deleted by rotating and repainting
@@ -378,6 +245,102 @@ static void rb_insert_fixup( rb_tree_t *tree, rb_node_t *z_node ) {
   tree->root->color = RB_BLACK;         // root is always black
 }
 
+#if !defined NDEBUG && RB_CHECK_ALL_NODES
+/**
+ * Checks that a node's properties hold.
+ *
+ * @param tree A pointer rb_tree to check.
+ * @param node A pointer to the rb_node to check.
+ */
+static void rb_node_check( rb_tree_t const *tree, rb_node_t const *node ) {
+  assert( tree != NULL );
+  assert( node != NULL );
+
+  if ( node == &tree->nil )
+    return;
+
+  if ( is_red( node ) ) {
+    assert( is_black( node->child[RB_L] ) );
+    assert( is_black( node->child[RB_R] ) );
+  }
+
+  rb_node_check( tree, node->child[RB_L] );
+  rb_node_check( tree, node->child[RB_R] );
+}
+#else
+# define rb_node_check(TREE,NODE) (void)0
+#endif /* !defined NDEBUG && RB_CHECK_ALL_NODES */
+
+/**
+ * Frees all memory associated with \a node _including_ \a node itself.
+ *
+ * @param tree A pointer to the rb_tree to free \a node from.
+ * @param node A pointer to the rb_node to free.
+ * @param free_fn A pointer to a function used to free data associated with \a
+ * node or NULL if unnecessary.
+ */
+static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
+                          rb_free_fn_t free_fn ) {
+  assert( node != NULL );
+
+  if ( node != &tree->nil ) {
+    rb_node_free( tree, node->child[RB_L], free_fn );
+    rb_node_free( tree, node->child[RB_R], free_fn );
+    if ( free_fn != NULL )
+      (*free_fn)( rb_node_data( tree, node ) );
+    free( node );
+  }
+}
+
+/**
+ * Rotates a subtree of \a tree rooted at \a node.
+ *
+ * @remarks
+ * @parblock
+ * For example, given the following ordered trees:
+ *
+ *        B                  D
+ *       / \    left -->    / \
+ *      A   D              B   E
+ *         / \  <- right  / \
+ *        C   E          A   C
+ *
+ *       (1)                (2)
+ *
+ * perform either rotation:
+ *
+ * 1. **B** is rotated left (and down) and **D** is rotated left (and up) to
+ *    yield (2).
+ * 2. **D** is rotated right (and down) and **B** is rotated right (and up) to
+ *    yield (1).
+ *
+ * Note that in both cases, the order of the nodes is preserved.
+ * @endparblock
+ *
+ * @param tree A pointer rb_tree to manipulate.
+ * @param x_node A pointer to the rb_node to rotate.
+ * @param dir The direction to rotate.
+ *
+ * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/), 4th ed., &sect; 13.2, p. 336.
+ */
+static void rb_node_rotate( rb_tree_t *tree, rb_node_t *x_node, rb_dir_t dir ) {
+  assert( tree != NULL );
+  assert( x_node != NULL );
+
+  rb_node_t *const y_node = x_node->child[!dir];
+  x_node->child[!dir] = y_node->child[dir];
+  y_node->child[dir]->parent = x_node;
+  y_node->parent = x_node->parent;
+
+  if ( x_node->parent == &tree->nil )
+    tree->root = y_node;
+  else
+    RB_PARENT_PTR_TO( x_node ) = y_node;
+
+  y_node->child[dir] = x_node;
+  x_node->parent = y_node;
+}
+
 /**
  * Performs an in-order traversal of the red-black tree starting at \a node.
  *
@@ -429,6 +392,43 @@ static void rb_transplant( rb_tree_t *tree, rb_node_t *u_node,
     RB_PARENT_PTR_TO( u_node ) = v_node;
   v_node->parent = u_node->parent;
 }
+
+#ifndef NDEBUG
+/**
+ * Checks that some properties of \a tree hold.
+ *
+ * @remarks
+ * @parblock
+ * From [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
+ * 4th ed., &sect; 13.1, p. 331:
+ *
+ * > A red-black tree is a binary search tree that satisfies the following
+ * > _red-black properties_:
+ * >
+ * >  1. Every node is either red or black.
+ * >  2. The root is black.
+ * >  3. Every leaf (NIL) is black.
+ * >  4. If a node is red, then both its children are black.
+ * >  5. For each node, all simple paths from the node to descendant leaves
+ * >     contain the same number of black nodes.
+ *
+ * For this code, (1) can never not be true; we check (2) and (3) by default;
+ * we check (4) only if <code>%RB_CHECK_ALL_NODES</code> is defined; we don't
+ * check (5).
+ * @endparblock
+ *
+ * @param tree A pointer rb_tree to check.
+ */
+static void rb_tree_check( rb_tree_t const *tree ) {
+  assert( tree != NULL );
+  assert( tree->root != NULL );
+  assert( tree->root->color == RB_BLACK );
+  assert( tree->nil.color == RB_BLACK );
+  rb_node_check( tree, tree->root );
+}
+#else
+# define rb_tree_check(TREE)      (void)0
+#endif /* NDEBUG */
 
 /**
  * Gets the node having the minimum element of the subtree rooted at \a x_node.
