@@ -1,3 +1,7 @@
+2024-12-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Removed -Wundef.
+
 2024-12-24  Paul J. Lucas <paul@lucasmail.org>
 
    * pjl_compile.m4: Updated serial.
