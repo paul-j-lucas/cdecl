@@ -43,7 +43,7 @@ AC_DEFUN([PJL_COMPILE], [
       [pjl_cv_$1=no]
     )
   ])
-  if test "pjl_cv_$1" = "yes"; then
+  if test "$pjl_cv_$1" = "yes"; then
     AC_DEFINE(HAVE_[]m4_toupper($1), [1], [Define to 1 if you have `$1'.])
   else
     AC_DEFINE(HAVE_[]m4_toupper($1), [0], [Define to 1 if you have `$1'.])
