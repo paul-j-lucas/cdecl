@@ -32,7 +32,7 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-#serial 2
+#serial 3
 
 AC_DEFUN([PJL_COMPILE], [
   AC_REQUIRE([AC_COMPILE_IFELSE])
