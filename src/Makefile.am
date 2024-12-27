@@ -88,7 +88,7 @@ cdecl_SOURCES =	parser.y \
 		p_predefine.c \
 		p_token.c p_token.h \
 		parse.c parse.h \
-		pjl_config.h \
+		pjl_config.h config.h \
 		print.c print.h \
 		prompt.c prompt.h \
 		read_line.c read_line.h \
@@ -106,7 +106,7 @@ endif
 
 red_black_test_SOURCES = \
 		cdecl.h \
-		pjl_config.h \
+		pjl_config.h config.h \
 		red_black.c red_black.h \
 		red_black_test.c \
 		slist.c slist.h \
@@ -117,7 +117,7 @@ red_black_test_SOURCES = \
 
 slist_test_SOURCES = \
 		cdecl.h \
-		pjl_config.h \
+		pjl_config.h config.h \
 		slist.c slist.h \
 		slist_test.c \
 		strbuf.c strbuf.h \
@@ -127,7 +127,7 @@ slist_test_SOURCES = \
 
 util_test_SOURCES = \
 		cdecl.h \
-		pjl_config.h \
+		pjl_config.h config.h \
 		slist.c slist.h \
 		util.c util.h \
 		util_test.c \
