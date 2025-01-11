@@ -2,7 +2,7 @@
 **      PJL Library
 **      src/red_black.c
 **
-**      Copyright (C) 2017-2024  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2025  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
