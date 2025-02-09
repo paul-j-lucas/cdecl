@@ -1,3 +1,40 @@
+2025-02-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Removed -Wmisleading-indentation since it's enabled by
+     -Wall.
+   * configure.ac: Removed -Wunreachable-code-break and
+     -Wunreachable-code-return.
+   * configure.ac: Removed -Wconditional-type-mismatch.
+
+2025-01-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * Doxyfile, Makefile.am, bootstrap, cdecl.css, configure.ac, lcovrc,
+     pjl_compile.m4, makedoc.sh, share/Makefile.am,
+     share/bash-completions/Makefile.am,
+     share/bash-completions/completions/Makefile.am,
+     share/bash-completions/completions/_cdecl, share/man/Makefile.am,
+     share/man/man1/Makefile.am, share/man/man1/c++decl.1,
+     share/man/man1/cdecl.1, share/zsh/Makefile.am,
+     share/zsh/site-functions/Makefile.am, share/zsh/site-functions/_cdecl,
+     src/Makefile.am, autocomplete.c, autocomplete.h, c_ast.c, c_ast.h,
+     c_ast_check.c, c_ast_check.h, c_ast_util.c, c_ast_util.h, c_ast_warn.c,
+     c_ast_warn.h, c_keyword.c, c_keyword.h, c_kind.c, c_kind.h, c_lang.c,
+     c_lang.h, c_operator.c, c_operator.h, c_sglob.c, c_sglob.h, c_sname.c,
+     c_sname.h, c_type.c, c_type.h, c_typedef.c, c_typedef.h, cdecl.c, cdecl.h,
+     cdecl_command.c, cdecl_command.h, cdecl_keyword.c, cdecl_keyword.h,
+     cdecl_lldb.py, cdecl_parser.h, cdecl_term.c, cdecl_term.h, cli_options.c,
+     cli_options.h, color.c, color.h, config_file.c, config_file.h, dam_lev.c,
+     dam_lev.h, did_you_mean.c, did_you_mean.h, dump.c, dump.h, english.c,
+     english.h, gibberish.c, gibberish.h, help.c, help.h, lexer.h, lexer.l,
+     lines.sh, literals.c, literals.h, options.c, options.h, p_keyword.c,
+     p_keyword.h, p_kind.c, p_kind.h, p_macro.c, p_macro.h, p_predefine.c,
+     p_token.c, p_token.h, parse.c, parse.h, parser.y, pjl_config.h, print.c,
+     print.h, prompt.c, prompt.h, read_line.c, read_line.h, red_black.c,
+     red_black.h, red_black_test.c, set_options.c, set_options.h, show.c,
+     show.h, slist.c, slist.h, slist_test.c, strbuf.c, strbuf.h, types.h,
+     unit_test.c, unit_test.h, util.c, util.h, util_test.c, test/Makefile.am,
+     not_in_Makefile.sh, run_test.sh, update_test.sh: s/2024/2025/
+
 2024-12-26  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am: Added missing config.h.
