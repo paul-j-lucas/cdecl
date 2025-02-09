@@ -1,5 +1,6 @@
 2025-02-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Removed -Wsign-compare since it's enabled by -Wextra.
    * configure.ac: Removed -Wmisleading-indentation since it's enabled by
      -Wall.
    * configure.ac: Removed -Wunreachable-code-break and
