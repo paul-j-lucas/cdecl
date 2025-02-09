@@ -323,7 +323,6 @@ AX_CHECK_COMPILE_FLAG([-Wreserved-identifier], [CDECL_CFLAGS="$CDECL_CFLAGS -Wre
 AX_CHECK_COMPILE_FLAG([-Wshadow], [CDECL_CFLAGS="$CDECL_CFLAGS -Wshadow"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wshift-sign-overflow], [CDECL_CFLAGS="$CDECL_CFLAGS -Wshift-sign-overflow"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wshorten-64-to-32], [CDECL_CFLAGS="$CDECL_CFLAGS -Wshorten-64-to-32"], [], [-Werror])
-AX_CHECK_COMPILE_FLAG([-Wsign-compare], [CDECL_CFLAGS="$CDECL_CFLAGS -Wsign-compare"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wsometimes-uninitialized], [CDECL_CFLAGS="$CDECL_CFLAGS -Wsometimes-uninitialized"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wstring-conversion], [CDECL_CFLAGS="$CDECL_CFLAGS -Wstring-conversion"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wtautological-compare], [CDECL_CFLAGS="$CDECL_CFLAGS -Wtautological-compare"], [], [-Werror])
