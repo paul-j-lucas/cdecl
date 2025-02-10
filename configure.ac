@@ -314,7 +314,6 @@ AX_CHECK_COMPILE_FLAG([-Wformat-nonliteral], [CDECL_CFLAGS="$CDECL_CFLAGS -Wform
 AX_CHECK_COMPILE_FLAG([-Wformat-signedness], [CDECL_CFLAGS="$CDECL_CFLAGS -Wformat-signedness"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wformat-type-confusion], [CDECL_CFLAGS="$CDECL_CFLAGS -Wformat-type-confusion"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wformat=2], [CDECL_CFLAGS="$CDECL_CFLAGS -Wformat=2"], [], [-Werror])
-AX_CHECK_COMPILE_FLAG([-Widiomatic-parentheses], [CDECL_CFLAGS="$CDECL_CFLAGS -Widiomatic-parentheses"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wimplicit-fallthrough], [CDECL_CFLAGS="$CDECL_CFLAGS -Wimplicit-fallthrough"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wlogical-op-parentheses], [CDECL_CFLAGS="$CDECL_CFLAGS -Wlogical-op-parentheses"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wnewline-eof], [CDECL_CFLAGS="$CDECL_CFLAGS -Wnewline-eof"], [], [-Werror])
