@@ -299,7 +299,7 @@ static ac_keyword_t const* ac_keywords_new( void ) {
   // (almost) any keyword in keyword_generator().
   //
   qsort(
-    ac_keywords_array, n, sizeof( ac_keywords_array[0] ),
+    ac_keywords_array, n, sizeof ac_keywords_array[0],
     POINTER_CAST( qsort_cmp_fn_t, &ac_keyword_cmp )
   );
 
