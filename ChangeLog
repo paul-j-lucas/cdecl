@@ -1,5 +1,7 @@
 2025-02-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.c, util.c, util.h: Moved str_ptr_cmp.
+   * autocomplete.c: Removed unnecessary () for sizeof.
    * autocomplete.c, c_keyword.c, cdecl_keyword.c, did_you_mean.c, p_keyword.c:
      Removed unnecessary () for sizeof.
 
