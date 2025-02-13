@@ -1,3 +1,12 @@
+2025-02-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_keyword.c, cdecl_keyword.c, did_you_mean.c, p_keyword.c:
+     Removed unnecessary () for sizeof.
+
+2025-02-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Removed -Widiomatic-parentheses: enabled by default.
+
 2025-02-08  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Removed -Wsign-compare since it's enabled by -Wextra.
