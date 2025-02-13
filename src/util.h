@@ -1786,6 +1786,17 @@ NODISCARD
 bool str_is_prefix( char const *si, char const *sj );
 
 /**
+ * Compares two string pointers by comparing the string pointed to.
+ *
+ * @param psi The first string pointer to compare.
+ * @param psj The first string pointer to compare.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a *psi is
+ * less than, equal to, or greater than \a *psj, respectively.
+ */
+NODISCARD
+int str_ptr_cmp( char const **psi, char const **psj );
+
+/**
  * Concatenates \a sep and \a src onto the end of \a dst.
  *
  * @param dst The string onto which \a sep and \a src are appended.

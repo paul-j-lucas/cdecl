@@ -417,6 +417,10 @@ bool str_is_prefix( char const *si, char const *sj ) {
   return true;
 }
 
+int str_ptr_cmp( char const **psi, char const **psj ) {
+  return strcmp( *psi, *psj );
+}
+
 char* str_realloc_cat( char *dst, char const *sep, char const *src ) {
   assert( dst != NULL );
   assert( sep != NULL );

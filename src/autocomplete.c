@@ -102,9 +102,6 @@ static char const* const* prev_keyword_ac_next( char const*, size_t );
 NODISCARD
 static char const*        str_prev_token( char const*, size_t, size_t* );
 
-NODISCARD
-static int                str_ptr_cmp( char const**, char const** );
-
 // local variables
 
 /// Autocomplete keywords only for `help` command.
@@ -781,19 +778,6 @@ static char const* str_prev_token( char const *s, size_t pos,
   } // for
 
   return NULL;
-}
-
-/**
- * Compares two string pointers by comparing the string pointed to.
- *
- * @param i_sptr The first string pointer to compare.
- * @param j_sptr The first string pointer to compare.
- * @return Returns a number less than 0, 0, or greater than 0 if \a *i_sptr is
- * less than, equal to, or greater than \a *j_sptr, respectively.
- */
-NODISCARD
-static int str_ptr_cmp( char const **i_sptr, char const **j_sptr ) {
-  return strcmp( *i_sptr, *j_sptr );
 }
 
 ////////// readline callback functions ////////////////////////////////////////
