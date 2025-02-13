@@ -517,7 +517,7 @@ c_keyword_t const* c_keyword_next( c_keyword_t const *ck ) {
 void c_keywords_init( void ) {
   ASSERT_RUN_ONCE();
   qsort(                                // so we can stop the search early
-    C_KEYWORDS, ARRAY_SIZE( C_KEYWORDS ), sizeof( C_KEYWORDS[0] ),
+    C_KEYWORDS, ARRAY_SIZE( C_KEYWORDS ), sizeof C_KEYWORDS[0],
     POINTER_CAST( qsort_cmp_fn_t, &c_keyword_cmp )
   );
 }

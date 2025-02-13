@@ -1763,7 +1763,7 @@ void cdecl_keywords_init( void ) {
   ASSERT_RUN_ONCE();
   qsort(                                // don't rely on manual sorting above
     CDECL_KEYWORDS,
-    ARRAY_SIZE( CDECL_KEYWORDS ), sizeof( CDECL_KEYWORDS[0] ),
+    ARRAY_SIZE( CDECL_KEYWORDS ), sizeof CDECL_KEYWORDS[0],
     POINTER_CAST( qsort_cmp_fn_t, &cdecl_keyword_cmp )
   );
 }

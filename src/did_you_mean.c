@@ -484,7 +484,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
 
   // sort by Damerau-Levenshtein distance
   qsort(
-    dym_array, dym_size, sizeof( dym_array[0] ),
+    dym_array, dym_size, sizeof dym_array[0],
     POINTER_CAST( qsort_cmp_fn_t, &dym_cmp )
   );
 

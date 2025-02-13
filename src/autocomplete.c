@@ -206,7 +206,7 @@ static char const* const* ac_help_keywords_new( void ) {
   *pk = NULL;
 
   qsort(
-    ac_help_keywords_array, n, sizeof( ac_help_keywords_array[0] ),
+    ac_help_keywords_array, n, sizeof ac_help_keywords_array[0],
     POINTER_CAST( qsort_cmp_fn_t, &str_ptr_cmp )
   );
 

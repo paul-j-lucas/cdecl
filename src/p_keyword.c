@@ -104,7 +104,7 @@ p_keyword_t const* p_keyword_find( char const *literal ) {
 void p_keywords_init( void ) {
   ASSERT_RUN_ONCE();
   qsort(                                // don't rely on manual sorting above
-    P_KEYWORDS, ARRAY_SIZE( P_KEYWORDS ), sizeof( P_KEYWORDS[0] ),
+    P_KEYWORDS, ARRAY_SIZE( P_KEYWORDS ), sizeof P_KEYWORDS[0],
     POINTER_CAST( qsort_cmp_fn_t, &p_keyword_cmp )
   );
 }
