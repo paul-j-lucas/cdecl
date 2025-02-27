@@ -207,12 +207,12 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
     strbuf_putsn( sbuf, line, line_len );
   } while ( is_cont_line );
 
-  strbuf_putc( sbuf, '\n' );
-
 #ifdef HAVE_READLINE_HISTORY_H
   if ( is_interactive && !str_is_empty( sbuf->str ) )
     add_history( sbuf->str );           // LCOV_EXCL_LINE
 #endif /* HAVE_READLINE_HISTORY_H */
+
+  strbuf_putc( sbuf, '\n' );
   return true;
 }
 

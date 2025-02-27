@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.4.2
+
+** Fixed issue #38: Accumulating newlines in command-line history
+A newline should be added to the command-line only _after_ it's been added to
+the history.
+
+
 * Changes in Cdecl 18.4.1
 
 ** readline.h & stdio.h fix
