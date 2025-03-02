@@ -137,6 +137,20 @@ static bool test_strncmp_in_set( void ) {
   TEST_FUNC_END();
 }
 
+static bool test_strnlen( void ) {
+  TEST_FUNC_BEGIN();
+
+  TEST( strnlen( "", 0 ) == 0 );
+  TEST( strnlen( "", 1 ) == 0 );
+
+  TEST( strnlen( "ABC", 0 ) == 0 );
+  TEST( strnlen( "ABC", 1 ) == 1 );
+  TEST( strnlen( "ABC", 3 ) == 3 );
+  TEST( strnlen( "ABC", 4 ) == 3 );
+
+  TEST_FUNC_END();
+}
+
 static bool test_strnspn( void ) {
   TEST_FUNC_BEGIN();
 
@@ -187,6 +201,7 @@ int main( int argc, char const *const argv[] ) {
   test_strdup_tolower();
   test_str_is_prefix();
   test_strncmp_in_set();
+  test_strnlen();
   test_strnspn();
   test_str_realloc_pcat();
 }

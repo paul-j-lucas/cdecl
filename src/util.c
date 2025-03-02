@@ -486,6 +486,15 @@ int strncmp_in_set( char const *si, char const *sj, size_t n,
   return 0;
 }
 
+size_t strnlen( char const *s, size_t n ) {
+  size_t i;
+  for ( i = 0; i < n; ++i ) {
+    if ( s[i] == '\0' )
+      break;
+  }
+  return i;
+}
+
 void strn_rtrim( char const *s, size_t *s_len ) {
   assert( s != NULL );
   assert( s_len != NULL );

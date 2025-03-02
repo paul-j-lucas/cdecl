@@ -118,15 +118,10 @@ char* strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
 
 char* strbuf_putsn( strbuf_t *sbuf, char const *s, size_t n ) {
   assert( s != NULL );
-  size_t const s_len = strlen( s );
-  if ( n > s_len )
-    n = s_len;
+
+  n = strnlen( s, n );
   strbuf_reserve( sbuf, n );
-
-  // Use memcpy() to eliminate "'strncpy' output truncated before terminating
-  // nul copying 1 byte from a string of the same length" warning.
   memcpy( sbuf->str + sbuf->len, s, n );
-
   sbuf->len += n;
   sbuf->str[ sbuf->len ] = '\0';
   return sbuf->str;
