@@ -125,12 +125,12 @@ PJL_DISCARD PJL_PRINTF_LIKE_FUNC(2)
 char* strbuf_printf( strbuf_t *sbuf, char const *format, ... );
 
 /**
- * Appends \a s_len bytes of \a s onto the end of \a sbuf growing the buffer if
- * necessary.
+ * Appends at most \a n bytes of \a s onto the end of \a sbuf growing the
+ * buffer if necessary.
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param s The string to append.
- * @param s_len The number of bytes of \a s to append.
+ * @param n The number of bytes at most of \a s to append.
  * @return Returns \ref strbuf::str "sbuf->str".
  *
  * @sa strbuf_paths()
@@ -139,7 +139,7 @@ char* strbuf_printf( strbuf_t *sbuf, char const *format, ... );
  * @sa strbuf_puts()
  */
 PJL_DISCARD
-char* strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len );
+char* strbuf_putsn( strbuf_t *sbuf, char const *s, size_t n );
 
 /**
  * Appends \a c onto the end of \a sbuf growing the buffer if necessary.
