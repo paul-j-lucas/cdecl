@@ -1846,21 +1846,6 @@ int strncmp_in_set( char const *si, char const *sj, size_t n,
                     char const *charset );
 
 /**
- * Like **strlen**(3), but returns the smaller of <code>strlen(</code> \a s
- * <code>)</code> and \a n.
- *
- * @param s The string to use.
- * @param n The maximum length to return.
- * @return Returns the smaller of <code>strlen(</code> \a s <code>)</code> and
- * \a n.
- *
- * @note When \a n < <code>strlen(</code> \a s <code>)</code>, \a s need not be
- * null-terminated.
- */
-NODISCARD
-size_t strnlen( char const *s, size_t n );
-
-/**
  * Decrements \a *s_len as if to trim whitespace, if any, from the end of \a s.
  *
  * @param s The null-terminated string to trim.
