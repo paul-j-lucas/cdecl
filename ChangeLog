@@ -1,3 +1,16 @@
+2025-03-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * strbuf.c, strbuf.h: Now reserving min(n, strlen(s)).
+
+2025-02-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, read_line.c: Fixed issue #38: Accumulating newlines in
+     command-line history.
+
+2025-02-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: base_name() now returns path_name if it doesn't contain /.
+
 2025-02-13  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c, util.c, util.h: Moved str_ptr_cmp.
