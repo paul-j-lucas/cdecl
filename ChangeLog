@@ -1,5 +1,6 @@
 2025-03-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * strbuf.c, util.c, util.h, util_test.c: Now using strnlen.
    * strbuf.c, strbuf.h: Now reserving min(n, strlen(s)).
 
 2025-02-26  Paul J. Lucas <paul@lucasmail.org>
