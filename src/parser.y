@@ -76,12 +76,10 @@
 #include <stdlib.h>
 
 // Silence these warnings for Bison-generated code.
-#ifdef __GNUC__
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wconversion"
-# pragma GCC diagnostic ignored "-Wredundant-decls"
-# pragma GCC diagnostic ignored "-Wunreachable-code"
-#endif /* __GNUC__ */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wredundant-decls"
+#pragma GCC diagnostic ignored "-Wunreachable-code"
 
 // Developer aid for tracing when Bison %destructors are called.
 #if 0
@@ -9593,9 +9591,7 @@ virtual_stid_opt
 /// @endcond
 
 // Re-enable warnings.
-#ifdef __GNUC__
-# pragma GCC diagnostic pop
-#endif /* __GNUC__ */
+#pragma GCC diagnostic pop
 
 /**
  * @addtogroup parser-group

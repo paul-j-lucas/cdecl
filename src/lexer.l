@@ -72,20 +72,17 @@
 #include <wordexp.h>
 
 // Silence these warnings for Flex-generated code.
-#ifdef __clang__
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wimplicit-int-conversion"
-# pragma clang diagnostic ignored "-Wshorten-64-to-32"
-#endif /* __clang__ */
-#ifdef __GNUC__
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wconversion"
-# pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
-# pragma GCC diagnostic ignored "-Wmisleading-indentation"
-# pragma GCC diagnostic ignored "-Wredundant-decls"
-# pragma GCC diagnostic ignored "-Wsign-compare"
-# pragma GCC diagnostic ignored "-Wsign-conversion"
-#endif /* __GNUC__ */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wimplicit-int-conversion"
+#pragma clang diagnostic ignored "-Wshorten-64-to-32"
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#pragma GCC diagnostic ignored "-Wredundant-decls"
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#pragma GCC diagnostic ignored "-Wsign-conversion"
 
 /// @endcond
 

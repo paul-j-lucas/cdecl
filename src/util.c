@@ -205,10 +205,8 @@ unsigned long long check_strtoull( char const *s, unsigned long long min,
   return ULLONG_MAX;
 }
 
-#ifdef __GNUC__
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wformat-nonliteral"
-#endif /* __GNUC__ */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
 
 void fatal_error( int status, char const *format, ... ) {
   assert( format != NULL );
@@ -220,9 +218,7 @@ void fatal_error( int status, char const *format, ... ) {
   exit( status );
 }
 
-#ifdef __GNUC__
-# pragma GCC diagnostic pop
-#endif /* __GNUC__ */
+#pragma GCC diagnostic pop
 
 bool fd_is_file( int fd ) {
   struct stat fd_stat;
