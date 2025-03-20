@@ -3,6 +3,7 @@
 /assert.h
 /ctype.h
 /errno.h
+/fcntl.h
 /fnmatch.h
 /getopt-cdefs.h
 /getopt.h

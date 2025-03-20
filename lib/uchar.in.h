@@ -1,5 +1,5 @@
 /* <uchar.h> substitute - 16-bit and 32-bit wide character types.
-   Copyright (C) 2019-2024 Free Software Foundation, Inc.
+   Copyright (C) 2019-2025 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -119,7 +119,7 @@ typedef uint_least16_t gl_char16_t;
    and newer, it denotes UTF-32 code points; in older versions of ISO C
    it did so only on platforms on which __STDC_UTF_32__ was defined.
    In gnulib, we guarantee that it denotes UTF-32 code points if and
-   only if the module 'uchar-c23' is in use.  */
+   only if the module 'uchar-h-c23' is in use.  */
 typedef uint_least32_t char32_t;
 
 #elif @GNULIBHEADERS_OVERRIDE_CHAR32_T@

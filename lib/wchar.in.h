@@ -1,6 +1,6 @@
 /* A substitute for ISO C99 <wchar.h>, for platforms that have issues.
 
-   Copyright (C) 2007-2024 Free Software Foundation, Inc.
+   Copyright (C) 2007-2025 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -37,7 +37,7 @@
               && !defined _GL_FINISHED_INCLUDING_SYSTEM_INTTYPES_H)     \
              || defined _GL_JUST_INCLUDE_SYSTEM_WCHAR_H))               \
      || (defined __MINGW32__ && defined __STRING_H_SOURCED__)           \
-     || defined _GL_ALREADY_INCLUDING_WCHAR_H)
+     || defined _@GUARD_PREFIX@_ALREADY_INCLUDING_WCHAR_H)
 /* Special invocation convention:
    - Inside glibc and uClibc header files, but not MinGW.
    - On HP-UX 11.00 we have a sequence of nested includes
@@ -53,13 +53,16 @@
      <wctype.h> is completely included or is still being included.  */
 
 #@INCLUDE_NEXT@ @NEXT_WCHAR_H@
+/* The glibc 2.5 /usr/include/wchar.h defines __need_wint_t but never undefines
+   it.  We need to do that here.  */
+#undef __need_wint_t
 
 #else
 /* Normal invocation convention.  */
 
 #ifndef _@GUARD_PREFIX@_WCHAR_H
 
-#define _GL_ALREADY_INCLUDING_WCHAR_H
+#define _@GUARD_PREFIX@_ALREADY_INCLUDING_WCHAR_H
 
 #if @HAVE_FEATURES_H@
 # include <features.h> /* for __GLIBC__ */
@@ -79,7 +82,7 @@
 # @INCLUDE_NEXT@ @NEXT_WCHAR_H@
 #endif
 
-#undef _GL_ALREADY_INCLUDING_WCHAR_H
+#undef _@GUARD_PREFIX@_ALREADY_INCLUDING_WCHAR_H
 
 #ifndef _@GUARD_PREFIX@_WCHAR_H
 #define _@GUARD_PREFIX@_WCHAR_H
@@ -198,11 +201,12 @@ typedef unsigned int rpl_wint_t;
 /* Override mbstate_t if it is too small.
    On IRIX 6.5, sizeof (mbstate_t) == 1, which is not sufficient for
    implementing mbrtowc for encodings like UTF-8.
-   On AIX and MSVC, mbrtowc needs to be overridden, but mbstate_t exists and is
-   large enough and overriding it would cause problems in C++ mode.  */
+   On AIX, MSVC, and OpenBSD 6.0, mbrtowc needs to be overridden, but
+   mbstate_t exists and is large enough and overriding it would cause problems
+   in C++ mode.  */
 #if !(((defined _WIN32 && !defined __CYGWIN__) || @HAVE_MBSINIT@) && @HAVE_MBRTOWC@) || @REPLACE_MBSTATE_T@
 # if !GNULIB_defined_mbstate_t
-#  if !(defined _AIX || defined _MSC_VER)
+#  if !(defined _AIX || defined _MSC_VER || defined __OpenBSD__)
 typedef int rpl_mbstate_t;
 #   undef mbstate_t
 #   define mbstate_t rpl_mbstate_t
@@ -531,16 +535,19 @@ _GL_WARN_ON_USE (mbsinit, "mbsinit is unportable - "
 #  define _GL_MBSTATE_ZERO_SIZE sizeof (mbstate_t)
 # endif
 _GL_BEGIN_C_LINKAGE
-# if defined IN_MBSZERO
+# if !GNULIB_defined_mbszero
+#  if defined IN_MBSZERO
 _GL_EXTERN_INLINE
-# else
+#  else
 _GL_INLINE
-# endif
+#  endif
 _GL_ARG_NONNULL ((1)) void
 mbszero (mbstate_t *ps)
 {
   memset (ps, 0, _GL_MBSTATE_ZERO_SIZE);
 }
+#  define GNULIB_defined_mbszero 1
+# endif
 _GL_END_C_LINKAGE
 _GL_CXXALIAS_SYS (mbszero, void, (mbstate_t *ps));
 _GL_CXXALIASWARN (mbszero);

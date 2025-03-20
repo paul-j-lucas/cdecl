@@ -1,6 +1,6 @@
 /* A GNU-like <stdlib.h>.
 
-   Copyright (C) 1995, 2001-2004, 2006-2024 Free Software Foundation, Inc.
+   Copyright (C) 1995, 2001-2004, 2006-2025 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -62,8 +62,9 @@
 /* NetBSD 5.0 mis-defines NULL.  */
 #include <stddef.h>
 
-/* MirBSD 10 defines WEXITSTATUS in <sys/wait.h>, not in <stdlib.h>.  */
-#if @GNULIB_SYSTEM_POSIX@ && !defined WEXITSTATUS
+/* MirBSD 10 defines WEXITSTATUS in <sys/wait.h>, not in <stdlib.h>.
+   glibc 2.41 defines WCOREDUMP in <sys/wait.h>, not in <stdlib.h>.  */
+#if @GNULIB_SYSTEM_POSIX@ && !(defined WEXITSTATUS && defined WCOREDUMP)
 # include <sys/wait.h>
 #endif
 
@@ -746,15 +747,20 @@ _GL_WARN_ON_USE (malloc, "malloc is not POSIX compliant everywhere - "
 # endif
 #endif
 
-/* Return maximum number of bytes of a multibyte character.  */
+/* Return maximum number of bytes in a multibyte character in the
+   current locale.  */
 #if @REPLACE_MB_CUR_MAX@
 # if !GNULIB_defined_MB_CUR_MAX
-_GL_STDLIB_INLINE int
+_GL_STDLIB_INLINE size_t
 gl_MB_CUR_MAX (void)
 {
+#  if 0 < @REPLACE_MB_CUR_MAX@
+  return @REPLACE_MB_CUR_MAX@;
+#  else
   /* Turn the value 3 to the value 4, as needed for the UTF-8 encoding.  */
   int gl_mb_cur_max = MB_CUR_MAX;
   return gl_mb_cur_max == 3 ? 4 : gl_mb_cur_max;
+#  endif
 }
 #  undef MB_CUR_MAX
 #  define MB_CUR_MAX gl_MB_CUR_MAX ()
@@ -1467,11 +1473,17 @@ _GL_WARN_ON_USE (setstate_r, "setstate_r is unportable - "
 # if @REPLACE_REALLOC_FOR_REALLOC_POSIX@
 #  if @REPLACE_REALLOC_FOR_REALLOC_POSIX@ == 2
 #   define _GL_INLINE_RPL_REALLOC 1
+#   ifdef __cplusplus
+extern "C" {
+#   endif
 _GL_REALLOC_INLINE void *
 rpl_realloc (void *ptr, size_t size)
 {
   return realloc (ptr, size ? size : 1);
 }
+#   ifdef __cplusplus
+}
+#   endif
 #  endif
 #  if !((defined __cplusplus && defined GNULIB_NAMESPACE) \
         || _GL_USE_STDLIB_ALLOC)

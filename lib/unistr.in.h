@@ -1,5 +1,5 @@
 /* Elementary Unicode string functions.
-   Copyright (C) 2001-2002, 2005-2024 Free Software Foundation, Inc.
+   Copyright (C) 2001-2002, 2005-2025 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -80,6 +80,74 @@ extern const uint16_t *
 extern const uint32_t *
        u32_check (const uint32_t *s, size_t n)
        _UC_ATTRIBUTE_PURE;
+
+#ifndef _LIBUNISTRING_NO_CONST_GENERICS
+/* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
+   want compiler warnings for 'const' related mistakes.  */
+# ifdef __cplusplus
+template <typename T>
+  T * u8_check_template (T* s, size_t n);
+template <>
+  inline uint8_t * u8_check_template (uint8_t *s, size_t n)
+  { return const_cast<uint8_t *>(u8_check (s, n)); }
+template <>
+  inline const uint8_t * u8_check_template (const uint8_t *s, size_t n)
+  { return u8_check (s, n); }
+#  undef u8_check
+#  define u8_check u8_check_template
+# elif !defined u8_check
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u8_check(s,n) \
+      _Generic ((s), \
+                uint8_t *: (uint8_t *) u8_check ((s), (n)), \
+                default  :             u8_check ((s), (n)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u16_check_template (T* s, size_t n);
+template <>
+  inline uint16_t * u16_check_template (uint16_t *s, size_t n)
+  { return const_cast<uint16_t *>(u16_check (s, n)); }
+template <>
+  inline const uint16_t * u16_check_template (const uint16_t *s, size_t n)
+  { return u16_check (s, n); }
+#  undef u16_check
+#  define u16_check u16_check_template
+# elif !defined u16_check
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u16_check(s,n) \
+      _Generic ((s), \
+                uint16_t *: (uint16_t *) u16_check ((s), (n)), \
+                default   :              u16_check ((s), (n)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u32_check_template (T* s, size_t n);
+template <>
+  inline uint32_t * u32_check_template (uint32_t *s, size_t n)
+  { return const_cast<uint32_t *>(u32_check (s, n)); }
+template <>
+  inline const uint32_t * u32_check_template (const uint32_t *s, size_t n)
+  { return u32_check (s, n); }
+#  undef u32_check
+#  define u32_check u32_check_template
+# elif !defined u32_check
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u32_check(s,n) \
+      _Generic ((s), \
+                uint32_t *: (uint32_t *) u32_check ((s), (n)), \
+                default   :              u32_check ((s), (n)))
+#  endif
+# endif
+#endif
 
 
 /* Elementary string conversions.  */
@@ -444,6 +512,73 @@ extern uint16_t *
 extern uint32_t *
        u32_chr (const uint32_t *s, size_t n, ucs4_t uc)
        _UC_ATTRIBUTE_PURE;
+#ifndef _LIBUNISTRING_NO_CONST_GENERICS
+/* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
+   want compiler warnings for 'const' related mistakes.  */
+# ifdef __cplusplus
+template <typename T>
+  T * u8_chr_template (T* str, size_t n, ucs4_t uc);
+template <>
+  inline uint8_t * u8_chr_template (uint8_t *str, size_t n, ucs4_t uc)
+  { return u8_chr (str, n, uc); }
+template <>
+  inline const uint8_t * u8_chr_template (const uint8_t *str, size_t n, ucs4_t uc)
+  { return u8_chr (str, n, uc); }
+#  undef u8_chr
+#  define u8_chr u8_chr_template
+# elif !defined u8_chr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u8_chr(s,n,u) \
+      _Generic ((s), \
+                uint8_t const *: (uint8_t const *) u8_chr ((s), (n), (u)), \
+                default        :                   u8_chr ((s), (n), (u)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u16_chr_template (T* str, size_t n, ucs4_t uc);
+template <>
+  inline uint16_t * u16_chr_template (uint16_t *str, size_t n, ucs4_t uc)
+  { return u16_chr (str, n, uc); }
+template <>
+  inline const uint16_t * u16_chr_template (const uint16_t *str, size_t n, ucs4_t uc)
+  { return u16_chr (str, n, uc); }
+#  undef u16_chr
+#  define u16_chr u16_chr_template
+# elif !defined u16_chr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u16_chr(s,n,u) \
+      _Generic ((s), \
+                uint16_t const *: (uint16_t const *) u16_chr ((s), (n), (u)), \
+                default         :                    u16_chr ((s), (n), (u)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u32_chr_template (T* str, size_t n, ucs4_t uc);
+template <>
+  inline uint32_t * u32_chr_template (uint32_t *str, size_t n, ucs4_t uc)
+  { return u32_chr (str, n, uc); }
+template <>
+  inline const uint32_t * u32_chr_template (const uint32_t *str, size_t n, ucs4_t uc)
+  { return u32_chr (str, n, uc); }
+#  undef u32_chr
+#  define u32_chr u32_chr_template
+# elif !defined u32_chr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u32_chr(s,n,u) \
+      _Generic ((s), \
+                uint32_t const *: (uint32_t const *) u32_chr ((s), (n), (u)), \
+                default         :                    u32_chr ((s), (n), (u)))
+#  endif
+# endif
+#endif
 
 /* Count the number of Unicode characters in the N units from S.  */
 /* Similar to mbsnlen().  */
@@ -500,6 +635,73 @@ extern const uint16_t *
        u16_next (ucs4_t *puc, const uint16_t *s);
 extern const uint32_t *
        u32_next (ucs4_t *puc, const uint32_t *s);
+#ifndef _LIBUNISTRING_NO_CONST_GENERICS
+/* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
+   want compiler warnings for 'const' related mistakes.  */
+# ifdef __cplusplus
+template <typename T>
+  T * u8_next_template (ucs4_t *puc, T* s);
+template <>
+  inline uint8_t * u8_next_template (ucs4_t *puc, uint8_t *s)
+  { return const_cast<uint8_t *>(u8_next (puc, s)); }
+template <>
+  inline const uint8_t * u8_next_template (ucs4_t *puc, const uint8_t *s)
+  { return u8_next (puc, s); }
+#  undef u8_next
+#  define u8_next u8_next_template
+# elif !defined u8_next
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u8_next(p,s) \
+      _Generic ((s), \
+                uint8_t *: (uint8_t *) u8_next ((p), (s)), \
+                default  :             u8_next ((p), (s)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u16_next_template (ucs4_t *puc, T* s);
+template <>
+  inline uint16_t * u16_next_template (ucs4_t *puc, uint16_t *s)
+  { return const_cast<uint16_t *>(u16_next (puc, s)); }
+template <>
+  inline const uint16_t * u16_next_template (ucs4_t *puc, const uint16_t *s)
+  { return u16_next (puc, s); }
+#  undef u16_next
+#  define u16_next u16_next_template
+# elif !defined u16_next
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u16_next(p,s) \
+      _Generic ((s), \
+                uint16_t *: (uint16_t *) u16_next ((p), (s)), \
+                default   :              u16_next ((p), (s)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u32_next_template (ucs4_t *puc, T* s);
+template <>
+  inline uint32_t * u32_next_template (ucs4_t *puc, uint32_t *s)
+  { return const_cast<uint32_t *>(u32_next (puc, s)); }
+template <>
+  inline const uint32_t * u32_next_template (ucs4_t *puc, const uint32_t *s)
+  { return u32_next (puc, s); }
+#  undef u32_next
+#  define u32_next u32_next_template
+# elif !defined u32_next
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u32_next(p,s) \
+      _Generic ((s), \
+                uint32_t *: (uint32_t *) u32_next ((p), (s)), \
+                default   :              u32_next ((p), (s)))
+#  endif
+# endif
+#endif
 
 /* Backward iteration step.  Advances the pointer to point to the previous
    character, or returns NULL if the beginning of the string had been reached.
@@ -510,6 +712,73 @@ extern const uint16_t *
        u16_prev (ucs4_t *puc, const uint16_t *s, const uint16_t *start);
 extern const uint32_t *
        u32_prev (ucs4_t *puc, const uint32_t *s, const uint32_t *start);
+#ifndef _LIBUNISTRING_NO_CONST_GENERICS
+/* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
+   want compiler warnings for 'const' related mistakes.  */
+# ifdef __cplusplus
+template <typename T>
+  T * u8_prev_template (ucs4_t *puc, T* s, const uint8_t *start);
+template <>
+  inline uint8_t * u8_prev_template (ucs4_t *puc, uint8_t *s, const uint8_t *start)
+  { return const_cast<uint8_t *>(u8_prev (puc, s, start)); }
+template <>
+  inline const uint8_t * u8_prev_template (ucs4_t *puc, const uint8_t *s, const uint8_t *start)
+  { return u8_prev (puc, s, start); }
+#  undef u8_prev
+#  define u8_prev u8_prev_template
+# elif !defined u8_prev
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u8_prev(p,s,start) \
+      _Generic ((s), \
+                uint8_t *: (uint8_t *) u8_prev ((p), (s), (start)), \
+                default  :             u8_prev ((p), (s), (start)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u16_prev_template (ucs4_t *puc, T* s, const uint16_t *start);
+template <>
+  inline uint16_t * u16_prev_template (ucs4_t *puc, uint16_t *s, const uint16_t *start)
+  { return const_cast<uint16_t *>(u16_prev (puc, s, start)); }
+template <>
+  inline const uint16_t * u16_prev_template (ucs4_t *puc, const uint16_t *s, const uint16_t *start)
+  { return u16_prev (puc, s, start); }
+#  undef u16_prev
+#  define u16_prev u16_prev_template
+# elif !defined u16_prev
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u16_prev(p,s,start) \
+      _Generic ((s), \
+                uint16_t *: (uint16_t *) u16_prev ((p), (s), (start)), \
+                default   :              u16_prev ((p), (s), (start)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u32_prev_template (ucs4_t *puc, T* s, const uint32_t *start);
+template <>
+  inline uint32_t * u32_prev_template (ucs4_t *puc, uint32_t *s, const uint32_t *start)
+  { return const_cast<uint32_t *>(u32_prev (puc, s, start)); }
+template <>
+  inline const uint32_t * u32_prev_template (ucs4_t *puc, const uint32_t *s, const uint32_t *start)
+  { return u32_prev (puc, s, start); }
+#  undef u32_prev
+#  define u32_prev u32_prev_template
+# elif !defined u32_prev
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u32_prev(p,s,start) \
+      _Generic ((s), \
+                uint32_t *: (uint32_t *) u32_prev ((p), (s), (start)), \
+                default   :              u32_prev ((p), (s), (start)))
+#  endif
+# endif
+#endif
 
 /* Return the number of units in S.  */
 /* Similar to strlen(), wcslen().  */
@@ -656,6 +925,73 @@ extern uint16_t *
 extern uint32_t *
        u32_strchr (const uint32_t *str, ucs4_t uc)
        _UC_ATTRIBUTE_PURE;
+#ifndef _LIBUNISTRING_NO_CONST_GENERICS
+/* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
+   want compiler warnings for 'const' related mistakes.  */
+# ifdef __cplusplus
+template <typename T>
+  T * u8_strchr_template (T* str, ucs4_t uc);
+template <>
+  inline uint8_t * u8_strchr_template (uint8_t *str, ucs4_t uc)
+  { return u8_strchr (str, uc); }
+template <>
+  inline const uint8_t * u8_strchr_template (const uint8_t *str, ucs4_t uc)
+  { return u8_strchr (str, uc); }
+#  undef u8_strchr
+#  define u8_strchr u8_strchr_template
+# elif !defined u8_strchr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u8_strchr(s,u) \
+      _Generic ((s), \
+                uint8_t const *: (uint8_t const *) u8_strchr ((s), (u)), \
+                default        :                   u8_strchr ((s), (u)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u16_strchr_template (T* str, ucs4_t uc);
+template <>
+  inline uint16_t * u16_strchr_template (uint16_t *str, ucs4_t uc)
+  { return u16_strchr (str, uc); }
+template <>
+  inline const uint16_t * u16_strchr_template (const uint16_t *str, ucs4_t uc)
+  { return u16_strchr (str, uc); }
+#  undef u16_strchr
+#  define u16_strchr u16_strchr_template
+# elif !defined u16_strchr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u16_strchr(s,u) \
+      _Generic ((s), \
+                uint16_t const *: (uint16_t const *) u16_strchr ((s), (u)), \
+                default         :                    u16_strchr ((s), (u)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u32_strchr_template (T* str, ucs4_t uc);
+template <>
+  inline uint32_t * u32_strchr_template (uint32_t *str, ucs4_t uc)
+  { return u32_strchr (str, uc); }
+template <>
+  inline const uint32_t * u32_strchr_template (const uint32_t *str, ucs4_t uc)
+  { return u32_strchr (str, uc); }
+#  undef u32_strchr
+#  define u32_strchr u32_strchr_template
+# elif !defined u32_strchr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u32_strchr(s,u) \
+      _Generic ((s), \
+                uint32_t const *: (uint32_t const *) u32_strchr ((s), (u)), \
+                default         :                    u32_strchr ((s), (u)))
+#  endif
+# endif
+#endif
 
 /* Find the last occurrence of UC in STR.  */
 /* Similar to strrchr(), wcsrchr().  */
@@ -668,6 +1004,73 @@ extern uint16_t *
 extern uint32_t *
        u32_strrchr (const uint32_t *str, ucs4_t uc)
        _UC_ATTRIBUTE_PURE;
+#ifndef _LIBUNISTRING_NO_CONST_GENERICS
+/* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
+   want compiler warnings for 'const' related mistakes.  */
+# ifdef __cplusplus
+template <typename T>
+  T * u8_strrchr_template (T* str, ucs4_t uc);
+template <>
+  inline uint8_t * u8_strrchr_template (uint8_t *str, ucs4_t uc)
+  { return u8_strrchr (str, uc); }
+template <>
+  inline const uint8_t * u8_strrchr_template (const uint8_t *str, ucs4_t uc)
+  { return u8_strrchr (str, uc); }
+#  undef u8_strrchr
+#  define u8_strrchr u8_strrchr_template
+# elif !defined u8_strrchr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u8_strrchr(s,u) \
+      _Generic ((s), \
+                uint8_t const *: (uint8_t const *) u8_strrchr ((s), (u)), \
+                default        :                   u8_strrchr ((s), (u)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u16_strrchr_template (T* str, ucs4_t uc);
+template <>
+  inline uint16_t * u16_strrchr_template (uint16_t *str, ucs4_t uc)
+  { return u16_strrchr (str, uc); }
+template <>
+  inline const uint16_t * u16_strrchr_template (const uint16_t *str, ucs4_t uc)
+  { return u16_strrchr (str, uc); }
+#  undef u16_strrchr
+#  define u16_strrchr u16_strrchr_template
+# elif !defined u16_strrchr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u16_strrchr(s,u) \
+      _Generic ((s), \
+                uint16_t const *: (uint16_t const *) u16_strrchr ((s), (u)), \
+                default         :                    u16_strrchr ((s), (u)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u32_strrchr_template (T* str, ucs4_t uc);
+template <>
+  inline uint32_t * u32_strrchr_template (uint32_t *str, ucs4_t uc)
+  { return u32_strrchr (str, uc); }
+template <>
+  inline const uint32_t * u32_strrchr_template (const uint32_t *str, ucs4_t uc)
+  { return u32_strrchr (str, uc); }
+#  undef u32_strrchr
+#  define u32_strrchr u32_strrchr_template
+# elif !defined u32_strrchr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u32_strrchr(s,u) \
+      _Generic ((s), \
+                uint32_t const *: (uint32_t const *) u32_strrchr ((s), (u)), \
+                default         :                    u32_strrchr ((s), (u)))
+#  endif
+# endif
+#endif
 
 /* Return the length of the initial segment of STR which consists entirely
    of Unicode characters not in REJECT.  */
@@ -706,6 +1109,73 @@ extern uint16_t *
 extern uint32_t *
        u32_strpbrk (const uint32_t *str, const uint32_t *accept)
        _UC_ATTRIBUTE_PURE;
+#ifndef _LIBUNISTRING_NO_CONST_GENERICS
+/* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
+   want compiler warnings for 'const' related mistakes.  */
+# ifdef __cplusplus
+template <typename T>
+  T * u8_strpbrk_template (T* str, const uint8_t *accept);
+template <>
+  inline uint8_t * u8_strpbrk_template (uint8_t *str, const uint8_t *accept)
+  { return u8_strpbrk (str, accept); }
+template <>
+  inline const uint8_t * u8_strpbrk_template (const uint8_t *str, const uint8_t *accept)
+  { return u8_strpbrk (str, accept); }
+#  undef u8_strpbrk
+#  define u8_strpbrk u8_strpbrk_template
+# elif !defined u8_strpbrk
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u8_strpbrk(s,a) \
+      _Generic ((s), \
+                uint8_t const *: (uint8_t const *) u8_strpbrk ((s), (a)), \
+                default        :                   u8_strpbrk ((s), (a)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u16_strpbrk_template (T* str, const uint16_t *accept);
+template <>
+  inline uint16_t * u16_strpbrk_template (uint16_t *str, const uint16_t *accept)
+  { return u16_strpbrk (str, accept); }
+template <>
+  inline const uint16_t * u16_strpbrk_template (const uint16_t *str, const uint16_t *accept)
+  { return u16_strpbrk (str, accept); }
+#  undef u16_strpbrk
+#  define u16_strpbrk u16_strpbrk_template
+# elif !defined u16_strpbrk
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u16_strpbrk(s,a) \
+      _Generic ((s), \
+                uint16_t const *: (uint16_t const *) u16_strpbrk ((s), (a)), \
+                default         :                    u16_strpbrk ((s), (a)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u32_strpbrk_template (T* str, const uint32_t *accept);
+template <>
+  inline uint32_t * u32_strpbrk_template (uint32_t *str, const uint32_t *accept)
+  { return u32_strpbrk (str, accept); }
+template <>
+  inline const uint32_t * u32_strpbrk_template (const uint32_t *str, const uint32_t *accept)
+  { return u32_strpbrk (str, accept); }
+#  undef u32_strpbrk
+#  define u32_strpbrk u32_strpbrk_template
+# elif !defined u32_strpbrk
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u32_strpbrk(s,a) \
+      _Generic ((s), \
+                uint32_t const *: (uint32_t const *) u32_strpbrk ((s), (a)), \
+                default         :                    u32_strpbrk ((s), (a)))
+#  endif
+# endif
+#endif
 
 /* Find the first occurrence of NEEDLE in HAYSTACK.  */
 /* Similar to strstr(), wcsstr().  */
@@ -718,6 +1188,73 @@ extern uint16_t *
 extern uint32_t *
        u32_strstr (const uint32_t *haystack, const uint32_t *needle)
        _UC_ATTRIBUTE_PURE;
+#ifndef _LIBUNISTRING_NO_CONST_GENERICS
+/* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
+   want compiler warnings for 'const' related mistakes.  */
+# ifdef __cplusplus
+template <typename T>
+  T * u8_strstr_template (T* haystack, const uint8_t *needle);
+template <>
+  inline uint8_t * u8_strstr_template (uint8_t *haystack, const uint8_t *needle)
+  { return u8_strstr (haystack, needle); }
+template <>
+  inline const uint8_t * u8_strstr_template (const uint8_t *haystack, const uint8_t *needle)
+  { return u8_strstr (haystack, needle); }
+#  undef u8_strstr
+#  define u8_strstr u8_strstr_template
+# elif !defined u8_strstr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u8_strstr(h,n) \
+      _Generic ((h), \
+                uint8_t const *: (uint8_t const *) u8_strstr ((h), (n)), \
+                default        :                   u8_strstr ((h), (n)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u16_strstr_template (T* haystack, const uint16_t *needle);
+template <>
+  inline uint16_t * u16_strstr_template (uint16_t *haystack, const uint16_t *needle)
+  { return u16_strstr (haystack, needle); }
+template <>
+  inline const uint16_t * u16_strstr_template (const uint16_t *haystack, const uint16_t *needle)
+  { return u16_strstr (haystack, needle); }
+#  undef u16_strstr
+#  define u16_strstr u16_strstr_template
+# elif !defined u16_strstr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u16_strstr(h,n) \
+      _Generic ((h), \
+                uint16_t const *: (uint16_t const *) u16_strstr ((h), (n)), \
+                default         :                    u16_strstr ((h), (n)))
+#  endif
+# endif
+# ifdef __cplusplus
+template <typename T>
+  T * u32_strstr_template (T* haystack, const uint32_t *needle);
+template <>
+  inline uint32_t * u32_strstr_template (uint32_t *haystack, const uint32_t *needle)
+  { return u32_strstr (haystack, needle); }
+template <>
+  inline const uint32_t * u32_strstr_template (const uint32_t *haystack, const uint32_t *needle)
+  { return u32_strstr (haystack, needle); }
+#  undef u32_strstr
+#  define u32_strstr u32_strstr_template
+# elif !defined u32_strstr
+#  if ((__GNUC__ + (__GNUC_MINOR__ >= 9) > 4) || (__clang_major__ >= 3) \
+       || defined __ICC  || defined __TINYC__ \
+       || (__STDC_VERSION__ >= 201112L && !(defined __GNUC__ || defined __clang__)))
+#   define u32_strstr(h,n) \
+      _Generic ((h), \
+                uint32_t const *: (uint32_t const *) u32_strstr ((h), (n)), \
+                default         :                    u32_strstr ((h), (n)))
+#  endif
+# endif
+#endif
 
 /* Test whether STR starts with PREFIX.  */
 extern bool

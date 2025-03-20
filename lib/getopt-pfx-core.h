@@ -1,5 +1,5 @@
 /* getopt (basic, portable features) gnulib wrapper header.
-   Copyright (C) 1989-2024 Free Software Foundation, Inc.
+   Copyright (C) 1989-2025 Free Software Foundation, Inc.
    This file is part of gnulib.
    Unlike most of the getopt implementation, it is NOT shared
    with the GNU C Library.
@@ -36,6 +36,9 @@
    friends.  */
 # if defined _AIX || defined __hpux || defined __sun || defined __QNX__
 #  include <stdio.h>
+# endif
+# if defined MUSL_LIBC || (defined __FreeBSD__ || defined __DragonFly__) || defined __NetBSD__ || defined __OpenBSD__ || (defined __APPLE__ && defined __MACH__) || defined _AIX || defined __sun || defined __minix || defined __HAIKU__
+#  include <unistd.h>
 # endif
 
 # ifndef __GETOPT_ID
