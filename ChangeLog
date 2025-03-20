@@ -1,3 +1,7 @@
+2025-03-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, parser.y, util.c: Removed #ifdefs around #pragma -- not needed.
+
 2025-03-02  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c, util.h, util_test.c: strnlen() is in POSIX.
