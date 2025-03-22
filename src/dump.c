@@ -44,7 +44,6 @@
 #include <stddef.h>                     /* for NULL */
 #include <stdint.h>
 #include <stdlib.h>
-#include <sysexits.h>
 
 #define DUMP_AST(D,KEY,AST) BLOCK( \
   DUMP_KEY( (D), KEY ": " ); c_ast_dump_impl( (AST), (D) ); )
