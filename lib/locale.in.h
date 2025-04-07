@@ -385,13 +385,25 @@ _GL_WARN_ON_USE (freelocale, "freelocale is not portable");
 #endif
 
 #if @GNULIB_GETLOCALENAME_L@
-# if !@HAVE_GETLOCALENAME_L@
+# if @REPLACE_GETLOCALENAME_L@
+#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#   undef getlocalename_l
+#   define getlocalename_l rpl_getlocalename_l
+#  endif
+_GL_FUNCDECL_RPL (getlocalename_l, const char *,
+                  (int category, locale_t locale),
+                  _GL_ARG_NONNULL ((2)));
+_GL_CXXALIAS_RPL (getlocalename_l, const char *,
+                  (int category, locale_t locale));
+# else
+#  if !@HAVE_GETLOCALENAME_L@
 _GL_FUNCDECL_SYS (getlocalename_l, const char *,
                   (int category, locale_t locale),
                   _GL_ARG_NONNULL ((2)));
-# endif
+#  endif
 _GL_CXXALIAS_SYS (getlocalename_l, const char *,
                   (int category, locale_t locale));
+# endif
 # if __GLIBC__ >= 2
 _GL_CXXALIASWARN (getlocalename_l);
 # endif
