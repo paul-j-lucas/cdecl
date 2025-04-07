@@ -59,7 +59,7 @@
 /**
  * **cdecl** latest copyright year.
  */
-#define CDECL_COPYRIGHT_YEAR      "2024"
+#define CDECL_COPYRIGHT_YEAR      "2025"
 
 /**
  * The name of the **cdecl** environment variable.
