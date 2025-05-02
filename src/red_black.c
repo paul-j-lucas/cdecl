@@ -23,7 +23,7 @@
  * Defines functions for manipulating a _Red-Black Tree_.
  *
  * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
- * 4th ed., Thomas H. Cormen, Charles E.  Leiserson, Ronald L. Rivest, and
+ * 4th ed., Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and
  * Clifford Stein, MIT Press, ISBN 9780262046305, &sect; 13.
  * @sa [Red-Black Tree](https://en.wikipedia.org/wiki/Red-black_tree)
  */
