@@ -698,9 +698,9 @@ static char const* kg_match_specific_keyword( kg_state_t *kg,
  *
  *      cdecl> declare x as int width 4 <tab>
  *
- * hitting _tab_ finds the previous word `width` skipping over `4` since it's
- * not a keyword.  (The next autocompletion word for `width` can therefore
- * specify `bits` even though it's not adjacent.)
+ * hitting <kbd>tab</kbd> finds the previous word `width` skipping over `4`
+ * since it's not a keyword.  (The next autocompletion word for `width` can
+ * therefore specify `bits` even though it's not adjacent.)
  *
  * @param s The string to find the previous keyword in.
  * @param pos The position within \a s to start looking before.
