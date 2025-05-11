@@ -62,11 +62,6 @@
 #define CDECL_COPYRIGHT_YEAR      "2025"
 
 /**
- * The name of the **cdecl** environment variable.
- */
-#define CDECL_ENV_VAR_NAME        "CDECLRC"
-
-/**
  * **cdecl** license.
  *
  * @sa #CDECL_LICENSE_URL

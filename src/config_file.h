@@ -43,7 +43,7 @@
  * order):
  *
  *  1. The value of either the `--config` or `-c` command-line option; or:
- *  2. The value of #CDECL_ENV_VAR_NAME or:
+ *  2. The value of `CDECLRC` environment variable or:
  *  3. <code>~/</code>#CONF_FILE_NAME_DEFAULT.
  * @endparblock
  *
