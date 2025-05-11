@@ -121,8 +121,8 @@ most notably:
    `std::string`,
    etc.),
   and all
-  [Microsoft Windows types](https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types).
-* Support for [Microsoft Windows calling conventions](https://docs.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions).
+  [Microsoft Windows types](https://learn.microsoft.com/en-us/windows/win32/winprog/windows-data-types).
+* Support for [Microsoft Windows calling conventions](https://learn.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions).
 * Support for variadic function parameters.
 * Support for C and C++ alternative tokens
   (`and`, `and_eq`, etc.).
