@@ -1,3 +1,10 @@
+2025-05-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.h, config_file.c, config_file.h: Eliminated CDECL_ENV_VAR_NAME.
+   * config_file.c: Added "const".
+   * share/bash-completions/completions/_cdecl: Fixed comment.
+   * share/bash-completions/completions/_cdecl: s/2024/2025/
+
 2025-04-07  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.h: s/2024/2025/
