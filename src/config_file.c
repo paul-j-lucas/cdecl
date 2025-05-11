@@ -67,7 +67,7 @@ static char const* home_dir( void ) {
     home = null_if_empty( getenv( "HOME" ) );
 #if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
     if ( home == NULL ) {
-      struct passwd *const pw = getpwuid( geteuid() );
+      struct passwd const *const pw = getpwuid( geteuid() );
       if ( pw != NULL )
         home = null_if_empty( pw->pw_dir );
     }
