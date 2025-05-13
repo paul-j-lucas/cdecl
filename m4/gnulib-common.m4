@@ -1,5 +1,5 @@
 # gnulib-common.m4
-# serial 107
+# serial 110
 dnl Copyright (C) 2007-2025 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -20,6 +20,20 @@ AC_DEFUN([gl_COMMON_BODY], [
   AH_VERBATIM([0witness],
 [/* Witness that <config.h> has been included.  */
 #define _GL_CONFIG_H_INCLUDED 1
+])
+  dnl Avoid warnings from gcc -Wtrailing-whitespace.
+  dnl This is a temporary workaround until Autoconf fixes it.
+  dnl Test case:
+  dnl empty1=; empty2=; AC_DEFINE_UNQUOTED([FOO], [$empty1$empty2], [...])
+  dnl should produce "#define FOO /**/", not "#define FOO ".
+  AH_TOP([#if defined __GNUC__ && __GNUC__ >= 15 && !defined __clang__
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wtrailing-whitespace"
+#endif
+])
+  AH_BOTTOM([#if defined __GNUC__ && __GNUC__ >= 15 && !defined __clang__
+# pragma GCC diagnostic pop
+#endif
 ])
   AH_VERBATIM([_GL_GNUC_PREREQ],
 [/* True if the compiler says it groks GNU C version MAJOR.MINOR.
@@ -103,6 +117,9 @@ AC_DEFUN([gl_COMMON_BODY], [
 #  define _GL_HAS_ATTRIBUTE(attr) __has_attribute (__##attr##__)
 # else
 #  define _GL_HAS_ATTRIBUTE(attr) _GL_ATTR_##attr
+/* The following lines list the first GCC version that supports the attribute.
+   Although the lines are not used in GCC 5 and later (as GCC 5 introduced
+   __has_attribute support), list GCC versions 5+ anyway for completeness.  */
 #  define _GL_ATTR_alloc_size _GL_GNUC_PREREQ (4, 3)
 #  define _GL_ATTR_always_inline _GL_GNUC_PREREQ (3, 2)
 #  define _GL_ATTR_artificial _GL_GNUC_PREREQ (4, 3)
@@ -123,14 +140,15 @@ AC_DEFUN([gl_COMMON_BODY], [
 #  endif
 #  define _GL_ATTR_noinline _GL_GNUC_PREREQ (3, 1)
 #  define _GL_ATTR_nonnull _GL_GNUC_PREREQ (3, 3)
+#  define _GL_ATTR_nonnull_if_nonzero _GL_GNUC_PREREQ (15, 1)
 #  define _GL_ATTR_nonstring _GL_GNUC_PREREQ (8, 0)
 #  define _GL_ATTR_nothrow _GL_GNUC_PREREQ (3, 3)
 #  define _GL_ATTR_packed _GL_GNUC_PREREQ (2, 7)
 #  define _GL_ATTR_pure _GL_GNUC_PREREQ (2, 96)
-#  define _GL_ATTR_reproducible 0 /* not yet supported, as of GCC 14 */
+#  define _GL_ATTR_reproducible _GL_GNUC_PREREQ (15, 1)
 #  define _GL_ATTR_returns_nonnull _GL_GNUC_PREREQ (4, 9)
 #  define _GL_ATTR_sentinel _GL_GNUC_PREREQ (4, 0)
-#  define _GL_ATTR_unsequenced 0 /* not yet supported, as of GCC 14 */
+#  define _GL_ATTR_unsequenced _GL_GNUC_PREREQ (15, 1)
 #  define _GL_ATTR_unused _GL_GNUC_PREREQ (2, 7)
 #  define _GL_ATTR_warn_unused_result _GL_GNUC_PREREQ (3, 4)
 # endif
@@ -664,6 +682,17 @@ AC_DEFUN([gl_COMMON_BODY], [
 #  define _GL_ATTRIBUTE_NONNULL(args) __attribute__ ((__nonnull__ args))
 # else
 #  define _GL_ATTRIBUTE_NONNULL(args)
+# endif
+#endif
+
+/* _GL_ATTRIBUTE_NONNULL_IF_NONZERO (NP, NI) declares that the argument NP
+   (a pointer) must not be NULL if the argument NI (an integer) is != 0.  */
+/* Applies to: functions.  */
+#ifndef _GL_ATTRIBUTE_NONNULL_IF_NONZERO
+# if _GL_HAS_ATTRIBUTE (nonnull_if_nonzero)
+#  define _GL_ATTRIBUTE_NONNULL_IF_NONZERO(np, ni) __attribute__ ((__nonnull_if_nonzero__ (np, ni)))
+# else
+#  define _GL_ATTRIBUTE_NONNULL_IF_NONZERO(np, ni)
 # endif
 #endif
 
@@ -1304,7 +1333,7 @@ AC_DEFUN([gl_CC_ALLOW_WARNINGS],
   AC_REQUIRE([AC_PROG_CC])
   AC_CACHE_CHECK([for C compiler option to allow warnings],
     [gl_cv_cc_wallow],
-    [rm -f conftest*
+    [rm -fr conftest*
      echo 'int dummy;' > conftest.c
      AC_TRY_COMMAND([${CC-cc} $CFLAGS $CPPFLAGS -c conftest.c 2>conftest1.err]) >/dev/null
      AC_TRY_COMMAND([${CC-cc} $CFLAGS $CPPFLAGS -Wno-error -c conftest.c 2>conftest2.err]) >/dev/null
@@ -1317,7 +1346,7 @@ AC_DEFUN([gl_CC_ALLOW_WARNINGS],
      else
        gl_cv_cc_wallow=none
      fi
-     rm -f conftest*
+     rm -fr conftest*
     ])
   case "$gl_cv_cc_wallow" in
     none) GL_CFLAG_ALLOW_WARNINGS='' ;;
@@ -1335,7 +1364,7 @@ AC_DEFUN([gl_CXX_ALLOW_WARNINGS],
   if test -n "$CXX" && test "$CXX" != no; then
     AC_CACHE_CHECK([for C++ compiler option to allow warnings],
       [gl_cv_cxx_wallow],
-      [rm -f conftest*
+      [rm -fr conftest*
        echo 'int dummy;' > conftest.cc
        AC_TRY_COMMAND([${CXX-c++} $CXXFLAGS $CPPFLAGS -c conftest.cc 2>conftest1.err]) >/dev/null
        AC_TRY_COMMAND([${CXX-c++} $CXXFLAGS $CPPFLAGS -Wno-error -c conftest.cc 2>conftest2.err]) >/dev/null
@@ -1348,7 +1377,7 @@ AC_DEFUN([gl_CXX_ALLOW_WARNINGS],
        else
          gl_cv_cxx_wallow=none
        fi
-       rm -f conftest*
+       rm -fr conftest*
       ])
     case "$gl_cv_cxx_wallow" in
       none) GL_CXXFLAG_ALLOW_WARNINGS='' ;;
@@ -1601,7 +1630,7 @@ dnl
 dnl This macro sets two variables:
 dnl   - gl_cv_onwards_func_<func>   to yes / no / "future OS version"
 dnl   - ac_cv_func_<func>           to yes / no / no
-dnl The first variable allows to distinguish all three cases.
+dnl The first variable allows distinguishing all three cases.
 dnl The second variable is set, so that an invocation
 dnl   gl_CHECK_FUNCS_ANDROID([func], [[#include <foo.h>]])
 dnl can be used as a drop-in replacement for
@@ -1654,7 +1683,7 @@ dnl
 dnl This macro sets two variables:
 dnl   - gl_cv_onwards_func_<func>   to yes / no / "future OS version"
 dnl   - ac_cv_func_<func>           to yes / no / no
-dnl The first variable allows to distinguish all three cases.
+dnl The first variable allows distinguishing all three cases.
 dnl The second variable is set, so that an invocation
 dnl   gl_CHECK_FUNCS_MACOS([func], [[#include <foo.h>]])
 dnl can be used as a drop-in replacement for

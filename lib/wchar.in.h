@@ -140,6 +140,18 @@
 # endif
 #endif
 
+/* _GL_ATTRIBUTE_NONNULL_IF_NONZERO (NP, NI) declares that the argument NP
+   (a pointer) must not be NULL if the argument NI (an integer) is != 0.  */
+/* Applies to: functions.  */
+#ifndef _GL_ATTRIBUTE_NONNULL_IF_NONZERO
+# if __GNUC__ >= 15 && !defined __clang__
+#  define _GL_ATTRIBUTE_NONNULL_IF_NONZERO(np, ni) \
+     __attribute__ ((__nonnull_if_nonzero__ (np, ni)))
+# else
+#  define _GL_ATTRIBUTE_NONNULL_IF_NONZERO(np, ni)
+# endif
+#endif
+
 /* _GL_ATTRIBUTE_NOTHROW declares that the function does not throw exceptions.
  */
 #ifndef _GL_ATTRIBUTE_NOTHROW
@@ -263,6 +275,55 @@ _GL_EXTERN_C void free (void *);
 #if @GNULIB_MBSZERO@
 /* Get memset().  */
 # include <string.h>
+#endif
+
+
+/* Declarations for ISO C N3322.  */
+#if defined __GNUC__ && __GNUC__ >= 15 && !defined __clang__
+_GL_EXTERN_C wchar_t *wmemcpy (wchar_t *__dest, const wchar_t *__src, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+_GL_EXTERN_C wchar_t *wmemmove (wchar_t *__dest, const wchar_t *__src, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+_GL_EXTERN_C wchar_t *wcsncpy (wchar_t *__dest, const wchar_t *__src, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+_GL_EXTERN_C wchar_t *wcsncat (wchar_t *__dest, const wchar_t *__src, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ARG_NONNULL ((1)) _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+_GL_EXTERN_C int wmemcmp (const wchar_t *__s1, const wchar_t *__s2, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+_GL_EXTERN_C int wcsncmp (const wchar_t *__s1, const wchar_t *__s2, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+# ifndef __cplusplus
+_GL_EXTERN_C wchar_t *wmemchr (const wchar_t *__s, wchar_t __wc, size_t __n)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3);
+# endif
+_GL_EXTERN_C wchar_t *wmemset (wchar_t *__s, wchar_t __wc, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3);
 #endif
 
 
@@ -850,8 +911,9 @@ _GL_WARN_ON_USE (wcwidth, "wcwidth is unportable - "
 /* Search N wide characters of S for C.  */
 #if @GNULIB_WMEMCHR@
 # if !@HAVE_WMEMCHR@
-_GL_FUNCDECL_SYS (wmemchr, wchar_t *, (const wchar_t *s, wchar_t c, size_t n),
-                                      _GL_ATTRIBUTE_PURE);
+_GL_FUNCDECL_SYS (wmemchr, wchar_t *,
+                  (const wchar_t *s, wchar_t c, size_t n),
+                  _GL_ATTRIBUTE_PURE _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3));
 # endif
   /* On some systems, this function is defined as an overloaded function:
        extern "C++" {
@@ -888,14 +950,18 @@ _GL_WARN_ON_USE (wmemchr, "wmemchr is unportable - "
 #  endif
 _GL_FUNCDECL_RPL (wmemcmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n),
-                  _GL_ATTRIBUTE_PURE);
+                  _GL_ATTRIBUTE_PURE
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3));
 _GL_CXXALIAS_RPL (wmemcmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n));
 # else
 #  if !@HAVE_WMEMCMP@
 _GL_FUNCDECL_SYS (wmemcmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n),
-                  _GL_ATTRIBUTE_PURE);
+                  _GL_ATTRIBUTE_PURE
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3));
 #  endif
 _GL_CXXALIAS_SYS (wmemcmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n));
@@ -917,7 +983,9 @@ _GL_WARN_ON_USE (wmemcmp, "wmemcmp is unportable - "
 # if !@HAVE_WMEMCPY@
 _GL_FUNCDECL_SYS (wmemcpy, wchar_t *,
                   (wchar_t *restrict dest,
-                   const wchar_t *restrict src, size_t n), );
+                   const wchar_t *restrict src, size_t n),
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3));
 # endif
 _GL_CXXALIAS_SYS (wmemcpy, wchar_t *,
                   (wchar_t *restrict dest,
@@ -939,7 +1007,9 @@ _GL_WARN_ON_USE (wmemcpy, "wmemcpy is unportable - "
 #if @GNULIB_WMEMMOVE@
 # if !@HAVE_WMEMMOVE@
 _GL_FUNCDECL_SYS (wmemmove, wchar_t *,
-                  (wchar_t *dest, const wchar_t *src, size_t n), );
+                  (wchar_t *dest, const wchar_t *src, size_t n),
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3));
 # endif
 _GL_CXXALIAS_SYS (wmemmove, wchar_t *,
                   (wchar_t *dest, const wchar_t *src, size_t n));
@@ -994,7 +1064,8 @@ _GL_WARN_ON_USE (wmempcpy, "wmempcpy is unportable - "
 /* Set N wide characters of S to C.  */
 #if @GNULIB_WMEMSET@
 # if !@HAVE_WMEMSET@
-_GL_FUNCDECL_SYS (wmemset, wchar_t *, (wchar_t *s, wchar_t c, size_t n), );
+_GL_FUNCDECL_SYS (wmemset, wchar_t *, (wchar_t *s, wchar_t c, size_t n),
+                                      _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3));
 # endif
 _GL_CXXALIAS_SYS (wmemset, wchar_t *, (wchar_t *s, wchar_t c, size_t n));
 # if __GLIBC__ >= 2
@@ -1093,7 +1164,9 @@ _GL_WARN_ON_USE (wcpcpy, "wcpcpy is unportable - "
 # if !@HAVE_WCSNCPY@
 _GL_FUNCDECL_SYS (wcsncpy, wchar_t *,
                   (wchar_t *restrict dest,
-                   const wchar_t *restrict src, size_t n), );
+                   const wchar_t *restrict src, size_t n),
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3));
 # endif
 _GL_CXXALIAS_SYS (wcsncpy, wchar_t *,
                   (wchar_t *restrict dest,
@@ -1163,7 +1236,9 @@ _GL_WARN_ON_USE (wcscat, "wcscat is unportable - "
 #  endif
 _GL_FUNCDECL_RPL (wcsncat, wchar_t *,
                   (wchar_t *restrict dest, const wchar_t *restrict src,
-                   size_t n), );
+                   size_t n),
+                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3));
 _GL_CXXALIAS_RPL (wcsncat, wchar_t *,
                   (wchar_t *restrict dest, const wchar_t *restrict src,
                    size_t n));
@@ -1171,7 +1246,9 @@ _GL_CXXALIAS_RPL (wcsncat, wchar_t *,
 #  if !@HAVE_WCSNCAT@
 _GL_FUNCDECL_SYS (wcsncat, wchar_t *,
                   (wchar_t *restrict dest, const wchar_t *restrict src,
-                   size_t n), );
+                   size_t n),
+                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3));
 #  endif
 _GL_CXXALIAS_SYS (wcsncat, wchar_t *,
                   (wchar_t *restrict dest, const wchar_t *restrict src,
@@ -1227,14 +1304,18 @@ _GL_WARN_ON_USE (wcscmp, "wcscmp is unportable - "
 #  endif
 _GL_FUNCDECL_RPL (wcsncmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n),
-                  _GL_ATTRIBUTE_PURE);
+                  _GL_ATTRIBUTE_PURE
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3));
 _GL_CXXALIAS_RPL (wcsncmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n));
 # else
 #  if !@HAVE_WCSNCMP@
 _GL_FUNCDECL_SYS (wcsncmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n),
-                  _GL_ATTRIBUTE_PURE);
+                  _GL_ATTRIBUTE_PURE
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3));
 #  endif
 _GL_CXXALIAS_SYS (wcsncmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n));

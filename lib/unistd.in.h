@@ -2420,7 +2420,7 @@ _GL_WARN_ON_USE (unlinkat, "unlinkat is not portable - "
 #if @GNULIB_USLEEP@
 /* Pause the execution of the current thread for N microseconds.
    Returns 0 on completion, or -1 on range error.
-   See the POSIX:2001 specification
+   See the POSIX.1-2004 specification
    <https://pubs.opengroup.org/onlinepubs/009695399/functions/usleep.html>.  */
 # if @REPLACE_USLEEP@
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)

@@ -26,7 +26,7 @@ extern "C" {
 #endif
 
 
-/* STREQ_OPT allows to optimize string comparison with a small literal string.
+/* STREQ_OPT optimizes string comparison with a small literal string.
      STREQ_OPT (s, "EUC-KR", 'E', 'U', 'C', '-', 'K', 'R', 0, 0, 0)
    is semantically equivalent to
      strcmp (s, "EUC-KR") == 0

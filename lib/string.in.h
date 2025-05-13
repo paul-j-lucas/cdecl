@@ -116,6 +116,18 @@
 # endif
 #endif
 
+/* _GL_ATTRIBUTE_NONNULL_IF_NONZERO (NP, NI) declares that the argument NP
+   (a pointer) must not be NULL if the argument NI (an integer) is != 0.  */
+/* Applies to: functions.  */
+#ifndef _GL_ATTRIBUTE_NONNULL_IF_NONZERO
+# if __GNUC__ >= 15 && !defined __clang__
+#  define _GL_ATTRIBUTE_NONNULL_IF_NONZERO(np, ni) \
+     __attribute__ ((__nonnull_if_nonzero__ (np, ni)))
+# else
+#  define _GL_ATTRIBUTE_NONNULL_IF_NONZERO(np, ni)
+# endif
+#endif
+
 /* _GL_ATTRIBUTE_NOTHROW declares that the function does not throw exceptions.
  */
 #ifndef _GL_ATTRIBUTE_NOTHROW
@@ -153,6 +165,7 @@
 /* The definition of _GL_ARG_NONNULL is copied here.  */
 
 /* The definition of _GL_WARN_ON_USE is copied here.  */
+
 
 /* Make _GL_ATTRIBUTE_DEALLOC_FREE work, even though <stdlib.h> may not have
    been included yet.  */
@@ -198,6 +211,71 @@ _GL_EXTERN_C void free (void *);
 # endif
 #endif
 
+
+/* Declarations for ISO C N3322.  */
+#if defined __GNUC__ && __GNUC__ >= 15 && !defined __clang__
+_GL_EXTERN_C void *memcpy (void *__dest, const void *__src, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+_GL_EXTERN_C void *memccpy (void *__dest, const void *__src, int __c, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 4)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 4);
+_GL_EXTERN_C void *memmove (void *__dest, const void *__src, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+_GL_EXTERN_C char *strncpy (char *__dest, const char *__src, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+_GL_EXTERN_C char *strndup (const char *__s, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 2);
+_GL_EXTERN_C char *strncat (char *__dest, const char *__src, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ARG_NONNULL ((1)) _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+_GL_EXTERN_C int memcmp (const void *__s1, const void *__s2, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+_GL_EXTERN_C int strncmp (const char *__s1, const char *__s2, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3);
+# ifndef __cplusplus
+_GL_EXTERN_C void *memchr (const void *__s, int __c, size_t __n)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3);
+_GL_EXTERN_C void *memrchr (const void *__s, int __c, size_t __n)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3);
+# endif
+_GL_EXTERN_C void *memset (void *__s, int __c, size_t __n)
+# if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+  _GL_ATTRIBUTE_NOTHROW
+# endif
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3);
+_GL_EXTERN_C void *memset_explicit (void *__s, int __c, size_t __n)
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3);
+#endif
+
+
 /* Clear a block of memory.  The compiler will not delete a call to
    this function, even if the block is dead after the call.  */
 #if @GNULIB_EXPLICIT_BZERO@
@@ -214,6 +292,7 @@ _GL_WARN_ON_USE (explicit_bzero, "explicit_bzero is unportable - "
                  "use gnulib module explicit_bzero for portability");
 # endif
 #endif
+
 
 /* Find the index of the least-significant set bit.  */
 #if @GNULIB_FFSL@
@@ -281,7 +360,7 @@ _GL_CXXALIASWARN (memccpy);
 #  endif
 _GL_FUNCDECL_RPL (memchr, void *, (void const *__s, int __c, size_t __n),
                                   _GL_ATTRIBUTE_PURE
-                                  _GL_ARG_NONNULL ((1)));
+                                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3));
 _GL_CXXALIAS_RPL (memchr, void *, (void const *__s, int __c, size_t __n));
 # else
   /* On some systems, this function is defined as an overloaded function:
@@ -388,7 +467,7 @@ _GL_WARN_ON_USE (mempcpy, "mempcpy is unportable - "
 # if ! @HAVE_DECL_MEMRCHR@
 _GL_FUNCDECL_SYS (memrchr, void *, (void const *, int, size_t),
                                    _GL_ATTRIBUTE_PURE
-                                   _GL_ARG_NONNULL ((1)));
+                                   _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3));
 # endif
   /* On some systems, this function is defined as an overloaded function:
        extern "C++" { const void * std::memrchr (const void *, int, size_t); }
@@ -425,12 +504,14 @@ _GL_WARN_ON_USE (memrchr, "memrchr is unportable - "
 #   define memset_explicit rpl_memset_explicit
 #  endif
 _GL_FUNCDECL_RPL (memset_explicit, void *,
-                  (void *__dest, int __c, size_t __n), _GL_ARG_NONNULL ((1)));
+                  (void *__dest, int __c, size_t __n),
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3));
 _GL_CXXALIAS_RPL (memset_explicit, void *, (void *__dest, int __c, size_t __n));
 # else
 #  if !@HAVE_MEMSET_EXPLICIT@
 _GL_FUNCDECL_SYS (memset_explicit, void *,
-                  (void *__dest, int __c, size_t __n), _GL_ARG_NONNULL ((1)));
+                  (void *__dest, int __c, size_t __n),
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 3));
 #  endif
 _GL_CXXALIAS_SYS (memset_explicit, void *, (void *__dest, int __c, size_t __n));
 # endif
@@ -697,7 +778,8 @@ _GL_CXXALIASWARN (strdup);
 #  endif
 _GL_FUNCDECL_RPL (strncat, char *,
                   (char *restrict dest, const char *restrict src, size_t n),
-                  _GL_ARG_NONNULL ((1, 2)));
+                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3));
 _GL_CXXALIAS_RPL (strncat, char *,
                   (char *restrict dest, const char *restrict src, size_t n));
 # else
@@ -724,7 +806,7 @@ _GL_WARN_ON_USE (strncat, "strncat is unportable - "
 #  endif
 _GL_FUNCDECL_RPL (strndup, char *,
                   (char const *__s, size_t __n),
-                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 2)
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
 _GL_CXXALIAS_RPL (strndup, char *, (char const *__s, size_t __n));
 # else
@@ -733,13 +815,13 @@ _GL_CXXALIAS_RPL (strndup, char *, (char const *__s, size_t __n));
 #   if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (strndup, char *,
                   (char const *__s, size_t __n),
-                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 2)
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE)
                   _GL_ATTRIBUTE_NOTHROW;
 #   else
 _GL_FUNCDECL_SYS (strndup, char *,
                   (char const *__s, size_t __n),
-                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 2)
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
 #   endif
 #  endif
@@ -752,13 +834,13 @@ _GL_CXXALIASWARN (strndup);
 #  if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (strndup, char *,
                   (char const *__s, size_t __n),
-                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 2)
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE)
                   _GL_ATTRIBUTE_NOTHROW;
 #  else
 _GL_FUNCDECL_SYS (strndup, char *,
                   (char const *__s, size_t __n),
-                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 2)
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
 #  endif
 # endif
@@ -1499,9 +1581,10 @@ _GL_CXXALIASWARN (strerror_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
 # undef strerror_l
-/* Assume strerror_l is always declared.  */
+# if HAVE_RAW_DECL_STRERROR_L
 _GL_WARN_ON_USE (strerror_l, "strerror_l is unportable - "
                  "use gnulib module strerror_l for portability");
+# endif
 #endif
 
 /* Map any int, typically from errno, into an error message.  Multithread-safe,

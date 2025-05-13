@@ -120,14 +120,14 @@ struct random_data
 # include <unistd.h>
 #endif
 
-#if ((@GNULIB_STRTOL@ && @REPLACE_STRTOL@) || (@GNULIB_STRTOLL@ && @REPLACE_STRTOLL@) || (@GNULIB_STRTOUL@ && @REPLACE_STRTOUL@) || (@GNULIB_STRTOULL@ && @REPLACE_STRTOULL@)) && defined __cplusplus && !defined GNULIB_NAMESPACE && defined __GNUG__ && !defined __clang__ && defined __sun
+#if ((@GNULIB_STRTOL@ && @REPLACE_STRTOL@) || (@GNULIB_STRTOLL@ && @REPLACE_STRTOLL@) || (@GNULIB_STRTOUL@ && @REPLACE_STRTOUL@) || (@GNULIB_STRTOULL@ && @REPLACE_STRTOULL@)) && defined __cplusplus && !defined GNULIB_NAMESPACE && defined __GNUG__ && !defined __clang__ && (defined __sun || defined _AIX)
 /* When strtol, strtoll, strtoul, or strtoull is going to be defined as a macro
    below, this may cause compilation errors later in the libstdc++ header files
    (that are part of GCC), such as:
      error: 'rpl_strtol' is not a member of 'std'
    To avoid this, include the relevant header files here, before these symbols
-   get defined as macros.  But do so only on Solaris 11 (where it is needed),
-   not on mingw (where it would cause other compilation errors).  */
+   get defined as macros.  But do so only on Solaris 11 and AIX (where it is
+   needed), not on mingw (where it would cause other compilation errors).  */
 # include <string>
 #endif
 
@@ -165,6 +165,18 @@ _GL_INLINE_HEADER_BEGIN
 #  define _GL_ATTRIBUTE_MALLOC __attribute__ ((__malloc__))
 # else
 #  define _GL_ATTRIBUTE_MALLOC
+# endif
+#endif
+
+/* _GL_ATTRIBUTE_NONNULL_IF_NONZERO (NP, NI) declares that the argument NP
+   (a pointer) must not be NULL if the argument NI (an integer) is != 0.  */
+/* Applies to: functions.  */
+#ifndef _GL_ATTRIBUTE_NONNULL_IF_NONZERO
+# if __GNUC__ >= 15 && !defined __clang__
+#  define _GL_ATTRIBUTE_NONNULL_IF_NONZERO(np, ni) \
+     __attribute__ ((__nonnull_if_nonzero__ (np, ni)))
+# else
+#  define _GL_ATTRIBUTE_NONNULL_IF_NONZERO(np, ni)
 # endif
 #endif
 
@@ -220,6 +232,18 @@ _GL_INLINE_HEADER_BEGIN
 #elif EXIT_FAILURE != 1
 # undef EXIT_FAILURE
 # define EXIT_FAILURE 1
+#endif
+
+
+/* Declarations for ISO C N3322.  */
+#if defined __GNUC__ && __GNUC__ >= 15 && !defined __clang__
+_GL_EXTERN_C void *bsearch (const void *__key,
+                            const void *__base, size_t __nmemb, size_t __size,
+                            int (*__compare) (const void *, const void *))
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3) _GL_ARG_NONNULL ((5));
+_GL_EXTERN_C void qsort (void *__base, size_t __nmemb, size_t __size,
+                         int (*__compare) (const void *, const void *))
+  _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 2) _GL_ARG_NONNULL ((4));
 #endif
 
 
@@ -1182,7 +1206,8 @@ typedef int (*_gl_qsort_r_compar_fn) (void const *, void const *, void *);
 _GL_FUNCDECL_RPL (qsort_r, void, (void *base, size_t nmemb, size_t size,
                                   _gl_qsort_r_compar_fn compare,
                                   void *arg),
-                                 _GL_ARG_NONNULL ((1, 4)));
+                                 _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 2)
+                                 _GL_ARG_NONNULL ((4)));
 _GL_CXXALIAS_RPL (qsort_r, void, (void *base, size_t nmemb, size_t size,
                                   _gl_qsort_r_compar_fn compare,
                                   void *arg));
@@ -1191,7 +1216,8 @@ _GL_CXXALIAS_RPL (qsort_r, void, (void *base, size_t nmemb, size_t size,
 _GL_FUNCDECL_SYS (qsort_r, void, (void *base, size_t nmemb, size_t size,
                                   _gl_qsort_r_compar_fn compare,
                                   void *arg),
-                                 _GL_ARG_NONNULL ((1, 4)));
+                                 _GL_ATTRIBUTE_NONNULL_IF_NONZERO (1, 2)
+                                 _GL_ARG_NONNULL ((4)));
 #  endif
 _GL_CXXALIAS_SYS (qsort_r, void, (void *base, size_t nmemb, size_t size,
                                   _gl_qsort_r_compar_fn compare,
