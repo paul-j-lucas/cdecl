@@ -283,13 +283,11 @@ struct mex_state {
   bool                  expand_opt_no_trim_tokens;
 
   /**
-   * When set, \ref mex_state::arg_list "arg_list" is _neither_ printed via
-   * mex_print_macro() _nor_ used in token location calculations via
-   * mex_relocate_expand_list().
+   * When set, \ref arg_list is _neither_ printed via mex_print_macro() _nor_
+   * used in token location calculations via mex_relocate_expand_list().
    *
    * @remarks This is set _only_ when expanding #P___VA_OPT__ tokens since it
-   * needs access to \ref mex_state::arg_list "arg_list", but they should _not_
-   * be printed.
+   * needs access to \ref arg_list, but they should _not_ be printed.
    */
   bool                  print_opt_omit_args;
 
