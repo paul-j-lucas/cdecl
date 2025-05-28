@@ -21,9 +21,7 @@
 #ifndef cdecl_unit_test_H
 #define cdecl_unit_test_H
 
-#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wunused-value"
-#endif /* __GNUC__ */
 
 /**
  * @defgroup unit-test-group Unit Tests

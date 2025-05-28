@@ -121,13 +121,11 @@ extern bool               lexer_is_param_list_decl;
  */
 extern c_keyword_ctx_t    lexer_keyword_ctx;
 
-#ifdef __GNUC__
-# pragma GCC diagnostic push
-  // Declare yylineno and yytext so they can be accessed from anywhere.
-  // However, Flex declares these in the generated .c file before it #includes
-  // headers, so we'd get a redundant declaration warning -- so suppress that.
-# pragma GCC diagnostic ignored "-Wredundant-decls"
-#endif /* __GNUC__ */
+#pragma GCC diagnostic push
+// Declare yylineno and yytext so they can be accessed from anywhere.  However,
+// Flex declares these in the generated .c file before it #includes headers, so
+// we'd get a redundant declaration warning -- so suppress that.
+#pragma GCC diagnostic ignored "-Wredundant-decls"
 
 /**
  * Flex's current line number.
@@ -142,9 +140,7 @@ extern int                yylineno;
  */
 extern char              *yytext;
 
-#ifdef __GNUC__
-# pragma GCC diagnostic pop
-#endif /* __GNUC__ */
+#pragma GCC diagnostic pop
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -260,13 +256,11 @@ void set_yytext( char const *s ) {
 NODISCARD
 int yylex( void );
 
-#ifdef __GNUC__
-# pragma GCC diagnostic push
-  // Declare yyrestart() so it can be called from anywhere.  However, Flex
-  // declares this in the generated .c file before it #includes headers, so
-  // we'd get a redundant declaration warning -- so suppress that.
-# pragma GCC diagnostic ignored "-Wredundant-decls"
-#endif /* __GNUC__ */
+#pragma GCC diagnostic push
+// Declare yyrestart() so it can be called from anywhere.  However, Flex
+// declares this in the generated .c file before it #includes headers, so we'd
+// get a redundant declaration warning -- so suppress that.
+#pragma GCC diagnostic ignored "-Wredundant-decls"
 
 /**
  * Flex: immediately switch to reading \a file.
@@ -277,9 +271,7 @@ int yylex( void );
  */
 void yyrestart( FILE *in_file );
 
-#ifdef __GNUC__
-# pragma GCC diagnostic pop
-#endif /* __GNUC__ */
+#pragma GCC diagnostic pop
 
 ///////////////////////////////////////////////////////////////////////////////
 
