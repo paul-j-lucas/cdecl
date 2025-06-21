@@ -482,12 +482,7 @@ AC_DEFUN([gl_INIT],
   gl_STDARG_H
   gl_CONDITIONAL_HEADER([stdarg.h])
   AC_PROG_MKDIR_P
-  AC_CHECK_HEADERS_ONCE([stdckdint.h])
-  if test $ac_cv_header_stdckdint_h = yes; then
-    GL_GENERATE_STDCKDINT_H=false
-  else
-    GL_GENERATE_STDCKDINT_H=true
-  fi
+  gl_STDCKDINT_H
   gl_CONDITIONAL_HEADER([stdckdint.h])
   AC_PROG_MKDIR_P
   gl_STDDEF_H
@@ -1036,6 +1031,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/ssize_t.m4
   m4/std-gnu11.m4
   m4/stdarg.m4
+  m4/stdckdint_h.m4
   m4/stddef_h.m4
   m4/stdint.m4
   m4/stdio_h.m4

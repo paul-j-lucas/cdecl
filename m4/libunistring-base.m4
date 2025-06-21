@@ -1,5 +1,5 @@
 # libunistring-base.m4
-# serial 9
+# serial 10
 dnl Copyright (C) 2010-2025 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -41,8 +41,10 @@ dnl     (This is necessary because this token must be present in the .h files
 dnl     when the .h files get installed.)
 dnl   - When building gnulib or application code it expands to
 dnl       - LIBUNISTRING_DLL_VARIABLE by default,
-dnl       - empty if the automake conditional LIBUNISTRING_COMPILE_$MODULE
-dnl         evaluates to true.
+dnl       - if the automake conditional LIBUNISTRING_COMPILE_$MODULE evaluates
+dnl         to true: the value of
+dnl         ${module_indicator_prefix}_GNULIB_LIBUNISTRING_DLL_VARIABLE_NAME
+dnl         (which usually is empty, unless explicitly set in configure.ac).
 dnl     (This is necessary because when the conditional evaluates to false,
 dnl     the application code expects to use the declared variable from the
 dnl     installed libunistring; it's in this case that the
@@ -56,7 +58,7 @@ AC_DEFUN([gl_LIBUNISTRING_MODULE_WITH_VARIABLE],
   gl_LIBUNISTRING_MODULE([$1], [$2])
   m4_ifndef([gl_IN_LIBUNISTRING],
     [if test -z "${AS_TR_CPP([LIBUNISTRING_COMPILE_$2])_TRUE}"; then
-       GL_MODULE_INDICATOR_PREFIX[]_GNULIB_[]AS_TR_CPP([$2_DLL_VARIABLE])=
+       GL_MODULE_INDICATOR_PREFIX[]_GNULIB_[]AS_TR_CPP([$2_DLL_VARIABLE])=$GL_MODULE_INDICATOR_PREFIX[]_GNULIB_LIBUNISTRING_DLL_VARIABLE_NAME
      fi
     ])
 ])

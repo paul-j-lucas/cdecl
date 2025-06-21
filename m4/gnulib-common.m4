@@ -1571,13 +1571,25 @@ AC_DEFUN([gl_CHECK_FUNCS_CASE_FOR_MACOS],
              if test $[ac_cv_func_][$1] = yes; then
                [gl_cv_onwards_func_][$1]=yes
              else
+               dnl This is a bit complicated, because here we need the behaviour
+               dnl of AC_CHECK_DECL before the
+               dnl commit e1bbc9b93cdff61d70719c224b37970e065008bb (2025-05-26).
+               [ac_cv_have_decl_][$1][_saved]="$[ac_cv_have_decl_][$1]"
                unset [ac_cv_have_decl_][$1]
+               ac_c_future_darwin_options_saved="$ac_c_future_darwin_options"
+               ac_cxx_future_darwin_options_saved="$ac_cxx_future_darwin_options"
+               ac_c_future_darwin_options=
+               ac_cxx_future_darwin_options=
                AC_CHECK_DECL([$1], , , [$2])
+               ac_c_future_darwin_options="$ac_c_future_darwin_options_saved"
+               ac_cxx_future_darwin_options="$ac_cxx_future_darwin_options_saved"
                if test $[ac_cv_have_decl_][$1] = yes; then
                  [gl_cv_onwards_func_][$1]='future OS version'
                else
                  [gl_cv_onwards_func_][$1]=no
                fi
+               [ac_cv_have_decl_][$1]="$[ac_cv_have_decl_][$1][_saved]"
+               unset [ac_cv_have_decl_][$1][_saved]
              fi
            else
              AC_CHECK_FUNC([$1])
