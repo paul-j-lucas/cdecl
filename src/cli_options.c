@@ -843,7 +843,7 @@ static void print_usage( int status ) {
 // LCOV_EXCL_START
 /**
  * Prints the **cdecl** version and possibly configure feature &amp; package
- * options and whether GNU **readline**(3) is genuine, then exits.
+ * options and whether GNU **readline**(3) is genuine.
  *
  * @param verbose If `true`, prints configure feature &amp; package options and
  * whether GNU **readline**(3) is genuine.
