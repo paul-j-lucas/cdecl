@@ -354,6 +354,9 @@ declare C as non-throwing destructor
 
 set c++14
 declare f as throw function
+
+set c++26
+declare x as indeterminate int
 END
 
 # vim:set syntax=sh et sw=2 ts=2:

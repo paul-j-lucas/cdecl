@@ -432,6 +432,9 @@ explain void f() throw()
 set c++11
 explain register int x
 explain ~C() throw()
+
+set c++26
+explain [[indeterminate]] int x
 END
 
 ###############################################################################

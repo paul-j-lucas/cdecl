@@ -147,6 +147,9 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
   { TA_deprecated, LANG_deprecated, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_deprecated } ) },
 
+  { TA_indeterminate, LANG_indeterminate, .english_lit = NULL,
+    C_LANG_LIT( { LANG_ANY, L_indeterminate } ) },
+
   { TA_maybe_unused, LANG_maybe_unused, "maybe unused",
     C_LANG_LIT( { LANG_ANY, L_maybe_unused } ) },
 
@@ -932,6 +935,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     static c_tid_t const ATIDS[] = {
       TA_carries_dependency,
       TA_deprecated,
+      TA_indeterminate,
       TA_maybe_unused,
       TA_nodiscard,
       TA_noreturn,                      // still here for C++'s [[noreturn]]

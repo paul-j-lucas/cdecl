@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.5
+
+** `[[indeterminate]]`
+Added support for C++26 `indeterminate` attribute.
+
+
 * Changes in Cdecl 18.4.2
 
 ** Fixed issue #38: Accumulating newlines in command-line history

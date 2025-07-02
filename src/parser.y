@@ -1655,6 +1655,9 @@ static void yyerror( char const *msg ) {
 %token              Y_requires
 %token              Y_unique Y_address  // no unique address
 
+                    // C++26
+%token  <tid>       Y_indeterminate
+
                     // Embedded C extensions
 %token  <tid>       Y_EMC__Accum
 %token  <tid>       Y_EMC__Fract
@@ -7410,6 +7413,7 @@ attribute_list_c_atid
 attribute_c_atid_exp
   : Y_carries_dependency
   | Y_deprecated attribute_str_arg_c_opt
+  | Y_indeterminate
   | Y_maybe_unused
   | Y_nodiscard attribute_str_arg_c_opt
   | Y_noreturn
@@ -7938,6 +7942,7 @@ attribute_english_atid
   : Y_carries dependency_exp      { $$ = TA_carries_dependency; }
   | Y_carries_dependency
   | Y_deprecated
+  | Y_indeterminate
   | Y_maybe unused_exp            { $$ = TA_maybe_unused; }
   | Y_maybe_unused
   | Y_no Y_discard                { $$ = TA_nodiscard; }

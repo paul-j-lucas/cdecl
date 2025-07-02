@@ -366,6 +366,9 @@ char const L_pack[]                     = "pack";
 char const L_parameter[]                = "parameter";
 char const L_requires[]                 = "requires";
 
+// C++26
+char const L_indeterminate[]            = "indeterminate";
+
 // Alternative tokens
 char const L_and[]                      = "and";
 char const L_and_eq[]                   = "and_eq";

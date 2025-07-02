@@ -707,22 +707,25 @@ typedef enum c_tpid c_tpid_t;
 #define TA_deprecated             C_TID_LIT( ATTR, 0x000000000000002 )
 
 /** `maybe_unused`. */
-#define TA_maybe_unused           C_TID_LIT( ATTR, 0x000000000000004 )
+#define TA_indeterminate          C_TID_LIT( ATTR, 0x000000000000004 )
+
+/** `maybe_unused`. */
+#define TA_maybe_unused           C_TID_LIT( ATTR, 0x000000000000008 )
 
 /** `nodiscard`. */
-#define TA_nodiscard              C_TID_LIT( ATTR, 0x000000000000008 )
+#define TA_nodiscard              C_TID_LIT( ATTR, 0x000000000000010 )
 
 /** `noreturn`. */
-#define TA_noreturn               C_TID_LIT( ATTR, 0x000000000000010 )
+#define TA_noreturn               C_TID_LIT( ATTR, 0x000000000000020 )
 
 /** `no_unique_address`. */
-#define TA_no_unique_address      C_TID_LIT( ATTR, 0x000000000000020 )
+#define TA_no_unique_address      C_TID_LIT( ATTR, 0x000000000000040 )
 
 /** `reproducible`. */
-#define TA_reproducible           C_TID_LIT( ATTR, 0x000000000000040 )
+#define TA_reproducible           C_TID_LIT( ATTR, 0x000000000000080 )
 
 /** `unsequenced`. */
-#define TA_unsequenced            C_TID_LIT( ATTR, 0x000000000000080 )
+#define TA_unsequenced            C_TID_LIT( ATTR, 0x000000000000100 )
 
 /** @} */
 
@@ -738,22 +741,22 @@ typedef enum c_tpid c_tpid_t;
  */
 
 /** Microsoft Windows calling convention `__cdecl`. */
-#define TA_MSC___cdecl            C_TID_LIT( ATTR, 0x000000000000100 )
+#define TA_MSC___cdecl            C_TID_LIT( ATTR, 0x000000000000200 )
 
 /** Microsoft Windows calling convention `__clrcall`. */
-#define TA_MSC___clrcall          C_TID_LIT( ATTR, 0x000000000000200 )
+#define TA_MSC___clrcall          C_TID_LIT( ATTR, 0x000000000000400 )
 
 /** Microsoft Windows calling convention `__fastcall`. */
-#define TA_MSC___fastcall         C_TID_LIT( ATTR, 0x000000000000400 )
+#define TA_MSC___fastcall         C_TID_LIT( ATTR, 0x000000000000800 )
 
 /** Microsoft Windows calling convention `__stdcall`. */
-#define TA_MSC___stdcall          C_TID_LIT( ATTR, 0x000000000000800 )
+#define TA_MSC___stdcall          C_TID_LIT( ATTR, 0x000000000001000 )
 
 /** Microsoft Windows calling convention `__thiscall`. */
-#define TA_MSC___thiscall         C_TID_LIT( ATTR, 0x000000000001000 )
+#define TA_MSC___thiscall         C_TID_LIT( ATTR, 0x000000000002000 )
 
 /** Microsoft Windows calling convention `__vectorcall`. */
-#define TA_MSC___vectorcall       C_TID_LIT( ATTR, 0x000000000002000 )
+#define TA_MSC___vectorcall       C_TID_LIT( ATTR, 0x000000000004000 )
 
 /** @} */
 
@@ -795,7 +798,8 @@ typedef enum c_tpid c_tpid_t;
  * @sa #TA_FUNC
  */
 #define TA_OBJECT             ( TA_carries_dependency | TA_deprecated \
-                              | TA_maybe_unused | TA_no_unique_address )
+                              | TA_indeterminate | TA_maybe_unused \
+                              | TA_no_unique_address )
 
 /// @ingroup c-base-types-group
 /// Shorthand for any character type.

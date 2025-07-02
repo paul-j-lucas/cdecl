@@ -10043,7 +10043,7 @@ c++decl> explain [[maybe_unused]] int x
     lhs: "attribute_specifier_list_c_atid",
     rhs: "'[[' using_opt attribute_list_c_atid_opt ']]'"
   },
-  attribute_list_c_atid_opt: { atid: 0x0000000000000044, string: "maybe_unused" }
+  attribute_list_c_atid_opt: { atid: 0x0000000000000084, string: "maybe_unused" }
 }
 
 {
@@ -10100,7 +10100,7 @@ c++decl> explain [[maybe_unused]] int x
     lhs: "type_c_ast",
     rhs: "type_modifier_list_c_type east_modified_type_c_ast "
   },
-  type_modifier_list_c_type: { atid: 0x0000000000000044, string: "maybe_unused" },
+  type_modifier_list_c_type: { atid: 0x0000000000000084, string: "maybe_unused" },
   east_modified_type_c_ast: {
     sname: null,
     is_param_pack: false,
@@ -10118,7 +10118,7 @@ c++decl> explain [[maybe_unused]] int x
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_line: 47, first_column: 8, last_column: 27 },
-    type: { btid: 0x0000000000004001, atid: 0x0000000000000044, string: "maybe_unused int" },
+    type: { btid: 0x0000000000004001, atid: 0x0000000000000084, string: "maybe_unused int" },
     builtin: {
       bit_width: 0
     }
@@ -10145,7 +10145,7 @@ c++decl> explain [[maybe_unused]] int x
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_line: 47, first_column: 8, last_column: 27 },
-    type: { btid: 0x0000000000004001, atid: 0x0000000000000044, string: "maybe_unused int" },
+    type: { btid: 0x0000000000004001, atid: 0x0000000000000084, string: "maybe_unused int" },
     builtin: {
       bit_width: 0
     }
@@ -10158,7 +10158,7 @@ c++decl> explain [[maybe_unused]] int x
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_line: 47, first_column: 8, last_column: 27 },
-    type: { btid: 0x0000000000004001, atid: 0x0000000000000044, string: "maybe_unused int" },
+    type: { btid: 0x0000000000004001, atid: 0x0000000000000084, string: "maybe_unused int" },
     builtin: {
       bit_width: 0
     }
@@ -10177,7 +10177,7 @@ c++decl> explain [[maybe_unused]] int x
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_line: 47, first_column: 8, last_column: 27 },
-    type: { btid: 0x0000000000004001, atid: 0x0000000000000044, string: "maybe_unused int" },
+    type: { btid: 0x0000000000004001, atid: 0x0000000000000084, string: "maybe_unused int" },
     builtin: {
       bit_width: 0
     }
@@ -10189,7 +10189,7 @@ c++decl> explain [[maybe_unused]] int x
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_line: 47, first_column: 8, last_column: 27 },
-      type: { btid: 0x0000000000004001, atid: 0x0000000000000044, string: "maybe_unused int" },
+      type: { btid: 0x0000000000004001, atid: 0x0000000000000084, string: "maybe_unused int" },
       builtin: {
         bit_width: 0
       }
@@ -10202,7 +10202,7 @@ c++decl> explain [[maybe_unused]] int x
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_line: 47, first_column: 8, last_column: 27 },
-    type: { btid: 0x0000000000004001, atid: 0x0000000000000044, string: "maybe_unused int" },
+    type: { btid: 0x0000000000004001, atid: 0x0000000000000084, string: "maybe_unused int" },
     builtin: {
       bit_width: 0
     }
@@ -10221,7 +10221,7 @@ c++decl> explain [[maybe_unused]] int x
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_line: 47, first_column: 8, last_column: 27 },
-      type: { btid: 0x0000000000004001, atid: 0x0000000000000044, string: "maybe_unused int" },
+      type: { btid: 0x0000000000004001, atid: 0x0000000000000084, string: "maybe_unused int" },
       builtin: {
         bit_width: 0
       }

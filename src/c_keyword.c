@@ -358,6 +358,10 @@ static c_keyword_t C_KEYWORDS[] = {
   { L_no_unique_address,    Y_no_unique_address,  KC_A, TA_no_unique_address,
     LANG_no_unique_address, AC_LANG(no_unique_address)                    },
 
+  // C++26 attributes
+  { L_indeterminate,         Y_indeterminate,       KC_A, TA_indeterminate,
+    LANG_indeterminate,      AC_LANG(indeterminate)                       },
+
   // Embedded C extensions
   { L_EMC__Accum,           Y_EMC__Accum,         KC_D, TB_EMC__Accum,
     LANG_C_99_EMC,          AC_LANG(C_99)                                 },

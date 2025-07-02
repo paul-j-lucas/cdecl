@@ -391,6 +391,9 @@ extern char const H_non_unique_address[]; // English for "no_unique_address"
 extern char const L_parameter[], L_pack[];// English for "..."
 extern char const L_requires[];
 
+// C++26
+extern char const L_indeterminate[];
+
 // Alternative tokens
 extern char const L_and[];                // &&
 extern char const L_and_eq[];             // &=

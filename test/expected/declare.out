@@ -679,3 +679,7 @@ c++decl> declare f as throw function
                  ^
 356,9: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 void f() noexcept;
+c++decl> 
+c++decl> set c++26
+c++decl> declare x as indeterminate int
+[[indeterminate]] int x;

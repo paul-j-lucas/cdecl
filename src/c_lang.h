@@ -810,6 +810,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_IMPLICIT_int               LANG_MAX(C_95)
 
 /**
+ * Languages the `indeterminate` attribute is supported in.
+ */
+#define LANG_indeterminate              LANG_CPP_MIN(26)
+
+/**
  * Languages the `inline` keyword is supported in.
  *
  * @sa #LANG_inline_namespace
