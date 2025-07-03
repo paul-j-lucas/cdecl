@@ -329,8 +329,8 @@ typedef enum c_ast_kind c_ast_kind_t;
  * @sa #K_ANY_NAME
  * @sa #K_ANY_NON_PTR_REF_OBJECT
  */
-#define K_ANY_OBJECT              ( K_ANY_NON_PTR_REF_OBJECT | K_ANY_POINTER \
-                                  | K_ANY_REFERENCE )
+#define K_ANY_OBJECT              ( K_ANY_NON_PTR_REF_OBJECT \
+                                  | K_ANY_POINTER_OR_REFERENCE )
 
 /**
  * Shorthand for any kind of parent: #K_APPLE_BLOCK, #K_ARRAY, #K_CAST,
