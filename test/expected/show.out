@@ -448,6 +448,10 @@ namespace std { class codecvt_base; }
 namespace std { struct compare_three_way; }
 namespace std { class condition_variable; }
 namespace std { class condition_variable_any; }
+namespace std::contracts { enum assertion_kind; }
+namespace std::contracts { enum contract_violation; }
+namespace std::contracts { enum detection_mode; }
+namespace std::contracts { enum evaluation_semantic; }
 namespace std { class ctype_base; }
 class std::ctype_base { using mask = unsigned; };
 namespace std { enum cv_status; }
@@ -483,6 +487,8 @@ namespace std { class fstream; }
 namespace std { enum future_errc; }
 namespace std { class future_error; }
 namespace std { enum future_status; }
+namespace std { class hazard_pointer; }
+namespace std { struct hive_limits; }
 namespace std { class ifstream; }
 namespace std { struct imaxdiv_t; }
 namespace std { class invalid_argument; }
@@ -505,6 +511,12 @@ namespace std { class latch; }
 namespace std { enum launch; }
 namespace std { struct ldiv_t; }
 namespace std { class length_error; }
+namespace std::linalg { struct column_major_t; }
+namespace std::linalg { struct explicit_diagonal_t; }
+namespace std::linalg { struct implicit_unit_diagonal_t; }
+namespace std::linalg { struct lower_triangle_t; }
+namespace std::linalg { struct row_major_t; }
+namespace std::linalg { struct upper_triangle_t; }
 namespace std { struct lldiv_t; }
 namespace std { class locale; }
 namespace std { class logic_error; }
@@ -535,6 +547,7 @@ namespace std { using ptrdiff_t = long; }
 namespace std { class random_device; }
 namespace std { class range_error; }
 namespace std { enum range_format; }
+namespace std { class rcu_domain; }
 namespace std { class recursive_mutex; }
 namespace std { class recursive_timed_mutex; }
 namespace std { class regex; }
@@ -567,6 +580,7 @@ namespace std { struct suspend_always; }
 namespace std { struct suspend_never; }
 namespace std { class syncbuf; }
 namespace std { struct system_error; }
+namespace std { struct text_encoding; }
 namespace std { class thread; }
 namespace std { class time_base; }
 namespace std { struct time_spec; }
@@ -1086,6 +1100,10 @@ namespace std { class codecvt_base; }
 namespace std { struct compare_three_way; }
 namespace std { class condition_variable; }
 namespace std { class condition_variable_any; }
+namespace std::contracts { enum assertion_kind; }
+namespace std::contracts { enum contract_violation; }
+namespace std::contracts { enum detection_mode; }
+namespace std::contracts { enum evaluation_semantic; }
 namespace std { class ctype_base; }
 class std::ctype_base { using mask = unsigned; };
 namespace std { enum cv_status; }
@@ -1121,6 +1139,8 @@ namespace std { class fstream; }
 namespace std { enum future_errc; }
 namespace std { class future_error; }
 namespace std { enum future_status; }
+namespace std { class hazard_pointer; }
+namespace std { struct hive_limits; }
 namespace std { class ifstream; }
 namespace std { struct imaxdiv_t; }
 namespace std { class invalid_argument; }
@@ -1143,6 +1163,12 @@ namespace std { class latch; }
 namespace std { enum launch; }
 namespace std { struct ldiv_t; }
 namespace std { class length_error; }
+namespace std::linalg { struct column_major_t; }
+namespace std::linalg { struct explicit_diagonal_t; }
+namespace std::linalg { struct implicit_unit_diagonal_t; }
+namespace std::linalg { struct lower_triangle_t; }
+namespace std::linalg { struct row_major_t; }
+namespace std::linalg { struct upper_triangle_t; }
 namespace std { struct lldiv_t; }
 namespace std { class locale; }
 namespace std { class logic_error; }
@@ -1173,6 +1199,7 @@ namespace std { using ptrdiff_t = long; }
 namespace std { class random_device; }
 namespace std { class range_error; }
 namespace std { enum range_format; }
+namespace std { class rcu_domain; }
 namespace std { class recursive_mutex; }
 namespace std { class recursive_timed_mutex; }
 namespace std { class regex; }
@@ -1205,6 +1232,7 @@ namespace std { struct suspend_always; }
 namespace std { struct suspend_never; }
 namespace std { class syncbuf; }
 namespace std { struct system_error; }
+namespace std { struct text_encoding; }
 namespace std { class thread; }
 namespace std { class time_base; }
 namespace std { struct time_spec; }
@@ -1765,6 +1793,10 @@ namespace std { class codecvt_base; }
 namespace std { struct compare_three_way; }
 namespace std { class condition_variable; }
 namespace std { class condition_variable_any; }
+namespace std::contracts { enum assertion_kind; }
+namespace std::contracts { enum contract_violation; }
+namespace std::contracts { enum detection_mode; }
+namespace std::contracts { enum evaluation_semantic; }
 namespace std { class ctype_base; }
 class std::ctype_base { typedef unsigned mask; };
 namespace std { enum cv_status; }
@@ -1800,6 +1832,8 @@ namespace std { class fstream; }
 namespace std { enum future_errc; }
 namespace std { class future_error; }
 namespace std { enum future_status; }
+namespace std { class hazard_pointer; }
+namespace std { struct hive_limits; }
 namespace std { class ifstream; }
 namespace std { struct imaxdiv_t; }
 namespace std { class invalid_argument; }
@@ -1822,6 +1856,12 @@ namespace std { class latch; }
 namespace std { enum launch; }
 namespace std { struct ldiv_t; }
 namespace std { class length_error; }
+namespace std::linalg { struct column_major_t; }
+namespace std::linalg { struct explicit_diagonal_t; }
+namespace std::linalg { struct implicit_unit_diagonal_t; }
+namespace std::linalg { struct lower_triangle_t; }
+namespace std::linalg { struct row_major_t; }
+namespace std::linalg { struct upper_triangle_t; }
 namespace std { struct lldiv_t; }
 namespace std { class locale; }
 namespace std { class logic_error; }
@@ -1852,6 +1892,7 @@ namespace std { typedef long ptrdiff_t; }
 namespace std { class random_device; }
 namespace std { class range_error; }
 namespace std { enum range_format; }
+namespace std { class rcu_domain; }
 namespace std { class recursive_mutex; }
 namespace std { class recursive_timed_mutex; }
 namespace std { class regex; }
@@ -1884,6 +1925,7 @@ namespace std { struct suspend_always; }
 namespace std { struct suspend_never; }
 namespace std { class syncbuf; }
 namespace std { struct system_error; }
+namespace std { struct text_encoding; }
 namespace std { class thread; }
 namespace std { class time_base; }
 namespace std { struct time_spec; }
@@ -3183,6 +3225,10 @@ namespace std { class codecvt_base; }
 namespace std { struct compare_three_way; }
 namespace std { class condition_variable; }
 namespace std { class condition_variable_any; }
+namespace std::contracts { enum assertion_kind; }
+namespace std::contracts { enum contract_violation; }
+namespace std::contracts { enum detection_mode; }
+namespace std::contracts { enum evaluation_semantic; }
 namespace std { class ctype_base; }
 class std::ctype_base { typedef unsigned mask; };
 namespace std { enum cv_status; }
@@ -3218,6 +3264,8 @@ namespace std { class fstream; }
 namespace std { enum future_errc; }
 namespace std { class future_error; }
 namespace std { enum future_status; }
+namespace std { class hazard_pointer; }
+namespace std { struct hive_limits; }
 namespace std { class ifstream; }
 namespace std { struct imaxdiv_t; }
 namespace std { class invalid_argument; }
@@ -3240,6 +3288,12 @@ namespace std { class latch; }
 namespace std { enum launch; }
 namespace std { struct ldiv_t; }
 namespace std { class length_error; }
+namespace std::linalg { struct column_major_t; }
+namespace std::linalg { struct explicit_diagonal_t; }
+namespace std::linalg { struct implicit_unit_diagonal_t; }
+namespace std::linalg { struct lower_triangle_t; }
+namespace std::linalg { struct row_major_t; }
+namespace std::linalg { struct upper_triangle_t; }
 namespace std { struct lldiv_t; }
 namespace std { class locale; }
 namespace std { class logic_error; }
@@ -3270,6 +3324,7 @@ namespace std { typedef long ptrdiff_t; }
 namespace std { class random_device; }
 namespace std { class range_error; }
 namespace std { enum range_format; }
+namespace std { class rcu_domain; }
 namespace std { class recursive_mutex; }
 namespace std { class recursive_timed_mutex; }
 namespace std { class regex; }
@@ -3302,6 +3357,7 @@ namespace std { struct suspend_always; }
 namespace std { struct suspend_never; }
 namespace std { class syncbuf; }
 namespace std { struct system_error; }
+namespace std { struct text_encoding; }
 namespace std { class thread; }
 namespace std { class time_base; }
 namespace std { struct time_spec; }

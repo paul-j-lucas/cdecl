@@ -15,6 +15,15 @@ with their complete changes, see the AUTHORS file.
 ** `[[indeterminate]]`
 Added support for C++26 `indeterminate` attribute.
 
+** C++26 types
+Added the predefined types `std::hazard_pointer`, `std::hive_limits`,
+`std::rcu_domain`, `std::text_encoding`, `std::contracts::assertion_kind`,
+`std::contracts::contract_violation`, `std::contracts::detection_mode`,
+`std::contracts::evaluation_semantic`, `std::linalg::column_major_t`,
+`std::linalg::explicit_diagonal_t`, `std::linalg::implicit_unit_diagonal_t`,
+`std::linalg::lower_triangle_t`, `std::linalg::row_major_t`, and
+`std::linalg::upper_triangle_t`.
+
 ** Fixed explanations of pointers/references with storage classes
 Explanations of things like:
 

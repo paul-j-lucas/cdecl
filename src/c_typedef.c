@@ -666,6 +666,28 @@ static predef_type_t const PREDEFINED_STD_CPP_23[] = {
 };
 
 /**
+ * Predefined types for C++26.
+ */
+static predef_type_t const PREDEFINED_STD_CPP_26[] = {
+  PT( "namespace std::contracts { enum class assertion_kind; }" ),
+  PT( "namespace std::linalg    {     struct column_major_t; }" ),
+  PT( "namespace std::contracts { enum class contract_violation; }" ),
+  PT( "namespace std::contracts { enum class detection_mode; }" ),
+  PT( "namespace std::contracts { enum class evaluation_semantic; }" ),
+  PT( "namespace std            {      class hazard_pointer; }" ),
+  PT( "namespace std            {     struct hive_limits; }" ),
+  PT( "namespace std::linalg    {     struct explicit_diagonal_t; }" ),
+  PT( "namespace std::linalg    {     struct implicit_unit_diagonal_t; }" ),
+  PT( "namespace std::linalg    {     struct lower_triangle_t; }" ),
+  PT( "namespace std::linalg    {     struct row_major_t; }" ),
+  PT( "namespace std            {      class rcu_domain; }" ),
+  PT( "namespace std            {     struct text_encoding; }" ),
+  PT( "namespace std::linalg    {     struct upper_triangle_t; }" ),
+
+  PT( NULL )
+};
+
+/**
  * Embedded C types.
  *
  * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
@@ -1230,6 +1252,9 @@ void c_typedefs_init( void ) {
 
     predef_lang_ids = LANG_MIN(CPP_23);
     parse_predef_types( PREDEFINED_STD_CPP_23 );
+
+    predef_lang_ids = LANG_MIN(CPP_26);
+    parse_predef_types( PREDEFINED_STD_CPP_26 );
   }
 
   predef_lang_ids = LANG_MIN(CPP_20);
