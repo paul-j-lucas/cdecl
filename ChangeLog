@@ -1,3 +1,34 @@
+2025-07-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Removed -Wundef.
+   * red_black.c: s/RB_CHECK_ALL_NODES/defined RB_CHECK_ALL_NODES/
+   * share/man/man1/cdecl.1, c_typedef.c, show.out: Added support for C++26
+     types.
+
+2025-07-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, explain.out, explain.test: Fixed explanations of
+     pointers/references with storage classes.
+   * c_kind.h: Now using K_ANY_POINTER_OR_REFERENCE.
+
+2025-07-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, c_keyword.c, c_lang.h, c_type.c, c_type.h, literals.c,
+     literals.h, parser.y, debug.out, declare.out, explain.out, declare.test,
+     explain.test: Added support for C++26 indeterminate attribute.
+   * configure.ac: Added more warnings.
+
+2025-05-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.h, unit_test.h: Removed #ifdef __GNUC__.
+
+2025-05-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * attribute.h, cdefs.h, getopt-pfx-ext.h, getopt.in.h, stddef.in.h,
+     stdlib.in.h, streq.h, string.in.h, unistd.in.h, wchar.in.h,
+     builtin-expect.m4, gnulib-common.m4, gnulib-comp.m4, stddef_h.m4,
+     threadlib.m4, unitypes_h.m4: Updated GNUlib.
+
 2025-05-11  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.h, config_file.c, config_file.h: Eliminated CDECL_ENV_VAR_NAME.
