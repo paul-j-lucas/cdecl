@@ -245,7 +245,7 @@ static void rb_insert_fixup( rb_tree_t *tree, rb_node_t *z_node ) {
   tree->root->color = RB_BLACK;         // root is always black
 }
 
-#if !defined NDEBUG && RB_CHECK_ALL_NODES
+#if !defined NDEBUG && defined RB_CHECK_ALL_NODES
 /**
  * Checks that a node's properties hold.
  *
@@ -269,7 +269,7 @@ static void rb_node_check( rb_tree_t const *tree, rb_node_t const *node ) {
 }
 #else
 # define rb_node_check(TREE,NODE) (void)0
-#endif /* !defined NDEBUG && RB_CHECK_ALL_NODES */
+#endif /* !defined NDEBUG && defined RB_CHECK_ALL_NODES */
 
 /**
  * Frees all memory associated with \a node _including_ \a node itself.
