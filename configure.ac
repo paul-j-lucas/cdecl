@@ -331,7 +331,6 @@ AX_CHECK_COMPILE_FLAG([-Wsometimes-uninitialized], [CDECL_CFLAGS="$CDECL_CFLAGS 
 AX_CHECK_COMPILE_FLAG([-Wstring-conversion], [CDECL_CFLAGS="$CDECL_CFLAGS -Wstring-conversion"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wtautological-compare], [CDECL_CFLAGS="$CDECL_CFLAGS -Wtautological-compare"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wtautological-type-limit-compare], [CDECL_CFLAGS="$CDECL_CFLAGS -Wtautological-type-limit-compare"], [], [-Werror])
-AX_CHECK_COMPILE_FLAG([-Wundef], [CDECL_CFLAGS="$CDECL_CFLAGS -Wundef"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wuninitialized], [CDECL_CFLAGS="$CDECL_CFLAGS -Wuninitialized"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wunreachable-code], [CDECL_CFLAGS="$CDECL_CFLAGS -Wunreachable-code"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wunreachable-code-return], [CDECL_CFLAGS="$CDECL_CFLAGS -Wunreachable-code-return"], [], [-Werror])
