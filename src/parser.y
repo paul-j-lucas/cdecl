@@ -5885,6 +5885,7 @@ reference_decl_c_astp
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
+      PJL_DISCARD_RV( c_ast_patch_placeholder( $type_ast, $decl_astp.ast ) );
       $$ = $decl_astp;
       $$.ast->loc = @$;
 

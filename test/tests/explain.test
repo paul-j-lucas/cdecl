@@ -143,6 +143,7 @@ explain size_t x : 3
 explain ssize_t x
 explain static int x
 explain static int x[2]
+explain static int *x
 explain static void f()
 explain struct S
 explain struct S x

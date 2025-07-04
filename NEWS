@@ -15,6 +15,14 @@ with their complete changes, see the AUTHORS file.
 ** `[[indeterminate]]`
 Added support for C++26 `indeterminate` attribute.
 
+** Fixed explanations of pointers/references with storage classes
+Explanations of things like:
+
+    cdecl> explain static int *p
+    declare p as static pointer to integer
+
+are now correct.
+
 
 * Changes in Cdecl 18.4.2
 

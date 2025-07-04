@@ -303,6 +303,8 @@ cdecl> explain static int x
 declare x as static integer
 cdecl> explain static int x[2]
 declare x as static array 2 of integer
+cdecl> explain static int *x
+declare x as static pointer to integer
 cdecl> explain static void f()
 declare f as static function returning void
 cdecl> explain struct S
@@ -325,28 +327,28 @@ declare size_t as type unsigned long integer
 cdecl> 
 cdecl> explain int _Accum
                ^
-156,9: warning: "_Accum" is a keyword in C99 (with Embedded C extensions)
+157,9: warning: "_Accum" is a keyword in C99 (with Embedded C extensions)
 declare _Accum as integer
 cdecl> explain int _Fract
                ^
-157,9: warning: "_Fract" is a keyword in C99 (with Embedded C extensions)
+158,9: warning: "_Fract" is a keyword in C99 (with Embedded C extensions)
 declare _Fract as integer
 cdecl> explain int _Sat
                ^
-158,9: warning: "_Sat" is a keyword in C99 (with Embedded C extensions)
+159,9: warning: "_Sat" is a keyword in C99 (with Embedded C extensions)
 declare _Sat as integer
 cdecl> 
 cdecl> explain int relaxed
                ^
-160,9: warning: "relaxed" is a keyword in C99 (with Unified Parallel C extensions)
+161,9: warning: "relaxed" is a keyword in C99 (with Unified Parallel C extensions)
 declare relaxed as integer
 cdecl> explain int shared
                ^
-161,9: warning: "shared" is a keyword in C99 (with Unified Parallel C extensions)
+162,9: warning: "shared" is a keyword in C99 (with Unified Parallel C extensions)
 declare shared as integer
 cdecl> explain int strict
                ^
-162,9: warning: "strict" is a keyword in C99 (with Unified Parallel C extensions)
+163,9: warning: "strict" is a keyword in C99 (with Unified Parallel C extensions)
 declare strict as integer
 cdecl> 
 cdecl> explain typeof(int) x
@@ -501,7 +503,7 @@ cdecl> explain *f()
 declare f as function returning pointer to integer
 cdecl> explain void f(register i)
                       ^
-244,16: warning: missing type specifier; "int" assumed
+245,16: warning: missing type specifier; "int" assumed
 declare f as function (i as register integer) returning void
 cdecl> explain (*p)
 declare p as pointer to integer
@@ -523,7 +525,7 @@ cdecl>
 cdecl> set c18
 cdecl> explain int* f(x)
                       ^
-255,16: warning: missing type specifier; "int" assumed
+256,16: warning: missing type specifier; "int" assumed
 declare f as function (x as integer) returning pointer to integer
 cdecl> 
 cdecl> set c++
@@ -580,13 +582,13 @@ c++decl> explain [[no_unique_address]] struct S x
 declare x as non-unique-address structure S
 c++decl> explain [[nodiscard]] void f()
                  ^
-285,9: warning: "nodiscard" functions must return a value
+286,9: warning: "nodiscard" functions must return a value
 declare f as non-discardable function returning void
 c++decl> explain [[noreturn]] void f(int)
 declare f as non-returning function (integer) returning void
 c++decl> explain [[using foo : maybe_unused]] int i
                    ^
-287,11: warning: "using" in attributes not supported by cdecl (ignoring)
+288,11: warning: "using" in attributes not supported by cdecl (ignoring)
 declare i as maybe unused integer
 c++decl> explain alignas(0) char c
 declare c as character
@@ -608,7 +610,7 @@ c++decl> explain auto const [x, y]
 declare x, y as constant structured binding
 c++decl> explain volatile auto [x, y]
                  ^
-297,9: warning: "volatile" structured bindings are deprecated since C++20
+298,9: warning: "volatile" structured bindings are deprecated since C++20
 declare x, y as volatile structured binding
 c++decl> explain static auto [x, y]
 declare x, y as static structured binding
@@ -826,15 +828,15 @@ c++decl> explain void f(auto)
 declare f as function (automatic) returning void
 c++decl> explain void f(volatile int x)
                         ^
-405,16: warning: "volatile" parameter types are deprecated since C++20
+406,16: warning: "volatile" parameter types are deprecated since C++20
 declare f as function (x as volatile integer) returning void
 c++decl> explain volatile int f()
                  ^
-406,9: warning: "volatile" return types are deprecated since C++20
+407,9: warning: "volatile" return types are deprecated since C++20
 declare f as function returning volatile integer
 c++decl> explain vint f()
                  ^
-407,9: warning: "volatile" return types are deprecated since C++20
+408,9: warning: "volatile" return types are deprecated since C++20
 declare f as function returning vint
 c++decl> explain ~C()
 declare C as destructor
@@ -881,11 +883,11 @@ c++decl>
 c++decl> set c++11
 c++decl> explain register int x
                  ^
-433,9: warning: "register" is deprecated since C++11
+434,9: warning: "register" is deprecated since C++11
 declare x as register integer
 c++decl> explain ~C() throw()
                ^
-434,7: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
+435,7: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 declare C as non-throwing destructor
 c++decl> 
 c++decl> set c++26
