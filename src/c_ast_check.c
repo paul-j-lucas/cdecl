@@ -118,7 +118,7 @@
 /**
  * State maintained by c_ast_check_visitor().
  */
-struct check_state {
+struct c_ast_check_state {
   /**
    * If the current AST node is the \ref c_typedef_ast::for_ast "for_ast" of a
    * #K_TYPEDEF AST, store that #K_TYPEDEF AST here.
@@ -142,7 +142,7 @@ struct check_state {
    */
   c_ast_t const  *tdef_ast;
 };
-typedef struct check_state check_state_t;
+typedef struct c_ast_check_state c_ast_check_state_t;
 
 // local constants
 
@@ -188,7 +188,8 @@ NODISCARD
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         c_ast_visit_fn_t check_fn ) {
   return NULL == c_ast_visit(
-    ast, C_VISIT_DOWN, check_fn, (user_data_t){ .pc = &(check_state_t){ 0 } }
+    ast, C_VISIT_DOWN, check_fn,
+    (user_data_t){ .pc = &(c_ast_check_state_t){ 0 } }
   );
 }
 
@@ -2930,7 +2931,7 @@ static char const* c_ast_member_or_nonmember_str( c_ast_t const *ast ) {
 NODISCARD
 static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  check_state_t const *const check = user_data.pc;
+  c_ast_check_state_t const *const check = user_data.pc;
   assert( check != NULL );
 
   if ( !c_ast_check_name( ast ) )
@@ -3061,7 +3062,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
       // recurse into it manually.
       //
       c_ast_t const temp_ast = c_ast_sub_typedef( ast );
-      user_data.pc = &(check_state_t){ .tdef_ast = ast };
+      user_data.pc = &(c_ast_check_state_t){ .tdef_ast = ast };
       return c_ast_visitor_error( &temp_ast, user_data );
 
     case K_UDEF_CONV:
