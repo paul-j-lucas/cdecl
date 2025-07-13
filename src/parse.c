@@ -127,7 +127,7 @@ static bool no_infer_command( char const *s ) {
  */
 NODISCARD
 static int cdecl_parse_command( char const *command, size_t cli_count,
-                                char const *const cli_value[const] ) {
+                                char const *const cli_value[const cli_count] ) {
   if ( command == NULL && cli_count == 0 )
     return cdecl_parse_stdin();         // invoked as just cdecl, no arguments
 
@@ -230,7 +230,8 @@ static int cdecl_parse_stdin( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-int cdecl_parse_cli( size_t cli_count, char const *const cli_value[const] ) {
+int cdecl_parse_cli( size_t cli_count,
+                     char const *const cli_value[const cli_count] ) {
   char const *command_literal = NULL;
   char const *find_what;
   cdecl_command_t const *found_command;
