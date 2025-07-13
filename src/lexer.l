@@ -621,6 +621,7 @@ static void yylineno_stack_push( void ) {
  *
  * @sa yy_start_stack_push()
  */
+PJL_DISCARD
 static int yy_start_stack_pop( void ) {
   assert( yy_start_stack_top >= 0 );
   return yy_start_stack[ yy_start_stack_top-- ];
