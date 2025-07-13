@@ -416,13 +416,14 @@ NODISCARD
 bool c_ast_is_untyped( c_ast_t const *ast );
 
 /**
- * Gets the leat AST node starting at \a ast.
+ * Gets the leaf AST node starting at \a ast.
  *
  * @param ast The AST to start from; may be NULL.
  * @return Returns said AST or NULL if \a ast is NULL.
  *
  * @sa c_ast_root()
  */
+NODISCARD
 c_ast_t const* c_ast_leaf( c_ast_t const *ast );
 
 /**
@@ -771,6 +772,7 @@ bool c_ast_print_as_using( c_ast_t const *ast ) {
  *
  * @sa c_ast_untypedef_qual()
  */
+NODISCARD
 c_ast_t c_ast_sub_typedef( c_ast_t const *ast );
 
 ///////////////////////////////////////////////////////////////////////////////
