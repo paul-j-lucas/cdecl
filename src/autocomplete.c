@@ -252,6 +252,7 @@ static ac_keyword_t const* ac_keyword_find( char const *s ) {
  * @return Returns a pointer to said array.  The caller is responsible for
  * freeing it.
  */
+NODISCARD
 static ac_keyword_t const* ac_keywords_new( void ) {
   size_t n = 0;
 
@@ -522,6 +523,7 @@ static inline bool is_token_char( char c ) {
  * @return Returns alternate text for \ref kg_state::command or \a text if
  * none.
  */
+NODISCARD
 static char const* kg_alt_text( kg_state_t *kg, char const *text ) {
   assert( kg != NULL );
   assert( text != NULL );
