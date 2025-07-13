@@ -1,3 +1,18 @@
+2025-07-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Added NODISCARD.
+   * lexer.l: Added PJL_DISCARD.
+   * c_ast_util.h: Added NODISCARD.
+   * util.h: Added NODISCARD.
+
+2025-07-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: s/check_state/c_ast_check_state/
+
+2025-07-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1: Added [[indeterminate]].
+
 2025-07-04  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Removed -Wundef.
