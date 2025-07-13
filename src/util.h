@@ -1719,6 +1719,7 @@ size_t round_up_pow_2( size_t n, size_t multiple ) {
  * @param js The second string.
  * @return Returns `true` only if \a is equals \a js.
  */
+NODISCARD
 bool str_equal( char const *is, char const *js );
 
 /**
