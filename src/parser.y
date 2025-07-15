@@ -9114,7 +9114,7 @@ c_operator
   | Y_PERCENT_EQUAL               { $$ = C_OP_PERCENT_EQUAL         ; }
   | '&'                           { $$ = C_OP_AMPERSAND             ; }
   | Y_AMPER_AMPER                 { $$ = C_OP_AMPERSAND_AMPERSAND   ; }
-  | Y_AMPER_EQUAL                 { $$ = C_OP_AMPER_EQUAL           ; }
+  | Y_AMPER_EQUAL                 { $$ = C_OP_AMPERSAND_EQUAL       ; }
   | '(' rparen_exp                { $$ = C_OP_PARENTHESES           ; }
   | '*'                           { $$ = C_OP_STAR                  ; }
   | Y_STAR_EQUAL                  { $$ = C_OP_STAR_EQUAL            ; }

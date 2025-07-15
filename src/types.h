@@ -141,7 +141,7 @@ enum c_op_id {
   C_OP_PERCENT_EQUAL,                   ///< The `%=` operator.
   C_OP_AMPERSAND,                       ///< The `&` operator.
   C_OP_AMPERSAND_AMPERSAND,             ///< The `&&` operator.
-  C_OP_AMPER_EQUAL,                     ///< The `&=` operator.
+  C_OP_AMPERSAND_EQUAL,                 ///< The `&=` operator.
   C_OP_PARENTHESES,                     ///< The `()` operator.
   C_OP_STAR,                            ///< The `*` operator.
   C_OP_STAR_EQUAL,                      ///< The `*=` operator.

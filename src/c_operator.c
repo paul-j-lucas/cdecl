@@ -69,7 +69,7 @@ static c_operator_t const C_OPERATOR[] = {
   { C_OP_PERCENT_EQUAL,         "%=",       LANG_operator,    EIT, 1, 2   },
   { C_OP_AMPERSAND,             "&",        LANG_operator,    EIT, 0, 2   },
   { C_OP_AMPERSAND_AMPERSAND,   "&&",       LANG_operator,    EIT, 1, 2   },
-  { C_OP_AMPER_EQUAL,           "&=",       LANG_operator,    EIT, 1, 2   },
+  { C_OP_AMPERSAND_EQUAL,       "&=",       LANG_operator,    EIT, 1, 2   },
   { C_OP_PARENTHESES,           "()",       LANG_operator,    MBR, 0, UNL },
   { C_OP_STAR,                  "*",        LANG_operator,    EIT, 0, 2   },
   { C_OP_STAR_EQUAL,            "*=",       LANG_operator,    EIT, 1, 2   },
