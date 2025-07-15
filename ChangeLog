@@ -1,3 +1,7 @@
+2025-07-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_operator.c, parser.y, types.h: s/C_OP_AMPER_EQUAL/C_OP_AMPERSAND_EQUAL/
+
 2025-07-13  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c: Added NODISCARD.
