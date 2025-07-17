@@ -29,21 +29,20 @@
 #  --doc-base=doc \
 #  --tests-base=tests \
 #  --aux-dir=. \
-#  --lgpl \
 #  --no-conditional-dependencies \
 #  --no-libtool \
 #  --macro-prefix=gl \
+#  bool \
 #  extern-inline \
 #  fnmatch \
 #  getline \
 #  getopt-gnu \
-#  stdarg \
-#  stdbool \
-#  stddef \
-#  stdint \
+#  stdarg-h \
+#  stddef-h \
+#  stdint-h \
 #  strndup \
 #  strsep \
-#  sysexits
+#  sysexits-h
 
 AUTOMAKE_OPTIONS = 1.14 gnits subdir-objects
 

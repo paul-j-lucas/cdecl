@@ -34,36 +34,35 @@
 #  --doc-base=doc \
 #  --tests-base=tests \
 #  --aux-dir=. \
-#  --lgpl \
 #  --no-conditional-dependencies \
 #  --no-libtool \
 #  --macro-prefix=gl \
+#  bool \
 #  extern-inline \
 #  fnmatch \
 #  getline \
 #  getopt-gnu \
-#  stdarg \
-#  stdbool \
-#  stddef \
-#  stdint \
+#  stdarg-h \
+#  stddef-h \
+#  stdint-h \
 #  strndup \
 #  strsep \
-#  sysexits
+#  sysexits-h
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([])
 gl_MODULES([
+  bool
   extern-inline
   fnmatch
   getline
   getopt-gnu
-  stdarg
-  stdbool
-  stddef
-  stdint
+  stdarg-h
+  stddef-h
+  stdint-h
   strndup
   strsep
-  sysexits
+  sysexits-h
 ])
 gl_AVOID([])
 gl_SOURCE_BASE([lib])
@@ -72,7 +71,6 @@ gl_PO_BASE([])
 gl_DOC_BASE([doc])
 gl_TESTS_BASE([tests])
 gl_LIB([libgnu])
-gl_LGPL
 gl_MAKEFILE_NAME([])
 gl_MACRO_PREFIX([gl])
 gl_PO_DOMAIN([])
