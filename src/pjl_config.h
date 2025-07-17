@@ -61,7 +61,7 @@
 #   define HAVE_GENUINE_GNU_READLINE    (rl_gnu_readline_p == 1)
 # else
 #   define HAVE_GENUINE_GNU_READLINE    0
-#endif /* HAVE_DECL_RL_GNU_READLINE_P */
+# endif /* HAVE_DECL_RL_GNU_READLINE_P */
 #endif /* WITH_READLINE */
 
 ////////// compiler attributes ////////////////////////////////////////////////
