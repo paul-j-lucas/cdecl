@@ -199,8 +199,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast,
         break;
       FALLTHROUGH;
 
-    case K_ARRAY:
-      NO_OP;
+    case K_ARRAY:;
       //
       // On the next-to-last recursive call, this sets this array to be an
       // array of the new array; for all prior recursive calls, it's a no-op.

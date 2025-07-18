@@ -925,8 +925,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   }
 
   switch ( ast->func.member ) {
-    case C_FUNC_MEMBER:
-      NO_OP;
+    case C_FUNC_MEMBER:;
       //
       // Member functions can't have linkage -- except the new & delete
       // operators may have static explicitly specified.
@@ -1037,8 +1036,7 @@ static bool c_ast_check_func_default_delete( c_ast_t const *ast ) {
 
     case K_OPERATOR:
       switch ( ast->oper.operator->op_id ) {
-        case C_OP_EQUAL:                // C& operator=(C const&)
-          NO_OP;
+        case C_OP_EQUAL:;               // C& operator=(C const&)
           //
           // For C& operator=(C const&), the parameter and the return type must
           // both be a reference to the same class, struct, or union.
@@ -3054,8 +3052,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
         return VISITOR_ERROR_FOUND;
       break;
 
-    case K_TYPEDEF:
-      NO_OP;
+    case K_TYPEDEF:;
       //
       // K_TYPEDEF isn't a "parent" kind since it's not a parent "of" the
       // underlying type, but instead a synonym "for" it.  Hence, we have to

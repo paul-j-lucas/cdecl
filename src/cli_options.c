@@ -593,8 +593,7 @@ static void parse_options( int *const pargc, char const *const *pargv[const] ) {
       case COPT(LANGUAGE):
         opt_lang_id = parse_lang( optarg );
         break;
-      case COPT(LINENO):
-        NO_OP;
+      case COPT(LINENO):;
         unsigned long long n = check_strtoull( optarg, 1, USHRT_MAX );
         if ( n == ULLONG_MAX ) {
           fatal_error( EX_USAGE,
@@ -718,8 +717,7 @@ static void parse_options( int *const pargc, char const *const *pargv[const] ) {
 
   return;
 
-invalid_opt:
-  NO_OP;
+invalid_opt:;
   // Determine whether the invalid option was short or long.
   char const *invalid_opt = (*pargv)[ optind - 1 ];
   if ( invalid_opt != NULL && STRNCMPLIT( invalid_opt, "--" ) == 0 ) {

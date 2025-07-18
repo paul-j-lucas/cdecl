@@ -587,8 +587,7 @@ static void c_func_like_ast_english( c_ast_t const *ast,
       if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
         FPUTS( "member ", eng->fout );
       break;
-    case K_OPERATOR:
-      NO_OP;
+    case K_OPERATOR:;
       c_func_member_t const op_mbr = c_ast_op_overload( ast );
       char const *const op_literal =
         op_mbr == C_FUNC_MEMBER     ? "member "     :
@@ -983,8 +982,7 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *fout ) {
   assert( ast_list != NULL );
 
   switch ( slist_len( ast_list ) ) {
-    case 1:
-      NO_OP;
+    case 1:;
       c_ast_t const *const ast = slist_front( ast_list );
       c_ast_english( ast, C_ENG_DECL, fout );
       FPUTC( '\n', fout );

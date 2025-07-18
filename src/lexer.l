@@ -1071,8 +1071,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 //
                 // 1. See if it's a cdecl keyword.
                 //
-        find_cdecl_keyword:
-                NO_OP;
+        find_cdecl_keyword:;
                 cdecl_keyword_t const *const cdk =
                   lexer_cdecl_keyword_find( yytext );
                 if ( cdk != NULL ) {

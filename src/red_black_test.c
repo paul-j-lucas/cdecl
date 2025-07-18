@@ -200,8 +200,7 @@ static bool test_script( rb_dloc_t dloc ) {
         if ( !TEST( test_check_rb_tree( &tree ) ) )
           goto end_test;
         break;
-      case RB_TEST_DELETE:
-        NO_OP;
+      case RB_TEST_DELETE:;
         rb_node_t *found = rb_tree_find( &tree, (void*)i->key );
         if ( TEST( found != NULL ) ) {
           rb_tree_delete( &tree, found );

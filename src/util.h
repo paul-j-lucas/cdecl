@@ -793,15 +793,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * No-operation statement.
  *
- * @remarks This is useful for a declaration immediately after either a `goto`
- * or `case` label:
- *
- *      label:
- *        NO_OP;                    // needed until C23
- *        char const *s = f();
- *        // ...
- *
- * C doesn't allow declarations after labels until C23.
+ * @remarks This is useful for do-nothing statements.
  */
 #define NO_OP                     ((void)0)
 

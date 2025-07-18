@@ -407,8 +407,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     return false;
 
   switch ( i_ast->kind ) {
-    case K_ARRAY:
-      NO_OP;
+    case K_ARRAY:;
       c_array_ast_t const *const ai_ast = &i_ast->array;
       c_array_ast_t const *const aj_ast = &j_ast->array;
       if ( ai_ast->kind != aj_ast->kind )
