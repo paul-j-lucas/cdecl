@@ -578,7 +578,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
   };
 
   if ( tree->dloc == RB_DINT )
-    memcpy( z_new_node->data, data, data_size );
+    memcpy( RB_DINT( z_new_node ), data, data_size );
   else
     RB_DPTR( z_new_node ) = data;
 
