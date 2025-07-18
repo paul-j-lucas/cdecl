@@ -554,7 +554,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
 
   // See "Introduction to Algorithms," 4th ed., &sect; 13.3, p. 338.
 
-  rb_node_t *x_node = tree->root, *y_parent = &tree->nil;
+  rb_node_t *x_node = tree->root, *y_parent = &tree->nil, *z_new_node;
 
   //
   // Find either the existing node having the same data -OR- the parent for the
@@ -568,19 +568,20 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
     x_node = x_node->child[ cmp > 0 ];
   } // while
 
-  if ( tree->dloc == RB_DPTR )
-    data_size = sizeof( void* );
-  rb_node_t *const z_new_node = malloc( sizeof( rb_node_t ) + data_size );
+  if ( tree->dloc == RB_DINT ) {
+    z_new_node = malloc( sizeof( rb_node_t ) + data_size );
+    memcpy( RB_DINT( z_new_node ), data, data_size );
+  }
+  else {
+    z_new_node = malloc( sizeof( rb_node_t ) + sizeof( void* ) );
+    RB_DPTR( z_new_node ) = data;
+  }
+
   *z_new_node = (rb_node_t){
     .child = { &tree->nil, &tree->nil },
     .parent = y_parent,
     .color = RB_RED                     // new nodes are always red
   };
-
-  if ( tree->dloc == RB_DINT )
-    memcpy( RB_DINT( z_new_node ), data, data_size );
-  else
-    RB_DPTR( z_new_node ) = data;
 
   if ( y_parent == &tree->nil ) {
     tree->root = z_new_node;            // tree was empty
