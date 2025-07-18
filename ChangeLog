@@ -1,5 +1,9 @@
 2025-07-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * color.c: Eliminated goto.
+   * color.c: Added "static".
+   * c_ast.c, c_ast_check.c, c_ast_util.c, cli_options.c, english.c, lexer.l,
+     red_black_test.c, util.h: Reduced use of NO_OP.
    * red_black.c: Eliminated an "if".
    * red_black.c: Now using RB_DINT.
 
