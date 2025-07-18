@@ -1,3 +1,8 @@
+2025-07-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: Eliminated an "if".
+   * red_black.c: Now using RB_DINT.
+
 2025-07-15  Paul J. Lucas <paul@lucasmail.org>
 
    * c_operator.c, parser.y, types.h: s/C_OP_AMPER_EQUAL/C_OP_AMPERSAND_EQUAL/
