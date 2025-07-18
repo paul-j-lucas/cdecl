@@ -1716,12 +1716,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 /// @endcond
 
 // Re-enable warnings.
-#ifdef __clang__
-# pragma clang diagnostic pop
-#endif /* __clang__ */
-#ifdef __GNUC__
-# pragma GCC diagnostic pop
-#endif /* __GNUC__ */
+#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
 
 ////////// local functions ////////////////////////////////////////////////////
 
