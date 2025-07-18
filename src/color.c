@@ -97,7 +97,7 @@ char const *sgr_warning;
 /// @endcond
 
 // local variables
-char const *color_capabilities;         ///< Parsed color capabilities.
+static char const *color_capabilities;  ///< Parsed color capabilities.
 
 ////////// local functions ////////////////////////////////////////////////////
 
