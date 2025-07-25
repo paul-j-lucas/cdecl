@@ -58,6 +58,7 @@
 #include "p_macro.h"
 #include "p_token.h"
 #include "print.h"
+#include "red_black.h"
 #include "set_options.h"
 #include "show.h"
 #include "slist.h"
@@ -806,7 +807,7 @@ static bool define_type( c_ast_t const *type_ast, decl_flags_t decl_flags ) {
   if ( !c_type_ast_check( type_ast ) )
     return false;
 
-  c_typedef_t *const tdef = (void*)c_typedef_add( type_ast, decl_flags )->data;
+  c_typedef_t *const tdef = RB_DINT( c_typedef_add( type_ast, decl_flags ) );
 
   if ( tdef->ast == type_ast ) {
     //
@@ -5215,7 +5216,7 @@ pc99_func_or_constructor_declaration_c
 
         in_attr.tdef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
         MAYBE_UNUSED c_typedef_t const *const csu_tdef =
-          (void*)in_attr.tdef_rb->data;
+          RB_DINT( in_attr.tdef_rb );
         assert( csu_tdef->ast == csu_ast );
       }
     }
