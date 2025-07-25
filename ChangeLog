@@ -1,5 +1,10 @@
+2025-07-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now using RB_DINT().
+
 2025-07-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Removed #ifdef.
    * color.c: Eliminated goto.
    * color.c: Added "static".
    * c_ast.c, c_ast_check.c, c_ast_util.c, cli_options.c, english.c, lexer.l,
