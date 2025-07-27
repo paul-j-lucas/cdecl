@@ -360,10 +360,10 @@ static void lexer_pop_buffer( void ) {
  * @note This is called by Flex via #YY_USER_ACTION.
  */
 static void lexer_update_loc( void ) {
-  yylloc.first_line   = yylloc.last_line = STATIC_CAST( c_loc_num_t, yylineno );
+  yylloc.first_line   = yylloc.last_line = yylineno;
   yylloc.first_column = token_column;
-  yylloc.last_column  = token_column + STATIC_CAST( c_loc_num_t, yyleng ) - 1;
-  token_column += STATIC_CAST( c_loc_num_t, yyleng );
+  yylloc.last_column  = token_column + yyleng - 1;
+  token_column += yyleng;
 }
 
 /**
