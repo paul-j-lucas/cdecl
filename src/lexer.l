@@ -1154,22 +1154,10 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 
 <INITIAL,X_PRE_TOKENS>{
 
-{bin_int}     {
-                yylval.int_val = parse_int( 2 );
-                return Y_INT_LIT;
-              }
-{oct_int}     {
-                yylval.int_val = parse_int( 8 );
-                return Y_INT_LIT;
-              }
-{dec_int}     {
-                yylval.int_val = parse_int( 10 );
-                return Y_INT_LIT;
-              }
-{hex_int}     {
-                yylval.int_val = parse_int( 16 );
-                return Y_INT_LIT;
-              }
+{bin_int}     { yylval.int_val = parse_int(  2 ); return Y_INT_LIT; }
+{oct_int}     { yylval.int_val = parse_int(  8 ); return Y_INT_LIT; }
+{dec_int}     { yylval.int_val = parse_int( 10 ); return Y_INT_LIT; }
+{hex_int}     { yylval.int_val = parse_int( 16 ); return Y_INT_LIT; }
 
 {flt_lit}     {
                 // cdecl doesn't care what the actual float value is, only the
