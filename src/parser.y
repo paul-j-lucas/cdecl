@@ -1942,7 +1942,7 @@ static void yyerror( char const *msg ) {
 %type   <show>        predefined_or_user_types_opt
 %type   <str_val>     set_option_value_opt
 %type   <flags>       show_format show_format_exp show_format_opt
-%type   <show>        show_types_opt
+%type   <show>        show_which_opt
 %type   <sname_list>  sname_list_c
 %type   <tid>         static_stid_opt
 %type   <str_val>     str_lit str_lit_exp
@@ -3553,7 +3553,7 @@ show_command
       show_type( $tdef, $format, stdout );
     }
 
-  | Y_show show_types_opt[show] glob_opt[name] show_format_opt[format]
+  | Y_show show_which_opt[show] glob_opt[name] show_format_opt[format]
     {
       bool const showed_any = show_types( $show, $name, $format, stdout );
       if ( $name != NULL && !showed_any ) {
@@ -3565,7 +3565,7 @@ show_command
       PARSE_ASSERT( showed_any );
     }
 
-  | Y_show show_types_opt[show] glob_opt[name] Y_as show_format_exp[format]
+  | Y_show show_which_opt[show] glob_opt[name] Y_as show_format_exp[format]
     {
       bool const showed_any = show_types( $show, $name, $format, stdout );
       if ( !showed_any ) {
@@ -3577,7 +3577,7 @@ show_command
       PARSE_ASSERT( showed_any );
     }
 
-  | Y_show show_types_opt[show] Y_macros
+  | Y_show show_which_opt[show] Y_macros
     {
       show_macros( $show, stdout );
     }
@@ -3650,7 +3650,7 @@ show_format_opt
   | show_format
   ;
 
-show_types_opt
+show_which_opt
   : /* empty */                   { $$ = CDECL_SHOW_USER_DEFINED; }
   | Y_all predefined_or_user_types_opt[show]
     {
