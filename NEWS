@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.5.1
+
+** Added missing `all`
+The help for the `show` command now includes the missing optional `all`
+keyword.
+
+
 * Changes in Cdecl 18.5
 
 ** `[[indeterminate]]`

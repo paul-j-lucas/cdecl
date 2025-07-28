@@ -369,7 +369,7 @@ static void print_help_command( cdecl_command_t const *command ) {
     if ( OPT_LANG_IS( using_DECLS ) )
       print_h( "|using" );
     print_h( "}]\n" );
-    print_h( "  show {<name>|[predefined|user] macros}\n" );
+    print_h( "  show {<name>|[all] [predefined|user] macros}\n" );
   }
 
   if ( command_is( command, L_typedef ) )

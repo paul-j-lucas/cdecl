@@ -10,7 +10,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -39,7 +39,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -65,7 +65,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -148,7 +148,7 @@ command:
 cdecl> help show
 command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
 cdecl> help struct
 command:
 cdecl> help typedef
@@ -170,7 +170,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -193,7 +193,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -216,7 +216,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -279,7 +279,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -302,7 +302,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -325,7 +325,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -389,7 +389,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -412,7 +412,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -435,7 +435,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -499,7 +499,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -522,7 +522,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -545,7 +545,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -611,7 +611,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -637,7 +637,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -663,7 +663,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -732,7 +732,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -758,7 +758,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -784,7 +784,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
@@ -856,7 +856,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -892,7 +892,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -925,7 +925,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1038,7 +1038,7 @@ command:
 c++decl> help show
 command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
 c++decl> help static
 command:
   static cast [<name>] {as|[in]to} <english>
@@ -1064,7 +1064,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   #undef <name>
@@ -1092,7 +1092,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   #undef <name>
@@ -1120,7 +1120,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   #undef <name>
@@ -1199,7 +1199,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   #undef <name>
@@ -1227,7 +1227,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   #undef <name>
@@ -1255,7 +1255,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   #undef <name>
@@ -1335,7 +1335,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1368,7 +1368,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1401,7 +1401,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1490,7 +1490,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1523,7 +1523,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1556,7 +1556,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1645,7 +1645,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1678,7 +1678,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1711,7 +1711,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1801,7 +1801,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1834,7 +1834,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>
@@ -1867,7 +1867,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   #undef <name>

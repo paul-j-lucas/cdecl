@@ -26,7 +26,7 @@ command:
   [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  show {<name>|[predefined|user] macros}
+  show {<name>|[all] [predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   #undef <name>
   exit | q[uit]
