@@ -205,7 +205,7 @@ static c_loc_num_t  token_column;       ///< Column position of current token.
 static bool         trigraph_warned;    ///< Printed trigraph warning once?
 
 /// C++ raw string literal delimiter.
-static char       rstr_delim[ RSTR_DELIM_LEN_MAX + 1/*"*/ + 1/*\0*/ ];
+static char         rstr_delim[ RSTR_DELIM_LEN_MAX + 1/*"*/ + 1/*\0*/ ];
 
 /**
  * Stack of `yylineno` values.
