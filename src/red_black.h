@@ -173,11 +173,11 @@ typedef void (*rb_free_fn_t)( void *data );
  * The signature for a function passed to rb_tree_visit().
  *
  * @param node_data A pointer to the rb_node's data.
- * @param user_data Optional data passed to to the visitor.
+ * @param visit_data Optional data passed to to the visitor.
  * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of rb_tree_visit().
  */
-typedef bool (*rb_visit_fn_t)( void *node_data, void *user_data );
+typedef bool (*rb_visit_fn_t)( void *node_data, void *visit_data );
 
 ////////// structs ////////////////////////////////////////////////////////////
 
@@ -388,7 +388,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size );
  *
  * @param tree A pointer to the rb_tree to visit.
  * @param visit_fn The visitor function to use.
- * @param user_data Optional data passed to \a visit_fn.
+ * @param visit_data Optional data passed to \a visit_fn.
  * @return Returns a pointer to the rb_node at which visiting stopped or NULL
  * if the entire tree was visited.
  *
@@ -399,7 +399,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size );
  */
 PJL_DISCARD
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
-                          void *user_data );
+                          void *visit_data );
 
 ///////////////////////////////////////////////////////////////////////////////
 
