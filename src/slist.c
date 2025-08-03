@@ -151,7 +151,7 @@ bool slist_equal( slist_t const *i_list, slist_t const *j_list,
   return true;
 }
 
-bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *data ) {
+bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *pred_data ) {
   assert( list != NULL );
   assert( pred_fn != NULL );
 
@@ -162,7 +162,7 @@ bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *data ) {
     slist_node_t *const curr = *pcurr;
     if ( curr == NULL )
       break;
-    if ( !(*pred_fn)( curr, data ) ) {
+    if ( !(*pred_fn)( curr, pred_data ) ) {
       prev = curr;
       pcurr = &curr->next;
       continue;
