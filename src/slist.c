@@ -162,16 +162,17 @@ bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *pred_data ) {
     slist_node_t *const curr = *pcurr;
     if ( curr == NULL )
       break;
-    if ( !(*pred_fn)( curr, pred_data ) ) {
+    if ( (*pred_fn)( curr, pred_data ) ) {
+      if ( curr == list->tail )
+        list->tail = prev;
+      *pcurr = curr->next;
+      free( curr );
+      --list->len;
+    }
+    else {
       prev = curr;
       pcurr = &curr->next;
-      continue;
     }
-    if ( curr == list->tail )
-      list->tail = prev;
-    *pcurr = curr->next;
-    free( curr );
-    --list->len;
   } // for
 
   return list->len < orig_len;
