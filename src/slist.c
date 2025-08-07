@@ -163,9 +163,9 @@ bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *pred_data ) {
     if ( curr == NULL )
       break;
     if ( (*pred_fn)( curr, pred_data ) ) {
+      *pcurr = curr->next;
       if ( curr == list->tail )
         list->tail = prev;
-      *pcurr = curr->next;
       free( curr );
       --list->len;
     }
