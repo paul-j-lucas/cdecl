@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/unit_test.h
 **
 **      Copyright (C) 2021-2025  Paul J. Lucas
@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_unit_test_H
-#define cdecl_unit_test_H
+#ifndef pjl_unit_test_H
+#define pjl_unit_test_H
 
 #pragma GCC diagnostic ignored "-Wunused-value"
 
@@ -89,5 +89,5 @@ void test_prog_init( int argc, char const *const argv[] );
 
 /** @} */
 
-#endif /* cdecl_unit_test_H */
+#endif /* pjl_unit_test_H */
 /* vim:set et sw=2 ts=2: */

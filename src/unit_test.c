@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/unit_test.c
 **
 **      Copyright (C) 2021-2025  Paul J. Lucas
