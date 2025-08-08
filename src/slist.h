@@ -140,7 +140,7 @@ typedef void (*slist_free_fn_t)( void *data );
  * whether a node should be freed.
  *
  * @param node A pointer to the node being visited.
- * @param pred_data Optional data passed to slist_free_if().
+ * @param pred_data Optional data passed to the predicate function.
  * @return Returns `true` only if the node should be freed.
  */
 typedef bool (*slist_pred_fn_t)( slist_node_t *node, void *pred_data );
