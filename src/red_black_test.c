@@ -239,11 +239,11 @@ static bool test_various( rb_dloc_t dloc ) {
     goto end_test;
 
   // test insertion with existing data
-  rb_insert_rv_t rbi_rv = rb_tree_insert( &tree, (void*)"A", 2 );
+  rb_insert_rv_t rv_rbi = rb_tree_insert( &tree, (void*)"A", 2 );
   if ( !TEST( test_check_rb_tree( &tree ) ) )
     goto end_test;
-  if ( TEST( !rbi_rv.inserted ) )
-    TEST( strcmp( rb_node_data( &tree, rbi_rv.node ), "A" ) == 0 );
+  if ( TEST( !rv_rbi.inserted ) )
+    TEST( strcmp( rb_node_data( &tree, rv_rbi.node ), "A" ) == 0 );
 
   // test visitor
   unsigned letter_offset = 0;

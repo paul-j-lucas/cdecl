@@ -9720,9 +9720,9 @@ bool yyparse_sn( char const *s, size_t s_len ) {
   PERROR_EXIT_IF( s_file == NULL, EX_IOERR );
   yyrestart( s_file );
 
-  int const bison_rv = yyparse();
+  int const rv_bison = yyparse();
   fclose( s_file );
-  if ( unlikely( bison_rv == 2 ) ) {
+  if ( unlikely( rv_bison == 2 ) ) {
     //
     // Bison has already printed "memory exhausted" via yyerror() that doesn't
     // print a newline, so print one now.
@@ -9733,7 +9733,7 @@ bool yyparse_sn( char const *s, size_t s_len ) {
     // LCOV_EXCL_STOP
   }
 
-  return bison_rv == 0;
+  return rv_bison == 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

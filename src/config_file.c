@@ -100,7 +100,7 @@ void config_init( void ) {
     // LCOV_EXCL_STOP
   }
 
-  int parse_rv = EX_OK;
+  int rv_parse = EX_OK;
 
   if ( config_path != NULL ) {
     cdecl_input_path = config_path;
@@ -110,7 +110,7 @@ void config_init( void ) {
       bool const echo_file_markers = opt_echo_commands && !cdecl_is_interactive;
       if ( echo_file_markers )
         PRINTF( "/* begin \"%s\" */\n", config_path );
-      parse_rv = cdecl_parse_file( config_file );
+      rv_parse = cdecl_parse_file( config_file );
       if ( echo_file_markers )
         PRINTF( "/* end \"%s\" */\n", config_path );
       fclose( config_file );
@@ -124,8 +124,8 @@ void config_init( void ) {
 
   strbuf_cleanup( &sbuf );
 
-  if ( parse_rv != EX_OK )
-    exit( parse_rv );
+  if ( rv_parse != EX_OK )
+    exit( rv_parse );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

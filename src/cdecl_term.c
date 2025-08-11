@@ -137,17 +137,17 @@ static unsigned get_columns_via_tigetnum( void ) {
     // LCOV_EXCL_STOP
   }
 
-  int const tigetnum_rv = tigetnum( CONST_CAST( char*, "cols" ) );
-  switch ( tigetnum_rv ) {
+  int const rv_tigetnum = tigetnum( CONST_CAST( char*, "cols" ) );
+  switch ( rv_tigetnum ) {
     case -1:
       // LCOV_EXCL_START
       reason = "terminal lacks \"cols\" capability";
       break;
       // LCOV_EXCL_STOP
     case -2:                            // capname is not a numeric capability
-      UNEXPECTED_INT_VALUE( tigetnum_rv );
+      UNEXPECTED_INT_VALUE( rv_tigetnum );
     default:
-      rv = STATIC_CAST( unsigned, tigetnum_rv );
+      rv = STATIC_CAST( unsigned, rv_tigetnum );
   } // switch
 
 done:
