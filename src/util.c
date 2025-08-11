@@ -247,7 +247,9 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
     return temp_file;
   }
 
+  int const orig_errno = errno;
   fclose( temp_file );
+  errno = orig_errno;
   return NULL;
 }
 #endif /* HAVE_FMEMOPEN */
