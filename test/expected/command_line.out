@@ -401,7 +401,6 @@ typedef int (*thrd_start_t)(void*);
 typedef pthread_t thrd_t;
 typedef long time_t;
 typedef void *timer_t;
-typedef struct tm tm;
 typedef void (*tss_dtor_t)(void*);
 typedef void *tss_t;
 typedef uint32_t uid_t;

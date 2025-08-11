@@ -109,7 +109,6 @@ static predef_type_t const PREDEFINED_KNR_C[] = {
   PT( "typedef          int   jmp_buf[37]" ),
   PT( "typedef          long  off_t" ),
   PT( "typedef          long  time_t" ),
-  PT( "        struct         tm" ),
 
   PT( NULL )
 };
