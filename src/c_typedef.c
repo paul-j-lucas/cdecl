@@ -128,7 +128,6 @@ static predef_type_t const PREDEFINED_STD_C_89[] = {
   PT( "struct                 lldiv_t" ),
   PT( "typedef          int     errno_t" ),
   PT( "struct                   fpos_t" ),
-  PT( "struct                   lconv" ),
   PT( "typedef          long    ptrdiff_t" ),
   PT( "typedef          int     sig_atomic_t" ),
   PT( "typedef unsigned long    size_t" ),

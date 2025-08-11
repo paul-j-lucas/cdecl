@@ -351,7 +351,6 @@ typedef long intmax_t;
 typedef long intptr_t;
 typedef int jmp_buf[37];
 typedef int32_t key_t;
-typedef struct lconv lconv;
 typedef struct ldiv_t ldiv_t;
 typedef struct lldiv_t lldiv_t;
 typedef struct locale_t locale_t;
