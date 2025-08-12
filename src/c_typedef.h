@@ -71,12 +71,13 @@ struct c_typedef {
  * The signature for a function passed to c_typedef_visit().
  *
  * @param tdef The \ref c_typedef to visit.
- * @param v_data Optional data passed to the visitor.
+ * @param visit_data Optional data passed to the visitor.
  * @return Returning `true` will cause traversal to stop and a pointer to the
  * \ref c_typedef the visitor stopped on to be returned to the caller of
  * c_typedef_visit().
  */
-typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
+typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef,
+                                      void *visit_data );
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -135,9 +136,9 @@ void c_typedef_remove( rb_node_t *node );
  * Does an in-order traversal of all \ref c_typedef.
  *
  * @param visit_fn The visitor function to use.
- * @param v_data Optional data passed to \a visit_fn.
+ * @param visit_data Optional data passed to \a visit_fn.
  */
-void c_typedef_visit( c_typedef_visit_fn_t visit_fn, void *v_data );
+void c_typedef_visit( c_typedef_visit_fn_t visit_fn, void *visit_data );
 
 /**
  * Initializes all \ref c_typedef data.

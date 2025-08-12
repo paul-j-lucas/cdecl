@@ -77,7 +77,7 @@ typedef struct predef_type predef_type_t;
  */
 struct tdef_rb_visit_data {
   c_typedef_visit_fn_t  visit_fn;       ///< Caller's visitor function.
-  void                 *v_data;         ///< Caller's optional data.
+  void                 *visit_data;     ///< Caller's optional data.
 };
 typedef struct tdef_rb_visit_data tdef_rb_visit_data_t;
 
@@ -1095,19 +1095,19 @@ static void parse_predef_types( predef_type_t const types[static const 2] ) {
  * c_typedef_visit_fn_t function.
  *
  * @param node_data A pointer to the node's data.
- * @param v_data Data passed to to the visitor.
+ * @param visit_data Data passed to to the visitor.
  * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of rb_tree_visit().
  */
 NODISCARD
-static bool rb_visitor( void *node_data, void *v_data ) {
+static bool rb_visitor( void *node_data, void *visit_data ) {
   assert( node_data != NULL );
-  assert( v_data != NULL );
+  assert( visit_data != NULL );
 
   c_typedef_t const *const tdef = node_data;
-  tdef_rb_visit_data_t const *const trvd = v_data;
+  tdef_rb_visit_data_t const *const trvd = visit_data;
 
-  return (*trvd->visit_fn)( tdef, trvd->v_data );
+  return (*trvd->visit_fn)( tdef, trvd->visit_data );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -1143,9 +1143,9 @@ void c_typedef_remove( rb_node_t *node ) {
   rb_tree_delete( &typedef_set, node );
 }
 
-void c_typedef_visit( c_typedef_visit_fn_t visit_fn, void *v_data ) {
+void c_typedef_visit( c_typedef_visit_fn_t visit_fn, void *visit_data ) {
   assert( visit_fn != NULL );
-  tdef_rb_visit_data_t trvd = { visit_fn, v_data };
+  tdef_rb_visit_data_t trvd = { visit_fn, visit_data };
   rb_tree_visit( &typedef_set, &rb_visitor, &trvd );
 }
 

@@ -64,12 +64,12 @@ typedef c_lang_id_t (*p_macro_dyn_fn_t)( p_token_t **ptoken );
  * The signature for a function passed to p_macro_visit().
  *
  * @param macro The \ref p_macro to visit.
- * @param v_data Optional data passed to the visitor.
+ * @param visit_data Optional data passed to the visitor.
  * @return Returning `true` will cause traversal to stop and a pointer to the
  * \ref p_macro the visitor stopped on to be returned to the caller of
  * p_macro_visit().
  */
-typedef bool (*p_macro_visit_fn_t)( p_macro_t const *macro, void *v_data );
+typedef bool (*p_macro_visit_fn_t)( p_macro_t const *macro, void *visit_data );
 
 ////////// structs ////////////////////////////////////////////////////////////
 
@@ -213,9 +213,9 @@ bool p_macro_undef( char const *name, c_loc_t const *name_loc );
  * Does an in-order traversal of all \ref p_macro.
  *
  * @param visit_fn The visitor function to use.
- * @param v_data Optional data passed to \a visit_fn.
+ * @param visit_data Optional data passed to \a visit_fn.
  */
-void p_macro_visit( p_macro_visit_fn_t visit_fn, void *v_data );
+void p_macro_visit( p_macro_visit_fn_t visit_fn, void *visit_data );
 
 /**
  * Initializes all C preprocessor macro data.

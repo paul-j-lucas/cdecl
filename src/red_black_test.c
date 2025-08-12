@@ -122,9 +122,9 @@ static bool test_check_rb_tree( rb_tree_t const *tree ) {
   TEST_FUNC_END();
 }
 
-static bool test_rb_visitor( void *node_data, void *v_data ) {
+static bool test_rb_visitor( void *node_data, void *visit_data ) {
   char const *const str = node_data;
-  unsigned *const letter_offset_ptr = v_data;
+  unsigned *const letter_offset_ptr = visit_data;
   if ( TEST( str != NULL ) )
     TEST( str[0] == STATIC_CAST( char, 'A' + *letter_offset_ptr ) );
   ++*letter_offset_ptr;

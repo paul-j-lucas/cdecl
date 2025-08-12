@@ -206,7 +206,7 @@ struct dump_state {
  */
 struct macro_rb_visit_data {
   p_macro_visit_fn_t  visit_fn;         ///< Caller's visitor function.
-  void               *v_data;           ///< Caller's optional data.
+  void               *visit_data;       ///< Caller's optional data.
 };
 
 /**
@@ -2823,19 +2823,19 @@ static p_token_node_t* push_back_dup_tokens( p_token_list_t *dst_list,
  * function.
  *
  * @param node_data A pointer to the node's data.
- * @param v_data Data passed to to the visitor.
+ * @param visit_data Data passed to to the visitor.
  * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of rb_tree_visit().
  */
 NODISCARD
-static bool rb_visitor( void *node_data, void *v_data ) {
+static bool rb_visitor( void *node_data, void *visit_data ) {
   assert( node_data != NULL );
-  assert( v_data != NULL );
+  assert( visit_data != NULL );
 
   p_macro_t const *const macro = node_data;
-  macro_rb_visit_data_t const *const mrvd = v_data;
+  macro_rb_visit_data_t const *const mrvd = visit_data;
 
-  return (*mrvd->visit_fn)( macro, mrvd->v_data );
+  return (*mrvd->visit_fn)( macro, mrvd->visit_data );
 }
 
 /**
@@ -3084,9 +3084,9 @@ predef_macro:
   return false;
 }
 
-void p_macro_visit( p_macro_visit_fn_t visit_fn, void *v_data ) {
+void p_macro_visit( p_macro_visit_fn_t visit_fn, void *visit_data ) {
   assert( visit_fn != NULL );
-  macro_rb_visit_data_t mrvd = { visit_fn, v_data };
+  macro_rb_visit_data_t mrvd = { visit_fn, visit_data };
   rb_tree_visit( &macro_set, &rb_visitor, &mrvd );
 }
 
