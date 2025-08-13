@@ -96,7 +96,7 @@ p_keyword_t const* p_keyword_find( char const *literal ) {
   assert( literal != NULL );
   return bsearch(
     &(p_keyword_t){ .literal = literal },
-    P_KEYWORDS, ARRAY_SIZE( P_KEYWORDS ), sizeof( P_KEYWORDS[0] ),
+    P_KEYWORDS, ARRAY_SIZE( P_KEYWORDS ), sizeof P_KEYWORDS[0],
     POINTER_CAST( bsearch_cmp_fn_t, &p_keyword_cmp )
   );
 }

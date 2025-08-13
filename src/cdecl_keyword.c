@@ -1750,7 +1750,7 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *literal ) {
   assert( literal != NULL );
   return bsearch(
     &(cdecl_keyword_t){ .literal = literal }, CDECL_KEYWORDS,
-    ARRAY_SIZE( CDECL_KEYWORDS ), sizeof( CDECL_KEYWORDS[0] ),
+    ARRAY_SIZE( CDECL_KEYWORDS ), sizeof CDECL_KEYWORDS[0],
     POINTER_CAST( bsearch_cmp_fn_t, &cdecl_keyword_cmp )
   );
 }
