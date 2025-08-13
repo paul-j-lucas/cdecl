@@ -3235,15 +3235,15 @@ help_what_opt
   | '#' Y_NAME[name]              { $$ = str_realloc_pcat( "#", "", $name ); }
   | '#' error
     {
-      $$ = NULL;
       elaborate_error( "\"#define\", \"#include\", or \"#undef\" expected" );
+      $$ = NULL;
     }
   | error
     {
-      $$ = NULL;
       elaborate_error(
         "<command>, \"commands\", \"english\", or \"options\" expected"
       );
+      $$ = NULL;
     }
   ;
 
@@ -3410,11 +3410,11 @@ p_param
     }
   | error
     {
-      $$ = NULL;
       if ( OPT_LANG_IS( VARIADIC_MACROS ) )
         elaborate_error( "parameter name or \"...\" expected" );
       else
         elaborate_error( "parameter name expected" );
+      $$ = NULL;
     }
   ;
 
@@ -3525,8 +3525,8 @@ set_option_value_opt
   | '=' Y_SET_OPTION[option]      { $$ = $option; @$ = @option; }
   | '=' error
     {
-      $$ = NULL;
       elaborate_error( "option value expected" );
+      $$ = NULL;
     }
   ;
 
@@ -4736,8 +4736,8 @@ param_pack_decl_c_ast
     }
   | Y_ELLIPSIS error
     {
-      $$ = NULL;
       elaborate_error( "name expected" );
+      $$ = NULL;
     }
   ;
 
@@ -8601,8 +8601,8 @@ any_name_exp
   : any_name
   | error
     {
-      $$ = NULL;
       elaborate_error( "name expected" );
+      $$ = NULL;
     }
   ;
 
@@ -8648,8 +8648,8 @@ name_exp
   : Y_NAME
   | error
     {
-      $$ = NULL;
       elaborate_error( "name expected" );
+      $$ = NULL;
     }
   ;
 
@@ -9502,8 +9502,8 @@ str_lit_exp
   : str_lit
   | error
     {
-      $$ = NULL;
       elaborate_error( "string literal expected" );
+      $$ = NULL;
     }
   ;
 
