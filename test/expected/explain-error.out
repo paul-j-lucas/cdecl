@@ -413,13 +413,13 @@ cdecl> explain S f()
 146,9: error: function returning struct or union type "S" (aka, "struct S") not supported until C89
 cdecl> explain signed char x
                ^
-147,9: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
+147,9: error: "signed": unsupported type until C89; did you mean "__signed", "unsigned", or "__signed__"?
 cdecl> explain signed int x
                ^
-148,9: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
+148,9: error: "signed": unsupported type until C89; did you mean "__signed", "unsigned", or "__signed__"?
 cdecl> explain signed long x
                ^
-149,9: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
+149,9: error: "signed": unsupported type until C89; did you mean "__signed", "unsigned", or "__signed__"?
 cdecl> explain struct S f()
                ^
 150,9: error: function returning struct or union not supported until C89
@@ -428,7 +428,7 @@ cdecl> explain void *p
 151,9: error: "void": unsupported type until C89
 cdecl> explain volatile int x
                ^
-152,9: error: "volatile": unsupported keyword until C89; did you mean "__volatile"?
+152,9: error: "volatile": unsupported keyword until C89; did you mean "__volatile" or "__volatile__"?
 cdecl> 
 cdecl> set c89
 cdecl> explain bool x

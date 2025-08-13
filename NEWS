@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.6
+
+** Better "did you mean" suggestions
+"Did you mean" suggestions now include all that are "similar enough," not only
+those that have the same Damerau-Levenshtein distance as the best suggestion.
+
+
 * Changes in Cdecl 18.5.1
 
 ** Added missing `all`

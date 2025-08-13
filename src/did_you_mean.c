@@ -418,18 +418,14 @@ static void dym_free_literals( did_you_mean_t const *dym ) {
  * "similar enough" to be a reasonable suggestion.
  *
  * @param dam_lev_dist A Damerau-Levenshtein edit distance.
- * @param percent A value in the range (0,1).  The edit distance must be less
- * than or equal to this percent of \a target_len in order to be considered
- * "similar enough" to be a reasonable suggestion.
  * @param target_len The length of the target string.
  * @return Returns `true` only if \a dam_lev_dist is "similar enough."
  */
 NODISCARD
-static bool is_similar_enough( size_t dam_lev_dist, double percent,
-                               size_t target_len ) {
-  assert( percent > 0 && percent < 1 );
-  return dam_lev_dist <=
-    STATIC_CAST( size_t, STATIC_CAST( double, target_len ) * percent + 0.5 );
+static inline bool is_similar_enough( size_t dam_lev_dist, size_t target_len ) {
+  return dam_lev_dist <= STATIC_CAST( size_t,
+    STATIC_CAST( double, target_len ) * SIMILAR_ENOUGH_PERCENT + 0.5
+  );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -488,34 +484,32 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
     POINTER_CAST( qsort_cmp_fn_t, &dym_cmp )
   );
 
-  size_t const best_dist = dym_array->dam_lev_dist;
-  if ( best_dist == 0 ) {
+  if ( dym_array->dam_lev_dist > 0 ) {
+    bool found_at_least_1 = false;
+
+    for ( dym = dym_array; dym->literal != NULL; ++dym ) {
+      if ( !is_similar_enough( dym->dam_lev_dist, dym->literal_len ) )
+        break;
+      found_at_least_1 = true;
+    } // for
+
+    if ( found_at_least_1 ) {
+      //
+      // Free literals past the best ones and set the one past the last to NULL
+      // to mark the end.
+      //
+      dym_free_literals( dym );
+      *dym = (did_you_mean_t){ 0 };
+      return dym_array;
+    }
+  }
+  else {
     //
     // This means unknown_literal was an exact match for a literal which means
     // we shouldn't suggest it for itself.
     //
-    goto none;
   }
 
-  size_t const best_len = dym_array->literal_len;
-  if ( !is_similar_enough( best_dist, SIMILAR_ENOUGH_PERCENT, best_len ) )
-    goto none;
-
-  // include all candidates that have the same distance
-  for ( dym = dym_array;
-        (++dym)->literal != NULL && dym->dam_lev_dist == best_dist; )
-    ;
-
-  //
-  // Free literals past the best ones and set the one past the last to NULL to
-  // mark the end.
-  //
-  dym_free_literals( dym );
-  *dym = (did_you_mean_t){ 0 };         // one past last is zero'd
-
-  return dym_array;
-
-none:
   dym_free( dym_array );
   return NULL;
 }
