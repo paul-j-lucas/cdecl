@@ -81,16 +81,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Dump state.
- */
-struct dump_state {
-  FILE     *fout;                       ///< File to dump to.
-  unsigned  indent;                     ///< Current indentation.
-  bool      comma;                      ///< Print a comma?
-};
-typedef struct dump_state dump_state_t;
-
-/**
  * JSON object state.
  */
 enum json_state {
@@ -106,7 +96,6 @@ static void c_ast_list_dump_impl( c_ast_list_t const*, dump_state_t const* );
 static void c_loc_dump( c_loc_t const*, FILE* );
 NODISCARD
 static char const* c_tpid_name( c_tpid_t );
-static void dump_init( dump_state_t*, unsigned, FILE* );
 NODISCARD
 static json_state_t json_object_begin( json_state_t, char const*,
                                        dump_state_t* );
@@ -475,23 +464,6 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
 }
 
 /**
- * Initializes a dump_state.
- *
- * @param dump The dump_state to initialize.
- * @param indent The current indent.
- * @param fout The `FILE` to dump to.
- */
-static void dump_init( dump_state_t *dump, unsigned indent, FILE *fout ) {
-  assert( dump != NULL );
-  assert( fout != NULL );
-
-  *dump = (dump_state_t){
-    .indent = indent,
-    .fout = fout
-  };
-}
-
-/**
  * Dumps the beginning of a JSON object.
  *
  * @param json The \ref json_state to use.  If not equal to #JSON_INIT, does
@@ -846,6 +818,16 @@ void c_type_dump( c_type_t const *type, FILE *fout ) {
     dump.comma ? ", " : "",
     type_name[0] != '\0' ? type_name : "none"
   );
+}
+
+void dump_init( dump_state_t *dump, unsigned indent, FILE *fout ) {
+  assert( dump != NULL );
+  assert( fout != NULL );
+
+  *dump = (dump_state_t){
+    .fout = fout,
+    .indent = indent
+  };
 }
 
 void p_arg_list_dump( p_arg_list_t const *list, unsigned indent, FILE *fout ) {

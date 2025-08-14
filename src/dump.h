@@ -45,6 +45,18 @@
  * @{
  */
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Dump state.
+ */
+struct dump_state {
+  FILE     *fout;                       ///< File to dump to.
+  unsigned  indent;                     ///< Current indentation.
+  bool      comma;                      ///< Print a comma?
+};
+typedef struct dump_state dump_state_t;
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -136,6 +148,15 @@ void c_tid_dump( c_tid_t tid, FILE *fout );
  * @sa c_tid_dump()
  */
 void c_type_dump( c_type_t const *type, FILE *fout );
+
+/**
+ * Initializes a dump_state.
+ *
+ * @param dump The dump_state to initialize.
+ * @param indent The current indent.
+ * @param fout The `FILE` to dump to.
+ */
+void dump_init( dump_state_t *dump, unsigned indent, FILE *fout );
 
 /**
  * Dumps \a macro in [JSON5](https://json5.org) format (for debugging).

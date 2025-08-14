@@ -85,8 +85,9 @@
  *
  * @sa #DUMP_END()
  */
-#define DUMP_START(INDENT,FOUT)                               \
-  dump_state_t dump = { .fout = (FOUT), .indent = (INDENT) }; \
+#define DUMP_START(INDENT,FOUT)         \
+  dump_state_t dump;                    \
+  dump_init( &dump, (INDENT), (FOUT) ); \
   FPRINTF( dump.fout, "%*s{\n", STATIC_CAST( int, dump.indent * DUMP_INDENT ), "" )
 
 /**
@@ -176,7 +177,6 @@ enum mex_rv {
 
 ////////// typedefs ///////////////////////////////////////////////////////////
 
-typedef struct dump_state           dump_state_t;
 typedef struct macro_rb_visit_data  macro_rb_visit_data_t;
 typedef enum   mex_rv               mex_rv_t;
 typedef struct mex_state            mex_state_t;
@@ -191,15 +191,6 @@ typedef struct param_expand         param_expand_t;
 typedef mex_rv_t (*mex_expand_all_fn_t)( mex_state_t *mex );
 
 ////////// structs ////////////////////////////////////////////////////////////
-
-/**
- * Dump state.
- */
-struct dump_state {
-  FILE     *fout;                       ///< File to dump to.
-  unsigned  indent;                     ///< Current indentation.
-  bool      comma;                      ///< Print a comma?
-};
 
 /**
  * Data passed to our red-black tree visitor function.
