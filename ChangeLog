@@ -1,3 +1,35 @@
+2025-08-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, dump.h, p_macro.c: Now sharing dump_state declaration and
+     dump_init().
+
+2025-08-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, did_you_mean.c, declare-error.out, explain-error.out: Better
+     "did you mean" suggestions.
+   * cdecl_keyword.c, p_keyword.c, util.h: Eliminated unnecessary () from
+     sizeof.
+
+2025-08-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1, c_typedef.c, command_line.out, debug.out,
+     show.out: struct lconv is no longer predefined -- it doesn't need to be.
+   * c_typedef.c, command_line.out, debug.out, show.out: struct tm is no longer
+     predefined -- it doesn't need to be.
+   * cdecl_term.c, config_file.c, p_macro.c, parser.y, red_black_test.c:
+     Consistent naming for rv_xxx.
+   * util.c: Now preserving errno.
+   * c_type.h: Eliminated NDEBUG.
+
+2025-07-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, help.c, command_line.out, help.out: Added missing optional
+     "all" in help for the "show" command.
+
+2025-07-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Removed unnesessary (?) casts.
+
 2025-07-25  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Now using RB_DINT().
