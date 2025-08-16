@@ -1,3 +1,7 @@
+2025-08-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Removed "inline".
+
 2025-08-14  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, dump.h, p_macro.c: Now sharing dump_state declaration and
