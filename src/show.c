@@ -102,16 +102,16 @@ static void print_param_list( p_param_list_t const *param_list, FILE *fout ) {
  * A visitor function to show (print) \a macro.
  *
  * @param macro The \ref p_macro to show.
- * @param data Optional data passed to the visitor: in this case, a \ref
+ * @param visit_data Optional data passed to the visitor: in this case, a \ref
  * show_macros_info.
  * @return Always returns `false`.
  */
 NODISCARD
-static bool show_macro_visitor( p_macro_t const *macro, void *data ) {
+static bool show_macro_visitor( p_macro_t const *macro, void *visit_data ) {
   assert( macro != NULL );
-  assert( data != NULL );
+  assert( visit_data != NULL );
 
-  show_macros_info_t const *const smi = data;
+  show_macros_info_t const *const smi = visit_data;
 
   if ( macro->is_dynamic ) {
     if ( (smi->show & CDECL_SHOW_PREDEFINED) == 0 )
@@ -133,16 +133,16 @@ no_show:
  * A visitor function to show (print) \a tdef.
  *
  * @param tdef The \ref c_typedef to show.
- * @param data Optional data passed to the visitor: in this case, a \ref
+ * @param visit_data Optional data passed to the visitor: in this case, a \ref
  * show_types_info.
  * @return Always returns `false`.
  */
 NODISCARD
-static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
+static bool show_type_visitor( c_typedef_t const *tdef, void *visit_data ) {
   assert( tdef != NULL );
-  assert( data != NULL );
+  assert( visit_data != NULL );
 
-  show_types_info_t *const sti = data;
+  show_types_info_t *const sti = visit_data;
 
   if ( (sti->show & CDECL_SHOW_OPT_IGNORE_LANG) == 0 &&
        !opt_lang_is_any( tdef->lang_ids ) ) {

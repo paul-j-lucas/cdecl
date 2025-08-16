@@ -205,20 +205,20 @@ static size_t copy_help_options( did_you_mean_t **const pdym ) {
  * pdym; if \a pdym is NULL, only counts the number of macro names.
  *
  * @param macro The \ref p_macro to visit.
- * @param data A pointer to a \ref dym_rb_visit_data.
+ * @param visit_data A pointer to a \ref dym_rb_visit_data.
  * @return Always returns `false`.
  */
 PJL_DISCARD
-static bool copy_macro_vistor( p_macro_t const *macro, void *data ) {
+static bool copy_macro_vistor( p_macro_t const *macro, void *visit_data ) {
   assert( macro != NULL );
-  assert( data != NULL );
+  assert( visit_data != NULL );
 
   if ( macro->is_dynamic &&
        !opt_lang_is_any( (*macro->dyn_fn)( /*ptoken=*/NULL ) ) ) {
     return false;
   }
 
-  dym_rb_visit_data_t *const drvd = data;
+  dym_rb_visit_data_t *const drvd = visit_data;
   if ( drvd->pdym == NULL )
     ++drvd->count;
   else
@@ -290,16 +290,16 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
  * \a pdym is NULL, only counts the number of type names.
  *
  * @param tdef The c_typedef to visit.
- * @param data A pointer to a \ref dym_rb_visit_data.
+ * @param visit_data A pointer to a \ref dym_rb_visit_data.
  * @return Always returns `false`.
  */
 PJL_DISCARD
-static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
+static bool copy_typedef_visitor( c_typedef_t const *tdef, void *visit_data ) {
   assert( tdef != NULL );
-  assert( data != NULL );
+  assert( visit_data != NULL );
 
   if ( opt_lang_is_any( tdef->lang_ids ) ) {
-    dym_rb_visit_data_t *const drvd = data;
+    dym_rb_visit_data_t *const drvd = visit_data;
     if ( drvd->pdym == NULL ) {
       ++drvd->count;
     } else {
