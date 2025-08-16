@@ -45,7 +45,7 @@
  * @return Returns the minimum of \a i or \a j.
  */
 NODISCARD
-static inline size_t min_dist( size_t i, size_t j ) {
+static inline size_t min_size( size_t i, size_t j ) {
   return i < j ? i : j;
 }
 
@@ -163,9 +163,9 @@ size_t dam_lev_dist( void *working_mem, char const *source, size_t slen,
         + 1;
 
       // Use the minimum distance.
-      size_t dist_min = min_dist( ins_dist, del_dist );
-             dist_min = min_dist( dist_min, sub_dist );
-             dist_min = min_dist( dist_min, xpos_dist );
+      size_t dist_min = min_size( ins_dist, del_dist );
+             dist_min = min_size( dist_min, sub_dist );
+             dist_min = min_size( dist_min, xpos_dist );
       dist_matrix[ row+1 ][ col+1 ] = dist_min;
 
       if ( match )
