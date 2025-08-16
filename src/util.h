@@ -1740,7 +1740,7 @@ bool str_is_empty( char const *s ) {
 }
 
 /**
- * Checks whether \a ident is a prefix if \a s.
+ * Checks whether \a ident is a prefix of \a s.
  *
  * @remarks If \a s_len &gt; \a ident_len, then the first character past the
  * end of \a s must _not_ be an identifier character.  For example, if \a ident
