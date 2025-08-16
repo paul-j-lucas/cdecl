@@ -422,7 +422,7 @@ static void dym_free_literals( did_you_mean_t const *dym ) {
  * @return Returns `true` only if \a dam_lev_dist is "similar enough."
  */
 NODISCARD
-static inline bool is_similar_enough( size_t dam_lev_dist, size_t target_len ) {
+static bool is_similar_enough( size_t dam_lev_dist, size_t target_len ) {
   return dam_lev_dist <= STATIC_CAST( size_t,
     STATIC_CAST( double, target_len ) * SIMILAR_ENOUGH_PERCENT + 0.5
   );
