@@ -62,15 +62,15 @@ size_t dam_lev_dist( void *working_mem, char const *source, size_t source_len,
  * and deallocation of the temporary working memory used by dam_lev_dist() to
  * be hoisted out of the loop.
  *
- * @param max_source_len The maximum length of all source strings that will be
- * passed to subsequent calls of dam_lev_dist().
+ * @param source_len The length of the source string that will be passed to
+ * subsequent calls of dam_lev_dist().
  * @param max_target_len The maximum length of all target strings that will be
  * passed to subsequent calls of dam_lev_dist().
  * @return Returns said working memory.  The caller is responsible for calling
  * **free**(3) on it.
  */
 NODISCARD
-void* dam_lev_new( size_t max_source_len, size_t max_target_len );
+void* dam_lev_new( size_t source_len, size_t max_target_len );
 
 ///////////////////////////////////////////////////////////////////////////////
 

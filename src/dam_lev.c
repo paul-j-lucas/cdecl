@@ -178,9 +178,9 @@ size_t dam_lev_dist( void *working_mem, char const *source, size_t slen,
   return dist_matrix[ slen+1 ][ tlen+1 ];
 }
 
-void* dam_lev_new( size_t max_source_len, size_t max_target_len ) {
+void* dam_lev_new( size_t source_len, size_t max_target_len ) {
   return matrix2d_new(
-    sizeof(size_t), alignof(size_t), max_source_len + 2, max_target_len + 2
+    sizeof(size_t), alignof(size_t), source_len + 2, max_target_len + 2
   );
 }
 
