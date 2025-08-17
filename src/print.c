@@ -35,6 +35,7 @@
 #include "cdecl_keyword.h"
 #include "cdecl_term.h"
 #include "color.h"
+#include "did_you_mean.h"
 #include "english.h"
 #include "gibberish.h"
 #include "lexer.h"
