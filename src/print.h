@@ -28,7 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "did_you_mean.h"
+#include "cdecl_dym.h"
 #include "types.h"                      /* for c_loc_t */
 
 // standard

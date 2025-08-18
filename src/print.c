@@ -32,10 +32,10 @@
 #include "c_sname.h"
 #include "c_typedef.h"
 #include "cdecl.h"
+#include "cdecl_dym.h"
 #include "cdecl_keyword.h"
 #include "cdecl_term.h"
 #include "color.h"
-#include "did_you_mean.h"
 #include "english.h"
 #include "gibberish.h"
 #include "lexer.h"
@@ -566,13 +566,13 @@ void print_loc( c_loc_t const *loc ) {
 }
 
 bool print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
-  did_you_mean_t const *const dym = dym_new( kinds, unknown_token );
+  did_you_mean_t const *const dym = cdecl_dym_new( kinds, unknown_token );
   if ( dym == NULL )
     return false;
   EPUTS( "; did you mean " );
   fput_list( stderr, dym, &fput_list_dym_gets );
   EPUTC( '?' );
-  dym_free( dym );
+  cdecl_dym_free( dym );
   return true;
 }
 

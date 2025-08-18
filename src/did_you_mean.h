@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/did_you_mean.h
 **
 **      Copyright (C) 2020-2025  Paul J. Lucas
@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_did_you_mean_H
-#define cdecl_did_you_mean_H
+#ifndef pjl_did_you_mean_H
+#define pjl_did_you_mean_H
 
 /**
  * @file
@@ -49,27 +49,47 @@ struct did_you_mean {
   char const *literal;                  ///< Candidate literal.
   size_t      literal_len;              ///< Length of \ref literal.
   size_t      dam_lev_dist;             ///< Damerau-Levenshtein edit distance.
+  void       *user_data;                ///< Optional user data.
 };
 typedef struct did_you_mean did_you_mean_t;
 
 /**
- * Kinds of things one might have meant.
+ * The signature for a function to clean-up a \ref did_you_mean structure,
+ * specifically the \ref did_you_mean::user_data "user_data" member.
  *
- * A bitwise-or of these may be used to specify more than one kind.
+ * @param dym A pointer to a \ref did_you_mean structure to clean up.
  */
-enum dym_kind {
-  DYM_NONE            = 0,              ///< Did you mean nothing.
-  DYM_COMMANDS        = 1 << 0,         ///< Did you mean **cdecl** _command_?
-  DYM_CLI_OPTIONS     = 1 << 1,         ///< Did you mean _CLI option_?
-  DYM_HELP_OPTIONS    = 1 << 2,         ///< Did you mean `help` _option_?
-  DYM_SET_OPTIONS     = 1 << 3,         ///< Did you mean _set option_?
-  DYM_C_ATTRIBUTES    = 1 << 4,         ///< Did you mean C/C++ _attribute_?
-  DYM_C_KEYWORDS      = 1 << 5,         ///< Did you mean C/C++ _keyword_?
-  DYM_C_MACROS        = 1 << 6,         ///< Did you mean C/C++ _macro_?
-  DYM_C_TYPES         = 1 << 7,         ///< Did you mean C/C++ _type_?
-  DYM_CDECL_KEYWORDS  = 1 << 8,         ///< Did you mean **cdecl** _keyword_?
-};
-typedef enum dym_kind dym_kind_t;
+typedef void (*dym_cleanup_fn_t)( did_you_mean_t const *dym );
+
+/**
+ * The signature for a function to prepare \ref did_you_mean elements of an
+ * array thereof.
+ *
+ * @remarks The function _must_ set \ref did_you_mean::literal "literal" to a
+ * candate literal; it may set \ref did_you_mean::user_data to anything.  Other
+ * members of \ref did_you_mean are set by dym_new().
+ *
+ * @param dym_array If NULL, the function _must_ only return the size of the
+ * \ref did_you_mean array to allocate (not including the terminating element
+ * containing a NULL \ref did_you_mean::literal "literal"; otherwise the
+ * function _must_ set the \ref did_you_mean::literal "literal" member of every
+ * array element.
+
+ * @param prep_data Optional data passed to the function.
+ * @return If \a dym_array is NULL, returns the size of the \ref did_you_mean
+ * array to allocate; otherwise the return value is unspecified.
+ */
+typedef size_t (*dym_prep_fn_t)( did_you_mean_t *dym_array, void *prep_data );
+
+/**
+ * The signature for a function to determine whether \a dym is similar enough
+ * to the unknown literal given to dym_new().
+ *
+ * @param dym A pointer to the \ref did_you_mean structure to check.
+ * @return Returns `true` only if \a dym is similar enough to the unknown
+ * literal.
+ */
+typedef bool (*dym_similar_fn_t)( did_you_mean_t const *dym );
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -78,27 +98,40 @@ typedef enum dym_kind dym_kind_t;
  *
  * @param dym_array The \ref did_you_mean array to free.  If NULL, does
  * nothing.
+ * @param cleanup_fn A pointer to a function to clean-up a \ref did_you_mean
+ * structure.  May be NULL.
+ *
+ * @sa dym_new()
  */
-void dym_free( did_you_mean_t const *dym_array );
+void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn );
 
 /**
  * Creates a new array of \ref did_you_mean elements containing "Did you mean
- * ...?" literals for \a unknown_literal.
+ * ...?" suggestion literals for \a unknown_literal.
  *
- * @param kinds The bitwise-or of the kind(s) of things possibly meant.
  * @param unknown_literal The unknown literal.
+ * @param prep_fn A pointer to a \ref dym_prep_fn_t function to use.
+ * @param prep_data Optional data passed to \a prep_fn that it may use for any
+ * purpose.
+ * @param similar_fn A pointer to a \ref dym_prep_fn_t function to use.
+ * @param cleanup_fn A pointer to a function to clean-up the \ref
+ * did_you_mean::user_data "user_data" member of a \ref did_you_mean structure.
+ * May be NULL.
  * @return Returns a pointer to an array of elements terminated by one having a
- * NULL `literal` pointer if there are suggestions or NULL if not.  The caller
- * is responsible for calling dym_free().
+ * NULL \ref did_you_mean::literal "literal" if there are suggestions or NULL
+ * if not.  The caller is responsible for calling dym_free().
  *
  * @sa dym_free()
  */
 NODISCARD
-did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal );
+did_you_mean_t const* dym_new( char const *unknown_literal,
+                               dym_prep_fn_t prep_fn, void *prep_data,
+                               dym_similar_fn_t similar_fn,
+                               dym_cleanup_fn_t cleanup_fn );
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
 
-#endif /* cdecl_did_you_mean_H */
+#endif /* pjl_did_you_mean_H */
 /* vim:set et sw=2 ts=2: */
