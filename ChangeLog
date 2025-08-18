@@ -1,3 +1,13 @@
+2025-08-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, cdecl_dym.c, cdecl_dym.h, did_you_mean.c, did_you_mean.h,
+     parser.y, print.c, print.h, set_options.c: Split cdecl-specific parts of
+     did-you-mean suggestions into cdecl_dym.[ch].
+
+2025-08-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c: Added missing #include.
+
 2025-08-15  Paul J. Lucas <paul@lucasmail.org>
 
    * did_you_mean.c: Removed "inline".
