@@ -66,8 +66,8 @@ typedef void (*dym_cleanup_fn_t)( did_you_mean_t const *dym );
  * array thereof.
  *
  * @remarks The function _must_ set \ref did_you_mean::literal "literal" to a
- * candate literal; it may set \ref did_you_mean::user_data to anything.  Other
- * members of \ref did_you_mean are set by dym_new().
+ * candidate literal; it may set \ref did_you_mean::user_data to anything.
+ * Other members of \ref did_you_mean are set by dym_new().
  *
  * @param dym_array If NULL, the function _must_ only return the size of the
  * \ref did_you_mean array to allocate (not including the terminating element
