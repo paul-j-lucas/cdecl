@@ -43,11 +43,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Data structure to hold a "Did you mean ...?" literal.
+ * Data structure to hold a known "Did you mean ...?" literal.
  */
 struct did_you_mean {
-  char const *literal;                  ///< Candidate literal.
-  size_t      literal_len;              ///< Length of \ref literal.
+  char const *known;                    ///< Known candidate.
+  size_t      known_len;                ///< Length of \ref known.
   size_t      dam_lev_dist;             ///< Damerau-Levenshtein edit distance.
   void       *user_data;                ///< Optional user data.
 };
@@ -65,16 +65,16 @@ typedef void (*dym_cleanup_fn_t)( did_you_mean_t const *dym );
  * The signature for a function to prepare \ref did_you_mean elements of an
  * array thereof.
  *
- * @remarks The function _must_ set \ref did_you_mean::literal "literal" to a
+ * @remarks The function _must_ set \ref did_you_mean::known "known" to a
  * candidate literal; it may set \ref did_you_mean::user_data to anything.
  * Other members of \ref did_you_mean are set by dym_new().
  *
  * @param dym_array If NULL, the function _must_ only return the size of the
  * \ref did_you_mean array to allocate (not including the terminating element
- * containing a NULL \ref did_you_mean::literal "literal"; otherwise the
- * function _must_ set the \ref did_you_mean::literal "literal" member of every
- * array element.
-
+ * containing a NULL \ref did_you_mean::known "known"; otherwise the function
+ * _must_ set the \ref did_you_mean::known "known" member of every array
+ * element.  It should _not_ set \ref did_you_mean::known_len "known_len" since
+ * that will be set by dym_new().
  * @param prep_data Optional data passed to the function.
  * @return If \a dym_array is NULL, returns the size of the \ref did_you_mean
  * array to allocate; otherwise the return value is unspecified.
@@ -107,9 +107,9 @@ void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn );
 
 /**
  * Creates a new array of \ref did_you_mean elements containing "Did you mean
- * ...?" suggestion literals for \a unknown_literal.
+ * ...?" suggestions of known literals for \a unknown.
  *
- * @param unknown_literal The unknown literal.
+ * @param unknown The unknown literal.
  * @param prep_fn A pointer to a \ref dym_prep_fn_t function to use.
  * @param prep_data Optional data passed to \a prep_fn that it may use for any
  * purpose.
@@ -118,13 +118,13 @@ void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn );
  * did_you_mean::user_data "user_data" member of a \ref did_you_mean structure.
  * May be NULL.
  * @return Returns a pointer to an array of elements terminated by one having a
- * NULL \ref did_you_mean::literal "literal" if there are suggestions or NULL
- * if not.  The caller is responsible for calling dym_free().
+ * NULL \ref did_you_mean::known "known" if there are suggestions or NULL if
+ * not.  The caller is responsible for calling dym_free().
  *
  * @sa dym_free()
  */
 NODISCARD
-did_you_mean_t const* dym_new( char const *unknown_literal,
+did_you_mean_t const* dym_new( char const *unknown,
                                dym_prep_fn_t prep_fn, void *prep_data,
                                dym_similar_fn_t similar_fn,
                                dym_cleanup_fn_t cleanup_fn );

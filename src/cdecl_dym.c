@@ -135,13 +135,13 @@ static size_t cdecl_dym_prep( did_you_mean_t *dym_array, void *prep_data ) {
  * Frees memory used by \a dym.
  *
  * @param dym A pointer to the first \ref did_you_mean to free and continuing
- * until `literal` is NULL.
+ * until \ref did_you_mean::known "known" is NULL.
  */
 static void cdecl_dym_cleanup( did_you_mean_t const *dym ) {
   if ( dym != NULL ) {
-    bool const free_literal = POINTER_CAST( bool, dym->user_data );
-    if ( free_literal )
-      FREE( dym->literal );
+    bool const free_known = POINTER_CAST( bool, dym->user_data );
+    if ( free_known )
+      FREE( dym->known );
   }
 }
 
@@ -168,7 +168,7 @@ static void cdecl_dym_cleanup( did_you_mean_t const *dym ) {
 NODISCARD
 static bool is_similar_enough( did_you_mean_t const *dym ) {
   return dym->dam_lev_dist <= STATIC_CAST( size_t,
-    STATIC_CAST( double, dym->literal_len ) * SIMILAR_ENOUGH_PERCENT + 0.5
+    STATIC_CAST( double, dym->known_len ) * SIMILAR_ENOUGH_PERCENT + 0.5
   );
 }
 
@@ -192,7 +192,7 @@ static size_t prep_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
       if ( pdym == NULL )
         ++count;
       else
-        (*pdym)++->literal = ck->literal;
+        (*pdym)++->known = ck->literal;
     }
   } // for
   return count;
@@ -217,15 +217,15 @@ static size_t prep_cdecl_keywords( did_you_mean_t **const pdym ) {
   FOREACH_CDECL_KEYWORD( cdk ) {
     if ( !opt_lang_is_any( cdk->lang_ids ) )
       continue;
-    char const *literal;
+    char const *known;
     if ( cdk->lang_syn == NULL )
-      literal = cdk->literal;
-    else if ( (literal = c_lang_literal( cdk->lang_syn )) == NULL )
+      known = cdk->literal;
+    else if ( (known = c_lang_literal( cdk->lang_syn )) == NULL )
       continue;
     if ( pdym == NULL )
       ++count;
     else
-      (*pdym)++->literal = literal;
+      (*pdym)++->known = known;
   } // for
   return count;
 }
@@ -249,7 +249,7 @@ static size_t prep_commands( did_you_mean_t **const pdym ) {
       if ( pdym == NULL )
         ++count;
       else
-        (*pdym)++->literal = command->literal;
+        (*pdym)++->known = command->literal;
     }
   } // for
   return count;
@@ -272,7 +272,7 @@ static size_t prep_cli_options( did_you_mean_t **pdym ) {
     if ( pdym == NULL )
       ++count;
     else
-      (*pdym)++->literal = opt->name;
+      (*pdym)++->known = opt->name;
   } // for
   return count;
 }
@@ -294,7 +294,7 @@ static size_t prep_help_options( did_you_mean_t **const pdym ) {
     if ( pdym == NULL )
       ++count;
     else
-      (*pdym)++->literal = *opt;
+      (*pdym)++->known = *opt;
   } // for
   return count;
 }
@@ -322,7 +322,7 @@ static bool prep_macro_vistor( p_macro_t const *macro, void *visit_data ) {
   if ( drvd->pdym == NULL )
     ++drvd->count;
   else
-    (*drvd->pdym)++->literal = macro->name;
+    (*drvd->pdym)++->known = macro->name;
   return false;
 }
 
@@ -363,8 +363,8 @@ static size_t prep_set_options( did_you_mean_t **const pdym ) {
         if ( pdym == NULL ) {
           count += 2;
         } else {
-          (*pdym)++->literal = opt->name;
-          (*pdym)->literal = check_prefix_strdup( "no", 2, opt->name );
+          (*pdym)++->known = opt->name;
+          (*pdym)->known = check_prefix_strdup( "no", 2, opt->name );
           (*pdym)->user_data = POINTER_CAST( void*, true );
           ++*pdym;
         }
@@ -373,13 +373,13 @@ static size_t prep_set_options( did_you_mean_t **const pdym ) {
         if ( pdym == NULL )
           ++count;
         else
-          (*pdym)++->literal = opt->name;
+          (*pdym)++->known = opt->name;
         break;
       case SET_OPTION_NEG_ONLY:
         if ( pdym == NULL ) {
           ++count;
         } else {
-          (*pdym)->literal = check_prefix_strdup( "no", 2, opt->name );
+          (*pdym)->known = check_prefix_strdup( "no", 2, opt->name );
           (*pdym)->user_data = POINTER_CAST( void*, true );
           ++*pdym;
         }
@@ -409,7 +409,7 @@ static bool prep_typedef_visitor( c_typedef_t const *tdef, void *visit_data ) {
       ++drvd->count;
     } else {
       char const *const name = c_sname_gibberish( &tdef->ast->sname );
-      (*drvd->pdym)->literal = check_strdup( name );
+      (*drvd->pdym)->known = check_strdup( name );
       (*drvd->pdym)->user_data = POINTER_CAST( void*, true );
       ++*drvd->pdym;
     }
@@ -441,10 +441,9 @@ void cdecl_dym_free( did_you_mean_t const *dym_array ) {
   dym_free( dym_array, &cdecl_dym_cleanup );
 }
 
-did_you_mean_t const* cdecl_dym_new( dym_kind_t kinds,
-                                     char const *unknown_literal ) {
+did_you_mean_t const* cdecl_dym_new( dym_kind_t kinds, char const *unknown ) {
   return kinds == DYM_NONE ? NULL : dym_new(
-    unknown_literal, &cdecl_dym_prep, POINTER_CAST( void*, kinds ),
+    unknown, &cdecl_dym_prep, POINTER_CAST( void*, kinds ),
     &is_similar_enough, &cdecl_dym_cleanup
   );
 }

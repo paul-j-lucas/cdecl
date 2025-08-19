@@ -89,7 +89,7 @@ print_params_t            print_params;
 
 /**
  * Helper function for print_suggestions() and fput_list() that gets the string
- * for a \ref did_you_mean literal.
+ * for a \ref did_you_mean::known "known" literal.
  *
  * @param ppelt A pointer to the pointer to the \ref did_you_mean element to
  * get the string of.  On return, it is advanced to the next element.
@@ -99,7 +99,7 @@ print_params_t            print_params;
 NODISCARD
 static char const* fput_list_dym_gets( void const **ppelt ) {
   did_you_mean_t const *const dym = *ppelt;
-  if ( dym->literal == NULL )
+  if ( dym->known == NULL )
     return NULL;
   *ppelt = dym + 1;
 
@@ -108,7 +108,7 @@ static char const* fput_list_dym_gets( void const **ppelt ) {
 
   strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
   strbuf_reset( sbuf );
-  return strbuf_printf( sbuf, "\"%s\"", dym->literal );
+  return strbuf_printf( sbuf, "\"%s\"", dym->known );
 }
 
 /**

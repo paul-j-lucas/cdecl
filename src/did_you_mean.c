@@ -52,7 +52,7 @@
  * Frees memory used by \a dym.
  *
  * @param dym A pointer to the first \ref did_you_mean to free and continuing
- * until `literal` is NULL.
+ * until \ref did_you_mean::known "known" is NULL.
  * @param cleanup_fn A pointer to the \ref dym_cleanup_fn_t to use.  May be
  * NULL.
  */
@@ -61,7 +61,7 @@ static void dym_cleanup_all( did_you_mean_t const *dym,
   assert( dym != NULL );
   if ( cleanup_fn == NULL )
     return;
-  while ( dym->literal != NULL )
+  while ( dym->known != NULL )
     (*cleanup_fn)( dym++ );
 }
 
@@ -79,7 +79,7 @@ static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
     STATIC_CAST( ssize_t, i_dym->dam_lev_dist ) -
     STATIC_CAST( ssize_t, j_dym->dam_lev_dist );
   return  cmp != 0 ? STATIC_CAST( int, cmp ) :
-          strcmp( i_dym->literal, j_dym->literal );
+          strcmp( i_dym->known, j_dym->known );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -91,11 +91,11 @@ void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn ) {
   }
 }
 
-did_you_mean_t const* dym_new( char const *unknown_literal,
+did_you_mean_t const* dym_new( char const *unknown,
                                dym_prep_fn_t prep_fn, void *prep_data,
                                dym_similar_fn_t similar_fn,
                                dym_cleanup_fn_t cleanup_fn ) {
-  assert( unknown_literal != NULL );
+  assert( unknown != NULL );
   assert( prep_fn != NULL );
   assert( similar_fn != NULL );
 
@@ -112,12 +112,12 @@ did_you_mean_t const* dym_new( char const *unknown_literal,
   did_you_mean_t *dym;
 
   // calculate the source and maximum target lengths
-  size_t const unknown_len = strlen( unknown_literal );
-  size_t max_target_len = 0;
-  for ( dym = dym_array; dym->literal != NULL; ++dym ) {
-    dym->literal_len = strlen( dym->literal );
-    if ( dym->literal_len > max_target_len )
-      max_target_len = dym->literal_len;
+  size_t const unknown_len = strlen( unknown );
+  size_t max_known_len = 0;
+  for ( dym = dym_array; dym->known != NULL; ++dym ) {
+    dym->known_len = strlen( dym->known );
+    if ( dym->known_len > max_known_len )
+      max_known_len = dym->known_len;
   } // for
 
   /*
@@ -126,12 +126,10 @@ did_you_mean_t const* dym_new( char const *unknown_literal,
    */
 
   // calculate Damerau-Levenshtein edit distance for all candidates
-  void *const dam_lev_mem = dam_lev_new( unknown_len, max_target_len );
-  for ( dym = dym_array; dym->literal != NULL; ++dym ) {
+  void *const dam_lev_mem = dam_lev_new( unknown_len, max_known_len );
+  for ( dym = dym_array; dym->known != NULL; ++dym ) {
     dym->dam_lev_dist = dam_lev_dist(
-      dam_lev_mem,
-      unknown_literal, unknown_len,
-      dym->literal, dym->literal_len
+      dam_lev_mem, unknown, unknown_len, dym->known, dym->known_len
     );
   } // for
   free( dam_lev_mem );
@@ -145,7 +143,7 @@ did_you_mean_t const* dym_new( char const *unknown_literal,
   if ( dym_array->dam_lev_dist > 0 ) {
     bool found_at_least_1 = false;
 
-    for ( dym = dym_array; dym->literal != NULL; ++dym ) {
+    for ( dym = dym_array; dym->known != NULL; ++dym ) {
       if ( !(*similar_fn)( dym ) )
         break;
       found_at_least_1 = true;
@@ -153,8 +151,8 @@ did_you_mean_t const* dym_new( char const *unknown_literal,
 
     if ( found_at_least_1 ) {
       //
-      // Free literals past the best ones and set the one past the last to NULL
-      // to mark the end.
+      // Free known literals past the best ones and set the one past the last
+      // to NULL to mark the end.
       //
       dym_cleanup_all( dym, cleanup_fn );
       *dym = (did_you_mean_t){ 0 };
@@ -163,8 +161,8 @@ did_you_mean_t const* dym_new( char const *unknown_literal,
   }
   else {
     //
-    // This means unknown_literal was an exact match for a literal which means
-    // we shouldn't suggest it for itself.
+    // This means unknown was an exact match for a known literal which means we
+    // shouldn't suggest it for itself.
     //
   }
 

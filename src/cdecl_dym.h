@@ -71,16 +71,15 @@ void cdecl_dym_free( did_you_mean_t const *dym_array );
 
 /**
  * Creates a new array of \ref did_you_mean elements containing "Did you mean
- * ...?" suggestion literals for \a unknown_literal.
+ * ...?" suggestion literals for \a unknown.
  *
  * @param kinds The bitwise-or of the kind(s) of things possibly meant.
- * @param unknown_literal The unknown literal.
+ * @param unknown The unknown literal.
  * @return Returns a pointer to an array of elements terminated by one having a
  * NULL `literal` pointer if there are suggestions or NULL if not.  The caller
  * is responsible for calling cdecl_dym_free().
  */
-did_you_mean_t const* cdecl_dym_new( dym_kind_t kinds,
-                                     char const *unknown_literal );
+did_you_mean_t const* cdecl_dym_new( dym_kind_t kinds, char const *unknown );
 
 ///////////////////////////////////////////////////////////////////////////////
 
