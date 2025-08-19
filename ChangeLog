@@ -1,3 +1,7 @@
+2025-08-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, types.h: Eliminated USER_DATA_UINT and USER_DATA_UINT_AS.
+
 2025-08-18  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am, cdecl_dym.c, cdecl_dym.h, did_you_mean.c, did_you_mean.h,
@@ -8613,7 +8617,7 @@
      explain_tf_v-c++17.out: Improved error messages specifying when a feature
      becomes legal, if ever.
    * explain_tf_v-c++17.out: Fixed expected test result.
-   * check.c: Constructors and destructors are now checked for `throw`. 
+   * check.c: Constructors and destructors are now checked for `throw`.
      Constructor parameters are now checked for warnings.
    * c_lang.c: Fixed comment.
 
@@ -9740,7 +9744,7 @@
 
    * c_sname.c, c_sname.h, english.c, errors.c, lexer.l, parser.y, types.h,
      test/Makefile.am, explain_nsct.out, explain_nsct.test: Each scope of a
-     scoped name (sname) now has its own type.	Additionally, the English
+     scoped name (sname) now has its own type.  Additionally, the English
      printed order is now (correctly) inner-to-outermost.
 
 2020-07-17  Paul J. Lucas <paul@lucasmail.org>
