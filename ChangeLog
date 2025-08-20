@@ -1,3 +1,7 @@
+2025-08-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_dym.c, did_you_mean.c, did_you_mean.h: Better did-you-mean API.
+
 2025-08-19  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, types.h: Eliminated USER_DATA_UINT and USER_DATA_UINT_AS.
