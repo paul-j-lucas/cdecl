@@ -1,5 +1,6 @@
 2025-08-20  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl_dym.c, did_you_mean.c, did_you_mean.h: Even better did-you-mean API.
    * cdecl_dym.c, did_you_mean.c, did_you_mean.h: Better did-you-mean API.
 
 2025-08-19  Paul J. Lucas <paul@lucasmail.org>
