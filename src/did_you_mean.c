@@ -84,24 +84,13 @@ static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn ) {
-  if ( dym_array != NULL ) {
-    dym_cleanup_all( dym_array, cleanup_fn );
-    FREE( dym_array );
-  }
-}
-
-did_you_mean_t const* dym_new( char const *unknown,
-                               dym_prep_fn_t prep_fn, void *prep_data,
-                               dym_similar_fn_t similar_fn,
-                               dym_cleanup_fn_t cleanup_fn ) {
+bool dym_calc( char const *unknown, did_you_mean_t *dym_array,
+               dym_similar_fn_t similar_fn, dym_cleanup_fn_t cleanup_fn ) {
   assert( unknown != NULL );
-  assert( prep_fn != NULL );
   assert( similar_fn != NULL );
 
-  did_you_mean_t *const dym_array = (*prep_fn)( prep_data );
   if ( dym_array == NULL )
-    return NULL;                        // LCOV_EXCL_LINE
+    return false;                       // LCOV_EXCL_LINE
 
   did_you_mean_t *dym;
 
@@ -113,7 +102,7 @@ did_you_mean_t const* dym_new( char const *unknown,
     if ( dym->known_len > max_known_len )
       max_known_len = dym->known_len;
   } // for
-  size_t const dym_size = dym - dym_array;
+  size_t const dym_size = (size_t)(dym - dym_array);
 
   /*
    * Adapted from the code:
@@ -151,7 +140,7 @@ did_you_mean_t const* dym_new( char const *unknown,
       //
       dym_cleanup_all( dym, cleanup_fn );
       *dym = (did_you_mean_t){ 0 };
-      return dym_array;
+      return true;
     }
   }
   else {
@@ -162,7 +151,14 @@ did_you_mean_t const* dym_new( char const *unknown,
   }
 
   dym_free( dym_array, cleanup_fn );
-  return NULL;
+  return false;
+}
+
+void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn ) {
+  if ( dym_array != NULL ) {
+    dym_cleanup_all( dym_array, cleanup_fn );
+    FREE( dym_array );
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

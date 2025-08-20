@@ -62,21 +62,6 @@ typedef struct did_you_mean did_you_mean_t;
 typedef void (*dym_cleanup_fn_t)( did_you_mean_t const *dym );
 
 /**
- * The signature for a function to allocate and prepare \ref did_you_mean
- * elements of an array thereof.
- *
- * @remarks The function _must_ set \ref did_you_mean::known "known" to a
- * candidate literal; it may set \ref did_you_mean::user_data to anything.
- * Other members of \ref did_you_mean are set by dym_new().
- *
- * @param prep_data Optional data passed to the function.
- * @return Returns a pointer to an array of \ref did_you_mean elements
- * terminated by an element where \ref did_you_mean::known "known" is NULL; or
- * NULL if there are no candidates.
- */
-typedef did_you_mean_t* (*dym_prep_fn_t)( void *prep_data );
-
-/**
  * The signature for a function to determine whether \a dym is similar enough
  * to the unknown literal given to dym_new().
  *
@@ -101,29 +86,27 @@ typedef bool (*dym_similar_fn_t)( did_you_mean_t const *dym );
 void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn );
 
 /**
- * Creates a new array of \ref did_you_mean elements containing "Did you mean
- * ...?" suggestions of known literals for \a unknown.
+ * Given an array of \ref did_you_mean suggestions for \a unknown, calculates a
+ * Damerau-Levenshtein edit distance for each suggestion, sorts the array by
+ * it, and removes suggestions that are not similar enough according to \a
+ * similar_fn.
  *
  * @param unknown The unknown literal.
- * @param prep_fn A pointer to a \ref dym_prep_fn_t function to use.
- * @param prep_data Optional data passed to \a prep_fn that it may use for any
- * purpose.
- * @param similar_fn A pointer to a \ref dym_prep_fn_t function to use.
- * @param cleanup_fn A pointer to a function to clean-up the \ref
- * did_you_mean::user_data "user_data" member of a \ref did_you_mean structure.
- * May be NULL.
- * @return Returns a pointer to an array of \ref did_you_mean elements
- * terminated by one having a NULL \ref did_you_mean::known "known" if there
- * are suggestions or NULL if not.  The caller is responsible for calling
- * dym_free().
+ * @param dym_array The array of \ref did_you_mean to use.  May be NULL.  If
+ * not, each element _must_ have \ref did_you_mean::known "known" point to a
+ * suggestion except the last _must_ be NULL.  The \ref did_you_mean::user_data
+ * "user_data" member may be used for any purpose.
+ * @param similar_fn A pointer to a \ref dym_similar_fn_t function to use.
+ * @param cleanup_fn A pointer to a function to clean-up each element of \a
+ * dym_array.  May be NULL if no clean-up is needed.
+ * @return Returns `true` only if there is at least one suggestion according to
+ * \a similar_fn; `false` otherwise.
  *
  * @sa dym_free()
  */
 NODISCARD
-did_you_mean_t const* dym_new( char const *unknown,
-                               dym_prep_fn_t prep_fn, void *prep_data,
-                               dym_similar_fn_t similar_fn,
-                               dym_cleanup_fn_t cleanup_fn );
+bool dym_calc( char const *unknown, did_you_mean_t *dym_array,
+              dym_similar_fn_t similar_fn, dym_cleanup_fn_t cleanup_fn );
 
 ///////////////////////////////////////////////////////////////////////////////
 

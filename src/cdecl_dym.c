@@ -96,43 +96,12 @@ static size_t prep_all( dym_kind_t, did_you_mean_t** ),
  *
  * @param dym A pointer to a \ref did_you_mean to clean-up.
  */
-static void cdecl_dym_cleanup( did_you_mean_t const *dym ) {
+static void dym_cleanup( did_you_mean_t const *dym ) {
   if ( dym != NULL ) {
     bool const free_known = POINTER_CAST( bool, dym->user_data );
     if ( free_known )
       FREE( dym->known );
   }
-}
-
-/**
- * Determines the number of candidate suggestions, allocates an array of \ref
- * did_you_mean, and sets \ref did_you_mean::known "known" of every element to
- * a suggestion.
- *
- * @param prep_data Contains the bitwise-or of the kind(s) of things possibly
- * meant.
- * @return If \a dym is NULL, returns said number of tokens; otherwise the
- * return value is unspecified.
-
- * @return Returns a pointer to an array of \ref did_you_mean elements
- * terminated by one having a NULL \ref did_you_mean::known "known" if there
- * are suggestions or NULL if not.  The caller is responsible for calling
- * cdecl_dym_free().
- */
-NODISCARD
-static did_you_mean_t* cdecl_dym_prep( void *prep_data ) {
-  dym_kind_t const kinds = POINTER_CAST( dym_kind_t, prep_data );
-
-  size_t const dym_size = prep_all( kinds, /*pdym=*/NULL );
-  if ( dym_size == 0 )
-    return NULL;
-
-  did_you_mean_t *const dym_array =
-    calloc( dym_size + 1, sizeof( did_you_mean_t ) );
-
-  did_you_mean_t *dym = dym_array;
-  prep_all( kinds, &dym );
-  return dym_array;
 }
 
 /**
@@ -473,14 +442,27 @@ static size_t prep_typedefs( did_you_mean_t **pdym ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void cdecl_dym_free( did_you_mean_t const *dym_array ) {
-  dym_free( dym_array, &cdecl_dym_cleanup );
+  dym_free( dym_array, &dym_cleanup );
 }
 
 did_you_mean_t const* cdecl_dym_new( dym_kind_t kinds, char const *unknown ) {
-  return kinds == DYM_NONE ? NULL : dym_new(
-    unknown, &cdecl_dym_prep, POINTER_CAST( void*, kinds ),
-    &is_similar_enough, &cdecl_dym_cleanup
-  );
+  assert( unknown != NULL );
+
+  if ( kinds == DYM_NONE )
+    return NULL;
+
+  size_t const dym_size = prep_all( kinds, /*pdym=*/NULL );
+  if ( dym_size == 0 )
+    return NULL;
+
+  did_you_mean_t *const dym_array =
+    calloc( dym_size + 1, sizeof( did_you_mean_t ) );
+
+  did_you_mean_t *dym = dym_array;
+  prep_all( kinds, &dym );
+
+  return dym_calc( unknown, dym_array, &is_similar_enough, &dym_cleanup ) ?
+    dym_array : NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
