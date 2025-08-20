@@ -62,24 +62,19 @@ typedef struct did_you_mean did_you_mean_t;
 typedef void (*dym_cleanup_fn_t)( did_you_mean_t const *dym );
 
 /**
- * The signature for a function to prepare \ref did_you_mean elements of an
- * array thereof.
+ * The signature for a function to allocate and prepare \ref did_you_mean
+ * elements of an array thereof.
  *
  * @remarks The function _must_ set \ref did_you_mean::known "known" to a
  * candidate literal; it may set \ref did_you_mean::user_data to anything.
  * Other members of \ref did_you_mean are set by dym_new().
  *
- * @param dym_array If NULL, the function _must_ only return the size of the
- * \ref did_you_mean array to allocate (not including the terminating element
- * containing a NULL \ref did_you_mean::known "known"; otherwise the function
- * _must_ set the \ref did_you_mean::known "known" member of every array
- * element.  It should _not_ set \ref did_you_mean::known_len "known_len" since
- * that will be set by dym_new().
  * @param prep_data Optional data passed to the function.
- * @return If \a dym_array is NULL, returns the size of the \ref did_you_mean
- * array to allocate; otherwise the return value is unspecified.
+ * @return Returns a pointer to an array of \ref did_you_mean elements
+ * terminated by an element where \ref did_you_mean::known "known" is NULL; or
+ * NULL if there are no candidates.
  */
-typedef size_t (*dym_prep_fn_t)( did_you_mean_t *dym_array, void *prep_data );
+typedef did_you_mean_t* (*dym_prep_fn_t)( void *prep_data );
 
 /**
  * The signature for a function to determine whether \a dym is similar enough
@@ -117,9 +112,10 @@ void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn );
  * @param cleanup_fn A pointer to a function to clean-up the \ref
  * did_you_mean::user_data "user_data" member of a \ref did_you_mean structure.
  * May be NULL.
- * @return Returns a pointer to an array of elements terminated by one having a
- * NULL \ref did_you_mean::known "known" if there are suggestions or NULL if
- * not.  The caller is responsible for calling dym_free().
+ * @return Returns a pointer to an array of \ref did_you_mean elements
+ * terminated by one having a NULL \ref did_you_mean::known "known" if there
+ * are suggestions or NULL if not.  The caller is responsible for calling
+ * dym_free().
  *
  * @sa dym_free()
  */

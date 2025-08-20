@@ -75,7 +75,8 @@ static double const SIMILAR_ENOUGH_PERCENT = .37;
 
 // local functions
 PJL_DISCARD
-static size_t prep_c_keywords( did_you_mean_t**, c_tpid_t ),
+static size_t prep_all( dym_kind_t, did_you_mean_t** ),
+              prep_c_keywords( did_you_mean_t**, c_tpid_t ),
               prep_cdecl_keywords( did_you_mean_t** ),
               prep_commands( did_you_mean_t** ),
               prep_cli_options( did_you_mean_t** ),
@@ -87,20 +88,93 @@ static size_t prep_c_keywords( did_you_mean_t**, c_tpid_t ),
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Copies tokens to the candidate list pointed to by \a pdym; if \a pdym is
- * NULL, only counts the number of tokens.
+ * Cleans-up memory used by \a dym.
  *
- * @param dym_array A pointer to the current \ref did_you_mean or NULL to just
- * count things, not copy.
+ * @remarks \ref did_you_mean::user_data contains a `bool` indicating whether
+ * \ref did_you_mean::known "known" was dynamically allocated: if so, frees it;
+ * otherwise does nothing.
+ *
+ * @param dym A pointer to a \ref did_you_mean to clean-up.
+ */
+static void cdecl_dym_cleanup( did_you_mean_t const *dym ) {
+  if ( dym != NULL ) {
+    bool const free_known = POINTER_CAST( bool, dym->user_data );
+    if ( free_known )
+      FREE( dym->known );
+  }
+}
+
+/**
+ * Determines the number of candidate suggestions, allocates an array of \ref
+ * did_you_mean, and sets \ref did_you_mean::known "known" of every element to
+ * a suggestion.
+ *
  * @param prep_data Contains the bitwise-or of the kind(s) of things possibly
  * meant.
  * @return If \a dym is NULL, returns said number of tokens; otherwise the
  * return value is unspecified.
+
+ * @return Returns a pointer to an array of \ref did_you_mean elements
+ * terminated by one having a NULL \ref did_you_mean::known "known" if there
+ * are suggestions or NULL if not.  The caller is responsible for calling
+ * cdecl_dym_free().
+ */
+NODISCARD
+static did_you_mean_t* cdecl_dym_prep( void *prep_data ) {
+  dym_kind_t const kinds = POINTER_CAST( dym_kind_t, prep_data );
+
+  size_t const dym_size = prep_all( kinds, /*pdym=*/NULL );
+  if ( dym_size == 0 )
+    return NULL;
+
+  did_you_mean_t *const dym_array =
+    calloc( dym_size + 1, sizeof( did_you_mean_t ) );
+
+  did_you_mean_t *dym = dym_array;
+  prep_all( kinds, &dym );
+  return dym_array;
+}
+
+/**
+ * Gets whether \a dam_lev_dist is "similar enough" to be a candidate.
+ *
+ * @remarks Using a Damerau-Levenshtein edit distance alone to implement "Did
+ * you mean ...?" can yield poor results if you just always use the results
+ * with the least distance.  For example, given a source string of "fixed" and
+ * the best target string of "float", it's probably safe to assume that because
+ * "fixed" is so different from "float" that there's no way "float" was meant.
+ * It would be better to offer _no_ suggestions than not-even-close
+ * suggestions.
+ * @par
+ * Hence, you need a heuristic to know whether a least edit distance is
+ * "similar enough" to the target string even to bother offering suggestions.
+ * This can be done by checking whether the distance is less than or equal to
+ * some percentage of the target string's length in order to be considered
+ * "similar enough" to be a reasonable suggestion.
+ *
+ * @param dym A pointer to the \ref did_you_mean to check.
+ * @return Returns `true` only if \a dam_lev_dist is "similar enough."
+ */
+NODISCARD
+static bool is_similar_enough( did_you_mean_t const *dym ) {
+  return dym->dam_lev_dist <= STATIC_CAST( size_t,
+    STATIC_CAST( double, dym->known_len ) * SIMILAR_ENOUGH_PERCENT + 0.5
+  );
+}
+
+/**
+ * Either determines the number of candidate suggestions or sets \ref
+ * did_you_mean::known "known" of every element to a suggestion.
+ *
+ * @param kinds The bitwise-or of the kind(s) of things possibly meant.
+ * @param pdym If NULL, determines the number of candidate suggestions; if non-
+ * NULL, sets \ref did_you_mean::known "known" of every element to a
+ * suggestion.
+ * @return If \a pdym is NULL, returns the number of suggestions; otherwise the
+ * return value is unspecified.
  */
 PJL_DISCARD
-static size_t cdecl_dym_prep( did_you_mean_t *dym_array, void *prep_data ) {
-  dym_kind_t const kinds = POINTER_CAST( dym_kind_t, prep_data );
-  did_you_mean_t **pdym = dym_array != NULL ? &dym_array : NULL;
+static size_t prep_all( dym_kind_t kinds, did_you_mean_t **pdym ) {
   return  ((kinds & DYM_COMMANDS) != DYM_NONE ?
             prep_commands( pdym ) : 0)
 
@@ -132,60 +206,20 @@ static size_t cdecl_dym_prep( did_you_mean_t *dym_array, void *prep_data ) {
 }
 
 /**
- * Frees memory used by \a dym.
+ * Either determines the number of C keyword suggestions or sets \ref
+ * did_you_mean::known "known" of every element to a suggestion.
  *
- * @param dym A pointer to the first \ref did_you_mean to free and continuing
- * until \ref did_you_mean::known "known" is NULL.
- */
-static void cdecl_dym_cleanup( did_you_mean_t const *dym ) {
-  if ( dym != NULL ) {
-    bool const free_known = POINTER_CAST( bool, dym->user_data );
-    if ( free_known )
-      FREE( dym->known );
-  }
-}
-
-/**
- * Gets whether \a dam_lev_dist is "similar enough" to be a candidate.
- *
- * @remarks Using a Damerau-Levenshtein edit distance alone to implement "Did
- * you mean ...?" can yield poor results if you just always use the results
- * with the least distance.  For example, given a source string of "fixed" and
- * the best target string of "float", it's probably safe to assume that because
- * "fixed" is so different from "float" that there's no way "float" was meant.
- * It would be better to offer _no_ suggestions than not-even-close
+ * @param pdym If NULL, determines the number of suggestions; if non-NULL, sets
+ * \ref did_you_mean::known "known" of every element to a suggestion.  Upon
+ * return, the pointer to which \a pdym points is advanced by the number of
  * suggestions.
- * @par
- * Hence, you need a heuristic to know whether a least edit distance is
- * "similar enough" to the target string even to bother offering suggestions.
- * This can be done by checking whether the distance is less than or equal to
- * some percentage of the target string's length in order to be considered
- * "similar enough" to be a reasonable suggestion.
- *
- * @param dym A pointer to the \ref did_you_mean to check.
- * @return Returns `true` only if \a dam_lev_dist is "similar enough."
- */
-NODISCARD
-static bool is_similar_enough( did_you_mean_t const *dym ) {
-  return dym->dam_lev_dist <= STATIC_CAST( size_t,
-    STATIC_CAST( double, dym->known_len ) * SIMILAR_ENOUGH_PERCENT + 0.5
-  );
-}
-
-/**
- * Copies C/C++ keywords in the current language to the candidate list pointed
- * to by \a pdym; if \a pdym is NULL, only counts the number of keywords.
- *
- * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
- * just count keywords, not copy.  If not NULL, on return, the pointed-to
- * pointer is incremented.
  * @param tpid The type part ID that a keyword must have in order to be copied
  * (or counted).
- * @return If \a pdym is NULL, returns said number of keywords; otherwise the
- * return value is unspecified.
+ * @return If \a pdym is NULL, returns said number of suggestions; otherwise
+ * the return value is unspecified.
  */
 PJL_DISCARD
-static size_t prep_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
+static size_t prep_c_keywords( did_you_mean_t **pdym, c_tpid_t tpid ) {
   size_t count = 0;
   FOREACH_C_KEYWORD( ck ) {
     if ( opt_lang_is_any( ck->lang_ids ) && c_tid_tpid( ck->tid ) == tpid ) {
@@ -199,18 +233,18 @@ static size_t prep_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
 }
 
 /**
- * Copies **cdecl** keywords in the current language to the candidate list
- * pointed to by \a pdym; if \a pdym is NULL, only counts the number of
- * keywords.
+ * Either determines the number of **cdecl** keyword suggestions or sets \ref
+ * did_you_mean::known "known" of every element to a suggestion.
  *
- * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
- * just count keywords, not copy.  If not NULL, on return, the pointed-to
- * pointer is incremented.
- * @return If \a pdym is NULL, returns said number of keywords; otherwise the
- * return value is unspecified.
+ * @param pdym If NULL, determines the number of suggestions; if non-NULL, sets
+ * \ref did_you_mean::known "known" of every element to a suggestion.  Upon
+ * return, the pointer to which \a pdym points is advanced by the number of
+ * suggestions.
+ * @return If \a pdym is NULL, returns said number of suggestions; otherwise
+ * the return value is unspecified.
  */
 PJL_DISCARD
-static size_t prep_cdecl_keywords( did_you_mean_t **const pdym ) {
+static size_t prep_cdecl_keywords( did_you_mean_t **pdym ) {
   assert( is_english_to_gibberish() );
 
   size_t count = 0;
@@ -231,18 +265,18 @@ static size_t prep_cdecl_keywords( did_you_mean_t **const pdym ) {
 }
 
 /**
- * Copies **cdecl** commands in the current language to the candidate list
- * pointed to by \a pdym; if \a pdym is NULL, only counts the number of
- * commands.
+ * Either determines the number of **cdecl** command suggestions or sets \ref
+ * did_you_mean::known "known" of every element to a suggestion.
  *
- * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
- * just count commands, not copy.  If not NULL, on return, the pointed-to
- * pointer is incremented.
- * @return If \a pdym is NULL, returns said number of commands; otherwise the
- * return value is unspecified.
+ * @param pdym If NULL, determines the number of suggestions; if non-NULL, sets
+ * \ref did_you_mean::known "known" of every element to a suggestion.  Upon
+ * return, the pointer to which \a pdym points is advanced by the number of
+ * suggestions.
+ * @return If \a pdym is NULL, returns said number of suggestions; otherwise
+ * the return value is unspecified.
  */
 PJL_DISCARD
-static size_t prep_commands( did_you_mean_t **const pdym ) {
+static size_t prep_commands( did_you_mean_t **pdym ) {
   size_t count = 0;
   FOREACH_CDECL_COMMAND( command ) {
     if ( opt_lang_is_any( command->lang_ids ) ) {
@@ -256,14 +290,15 @@ static size_t prep_commands( did_you_mean_t **const pdym ) {
 }
 
 /**
- * Copies **cdecl** command-line options to the candidate list pointed to by \a
- * pdym; if \a pdym is NULL, only counts the number of options.
+ * Either determines the number of **cdecl** command-line-option suggestions or
+ * sets \ref did_you_mean::known "known" of every element to a suggestion.
  *
- * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
- * just count options, not copy.  If not NULL, on return, the pointed-to
- * pointer is incremented.
- * @return If \a pdym is NULL, returns said number of options; otherwise the
- * return value is unspecified.
+ * @param pdym If NULL, determines the number of suggestions; if non-NULL, sets
+ * \ref did_you_mean::known "known" of every element to a suggestion.  Upon
+ * return, the pointer to which \a pdym points is advanced by the number of
+ * suggestions.
+ * @return If \a pdym is NULL, returns said number of suggestions; otherwise
+ * the return value is unspecified.
  */
 PJL_DISCARD
 static size_t prep_cli_options( did_you_mean_t **pdym ) {
@@ -278,17 +313,18 @@ static size_t prep_cli_options( did_you_mean_t **pdym ) {
 }
 
 /**
- * Copies **cdecl** `help` options to the candidate list pointed to by \a pdym;
- * if \a pdym is NULL, only counts the number of options.
+ * Either determines the number of **cdecl** help-option suggestions or sets
+ * \ref did_you_mean::known "known" of every element to a suggestion.
  *
- * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
- * just count options, not copy.  If not NULL, on return, the pointed-to
- * pointer is incremented.
- * @return If \a pdym is NULL, returns said number of options; otherwise the
- * return value is unspecified.
+ * @param pdym If NULL, determines the number of suggestions; if non-NULL, sets
+ * \ref did_you_mean::known "known" of every element to a suggestion.  Upon
+ * return, the pointer to which \a pdym points is advanced by the number of
+ * suggestions.
+ * @return If \a pdym is NULL, returns said number of suggestions; otherwise
+ * the return value is unspecified.
  */
 PJL_DISCARD
-static size_t prep_help_options( did_you_mean_t **const pdym ) {
+static size_t prep_help_options( did_you_mean_t **pdym ) {
   size_t count = 0;
   FOREACH_HELP_OPTION( opt ) {
     if ( pdym == NULL )
@@ -300,9 +336,8 @@ static size_t prep_help_options( did_you_mean_t **const pdym ) {
 }
 
 /**
- * A \ref p_macro visitor function that copies the names of macros that are
- * valid only in the current language to the candidate list pointed to by \a
- * pdym; if \a pdym is NULL, only counts the number of macro names.
+ * A \ref p_macro visitor function that either counts a macro suggestion or
+ * sets a \ref did_you_mean::known "known" to a suggestion.
  *
  * @param macro The \ref p_macro to visit.
  * @param visit_data A pointer to a \ref dym_rb_visit_data.
@@ -327,35 +362,36 @@ static bool prep_macro_vistor( p_macro_t const *macro, void *visit_data ) {
 }
 
 /**
- * Copies the names of macros that are valid only in the current language to
- * the candidate list pointed to by \a pdym; if \a pdym is NULL, only counts
- * the number of macro names.
+ * Either determines the number of macro suggestions or sets \ref
+ * did_you_mean::known "known" of every element to a suggestion.
  *
- * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
- * just count macros, not copy.  If not NULL, on return, the pointed-to pointer
- * is incremented.
- * @return If \a pdym is NULL, returns said number of macross; otherwise the
- * return value is unspecified.
+ * @param pdym If NULL, determines the number of suggestions; if non-NULL, sets
+ * \ref did_you_mean::known "known" of every element to a suggestion.  Upon
+ * return, the pointer to which \a pdym points is advanced by the number of
+ * suggestions.
+ * @return If \a pdym is NULL, returns said number of suggestions; otherwise
+ * the return value is unspecified.
  */
 PJL_DISCARD
-static size_t prep_macros( did_you_mean_t **const pdym ) {
+static size_t prep_macros( did_you_mean_t **pdym ) {
   dym_rb_visit_data_t drvd = { pdym, 0 };
   p_macro_visit( &prep_macro_vistor, &drvd );
   return drvd.count;
 }
 
 /**
- * Copies **cdecl** `set` options to the candidate list pointed to by \a pdym;
- * if \a pdym is NULL, only counts the number of options.
+ * Either determines the number of **cdecl** set-option suggestions or sets
+ * \ref did_you_mean::known "known" of every element to a suggestion.
  *
- * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
- * just count options, not copy.  If not NULL, on return, the pointed-to
- * pointer is incremented.
- * @return If \a pdym is NULL, returns said number of options; otherwise the
- * return value is unspecified.
+ * @param pdym If NULL, determines the number of suggestions; if non-NULL, sets
+ * \ref did_you_mean::known "known" of every element to a suggestion.  Upon
+ * return, the pointer to which \a pdym points is advanced by the number of
+ * suggestions.
+ * @return If \a pdym is NULL, returns said number of suggestions; otherwise
+ * the return value is unspecified.
  */
 PJL_DISCARD
-static size_t prep_set_options( did_you_mean_t **const pdym ) {
+static size_t prep_set_options( did_you_mean_t **pdym ) {
   size_t count = 0;
   FOREACH_SET_OPTION( opt ) {
     switch ( opt->kind ) {
@@ -390,9 +426,8 @@ static size_t prep_set_options( did_you_mean_t **const pdym ) {
 }
 
 /**
- * A \ref c_typedef visitor function to copy the names of types that are valid
- * only in the current language to the candidate list pointed to by \a pdym; if
- * \a pdym is NULL, only counts the number of type names.
+ * A \ref c_typedef visitor function that either counts a `typedef` suggestion
+ * or sets a \ref did_you_mean::known "known" to a suggestion.
  *
  * @param tdef The c_typedef to visit.
  * @param visit_data A pointer to a \ref dym_rb_visit_data.
@@ -418,18 +453,18 @@ static bool prep_typedef_visitor( c_typedef_t const *tdef, void *visit_data ) {
 }
 
 /**
- * Counts the names of `typedef`s that are valid only in the current language
- * to the candidate list pointed to by \a pdym; if \a pdym is NULL, only counts
- * the number of `typedef` names.
+ * Either determines the number of `typedef` suggestions or sets \ref
+ * did_you_mean::known "known" of every element to a suggestion.
  *
- * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
- * just count typedefs, not copy.  If not NULL, on return, the pointed-to
- * pointer is incremented.
- * @return If \a pdym is NULL, returns said number of `typedef`s; otherwise the
- * return value is unspecified.
+ * @param pdym If NULL, determines the number of suggestions; if non-NULL, sets
+ * \ref did_you_mean::known "known" of every element to a suggestion.  Upon
+ * return, the pointer to which \a pdym points is advanced by the number of
+ * suggestions.
+ * @return If \a pdym is NULL, returns said number of suggestions; otherwise
+ * the return value is unspecified.
  */
 PJL_DISCARD
-static size_t prep_typedefs( did_you_mean_t **const pdym ) {
+static size_t prep_typedefs( did_you_mean_t **pdym ) {
   dym_rb_visit_data_t drvd = { pdym, 0 };
   c_typedef_visit( &prep_typedef_visitor, &drvd );
   return drvd.count;

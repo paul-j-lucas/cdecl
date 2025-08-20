@@ -99,19 +99,13 @@ did_you_mean_t const* dym_new( char const *unknown,
   assert( prep_fn != NULL );
   assert( similar_fn != NULL );
 
-  // Pre-flight to calculate array size.
-  size_t const dym_size = (*prep_fn)( /*dym=*/NULL, prep_data );
-  if ( dym_size == 0 )
+  did_you_mean_t *const dym_array = (*prep_fn)( prep_data );
+  if ( dym_array == NULL )
     return NULL;                        // LCOV_EXCL_LINE
-
-  did_you_mean_t *const dym_array =
-    calloc( dym_size + 1, sizeof( did_you_mean_t ) );
-
-  (*prep_fn)( dym_array, prep_data );
 
   did_you_mean_t *dym;
 
-  // calculate the source and maximum target lengths
+  // calculate the unknown and maximum known lengths
   size_t const unknown_len = strlen( unknown );
   size_t max_known_len = 0;
   for ( dym = dym_array; dym->known != NULL; ++dym ) {
@@ -119,6 +113,7 @@ did_you_mean_t const* dym_new( char const *unknown,
     if ( dym->known_len > max_known_len )
       max_known_len = dym->known_len;
   } // for
+  size_t const dym_size = dym - dym_array;
 
   /*
    * Adapted from the code:
