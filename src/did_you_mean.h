@@ -55,7 +55,8 @@ typedef struct did_you_mean did_you_mean_t;
 
 /**
  * The signature for a function to clean-up a \ref did_you_mean structure,
- * specifically the \ref did_you_mean::user_data "user_data" member.
+ * specifically \ref did_you_mean::known "known" (if dynamically allocated) and
+ * \ref did_you_mean::user_data "user_data".
  *
  * @param dym A pointer to a \ref did_you_mean structure to clean up.
  */
@@ -63,7 +64,7 @@ typedef void (*dym_cleanup_fn_t)( did_you_mean_t const *dym );
 
 /**
  * The signature for a function to determine whether \a dym is similar enough
- * to the unknown literal given to dym_new().
+ * to the unknown literal given to dym_calc().
  *
  * @param dym A pointer to the \ref did_you_mean structure to check.
  * @return Returns `true` only if \a dym is similar enough to the unknown
@@ -81,7 +82,7 @@ typedef bool (*dym_similar_fn_t)( did_you_mean_t const *dym );
  * @param cleanup_fn A pointer to a function to clean-up a \ref did_you_mean
  * structure.  May be NULL.
  *
- * @sa dym_new()
+ * @sa dym_calc()
  */
 void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn );
 
