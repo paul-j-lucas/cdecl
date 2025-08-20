@@ -75,18 +75,6 @@ typedef bool (*dym_similar_fn_t)( did_you_mean_t const *dym );
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Frees all memory used by \a dym_array _including_ \a dym_array itself.
- *
- * @param dym_array The \ref did_you_mean array to free.  If NULL, does
- * nothing.
- * @param cleanup_fn A pointer to a function to clean-up a \ref did_you_mean
- * structure.  May be NULL.
- *
- * @sa dym_calc()
- */
-void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn );
-
-/**
  * Given an array of \ref did_you_mean suggestions for \a unknown, calculates a
  * Damerau-Levenshtein edit distance for each suggestion, sorts the array by
  * it, and removes suggestions that are not similar enough according to \a
@@ -108,6 +96,18 @@ void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn );
 NODISCARD
 bool dym_calc( char const *unknown, did_you_mean_t *dym_array,
               dym_similar_fn_t similar_fn, dym_cleanup_fn_t cleanup_fn );
+
+/**
+ * Frees all memory used by \a dym_array _including_ \a dym_array itself.
+ *
+ * @param dym_array The \ref did_you_mean array to free.  If NULL, does
+ * nothing.
+ * @param cleanup_fn A pointer to a function to clean-up a \ref did_you_mean
+ * structure.  May be NULL.
+ *
+ * @sa dym_calc()
+ */
+void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn );
 
 ///////////////////////////////////////////////////////////////////////////////
 
