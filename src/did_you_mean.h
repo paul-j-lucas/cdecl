@@ -43,7 +43,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Data structure to hold a known "Did you mean ...?" literal.
+ * Data structure to hold a "Did you mean ...?" suggestion.
  */
 struct did_you_mean {
   char const *known;                    ///< Known candidate.
