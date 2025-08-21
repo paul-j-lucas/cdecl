@@ -1,5 +1,7 @@
 2025-08-21  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Silenced unknown pragmas warning on some platforms.
+   * cdecl_dym.c: Put cast to double back to eliminate warning.
    * configure.ac: Now checking for maintainer tree via -d .git and requiring
      flex & bison only if true.
 
