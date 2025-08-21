@@ -94,8 +94,7 @@ bool dym_calc( char const *unknown, did_you_mean_t *dym_array,
 
   did_you_mean_t *dym;
 
-  // calculate the unknown and maximum known lengths
-  size_t const unknown_len = strlen( unknown );
+  // calculate the maximum known lengths
   size_t max_known_len = 0;
   for ( dym = dym_array; dym->known != NULL; ++dym ) {
     dym->known_len = strlen( dym->known );
@@ -109,6 +108,7 @@ bool dym_calc( char const *unknown, did_you_mean_t *dym_array,
    */
 
   // calculate Damerau-Levenshtein edit distance for all candidates
+  size_t const unknown_len = strlen( unknown );
   void *const dam_lev_mem = dam_lev_new( unknown_len, max_known_len );
   for ( dym = dym_array; dym->known != NULL; ++dym ) {
     dym->dam_lev_dist = dam_lev_dist(
