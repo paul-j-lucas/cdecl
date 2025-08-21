@@ -102,7 +102,6 @@ bool dym_calc( char const *unknown, did_you_mean_t *dym_array,
     if ( dym->known_len > max_known_len )
       max_known_len = dym->known_len;
   } // for
-  size_t const dym_size = (size_t)(dym - dym_array);
 
   /*
    * Adapted from the code:
@@ -119,6 +118,7 @@ bool dym_calc( char const *unknown, did_you_mean_t *dym_array,
   free( dam_lev_mem );
 
   // sort by Damerau-Levenshtein distance
+  size_t const dym_size = (size_t)(dym - dym_array);
   qsort(
     dym_array, dym_size, sizeof dym_array[0],
     POINTER_CAST( qsort_cmp_fn_t, &dym_cmp )
