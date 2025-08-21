@@ -126,9 +126,8 @@ static void dym_cleanup( did_you_mean_t const *dym ) {
  */
 NODISCARD
 static bool is_similar_enough( did_you_mean_t const *dym ) {
-  return dym->dam_lev_dist <= STATIC_CAST( size_t,
-    STATIC_CAST( double, dym->known_len ) * SIMILAR_ENOUGH_PERCENT + 0.5
-  );
+  return  dym->dam_lev_dist <=
+          STATIC_CAST( size_t, dym->known_len * SIMILAR_ENOUGH_PERCENT + 0.5 );
 }
 
 /**
