@@ -57,17 +57,21 @@ AS_IF([test "x$ac_cv_prog_cc_c11" = xno], [
 ])
 gl_EARLY
 
-# Check for flex & bison only if lexer.c & parser.c aren't present. If present,
-# it likely means a released version was downloaded so flex & bison shouldn't
-# be required.
-flex_min_version="2.5.30"
-bison_min_version="3.4.2"
-AS_IF([test ! -f "$srcdir/src/lexer.c"], [
+# Check if this is a maintainer tree (has .git directory).
+AS_IF([test -d "$srcdir/.git"],
+  [pjl_maintainer_tree=yes],
+  [pjl_maintainer_tree=no])
+
+# Check for flex & bison only only in a maintainer tree; trees from a released
+# tarball shouldn't require flex & bison.
+AS_IF([test "x$pjl_maintainer_tree" = xyes], [
+  flex_min_version="2.5.30"
+  bison_min_version="3.4.2"
   #
   # AX_PROG_FLEX calls AM_PROG_LEX that in turn calls AC_PROG_LEX without
-  # arguments.  However, AC_PROG_LEX now wants an argument of either yywrap
-  # or noyywrap and warns if omitted.  To work around this, call AC_PROG_LEX
-  # with an argument ourselves first.
+  # arguments.  However, AC_PROG_LEX now wants an argument of either yywrap or
+  # noyywrap and warns if omitted.  To work around this, call AC_PROG_LEX with
+  # an argument ourselves first.
   #
   # Unfortunately, we can't just stop there because AX_PROG_FLEX calls
   # AC_REQUIRE([AM_PROG_LEX]) and would generate an "expanded before it was
@@ -80,8 +84,7 @@ AS_IF([test ! -f "$srcdir/src/lexer.c"], [
     [AC_MSG_ERROR([required program "flex" not found])])
   AX_PROG_FLEX_VERSION([$flex_min_version],[],
     [AC_MSG_ERROR([flex version $flex_min_version or later required])])
-])
-AS_IF([test ! -f "$srcdir/src/parser.c"], [
+
   AX_PROG_BISON([BISON=$YACC],
     [AC_MSG_ERROR([required program "bison" not found])])
   AX_PROG_BISON_VERSION([$bison_min_version],[],
