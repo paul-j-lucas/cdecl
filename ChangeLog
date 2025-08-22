@@ -1,3 +1,8 @@
+2025-08-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c, cli_options.c, cli_options.h, parse.c, parse.h, read_line.c,
+     read_line.h, util.c: Eliminated "const" arrays.
+
 2025-08-21  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Silenced unknown pragmas warning on some platforms.
