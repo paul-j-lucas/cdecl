@@ -1,5 +1,11 @@
 2025-08-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am, autocomplete.c, c_ast.c, c_ast_check.c, c_ast_util.c,
+     c_kind.c, c_lang.c, c_type.c, c_typedef.c, cdecl_term.c, cli_options.c,
+     color.c, color.h, config_file.c, english.c, gibberish.c, help.c, lexer.l,
+     p_macro.c, p_token.c, parser.y, read_line.c, set_options.c, strbuf.c,
+     util.c, util.h: Revert "Moved error macros and functions to error.[hc]."
+   * cdecl_dym.c: Eliminated: if ( kinds == DYM_NONE ) -- not necessary.
    * did_you_mean.c: Added STATIC_CAST.
    * src/Makefile.am, autocomplete.c, c_ast.c, c_ast_check.c, c_ast_util.c,
      c_kind.c, c_lang.c, c_type.c, c_typedef.c, cdecl_term.c, cli_options.c,
