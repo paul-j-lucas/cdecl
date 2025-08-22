@@ -402,16 +402,6 @@ _GL_INLINE_HEADER_BEGIN
 #define EPUTS(S)                  fputs( (S), stderr )
 
 /**
- * Calls **ferror**(3) and exits if there was an error on \a STREAM.
- *
- * @param STREAM The `FILE` stream to check for an error.
- *
- * @sa #PERROR_EXIT_IF()
- */
-#define FERROR(STREAM) \
-  PERROR_EXIT_IF( ferror( (STREAM) ) != 0, EX_IOERR )
-
-/**
  * Calls **fflush(3)** on \a STREAM, checks for an error, and exits if there
  * was one.
  *
@@ -559,24 +549,6 @@ _GL_INLINE_HEADER_BEGIN
  * @warning If \a EXPR1 is non-zero, it is evaluated twice.
  */
 #define IF_ELSE_EXPR(EXPR1,EXPR2) ( (EXPR1) ? (EXPR1) : (EXPR2) )
-
-/**
- * A special-case of fatal_error() that additionally prints the file and line
- * where an internal error occurred.
- *
- * @param FORMAT The `printf()` format string literal to use.
- * @param ... The `printf()` arguments.
- *
- * @sa fatal_error()
- * @sa perror_exit()
- * @sa #PERROR_EXIT_IF()
- * @sa #UNEXPECTED_INT_VALUE()
- */
-#define INTERNAL_ERROR(FORMAT,...)                            \
-  fatal_error( EX_SOFTWARE,                                   \
-    "%s:%d: internal error: " FORMAT,                         \
-    __FILE__, __LINE__ VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__ \
-  )
 
 #ifdef HAVE___BUILTIN_EXPECT
 
@@ -726,21 +698,6 @@ _GL_INLINE_HEADER_BEGIN
   )( (PTR) VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__ )
 
 /**
- * If \a EXPR is `true`, prints an error message for `errno` to standard error
- * and exits with status \a STATUS.
- *
- * @param EXPR The expression.
- * @param STATUS The exit status code.
- *
- * @sa fatal_error()
- * @sa #INTERNAL_ERROR()
- * @sa perror_exit()
- * @sa #UNEXPECTED_INT_VALUE()
- */
-#define PERROR_EXIT_IF(EXPR,STATUS) \
-  BLOCK( if ( unlikely( (EXPR) ) ) perror_exit( (STATUS) ); )
-
-/**
  * Cast either from or to a pointer type --- similar to C++'s
  * `reinterpret_cast`, but for pointers only.
  *
@@ -873,11 +830,6 @@ _GL_INLINE_HEADER_BEGIN
 #define STATIC_CAST(TYPE,EXPR)    ((TYPE)(EXPR))
 
 /**
- * Shorthand for calling **strerror**(3) with `errno`.
- */
-#define STRERROR()                strerror( errno )
-
-/**
  * Calls **strftime**(3) and checks for failure.
  *
  * @param BUF The destination buffer to print into.
@@ -949,23 +901,6 @@ _GL_INLINE_HEADER_BEGIN
  * used unique name.
  */
 #define UNIQUE_NAME(PREFIX)       NAME2(NAME2(PREFIX,_),__LINE__)
-
-/**
- * A special-case of #INTERNAL_ERROR() that prints an unexpected integer value.
- *
- * @param EXPR The expression having the unexpected value.
- *
- * @sa fatal_error()
- * @sa #INTERNAL_ERROR()
- * @sa perror_exit()
- * @sa #PERROR_EXIT_IF()
- */
-#define UNEXPECTED_INT_VALUE(EXPR)                      \
-  INTERNAL_ERROR(                                       \
-    "%lld (0x%llX): unexpected value for " #EXPR "\n",  \
-    STATIC_CAST( long long, (EXPR) ),                   \
-    STATIC_CAST( unsigned long long, (EXPR) )           \
-  )
 
 /**
  * Pre-C23/C++20 substitution for `__VA_OPT__`, that is returns \a TOKENS only
@@ -1173,21 +1108,6 @@ NODISCARD C_UTIL_H_INLINE
 bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
 }
-
-/**
- * Prints an error message to standard error and exits with \a status code.
- *
- * @param status The status code to exit with.
- * @param format The `printf()` format string literal to use.
- * @param ... The `printf()` arguments.
- *
- * @sa #INTERNAL_ERROR()
- * @sa perror_exit()
- * @sa #PERROR_EXIT_IF()
- * @sa #UNEXPECTED_INT_VALUE()
- */
-PJL_PRINTF_LIKE_FUNC(2)
-_Noreturn void fatal_error( int status, char const *format, ... );
 
 /**
  * Checks whether \a fd refers to a regular file.
@@ -1475,18 +1395,6 @@ NODISCARD
 char const* parse_identifier( char const *s );
 
 /**
- * Prints an error message for `errno` to standard error and exits.
- *
- * @param status The exit status code.
- *
- * @sa fatal_error()
- * @sa #INTERNAL_ERROR()
- * @sa #PERROR_EXIT_IF()
- * @sa #UNEXPECTED_INT_VALUE()
- */
-_Noreturn void perror_exit( int status );
-
-/**
  * Checks whether \a path refers to a regular file.
  *
  * @param path The path to check.
@@ -1701,11 +1609,7 @@ bool true_clear( bool *flag ) {
  * sets it to `true`.  The flag should be `false` initially.
  * @param fout The `FILE` to print to.
  */
-C_UTIL_H_INLINE
-void fput_sep( char const *sep, bool *sep_flag, FILE *fout ) {
-  if ( true_or_set( sep_flag ) )
-    FPUTS( sep, fout );
-}
+void fput_sep( char const *sep, bool *sep_flag, FILE *fout );
 
 #ifndef NDEBUG
 /**

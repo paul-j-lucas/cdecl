@@ -30,6 +30,7 @@
 #include "c_type.h"
 #include "cdecl.h"
 #include "cdecl_dym.h"
+#include "error.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"

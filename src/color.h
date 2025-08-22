@@ -30,6 +30,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "error.h"
 #include "strbuf.h"
 #include "util.h"
 

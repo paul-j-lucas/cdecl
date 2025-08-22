@@ -79,6 +79,7 @@ cdecl_SOURCES =	parser.y \
 		did_you_mean.c did_you_mean.h \
 		dump.c dump.h \
 		english.c english.h \
+		error.c error.h \
 		gibberish.c gibberish.h \
 		help.c help.h \
 		literals.c literals.h \

@@ -30,6 +30,7 @@
 /// @endcond
 #include "c_type.h"
 #include "c_lang.h"
+#include "error.h"
 #include "gibberish.h"                  /* for other_token_c() */
 #include "lexer.h"
 #include "literals.h"

@@ -27,6 +27,7 @@
 #include "pjl_config.h"                 /* must go first */
 #include "config_file.h"
 #include "cdecl.h"
+#include "error.h"
 #include "options.h"
 #include "parse.h"
 #include "strbuf.h"

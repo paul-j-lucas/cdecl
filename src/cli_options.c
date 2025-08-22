@@ -34,6 +34,7 @@
 #include "cdecl.h"
 #include "cdecl_command.h"
 #include "color.h"
+#include "error.h"
 #include "help.h"
 #include "literals.h"
 #include "options.h"

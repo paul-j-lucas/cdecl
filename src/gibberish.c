@@ -32,6 +32,7 @@
 #include "c_operator.h"
 #include "c_typedef.h"
 #include "literals.h"
+#include "error.h"
 #include "options.h"
 #include "type_traits.h"
 #include "types.h"

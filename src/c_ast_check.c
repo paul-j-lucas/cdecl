@@ -36,6 +36,7 @@
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
+#include "error.h"
 #include "gibberish.h"
 #include "lexer.h"
 #include "literals.h"

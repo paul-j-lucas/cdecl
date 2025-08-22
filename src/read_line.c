@@ -30,6 +30,7 @@
 #ifdef WITH_READLINE
 #include "autocomplete.h"
 #endif /* WITH_READLINE */
+#include "error.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

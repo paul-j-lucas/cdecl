@@ -29,6 +29,7 @@
 #define C_LANG_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_lang.h"
+#include "error.h"
 #include "options.h"
 #include "strbuf.h"
 #include "util.h"

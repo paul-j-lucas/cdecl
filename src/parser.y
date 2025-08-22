@@ -50,6 +50,7 @@
 #include "color.h"
 #include "dump.h"
 #include "english.h"
+#include "error.h"
 #include "gibberish.h"
 #include "help.h"
 #include "lexer.h"
