@@ -59,8 +59,7 @@
  * avoid confusion since they're not the same.
  */
 NODISCARD
-int cdecl_parse_cli( size_t cli_count,
-                     char const *const cli_value[const cli_count] );
+int cdecl_parse_cli( size_t cli_count, char const *const cli_value[cli_count] );
 
 /**
  * Parses **cdecl** commands from \a fin until either an error occurs or until

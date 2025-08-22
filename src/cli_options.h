@@ -89,7 +89,7 @@ struct option const* cli_option_next( struct option const *opt );
  * @note On return, `*pargc` and `*pargv` are updated to reflect the remaining
  * command-line with the options removed.
  */
-void cli_options_init( int *const pargc, char const *const *pargv[const] );
+void cli_options_init( int *const pargc, char const *const *pargv[] );
 
 ///////////////////////////////////////////////////////////////////////////////
 

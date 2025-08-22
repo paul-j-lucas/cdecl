@@ -180,8 +180,8 @@ static char const* read_line( FILE *fin, char const *prompt,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
-                       char const *const prompts[const], int *pline_no ) {
+bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *const prompts[],
+                       int *pline_no ) {
   assert( sbuf != NULL );
   assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );

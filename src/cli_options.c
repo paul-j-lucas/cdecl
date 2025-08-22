@@ -507,7 +507,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
  * @param pargc A pointer to the argument count from main().
  * @param pargv A pointer to the argument values from main().
  */
-static void parse_options( int *const pargc, char const *const *pargv[const] ) {
+static void parse_options( int *const pargc, char const *const *pargv[] ) {
   opterr = 0;                           // suppress default error message
 
   char const *      fout_path = "-";
@@ -901,7 +901,7 @@ struct option const* cli_option_next( struct option const *opt ) {
   return opt == NULL ? CLI_OPTIONS : (++opt)->name == NULL ? NULL : opt;
 }
 
-void cli_options_init( int *const pargc, char const *const *pargv[const] ) {
+void cli_options_init( int *const pargc, char const *const *pargv[] ) {
   ASSERT_RUN_ONCE();
   assert( pargc != NULL );
   assert( pargv != NULL );

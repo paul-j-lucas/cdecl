@@ -619,9 +619,9 @@ static inline bool c_tid_is_long_int( c_tid_t tids ) {
  */
 NODISCARD
 static c_lang_id_t
-c_tid_check_combo( c_tid_t tids, c_type_info_t const type_infos[const],
+c_tid_check_combo( c_tid_t tids, c_type_info_t const type_infos[],
                    size_t type_infos_size,
-                   c_lang_id_t const type_langs[const][type_infos_size] ) {
+                   c_lang_id_t const type_langs[][type_infos_size] ) {
   for ( size_t row = 0; row < type_infos_size; ++row ) {
     if ( !c_tid_is_none( tids & type_infos[ row ].tid ) ) {
       for ( size_t col = 0; col <= row; ++col ) {
@@ -646,7 +646,7 @@ c_tid_check_combo( c_tid_t tids, c_type_info_t const type_infos[const],
  */
 NODISCARD
 static c_lang_id_t
-c_tid_check_legal( c_tid_t tids, c_type_info_t const type_infos[const],
+c_tid_check_legal( c_tid_t tids, c_type_info_t const type_infos[],
                    size_t type_infos_size ) {
   for ( size_t row = 0; row < type_infos_size; ++row ) {
     c_type_info_t const *const ti = &type_infos[ row ];
@@ -719,8 +719,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english, bool is_error ) {
  * been concatenated.
  */
 static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
-                            c_tid_t const tids_set[const],
-                            size_t tids_set_size,
+                            c_tid_t const tids_set[], size_t tids_set_size,
                             bool in_english, bool is_error,
                             char sep, bool *sep_flag ) {
   for ( size_t i = 0; i < tids_set_size; ++i ) {

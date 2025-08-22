@@ -95,8 +95,7 @@ static char const* fput_list_apc_gets( void const **ppelt ) {
  * @return Returns `true` only if \a s is among \a matches.
  */
 NODISCARD
-static bool str_is_any( char const *s,
-                        char const *const matches[const static 2] ) {
+static bool str_is_any( char const *s, char const *const matches[static 2] ) {
   if ( s != NULL ) {
     for ( char const *const *match = matches; *match != NULL; ++match ) {
       if ( strcasecmp( s, *match ) == 0 )

@@ -69,8 +69,8 @@
  * @return Returns `false` only if encountered EOF.
  */
 NODISCARD
-bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
-                       char const *const prompts[const], int *pline_no );
+bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *const prompts[],
+                       int *pline_no );
 
 ///////////////////////////////////////////////////////////////////////////////
 
