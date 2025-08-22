@@ -1,5 +1,13 @@
 2025-08-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am, autocomplete.c, c_ast.c, c_ast_check.c, c_ast_util.c,
+     c_kind.c, c_lang.c, c_type.c, c_typedef.c, cdecl_term.c, cli_options.c,
+     color.c, color.h, config_file.c, english.c, error.c, error.h, gibberish.c,
+     help.c, lexer.l, p_macro.c, p_token.c, parser.y, read_line.c,
+     set_options.c, strbuf.c, util.c, util.h: Moved error macros and functions
+     to error.[hc].
+   * src/Makefile.am, c_ast_util.h, gibberish.c, type_traits.h, util.h: Moved
+     type traits macros to type_traits.h.
    * c_type.c, cli_options.c, cli_options.h, parse.c, parse.h, read_line.c,
      read_line.h, util.c: Eliminated "const" arrays.
 
