@@ -30,7 +30,6 @@
 #include "cdecl.h"
 #include "cdecl_command.h"
 #include "color.h"
-#include "error.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"

@@ -27,7 +27,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "cdecl_term.h"
 #include "cdecl.h"
-#include "error.h"
 #include "print.h"
 #include "util.h"
 

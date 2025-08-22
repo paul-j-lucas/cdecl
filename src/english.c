@@ -31,7 +31,6 @@
 #include "c_operator.h"
 #include "c_sname.h"
 #include "c_typedef.h"
-#include "error.h"
 #include "gibberish.h"
 #include "literals.h"
 #include "slist.h"

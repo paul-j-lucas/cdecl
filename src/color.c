@@ -29,7 +29,6 @@
 #define COLOR_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "color.h"
-#include "error.h"
 #include "options.h"
 #include "util.h"
 

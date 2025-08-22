@@ -30,7 +30,6 @@
 /// @endcond
 #include "util.h"
 #include "cdecl.h"
-#include "error.h"
 #include "slist.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -205,6 +204,21 @@ unsigned long long check_strtoull( char const *s, unsigned long long min,
   return ULLONG_MAX;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
+void fatal_error( int status, char const *format, ... ) {
+  assert( format != NULL );
+  EPRINTF( "%s: ", me );
+  va_list args;
+  va_start( args, format );
+  vfprintf( stderr, format, args );
+  va_end( args );
+  exit( status );
+}
+
+#pragma GCC diagnostic pop
+
 bool fd_is_file( int fd ) {
   struct stat fd_stat;
   FSTAT( fd, &fd_stat );
@@ -255,11 +269,6 @@ void fput_list( FILE *out, void const *elt,
     FPUTS( s, out );
     s = next_s;
   } // for
-}
-
-void fput_sep( char const *sep, bool *sep_flag, FILE *fout ) {
-  if ( true_or_set( sep_flag ) )
-    FPUTS( sep, fout );
 }
 
 void fputs_quoted( char const *s, char quote, FILE *fout ) {
@@ -356,6 +365,13 @@ bool path_is_file( char const *path ) {
   STAT( path, &path_stat );
   return S_ISREG( path_stat.st_mode );
 }
+
+// LCOV_EXCL_START
+void perror_exit( int status ) {
+  perror( me );
+  exit( status );
+}
+// LCOV_EXCL_STOP
 
 bool str_equal( char const *is, char const *js ) {
   if ( is == js )

@@ -31,7 +31,6 @@
 #include "cdecl.h"
 #include "cdecl_command.h"
 #include "cdecl_keyword.h"
-#include "error.h"
 #include "help.h"
 #include "literals.h"
 #include "options.h"

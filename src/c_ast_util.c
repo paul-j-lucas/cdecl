@@ -34,7 +34,6 @@
 #include "c_kind.h"
 #include "c_operator.h"
 #include "c_type.h"
-#include "error.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

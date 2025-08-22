@@ -29,7 +29,6 @@
 #define STRBUF_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "strbuf.h"
-#include "error.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

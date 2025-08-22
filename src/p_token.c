@@ -27,7 +27,6 @@
 #include "c_lang.h"
 #include "c_operator.h"
 #include "color.h"
-#include "error.h"
 #include "gibberish.h"
 #include "lexer.h"
 #include "literals.h"

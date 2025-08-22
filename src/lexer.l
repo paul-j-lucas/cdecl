@@ -44,7 +44,6 @@
 #include "c_typedef.h"
 #include "cdecl.h"
 #include "cdecl_keyword.h"
-#include "error.h"
 #include "gibberish.h"
 #include "literals.h"
 #include "options.h"
