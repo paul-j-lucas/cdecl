@@ -448,9 +448,6 @@ void cdecl_dym_free( did_you_mean_t const *dym_array ) {
 did_you_mean_t const* cdecl_dym_new( dym_kind_t kinds, char const *unknown ) {
   assert( unknown != NULL );
 
-  if ( kinds == DYM_NONE )
-    return NULL;
-
   size_t const dym_size = prep_all( kinds, /*pdym=*/NULL );
   if ( dym_size == 0 )
     return NULL;
