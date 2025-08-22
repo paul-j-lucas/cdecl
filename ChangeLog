@@ -1,5 +1,6 @@
 2025-08-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * did_you_mean.c: Added STATIC_CAST.
    * src/Makefile.am, autocomplete.c, c_ast.c, c_ast_check.c, c_ast_util.c,
      c_kind.c, c_lang.c, c_type.c, c_typedef.c, cdecl_term.c, cli_options.c,
      color.c, color.h, config_file.c, english.c, error.c, error.h, gibberish.c,
