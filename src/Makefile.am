@@ -98,6 +98,7 @@ cdecl_SOURCES =	parser.y \
 		show.c show.h \
 		slist.c slist.h \
 		strbuf.c strbuf.h \
+		type_traits.h \
 		types.h \
 		util.c util.h
 

@@ -33,6 +33,7 @@
 #include "c_typedef.h"
 #include "literals.h"
 #include "options.h"
+#include "type_traits.h"
 #include "types.h"
 #include "util.h"
 

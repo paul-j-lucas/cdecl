@@ -28,6 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "type_traits.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -577,146 +578,6 @@ _GL_INLINE_HEADER_BEGIN
     __FILE__, __LINE__ VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__ \
   )
 
-/**
- * Checks (at compile-time) whether \a A is an array.
- *
- * @param A The alleged array to check.
- * @return Returns 1 (true) only if \a A is an array; 0 (false) otherwise.
- *
- * @sa https://stackoverflow.com/a/77881417/99089
- */
-#ifdef HAVE_TYPEOF
-# define IS_ARRAY_EXPR(A)     \
-    _Generic( &(A),           \
-      typeof(*(A)) (*)[]: 1,  \
-      default           : 0   \
-    )
-#else
-# define IS_ARRAY_EXPR(A)         1
-#endif /* HAVE_TYPEOF */
-
-/**
- * Checks (at compile-time) whether the type of \a EXPR is a C string type,
- * i.e., <code>char*</code> or <code>char const*</code>.
- *
- * @param EXPR An expression. It is _not_ evaluated.
- * @return Returns 1 (true) only if \a EXPR is a C string type; 0 (false)
- * otherwise.
- */
-#define IS_C_STR_EXPR(EXPR) \
-  _Generic( (EXPR),         \
-    char*       : 1,        \
-    char const* : 1,        \
-    default     : 0         \
-  )
-
-/**
- * Checks (at compile-time) whether the type of \a EXPR is an integral type.
- *
- * @param EXPR An expression. It is _not_ evaluated.
- * @return Returns 1 (true) only if \a EXPR is an integral type; 0 (false)
- * otherwise.
- *
- * @sa #IS_INTEGRAL_TYPE()
- * @sa #IS_SIGNED_EXPR()
- * @sa #IS_UNSIGNED_EXPR()
- */
-#define IS_INTEGRAL_EXPR(EXPR) \
-  (IS_SIGNED_EXPR((EXPR)) || IS_UNSIGNED_EXPR((EXPR)))
-
-/**
- * Checks (at compile-time) whether \a TYPE is an integral type.
- *
- * @param TYPE A type.
- * @return Returns 1 (true) only if \a TYPE is an integral type; 0 (false)
- * otherwise.
- *
- * @sa #IS_INTEGRAL_EXPR()
- * @sa #IS_SIGNED_TYPE()
- * @sa #IS_UNSIGNED_TYPE()
- */
-#define IS_INTEGRAL_TYPE(TYPE)    IS_INTEGRAL_EXPR( *(TYPE*)0 )
-
-/**
- * Checks (at compile-time) whether \a EXPR is a pointer to `const`.
- *
- * @param EXPR A pointer expression.
- * @return Returns 1 (true) only if \a EXPR is a pointer to `const`; 0 (false)
- * otherwise.
- */
-#define IS_PTR_TO_CONST_EXPR(EXPR)      \
-  _Generic( TO_VOID_PTR_EXPR( (EXPR) ), \
-    void const* : 1,                    \
-    default     : 0                     \
-  )
-
-/**
- * Checks (at compile-time) whether the type of \a EXPR is a signed integral
- * type.
- *
- * @param EXPR An expression. It is _not_ evaluated.
- * @return Returns 1 (true) only if \a EXPR is of a signed integral type; 0
- * (false) otherwise.
- *
- * @sa #IS_SIGNED_TYPE()
- * @sa #IS_UNSIGNED_EXPR()
- */
-#define IS_SIGNED_EXPR(EXPR)              \
-  _Generic( (EXPR),                       \
-    char       : IS_SIGNED_TYPE(char),    \
-    signed char: 1,                       \
-    short      : 1,                       \
-    int        : 1,                       \
-    long       : 1,                       \
-    long long  : 1,                       \
-    default    : 0                        \
-  )
-
-/**
- * Checks (at compile-time) whether \a TYPE is a signed type.
- *
- * @return Returns 1 (true) only if \a TYPE is signed; 0 (false) otherwise.
- *
- * @sa #IS_INTEGRAL_TYPE()
- * @sa #IS_SIGNED_EXPR()
- * @sa #IS_UNSIGNED_TYPE()
- */
-#define IS_SIGNED_TYPE(TYPE)      !IS_UNSIGNED_TYPE(TYPE)
-
-/**
- * Checks (at compile-time) whether the type of \a EXPR is an unsigned integral
- * type.
- *
- * @param EXPR An expression. It is _not_ evaluated.
- * @return Returns 1 (true) only if \a EXPR is of an unsigned integral type; 0
- * (false) otherwise.
- *
- * @sa #IS_SIGNED_EXPR()
- * @sa #IS_UNSIGNED_TYPE()
- */
-#define IS_UNSIGNED_EXPR(EXPR)                  \
-  _Generic( (EXPR),                             \
-    _Bool             : 1,                      \
-    char              : IS_UNSIGNED_TYPE(char), \
-    unsigned char     : 1,                      \
-    unsigned short    : 1,                      \
-    unsigned int      : 1,                      \
-    unsigned long     : 1,                      \
-    unsigned long long: 1,                      \
-    default           : 0                       \
-  )
-
-/**
- * Checks (at compile-time) whether \a TYPE is an unsigned type.
- *
- * @return Returns 1 (true) only if \a TYPE is signed; 0 (false) otherwise.
- *
- * @sa #IS_INTEGRAL_TYPE()
- * @sa #IS_SIGNED_TYPE()
- * @sa #IS_UNSIGNED_EXPR()
- */
-#define IS_UNSIGNED_TYPE(TYPE)    ((TYPE)-1 > 0)
-
 #ifdef HAVE___BUILTIN_EXPECT
 
 /**
@@ -997,19 +858,6 @@ _GL_INLINE_HEADER_BEGIN
   PERROR_EXIT_IF( stat( (PATH), (PSTAT) ) < 0, EX_IOERR )
 
 /**
- * Like C11's `_Static_assert()` except that it can be used in an expression.
- *
- * @param EXPR The expression to check.
- * @param MSG The string literal of the error message to print only if \a EXPR
- * evaluates to 0 (false).
- * @return Always returns 1.
- *
- * @sa #ASSERT_EXPR()
- */
-#define STATIC_ASSERT_EXPR(EXPR,MSG) \
-  (!!sizeof( struct { static_assert( (EXPR), MSG ); char c; } ))
-
-/**
  * C version of C++'s `static_cast`.
  *
  * @param TYPE The type to cast to.
@@ -1023,22 +871,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #POINTER_CAST()
  */
 #define STATIC_CAST(TYPE,EXPR)    ((TYPE)(EXPR))
-
-/**
- * Implements a "static if" similar to `if constexpr` in C++.
- *
- * @param EXPR An expression (evaluated at compile-time).
- * @param THEN An expression returned only if \a EXPR is non-zero (true).
- * @param ELSE An expression returned only if \a EXPR is zero (false).
- * @return Returns:
- *  + \a THEN only if \a EXPR is non-zero (true); or:
- *  + \a ELSE only if \a EXPR is zero (false).
- */
-#define STATIC_IF(EXPR,THEN,ELSE)     \
-  _Generic( &(char[1 + !!(EXPR)]){0}, \
-    char (*)[2]: (THEN),              \
-    char (*)[1]: (ELSE)               \
-  )
 
 /**
  * Shorthand for calling **strerror**(3) with `errno`.
@@ -1104,32 +936,6 @@ _GL_INLINE_HEADER_BEGIN
  * less than, equal to, or greater than \a LIT, respectively.
  */
 #define STRNCMPLIT(S,LIT)         strncmp( (S), (LIT), STRLITLEN( (LIT) ) )
-
-/**
- * Casts the result of \a N to an unsigned type whose size is
- * <code>sizeof(</code>\a N<code>)</code>.
- *
- * @param N An integral expression.
- * @return Returns \a N cast to an unsigned type.
- */
-#define TO_UNSIGNED_EXPR(N) (                                             \
-  STATIC_ASSERT_EXPR( IS_INTEGRAL_EXPR( (N) ), #N " must be integral" ) * \
-  STATIC_IF( sizeof(N) == sizeof(char ), (unsigned char     )(N),         \
-  STATIC_IF( sizeof(N) == sizeof(short), (unsigned short    )(N),         \
-  STATIC_IF( sizeof(N) == sizeof(int  ), (unsigned int      )(N),         \
-  STATIC_IF( sizeof(N) == sizeof(long ), (unsigned long     )(N),         \
-          /* else */                     (unsigned long long)(N) ) ) ) ) )
-
-/**
- * Converts \a EXPR (a pointer expression) to a pointer to `void` preserving
- * `const`-ness.
- *
- * @param EXPR A pointer expression.
- * @return Returns:
- *  + `(void*)(EXPR)` only if \a EXPR is a pointer to non-`const`; or:
- *  + `(void const*)(EXPR)` only if \a EXPR is a pointer to `const`.
- */
-#define TO_VOID_PTR_EXPR(EXPR)    (1 ? (EXPR) : (void*)(EXPR))
 
 /**
  * Synthesises a name prefixed by \a PREFIX unique to the line on which it's
