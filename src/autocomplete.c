@@ -75,6 +75,16 @@ struct ac_keyword {
 typedef struct ac_keyword ac_keyword_t;
 
 /**
+ * Command generator state.
+ */
+struct cg_state {
+  cdecl_command_t const  *command;      ///< Current command.
+  bool                    returned_any; ///< Returned at least one match?
+  size_t                  text_len;     ///< Length of text read (so far).
+};
+typedef struct cg_state cg_state_t;
+
+/**
  * Keyword generator state.
  */
 struct kg_state {
@@ -366,6 +376,22 @@ static char const* const* ac_set_keywords_new( void ) {
   );
 
   return ac_set_keywords_array;
+}
+
+/**
+ * Initializes a cg_state.
+ *
+ * @param cg The cg_state to initialize.
+ * @param text A pointer to the text read (so far) to match.
+ */
+static void cg_init( cg_state_t *cg, char const *text ) {
+  assert( cg != NULL );
+  assert( text != NULL );
+
+  *cg = (cg_state_t){
+    .command = ac_cdecl_command_next( /*command=*/NULL ),
+    .text_len = strlen( text )
+  };
 }
 
 /**
@@ -823,29 +849,24 @@ static char** cdecl_rl_completion( char const *text, int start, int end ) {
 static char* command_generator( char const *text, int state ) {
   assert( text != NULL );
 
-  static cdecl_command_t const *command;
-  static bool                   returned_any;
-  static size_t                 text_len;
+  static cg_state_t cg;
 
-  if ( state == 0 ) {                   // new word? reset
-    command = ac_cdecl_command_next( NULL );
-    returned_any = false;
-    text_len = strlen( text );
-  }
+  if ( state == 0 )                     // new word? reset
+    cg_init( &cg, text );
 
-  while ( command != NULL ) {
-    cdecl_command_t const *const curr_command = command;
-    command = ac_cdecl_command_next( command );
-    int const cmp = strncmp( text, curr_command->literal, text_len );
+  while ( cg.command != NULL ) {
+    cdecl_command_t const *const curr_command = cg.command;
+    cg.command = ac_cdecl_command_next( cg.command );
+    int const cmp = strncmp( text, curr_command->literal, cg.text_len );
     if ( cmp == 0 && opt_lang_is_any( curr_command->lang_ids ) ) {
-      returned_any = true;
+      cg.returned_any = true;
       return check_strdup( curr_command->literal );
     }
     if ( cmp < 0 )                      // the array is sorted
       break;
   } // while
 
-  if ( !returned_any )
+  if ( !cg.returned_any )
     rl_ding();
   return NULL;
 }
