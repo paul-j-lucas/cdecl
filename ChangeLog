@@ -1,3 +1,8 @@
+2025-08-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Added '&'.
+   * autocomplete.c: Added cg_state.
+
 2025-08-22  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am, autocomplete.c, c_ast.c, c_ast_check.c, c_ast_util.c,
