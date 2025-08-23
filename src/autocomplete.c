@@ -834,7 +834,7 @@ static char** cdecl_rl_completion( char const *text, int start, int end ) {
   size_t const n = STATIC_CAST( size_t, start );
   bool const is_command = strnspn( rl_line_buffer, " ", n ) == n;
   return rl_completion_matches(
-    text, is_command ? command_generator : keyword_generator
+    text, is_command ? &command_generator : &keyword_generator
   );
 }
 
