@@ -93,6 +93,7 @@ typedef enum json_state json_state_t;
 // local functions
 static void c_ast_dump_impl( c_ast_t const*, dump_state_t* );
 static void c_ast_list_dump_impl( c_ast_list_t const*, dump_state_t const* );
+static void c_func_ast_param_ret_dump( c_ast_t const*, dump_state_t* );
 static void c_loc_dump( c_loc_t const*, FILE* );
 NODISCARD
 static char const* c_tpid_name( c_tpid_t );
@@ -309,10 +310,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
       FALLTHROUGH;
     case K_UDEF_LIT:
       kind_json = json_object_begin( kind_json, "udef_lit", dump );
-dump_params:
-      DUMP_AST_LIST( dump, "param_ast_list", &ast->func.param_ast_list );
-      if ( ast->func.ret_ast != NULL )
-        DUMP_AST( dump, "ret_ast", ast->func.ret_ast );
+      c_func_ast_param_ret_dump( ast, dump );
       json_object_end( kind_json, dump );
       break;
 
@@ -329,7 +327,9 @@ dump_params:
     case K_LAMBDA:
       kind_json = json_object_begin( JSON_INIT, "lambda", dump );
       DUMP_AST_LIST( dump, "capture_ast_list", &ast->lambda.capture_ast_list );
-      goto dump_params;
+      c_func_ast_param_ret_dump( ast, dump );
+      json_object_end( kind_json, dump );
+      break;
 
     case K_NAME:
       kind_json = json_object_begin( JSON_INIT, "name", dump );
@@ -396,6 +396,24 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list,
 
   FPUTC( '\n', dump->fout );
   DUMP_FORMAT( dump, "]" );
+}
+
+/**
+ * Dumps the parameters (if any) and return type (if any) of a function-like \a
+ * ast in [JSON5](https://json5.org) format (for debugging).
+ *
+ * @param ast The function-like AST whose parameters and return type to dump.
+ * @param dump The dump_state to use.
+ */
+static void c_func_ast_param_ret_dump( c_ast_t const *ast,
+                                       dump_state_t *dump ) {
+  assert( ast != NULL );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
+  assert( dump != NULL );
+
+  DUMP_AST_LIST( dump, "param_ast_list", &ast->func.param_ast_list );
+  if ( ast->func.ret_ast != NULL )
+    DUMP_AST( dump, "ret_ast", ast->func.ret_ast );
 }
 
 /**
