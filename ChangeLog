@@ -1,3 +1,7 @@
+2025-08-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, c_sname.h, parser.y: sname function renaming.
+
 2025-08-27  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c: Eliminated goto.
