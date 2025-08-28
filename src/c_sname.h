@@ -201,26 +201,11 @@ void c_scope_data_free( c_scope_data_t *data );
  * @param sname The scoped name to append to.
  * @param name The name to append.  Ownership is taken.
  *
- * @sa c_sname_append_sname()
- * @sa c_sname_prepend_sname()
+ * @sa c_sname_push_back_sname()
+ * @sa c_sname_push_front_sname()
  * @sa c_sname_set()
  */
-void c_sname_append_name( c_sname_t *sname, char *name );
-
-/**
- * Appends \a src onto the end of \a dst.
- *
- * @param dst The scoped name to append to.
- * @param src The scoped name to append.  Ownership is taken.
- *
- * @sa c_sname_append_name()
- * @sa c_sname_prepend_sname()
- * @sa c_sname_set()
- */
-C_SNAME_H_INLINE
-void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
-  slist_push_list_back( dst, src );
-}
+void c_sname_push_back_name( c_sname_t *sname, char *name );
 
 /**
  * Checks a scoped name for valid scope order.
@@ -244,6 +229,222 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc );
  * @sa c_sname_list_cleanup()
  */
 void c_sname_cleanup( c_sname_t *sname );
+
+/**
+ * Frees all memory associated with \a sname _including_ \a sname itself.
+ *
+ * @param sname The scoped name to free.  If NULL, does nothing.
+ *
+ * @sa c_sname_cleanup()
+ * @sa c_sname_init()
+ * @sa c_sname_init_name()
+ * @sa c_sname_list_cleanup()
+ */
+void c_sname_free( c_sname_t *sname );
+
+/**
+ * Gets the global name of \a sname (which is the name of the first scope), for
+ * example the global name of `S::T::x` is `S`.
+ *
+ * @param sname The scoped name to get the global name of; may be NULL.
+ * @return Returns said name or the empty string if \a sname is empty or NULL.
+ *
+ * @sa c_sname_gibberish()
+ * @sa c_sname_local_name()
+ * @sa c_sname_name_atr()
+ * @sa c_sname_scope_gibberish()
+ * @sa c_sname_scope_sname()
+ */
+NODISCARD
+char const* c_sname_global_name( c_sname_t const *sname );
+
+/**
+ * Gets whether \a sname is a constructor name, i.e., whether the last two
+ * names match, for example `S::T::T`.
+ *
+ * @note This can also be used to check for destructor names since **cdecl**
+ * elides the `~` when parsing them.  (An AST's kind is #K_DESTRUCTOR.)
+ *
+ * @param sname The scoped name to check.
+ * @return Returns `true` only if \a sname has at least two names and the last
+ * two names match.
+ */
+NODISCARD
+bool c_sname_is_ctor( c_sname_t const *sname );
+
+/**
+ * Gets whether \a sname is an `inline` nested `namespace`.
+ *
+ * @param sname The scoped name to check.
+ * @return Returns `true` only if \a sname is an `inline` nested `namespace`.
+ */
+NODISCARD
+bool c_sname_is_inline_nested_namespace( c_sname_t const *sname );
+
+/**
+ * Cleans-up all memory associated with \a list but does _not_ free \a list
+ * itself.
+ *
+ * @param list The list of scoped names to clean up.  If NULL, does nothing;
+ * otherwise, reinitializes \a list upon completion.
+ *
+ * @sa c_sname_cleanup()
+ * @sa c_sname_free()
+ */
+void c_sname_list_cleanup( slist_t *list );
+
+/**
+ * Gets the local name of \a sname (which is the name of the last scope), for
+ * example the local name of `S::T::x` is `x`.
+ *
+ * @param sname The scoped name to get the local name of; may be NULL.
+ * @return Returns said name or the empty string if \a sname is empty or NULL.
+ *
+ * @sa c_sname_gibberish()
+ * @sa c_sname_global_name()
+ * @sa c_sname_name_atr()
+ * @sa c_sname_scope_gibberish()
+ * @sa c_sname_scope_sname()
+ */
+NODISCARD
+char const* c_sname_local_name( c_sname_t const *sname );
+
+/**
+ * Checks whether \a sname matches \a sglob where \a sglob is glob-like in that
+ * `*` matches zero or more characters; however, `*` matches only within a
+ * single scope.  Examples:
+ *
+ *  + `foo*` matches all names starting with `foo` in the global scope.
+ *
+ *  + `s::&zwj;*foo` matches all names ending with `foo` only within the top-
+ *    level scope `s`.
+ *
+ *  + `s*::&zwj;foo` matches all names equal to `foo` in all top-level scopes
+ *    starting with `s`.
+ *
+ *  + `s::*::&zwj;foo` matches all names equal to `foo` in any scope within the
+ *    top-level scope `s`.
+ *
+ * Additionally, a leading `**` is used to match within any scope.  Examples:
+ *
+ *  + `**::&zwj;foo` matches all names equal to `foo` in any scope.
+ *
+ * @param sname The scoped name to match against.
+ * @param sglob The scoped glob to match.
+ * @return Returns `true` only if \a sname matches \a sglob.
+ */
+NODISCARD
+bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
+
+/**
+ * Parses a scoped name, for example `a::b::c`.
+ *
+ * @param s The string to parse.
+ * @param rv_sname The scoped name to parse into.
+ * @return Returns the number of characters of \a s that were successfully
+ * parsed.
+ *
+ * @sa c_sname_parse_dtor()
+ */
+NODISCARD
+size_t c_sname_parse( char const *s, c_sname_t *rv_sname );
+
+/**
+ * Parses a scoped destructor name, for example `S::T::~T`.
+ *
+ * @param s The string to parse.
+ * @param rv_sname The scoped name to parse into.
+ * @return Returns `true` only if the scoped destructor name was successfully
+ * parsed.
+ *
+ * @sa c_sname_parse()
+ */
+NODISCARD
+bool c_sname_parse_dtor( char const *s, c_sname_t *rv_sname );
+
+/**
+ * Gets just the scope sname of \a sname.
+ * Examples:
+ *  + For `a::b::c`, returns `a::b`.
+ *  + For `c`, returns an empty scoped name.
+ *
+ * @param sname The scoped name to get the scope name of; may be NULL.
+ * @return Returns said scoped name or an empty scoped name if \a sname is
+ * empty, NULL, or not within a scope.
+ *
+ * @sa c_sname_gibberish()
+ * @sa c_sname_global_name()
+ * @sa c_sname_local_name()
+ * @sa c_sname_name_atr()
+ * @sa c_sname_scope_gibberish()
+ */
+NODISCARD
+c_sname_t c_sname_scope_sname( c_sname_t const *sname );
+
+/**
+ * Sets \a dst_sname to \a src_sname.
+ *
+ * @param dst_sname The scoped name to set.
+ * @param src_sname The scoped name to set \a dst_sname to. Ownership is taken.
+ *
+ * @note If \a dst_sname `==` \a src_name, does nothing.
+ *
+ * @sa c_sname_push_back_name()
+ * @sa c_sname_push_back_sname()
+ * @sa c_sname_move()
+ * @sa c_sname_push_front_sname()
+ */
+void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname );
+
+/**
+ * Sets all the scope-types (except that of the local scope) of \a sname to the
+ * types found in `typedef`'s names.
+ *
+ * For example, given:
+ *
+ *      class C { struct S; };
+ *
+ * and an \a sname of `C::S::x`, set `C`'s scope-type to #TB_class and `S`'s
+ * scope-type to #TB_struct; the scope-type of `x` is not changed.
+ *
+ * If there is no `typedef` for a partial scoped name and the scope-type is
+ * either #TB_SCOPE or not set, then sets that scope-type to #TB_namespace.
+ *
+ * @param sname The scoped name to set all the scope-types of.
+ */
+void c_sname_set_all_types( c_sname_t *sname );
+
+/**
+ * Checks a scoped name for warnings.
+ *
+ * @param sname The scoped name to check.
+ * @param sname_loc The location of \a sname.
+ *
+ * @sa c_name_error()
+ */
+void c_sname_warn( c_sname_t const *sname, c_loc_t const *sname_loc );
+
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Gets the name at \a roffset of \a sname.
+ *
+ * @param sname The scoped name to get the name at \a roffset of.
+ * @param roffset The reverse offset (starting at 0) of the name to get.
+ * @return Returns the name at \a roffset or the empty string if \a roffset
+ * &ge; c_sname_count().
+ *
+ * @sa c_sname_gibberish()
+ * @sa c_sname_global_name()
+ * @sa c_sname_local_name()
+ * @sa c_sname_scope_gibberish()
+ * @sa c_sname_scope_sname()
+ */
+NODISCARD C_SNAME_H_INLINE
+char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
+  c_scope_data_t const *const data = slist_atr( sname, roffset );
+  return data != NULL ? data->name : "";
+}
 
 /**
  * Compares two scoped names.
@@ -319,34 +520,6 @@ bool c_sname_equal( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
 }
 
 /**
- * Frees all memory associated with \a sname _including_ \a sname itself.
- *
- * @param sname The scoped name to free.  If NULL, does nothing.
- *
- * @sa c_sname_cleanup()
- * @sa c_sname_init()
- * @sa c_sname_init_name()
- * @sa c_sname_list_cleanup()
- */
-void c_sname_free( c_sname_t *sname );
-
-/**
- * Gets the global name of \a sname (which is the name of the first scope), for
- * example the global name of `S::T::x` is `S`.
- *
- * @param sname The scoped name to get the global name of; may be NULL.
- * @return Returns said name or the empty string if \a sname is empty or NULL.
- *
- * @sa c_sname_gibberish()
- * @sa c_sname_local_name()
- * @sa c_sname_name_atr()
- * @sa c_sname_scope_gibberish()
- * @sa c_sname_scope_sname()
- */
-NODISCARD
-char const* c_sname_global_name( c_sname_t const *sname );
-
-/**
  * Gets the global scope-type of \a sname (which is the type of the outermost
  * scope).
  *
@@ -392,59 +565,8 @@ void c_sname_init( c_sname_t *sname ) {
 C_SNAME_H_INLINE
 void c_sname_init_name( c_sname_t *sname, char *name ) {
   slist_init( sname );
-  c_sname_append_name( sname, name );
+  c_sname_push_back_name( sname, name );
 }
-
-/**
- * Gets whether \a sname is a constructor name, i.e., whether the last two
- * names match, for example `S::T::T`.
- *
- * @note This can also be used to check for destructor names since **cdecl**
- * elides the `~` when parsing them.  (An AST's kind is #K_DESTRUCTOR.)
- *
- * @param sname The scoped name to check.
- * @return Returns `true` only if \a sname has at least two names and the last
- * two names match.
- */
-NODISCARD
-bool c_sname_is_ctor( c_sname_t const *sname );
-
-/**
- * Gets whether \a sname is an `inline` nested `namespace`.
- *
- * @param sname The scoped name to check.
- * @return Returns `true` only if \a sname is an `inline` nested `namespace`.
- */
-NODISCARD
-bool c_sname_is_inline_nested_namespace( c_sname_t const *sname );
-
-/**
- * Cleans-up all memory associated with \a list but does _not_ free \a list
- * itself.
- *
- * @param list The list of scoped names to clean up.  If NULL, does nothing;
- * otherwise, reinitializes \a list upon completion.
- *
- * @sa c_sname_cleanup()
- * @sa c_sname_free()
- */
-void c_sname_list_cleanup( slist_t *list );
-
-/**
- * Gets the local name of \a sname (which is the name of the last scope), for
- * example the local name of `S::T::x` is `x`.
- *
- * @param sname The scoped name to get the local name of; may be NULL.
- * @return Returns said name or the empty string if \a sname is empty or NULL.
- *
- * @sa c_sname_gibberish()
- * @sa c_sname_global_name()
- * @sa c_sname_name_atr()
- * @sa c_sname_scope_gibberish()
- * @sa c_sname_scope_sname()
- */
-NODISCARD
-char const* c_sname_local_name( c_sname_t const *sname );
 
 /**
  * Gets the local scope-type of \a sname (which is the type of the innermost
@@ -461,33 +583,6 @@ NODISCARD C_SNAME_H_INLINE
 c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? &T_NONE : &c_sname_local_data( sname )->type;
 }
-
-/**
- * Checks whether \a sname matches \a sglob where \a sglob is glob-like in that
- * `*` matches zero or more characters; however, `*` matches only within a
- * single scope.  Examples:
- *
- *  + `foo*` matches all names starting with `foo` in the global scope.
- *
- *  + `s::&zwj;*foo` matches all names ending with `foo` only within the top-
- *    level scope `s`.
- *
- *  + `s*::&zwj;foo` matches all names equal to `foo` in all top-level scopes
- *    starting with `s`.
- *
- *  + `s::*::&zwj;foo` matches all names equal to `foo` in any scope within the
- *    top-level scope `s`.
- *
- * Additionally, a leading `**` is used to match within any scope.  Examples:
- *
- *  + `**::&zwj;foo` matches all names equal to `foo` in any scope.
- *
- * @param sname The scoped name to match against.
- * @param sglob The scoped glob to match.
- * @return Returns `true` only if \a sname matches \a sglob.
- */
-NODISCARD
-bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
 
 /**
  * Reinitializes \a sname and returns its former value so that it can be
@@ -515,50 +610,19 @@ c_sname_t c_sname_move( c_sname_t *sname ) {
 }
 
 /**
- * Gets the name at \a roffset of \a sname.
+ * Appends \a src onto the end of \a dst.
  *
- * @param sname The scoped name to get the name at \a roffset of.
- * @param roffset The reverse offset (starting at 0) of the name to get.
- * @return Returns the name at \a roffset or the empty string if \a roffset
- * &ge; c_sname_count().
+ * @param dst The scoped name to append to.
+ * @param src The scoped name to append.  Ownership is taken.
  *
- * @sa c_sname_gibberish()
- * @sa c_sname_global_name()
- * @sa c_sname_local_name()
- * @sa c_sname_scope_gibberish()
- * @sa c_sname_scope_sname()
+ * @sa c_sname_push_back_name()
+ * @sa c_sname_push_front_sname()
+ * @sa c_sname_set()
  */
-NODISCARD C_SNAME_H_INLINE
-char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
-  c_scope_data_t const *const data = slist_atr( sname, roffset );
-  return data != NULL ? data->name : "";
+C_SNAME_H_INLINE
+void c_sname_push_back_sname( c_sname_t *dst, c_sname_t *src ) {
+  slist_push_list_back( dst, src );
 }
-
-/**
- * Parses a scoped name, for example `a::b::c`.
- *
- * @param s The string to parse.
- * @param rv_sname The scoped name to parse into.
- * @return Returns the number of characters of \a s that were successfully
- * parsed.
- *
- * @sa c_sname_parse_dtor()
- */
-NODISCARD
-size_t c_sname_parse( char const *s, c_sname_t *rv_sname );
-
-/**
- * Parses a scoped destructor name, for example `S::T::~T`.
- *
- * @param s The string to parse.
- * @param rv_sname The scoped name to parse into.
- * @return Returns `true` only if the scoped destructor name was successfully
- * parsed.
- *
- * @sa c_sname_parse()
- */
-NODISCARD
-bool c_sname_parse_dtor( char const *s, c_sname_t *rv_sname );
 
 /**
  * Prepends \a src onto the beginning of \a dst.
@@ -566,32 +630,13 @@ bool c_sname_parse_dtor( char const *s, c_sname_t *rv_sname );
  * @param dst The scoped name to prepend to.
  * @param src The name to prepend.  Ownership is taken.
  *
- * @sa c_sname_append_name()
- * @sa c_sname_append_sname()
+ * @sa c_sname_push_back_name()
+ * @sa c_sname_push_back_sname()
  */
 C_SNAME_H_INLINE
-void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
+void c_sname_push_front_sname( c_sname_t *dst, c_sname_t *src ) {
   slist_push_list_front( dst, src );
 }
-
-/**
- * Gets just the scope sname of \a sname.
- * Examples:
- *  + For `a::b::c`, returns `a::b`.
- *  + For `c`, returns an empty scoped name.
- *
- * @param sname The scoped name to get the scope name of; may be NULL.
- * @return Returns said scoped name or an empty scoped name if \a sname is
- * empty, NULL, or not within a scope.
- *
- * @sa c_sname_gibberish()
- * @sa c_sname_global_name()
- * @sa c_sname_local_name()
- * @sa c_sname_name_atr()
- * @sa c_sname_scope_gibberish()
- */
-NODISCARD
-c_sname_t c_sname_scope_sname( c_sname_t const *sname );
 
 /**
  * Gets the scope scope-type of \a sname (which is the type of the next
@@ -612,39 +657,6 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
 }
 
 /**
- * Sets \a dst_sname to \a src_sname.
- *
- * @param dst_sname The scoped name to set.
- * @param src_sname The scoped name to set \a dst_sname to. Ownership is taken.
- *
- * @note If \a dst_sname `==` \a src_name, does nothing.
- *
- * @sa c_sname_append_name()
- * @sa c_sname_append_sname()
- * @sa c_sname_move()
- * @sa c_sname_prepend_sname()
- */
-void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname );
-
-/**
- * Sets all the scope-types (except that of the local scope) of \a sname to the
- * types found in `typedef`'s names.
- *
- * For example, given:
- *
- *      class C { struct S; };
- *
- * and an \a sname of `C::S::x`, set `C`'s scope-type to #TB_class and `S`'s
- * scope-type to #TB_struct; the scope-type of `x` is not changed.
- *
- * If there is no `typedef` for a partial scoped name and the scope-type is
- * either #TB_SCOPE or not set, then sets that scope-type to #TB_namespace.
- *
- * @param sname The scoped name to set all the scope-types of.
- */
-void c_sname_set_all_types( c_sname_t *sname );
-
-/**
  * Sets the scope scope-type of \a sname (which is the type of the next
  * innermost scope) or does nothing if \a sname has no scope.
  *
@@ -659,16 +671,6 @@ void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
   if ( data != NULL )
     data->type = *type;
 }
-
-/**
- * Checks a scoped name for warnings.
- *
- * @param sname The scoped name to check.
- * @param sname_loc The location of \a sname.
- *
- * @sa c_name_error()
- */
-void c_sname_warn( c_sname_t const *sname, c_loc_t const *sname_loc );
 
 ///////////////////////////////////////////////////////////////////////////////
 

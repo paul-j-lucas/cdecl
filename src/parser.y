@@ -3897,14 +3897,14 @@ class_struct_union_declaration_c
       DUMP_TID( "class_struct_union_btid", $csu_btid );
       DUMP_SNAME( "any_sname_c_exp", $sname );
 
-      c_sname_append_sname( &in_attr.scope_sname, &$sname );
+      c_sname_push_back_sname( &in_attr.scope_sname, &$sname );
 
       c_sname_local_data( &in_attr.scope_sname )->type =
         C_TYPE_LIT_B( $csu_btid );
       c_sname_set_all_types( &in_attr.scope_sname );
 
       c_sname_t csu_sname = c_sname_dup( &in_attr.scope_sname );
-      c_sname_append_sname( &csu_sname, &$sname );
+      c_sname_push_back_sname( &csu_sname, &$sname );
 
       c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@sname );
       csu_ast->sname = csu_sname;
@@ -3940,7 +3940,7 @@ enum_declaration_c
       DUMP_AST( "enum_fixed_type_c_ast_opt", $fixed_type_ast );
 
       c_sname_t enum_sname = c_sname_dup( &in_attr.scope_sname );
-      c_sname_append_sname( &enum_sname, &$sname );
+      c_sname_push_back_sname( &enum_sname, &$sname );
 
       c_sname_local_data( &enum_sname )->type = C_TYPE_LIT_B( $enum_btids );
       c_sname_set_all_types( &enum_sname );
@@ -4018,7 +4018,7 @@ namespace_declaration_c
           sname_local_type->atids
         );
 
-      c_sname_append_sname( &in_attr.scope_sname, &$sname );
+      c_sname_push_back_sname( &in_attr.scope_sname, &$sname );
       c_sname_set_all_types( &in_attr.scope_sname );
 
       DUMP_SNAME( "$$_sname", $sname );
@@ -4063,7 +4063,7 @@ namespace_sname_c
       DUMP_STR( "name", $name );
 
       $$ = $sname;
-      c_sname_append_name( &$$, $name );
+      c_sname_push_back_name( &$$, $name );
       c_sname_local_data( &$$ )->type = C_TYPE_LIT_B( TB_namespace );
 
       DUMP_SNAME( "$$_sname", $$ );
@@ -4080,7 +4080,7 @@ namespace_sname_c
       $$ = $sname;
       c_sname_local_data( &$$ )->type = C_TYPE_LIT_B( TB_namespace );
       c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
-      c_sname_append_sname( &$$, &temp_sname );
+      c_sname_push_back_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "$$_sname", $$ );
       DUMP_END();
@@ -4093,7 +4093,7 @@ namespace_sname_c
       DUMP_STR( "name", $name );
 
       $$ = $sname;
-      c_sname_append_name( &$$, $name );
+      c_sname_push_back_name( &$$, $name );
       c_sname_local_data( &$$ )->type =
         C_TYPE_LIT( TB_namespace, $inline_stid, TA_NONE );
 
@@ -4128,7 +4128,7 @@ namespace_typedef_sname_c
       DUMP_SNAME( "sname_c", $sname );
 
       $$ = $ns_sname;
-      c_sname_append_sname( &$$, &$sname );
+      c_sname_push_back_sname( &$$, &$sname );
 
       DUMP_SNAME( "$$_sname", $$ );
       DUMP_END();
@@ -4145,7 +4145,7 @@ namespace_typedef_sname_c
       c_sname_local_data( &$$ )->type =
         *c_sname_local_type( &$tdef->ast->sname );
       c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
-      c_sname_append_sname( &$$, &temp_sname );
+      c_sname_push_back_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "$$_sname", $$ );
       DUMP_END();
@@ -4160,7 +4160,7 @@ namespace_typedef_sname_c
       DUMP_STR( "name", $name );
 
       $$ = $ns_sname;
-      c_sname_append_name( &$$, $name );
+      c_sname_push_back_name( &$$, $name );
       c_sname_local_data( &$$ )->type =
         C_TYPE_LIT( TB_namespace, $inline_stid, TA_NONE );
 
@@ -4425,7 +4425,7 @@ typedef_decl_c
       }
 
       temp_sname = c_sname_dup( &in_attr.scope_sname );
-      c_sname_prepend_sname( &typedef_ast->sname, &temp_sname );
+      c_sname_push_front_sname( &typedef_ast->sname, &temp_sname );
 
       DUMP_AST( "$$_ast", typedef_ast );
       DUMP_END();
@@ -4532,7 +4532,7 @@ using_decl_c_ast
       }
 
       c_sname_t temp_sname = c_sname_dup( &in_attr.scope_sname );
-      c_sname_append_name( &temp_sname, $name );
+      c_sname_push_back_name( &temp_sname, $name );
 
       $$ = c_ast_patch_placeholder( $type_ast, cast_ast );
       c_sname_set( &$$->sname, &temp_sname );
@@ -6085,7 +6085,7 @@ user_defined_literal_decl_c_astp
       DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
 
       c_sname_set( &type_ast->sname, &$sname );
-      c_sname_append_name( &type_ast->sname, $name );
+      c_sname_push_back_name( &type_ast->sname, $name );
 
       c_ast_t *const udl_ast = c_ast_new_gc( K_UDEF_LIT, &@$ );
       udl_ast->type.stids = c_tid_check( $noexcept_stid, C_TPID_STORE );
@@ -6866,7 +6866,7 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
       }
       else {
         c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
-        c_sname_append_sname( &temp_sname, &$sname );
+        c_sname_push_back_sname( &temp_sname, &$sname );
 
         if ( type_ast == NULL ) {
           //
@@ -8698,7 +8698,7 @@ sname_c
 
       $$ = $sname;
       c_sname_local_data( &$$ )->type = C_TYPE_LIT_B( TB_SCOPE );
-      c_sname_append_name( &$$, $name );
+      c_sname_push_back_name( &$$, $name );
 
       DUMP_SNAME( "$$_sname", $$ );
       DUMP_END();
@@ -8720,7 +8720,7 @@ sname_c
       $$ = $sname;
       c_sname_local_data( &$$ )->type = C_TYPE_LIT_B( TB_SCOPE );
       c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
-      c_sname_append_sname( &$$, &temp_sname );
+      c_sname_push_back_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "$$_sname", $$ );
       DUMP_END();
@@ -8798,7 +8798,7 @@ sname_english
       if ( c_type_is_none( local_type ) )
         local_type = c_sname_local_type( &$sname );
       $$ = $scope_sname;
-      c_sname_append_sname( &$$, &$sname );
+      c_sname_push_back_sname( &$$, &$sname );
       c_sname_local_data( &$$ )->type = *local_type;
 
       DUMP_SNAME( "$$_sname", $$ );
@@ -8814,7 +8814,7 @@ sname_english_ast
       DUMP_SNAME( "of_scope_list_english_opt", $scope_sname );
 
       c_sname_t sname = c_sname_move( &$scope_sname );
-      c_sname_append_name( &sname, $name );
+      c_sname_push_back_name( &sname, $name );
 
       c_typedef_t const *const tdef = c_typedef_find_sname( &sname );
       if ( tdef != NULL ) {
@@ -8933,7 +8933,7 @@ typedef_sname_c
       //      define S::T as struct T
       //
       $$ = c_sname_move( &$tdef_sname );
-      c_sname_append_sname( &$$, &$sname );
+      c_sname_push_back_sname( &$$, &$sname );
 
       DUMP_SNAME( "$$_sname", $$ );
       DUMP_END();
@@ -8956,7 +8956,7 @@ typedef_sname_c
       c_sname_local_data( &$$ )->type =
         *c_sname_local_type( &$tdef->ast->sname );
       c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
-      c_sname_append_sname( &$$, &temp_sname );
+      c_sname_push_back_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "$$_sname", $$ );
       DUMP_END();
@@ -9359,7 +9359,7 @@ of_scope_list_english
     {
       // "of scope X of scope Y" means Y::X
       $$ = c_sname_move( &$right_sname );
-      c_sname_append_sname( &$$, &$left_sname );
+      c_sname_push_back_sname( &$$, &$left_sname );
       c_sname_set_all_types( &$$ );
       if ( !c_sname_check( &$$, &@left_sname ) ) {
         c_sname_cleanup( &$$ );

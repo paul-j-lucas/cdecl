@@ -104,7 +104,7 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
         goto error;
       goto done;
     }
-    c_sname_append_name( &temp_sname, name );
+    c_sname_push_back_name( &temp_sname, name );
 
     prev_end = end;
     SKIP_WS( end );
@@ -161,14 +161,6 @@ void c_scope_data_free( c_scope_data_t *data ) {
   }
 }
 
-void c_sname_append_name( c_sname_t *sname, char *name ) {
-  assert( sname != NULL );
-  assert( name != NULL );
-  c_scope_data_t *const data = MALLOC( c_scope_data_t, 1 );
-  *data = (c_scope_data_t){ .name = name, .type = T_NONE };
-  slist_push_back( sname, data );
-}
-
 bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   assert( sname != NULL );
   assert( sname_loc != NULL );
@@ -199,7 +191,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     // For any that does, check that the sname's scope's type matches the
     // previously declared sname's scope's type.
     //
-    c_sname_append_name( &partial_sname, check_strdup( name ) );
+    c_sname_push_back_name( &partial_sname, check_strdup( name ) );
 
     c_type_t const scope_type = scope_data->type;
     c_typedef_t const *const tdef = c_typedef_find_sname( &partial_sname );
@@ -358,6 +350,14 @@ bool c_sname_parse_dtor( char const *s, c_sname_t *rv_sname ) {
   return c_sname_parse_impl( s, rv_sname, /*is_dtor=*/true ) > 0;
 }
 
+void c_sname_push_back_name( c_sname_t *sname, char *name ) {
+  assert( sname != NULL );
+  assert( name != NULL );
+  c_scope_data_t *const data = MALLOC( c_scope_data_t, 1 );
+  *data = (c_scope_data_t){ .name = name, .type = T_NONE };
+  slist_push_back( sname, data );
+}
+
 c_sname_t c_sname_scope_sname( c_sname_t const *sname ) {
   c_sname_t rv_sname;
   c_sname_init( &rv_sname );
@@ -365,7 +365,7 @@ c_sname_t c_sname_scope_sname( c_sname_t const *sname ) {
   if ( sname != NULL ) {
     FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
       c_scope_data_t const *const scope_data = c_scope_data( scope );
-      c_sname_append_name( &rv_sname, check_strdup( scope_data->name ) );
+      c_sname_push_back_name( &rv_sname, check_strdup( scope_data->name ) );
       c_sname_local_data( &rv_sname )->type = scope_data->type;
     } // for
   }
@@ -376,7 +376,7 @@ c_sname_t c_sname_scope_sname( c_sname_t const *sname ) {
 void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname ) {
   if ( dst_sname != src_sname ) {
     c_sname_cleanup( dst_sname );
-    c_sname_append_sname( dst_sname, src_sname );
+    c_sname_push_back_sname( dst_sname, src_sname );
   }
 }
 
