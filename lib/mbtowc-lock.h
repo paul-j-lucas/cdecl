@@ -23,7 +23,7 @@ mbtowc_unlocked (wchar_t *pwc, const char *p, size_t m)
 {
   /* Put the hidden internal state of mbtowc into an initial state.
      This is needed at least with glibc, uClibc, and MSVC CRT.
-     See <https://sourceware.org/bugzilla/show_bug.cgi?id=9674>.  */
+     See <https://sourceware.org/PR9674>.  */
   mbtowc (NULL, NULL, 0);
 
   return mbtowc (pwc, p, m);

@@ -65,8 +65,8 @@ dnl Check whether <wchar.h> is usable at all.
 AC_DEFUN([gl_WCHAR_H_INLINE_OK],
 [
   dnl Test whether <wchar.h> suffers due to the transition from '__inline' to
-  dnl 'gnu_inline'. See <https://sourceware.org/bugzilla/show_bug.cgi?id=4022>
-  dnl and <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=42440>. In summary,
+  dnl 'gnu_inline'. See <https://sourceware.org/PR4022>
+  dnl and <https://gcc.gnu.org/PR42440>. In summary,
   dnl glibc version 2.5 or older, together with gcc version 4.3 or newer and
   dnl the option -std=c99 or -std=gnu99, leads to a broken <wchar.h>.
   AC_REQUIRE([AC_CANONICAL_HOST])

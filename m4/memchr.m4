@@ -21,7 +21,7 @@ AC_DEFUN_ONCE([gl_FUNC_MEMCHR],
   #   https://bugzilla.redhat.com/show_bug.cgi?id=499689
   # memchr should not dereference overestimated length after a match
   #   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=521737
-  #   https://sourceware.org/bugzilla/show_bug.cgi?id=10162
+  #   https://sourceware.org/PR10162
   # memchr should cast the second argument to 'unsigned char'.
   #   This bug exists in Android 4.3.
   # Assume that memchr works on platforms that lack mprotect.

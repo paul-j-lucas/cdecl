@@ -945,7 +945,7 @@ _GL_CXXALIAS_SYS (fwrite, size_t,
                    FILE *restrict stream));
 
 /* Work around bug 11959 when fortifying glibc 2.4 through 2.15
-   <https://sourceware.org/bugzilla/show_bug.cgi?id=11959>,
+   <https://sourceware.org/PR11959>,
    which sometimes causes an unwanted diagnostic for fwrite calls.
    This affects only function declaration attributes under certain
    versions of gcc and clang, and is not needed for C++.  */
