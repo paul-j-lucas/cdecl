@@ -1,3 +1,7 @@
+2025-08-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: s/int/c_loc_num_t/
+
 2025-08-28  Paul J. Lucas <paul@lucasmail.org>
 
    * c_sname.c, c_sname.h, parser.y: sname function renaming.
