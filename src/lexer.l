@@ -217,7 +217,7 @@ static char         rstr_delim[ RSTR_DELIM_LEN_MAX + 1/*"*/ + 1/*\0*/ ];
  * @sa yylineno_stack_pop()
  * @sa yylineno_stack_push()
  */
-static int          yylineno_stack[1];
+static c_loc_num_t  yylineno_stack[1];
 
 /// Top of \ref yylineno_stack.
 static int          yylineno_stack_top = -1;
