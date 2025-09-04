@@ -28,7 +28,7 @@
 @PRAGMA_COLUMNS@
 
 /* The include_next requires a split double-inclusion guard.  */
-#if @HAVE_UCHAR_H@
+#if (defined __cplusplus ? @CXX_HAVE_UCHAR_H@ : @HAVE_UCHAR_H@)
 # if defined __HAIKU__
 /* Work around <https://dev.haiku-os.org/ticket/17040>.  */
 #  include <stdint.h>
@@ -83,7 +83,7 @@
 _GL_INLINE_HEADER_BEGIN
 
 
-#if !(@HAVE_UCHAR_H@ || (defined __cplusplus && @CXX_HAS_CHAR8_TYPE@))
+#if !(defined __cplusplus ? @CXX_HAVE_UCHAR_H@ || @CXX_HAS_CHAR8_TYPE@ : @HAVE_UCHAR_H@)
 
 /* An 8-bit variant of wchar_t.
    Note: This type is only mandated by ISO C 23 or newer, and it does
@@ -97,7 +97,7 @@ typedef unsigned char gl_char8_t;
 
 #endif
 
-#if !(@HAVE_UCHAR_H@ || (defined __cplusplus && @CXX_HAS_UCHAR_TYPES@))
+#if !(defined __cplusplus ? @CXX_HAVE_UCHAR_H@ || @CXX_HAS_UCHAR_TYPES@ : @HAVE_UCHAR_H@)
 
 /* A 16-bit variant of wchar_t.
    Note: This type is only mandated by ISO C 11 or newer.  In ISO C 23
@@ -112,7 +112,7 @@ typedef uint_least16_t gl_char16_t;
 
 #endif
 
-#if !(@HAVE_UCHAR_H@ || (defined __cplusplus && @CXX_HAS_UCHAR_TYPES@))
+#if !(defined __cplusplus ? @CXX_HAVE_UCHAR_H@ || @CXX_HAS_UCHAR_TYPES@ : @HAVE_UCHAR_H@)
 
 /* A 32-bit variant of wchar_t.
    Note: This type is only mandated by ISO C 11 or newer.  In ISO C 23

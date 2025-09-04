@@ -1574,6 +1574,7 @@ uchar.h: uchar.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) 
 	$(gl_V_at)$(SED_HEADER_STDOUT) \
 	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 	      -e 's/@''HAVE_UCHAR_H''@/$(HAVE_UCHAR_H)/g' \
+	      -e 's/@''CXX_HAVE_UCHAR_H''@/$(CXX_HAVE_UCHAR_H)/g' \
 	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
 	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \

@@ -1,5 +1,5 @@
 # uchar_h.m4
-# serial 31
+# serial 32
 dnl Copyright (C) 2019-2025 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -20,6 +20,34 @@ AC_DEFUN_ONCE([gl_UCHAR_H],
     HAVE_UCHAR_H=0
   fi
   AC_SUBST([HAVE_UCHAR_H])
+
+  dnl On macOS 15, in C mode, <uchar.h> does not exist. But in C++ mode,
+  dnl it exists, and we need to #include_next it, otherwise we get an error
+  dnl "<cuchar> tried including <uchar.h> but didn't find libc++'s <uchar.h>
+  dnl  header."
+  m4_ifdef([gl_ANSI_CXX], [AC_REQUIRE([gl_ANSI_CXX])])
+  CXX_HAVE_UCHAR_H=0
+  if test "$CXX" != no; then
+    AC_CACHE_CHECK([whether the C++ compiler has <uchar.h>],
+      [gl_cv_cxx_have_uchar_h],
+      [dnl We can't use AC_LANG_PUSH([C++]) and AC_LANG_POP([C++]) here, due to
+       dnl an autoconf bug <https://savannah.gnu.org/support/?110294>.
+       cat > conftest.cpp <<\EOF
+#include <uchar.h>
+EOF
+       gl_command="$CXX $CXXFLAGS $CPPFLAGS -c conftest.cpp"
+       if AC_TRY_EVAL([gl_command]); then
+         gl_cv_cxx_have_uchar_h=yes
+       else
+         gl_cv_cxx_have_uchar_h=no
+       fi
+       rm -fr conftest*
+      ])
+    if test $gl_cv_cxx_have_uchar_h = yes; then
+      CXX_HAVE_UCHAR_H=1
+    fi
+  fi
+  AC_SUBST([CXX_HAVE_UCHAR_H])
 
   gl_TYPE_CHAR8_T
   gl_TYPE_CHAR16_T
@@ -60,7 +88,7 @@ EOF
   CXX_HAS_CHAR8_TYPE=0
   if test $HAVE_UCHAR_H = 0; then
     if test "$CXX" != no; then
-      AC_CACHE_CHECK([whether the C++ compiler predefines the char8_t types],
+      AC_CACHE_CHECK([whether the C++ compiler predefines the char8_t type],
         [gl_cv_cxx_has_char8_type],
         [dnl We can't use AC_LANG_PUSH([C++]) and AC_LANG_POP([C++]) here, due to
          dnl an autoconf bug <https://savannah.gnu.org/support/?110294>.
