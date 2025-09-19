@@ -36,8 +36,7 @@
          && ((defined _INTTYPES_INCLUDED                                \
               && !defined _GL_FINISHED_INCLUDING_SYSTEM_INTTYPES_H)     \
              || defined _GL_JUST_INCLUDE_SYSTEM_WCHAR_H))               \
-     || (defined __MINGW32__ && defined __STRING_H_SOURCED__)           \
-     || defined _@GUARD_PREFIX@_ALREADY_INCLUDING_WCHAR_H)
+     || (defined __MINGW32__ && defined __STRING_H_SOURCED__))
 /* Special invocation convention:
    - Inside glibc and uClibc header files, but not MinGW.
    - On HP-UX 11.00 we have a sequence of nested includes
@@ -47,10 +46,7 @@
      therefore we cannot provide the function overrides; instead include only
      the system's <wchar.h>.
    - With MinGW 3.22, when <string.h> includes <wchar.h>, only some part of
-     <wchar.h> is actually processed, and that doesn't include 'mbstate_t'.
-   - On IRIX 6.5, similarly, we have an include <wchar.h> -> <wctype.h>, and
-     the latter includes <wchar.h>.  But here, we have no way to detect whether
-     <wctype.h> is completely included or is still being included.  */
+     <wchar.h> is actually processed, and that doesn't include 'mbstate_t'.  */
 
 #@INCLUDE_NEXT@ @NEXT_WCHAR_H@
 /* The glibc 2.5 /usr/include/wchar.h defines __need_wint_t but never undefines
@@ -61,8 +57,6 @@
 /* Normal invocation convention.  */
 
 #ifndef _@GUARD_PREFIX@_WCHAR_H
-
-#define _@GUARD_PREFIX@_ALREADY_INCLUDING_WCHAR_H
 
 #if @HAVE_FEATURES_H@
 # include <features.h> /* for __GLIBC__ */
@@ -81,8 +75,6 @@
 #if @HAVE_WCHAR_H@
 # @INCLUDE_NEXT@ @NEXT_WCHAR_H@
 #endif
-
-#undef _@GUARD_PREFIX@_ALREADY_INCLUDING_WCHAR_H
 
 #ifndef _@GUARD_PREFIX@_WCHAR_H
 #define _@GUARD_PREFIX@_WCHAR_H
@@ -211,18 +203,11 @@ typedef unsigned int rpl_wint_t;
 
 
 /* Override mbstate_t if it is too small.
-   On IRIX 6.5, sizeof (mbstate_t) == 1, which is not sufficient for
-   implementing mbrtowc for encodings like UTF-8.
    On AIX, MSVC, and OpenBSD 6.0, mbrtowc needs to be overridden, but
    mbstate_t exists and is large enough and overriding it would cause problems
    in C++ mode.  */
 #if !(((defined _WIN32 && !defined __CYGWIN__) || @HAVE_MBSINIT@) && @HAVE_MBRTOWC@) || @REPLACE_MBSTATE_T@
 # if !GNULIB_defined_mbstate_t
-#  if !(defined _AIX || defined _MSC_VER || defined __OpenBSD__)
-typedef int rpl_mbstate_t;
-#   undef mbstate_t
-#   define mbstate_t rpl_mbstate_t
-#  endif
 #  define GNULIB_defined_mbstate_t 1
 # endif
 #endif
@@ -365,8 +350,8 @@ _GL_WARN_ON_USE (btowc, "btowc is unportable - "
 _GL_FUNCDECL_RPL (wctob, int, (wint_t wc), _GL_ATTRIBUTE_PURE);
 _GL_CXXALIAS_RPL (wctob, int, (wint_t wc));
 # else
-#  if !defined wctob && !@HAVE_DECL_WCTOB@
-/* wctob is provided by gnulib, or wctob exists but is not declared.  */
+#  if !defined wctob && !@HAVE_WCTOB@
+/* wctob is provided by gnulib.  */
 _GL_FUNCDECL_SYS (wctob, int, (wint_t wc), _GL_ATTRIBUTE_PURE);
 #  endif
 _GL_CXXALIAS_SYS (wctob, int, (wint_t wc));
@@ -443,7 +428,7 @@ _GL_WARN_ON_USE (mbsinit, "mbsinit is unportable - "
    without considering what mbsinit() does, we get test failures such as
      assertion "mbsinit (&iter->state)" failed
  */
-# if GNULIB_defined_mbstate_t                             /* AIX, IRIX */
+# if GNULIB_defined_mbstate_t                             /* AIX */
 /* mbstate_t has at least 4 bytes.  They are used as coded in
    gnulib/lib/mbrtowc.c.  */
 #  define _GL_MBSTATE_INIT_SIZE 1

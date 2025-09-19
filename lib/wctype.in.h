@@ -264,27 +264,7 @@ rpl_towupper (wint_t wc)
 
 #  else
 
-/* IRIX 5.3 has macros but no functions, its isw* macros refer to an
-   undefined variable _ctmp_ and to <ctype.h> macros like _P, and they
-   refer to system functions like _iswctype that are not in the
-   standard C library.  Rather than try to get ancient buggy
-   implementations like this to work, just disable them.  */
-#   undef iswalnum
-#   undef iswalpha
-#   undef iswblank
-#   undef iswcntrl
-#   undef iswdigit
-#   undef iswgraph
-#   undef iswlower
-#   undef iswprint
-#   undef iswpunct
-#   undef iswspace
-#   undef iswupper
-#   undef iswxdigit
-#   undef towlower
-#   undef towupper
-
-/* Linux libc5 has <wctype.h> and the functions but they are broken.  */
+/* On some old platforms the functions are broken.  */
 #   if @REPLACE_ISWCNTRL@
 #    if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #     define iswalnum rpl_iswalnum

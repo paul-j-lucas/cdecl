@@ -30,7 +30,7 @@
 # include "lc-charset-unicode.h"
 #endif
 
-#if GNULIB_defined_mbstate_t /* AIX, IRIX */
+#if GNULIB_defined_mbstate_t /* AIX */
 /* Implement mbrtoc32() on top of mbtowc() for the non-UTF-8 locales
    and directly for the UTF-8 locales.  */
 

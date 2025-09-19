@@ -117,10 +117,8 @@
 /* mingw, MSVC, BeOS, Haiku declare environ in <stdlib.h>, not in
    <unistd.h>.  */
 /* Solaris declares getcwd not only in <unistd.h> but also in <stdlib.h>.  */
-/* OSF Tru64 Unix cannot see gnulib rpl_strtod when system <stdlib.h> is
-   included here.  */
 /* But avoid namespace pollution on glibc systems.  */
-#if !defined __GLIBC__ && !defined __osf__
+#if !defined __GLIBC__
 # define __need_system_stdlib_h
 # include <stdlib.h>
 # undef __need_system_stdlib_h
@@ -131,10 +129,10 @@
 # include <process.h>
 #endif
 
-/* AIX and OSF/1 5.1 declare getdomainname in <netdb.h>, not in <unistd.h>.
+/* AIX declares getdomainname in <netdb.h>, not in <unistd.h>.
    NonStop Kernel declares gethostname in <netdb.h>, not in <unistd.h>.  */
 /* But avoid namespace pollution on glibc systems.  */
-#if ((@GNULIB_GETDOMAINNAME@ && (defined _AIX || defined __osf__)) \
+#if ((@GNULIB_GETDOMAINNAME@ && defined _AIX) \
      || (@GNULIB_GETHOSTNAME@ && defined __TANDEM)) \
     && !defined __GLIBC__
 # include <netdb.h>
@@ -1333,8 +1331,7 @@ _GL_CXXALIAS_RPL (gethostname, int, (char *name, size_t len));
 _GL_FUNCDECL_SYS (gethostname, int, (char *name, size_t len),
                                     _GL_ARG_NONNULL ((1)));
 #  endif
-/* Need to cast, because on Solaris 10 and OSF/1 5.1 systems, the second
-   parameter is
+/* Need to cast, because on Solaris 10 systems, the second parameter is
                                                       int len.  */
 _GL_CXXALIAS_SYS_CAST (gethostname, int, (char *name, size_t len));
 # endif
@@ -2148,9 +2145,9 @@ _GL_FUNCDECL_SYS (sethostname, int,
                   (const char *name, size_t len),
                   _GL_ARG_NONNULL ((1)) _GL_ATTRIBUTE_NODISCARD);
 #  endif
-/* Need to cast, because on Solaris 11 2011-10, Mac OS X 10.5, IRIX 6.5
-   and FreeBSD 6.4 the second parameter is int.  On Solaris 11
-   2011-10, the first parameter is not const.  */
+/* Need to cast, because on Solaris 11 2011-10, Mac OS X 10.5, and FreeBSD 6.4
+   the second parameter is int.  On Solaris 11 2011-10, the first parameter is
+   not const.  */
 _GL_CXXALIAS_SYS_CAST (sethostname, int,
                        (const char *name, size_t len));
 # endif

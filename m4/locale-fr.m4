@@ -1,5 +1,5 @@
 # locale-fr.m4
-# serial 24
+# serial 25
 dnl Copyright (C) 2003, 2005-2025 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -112,7 +112,7 @@ int main () {
             if (LC_ALL=fr_FR.ISO-8859-1 LC_TIME= LC_CTYPE= ./conftest; exit) 2>/dev/null; then
               gt_cv_locale_fr=fr_FR.ISO-8859-1
             else
-              # Test for the AIX, OSF/1, FreeBSD, NetBSD, OpenBSD locale name.
+              # Test for the AIX, FreeBSD, NetBSD, OpenBSD locale name.
               if (LC_ALL=fr_FR.ISO8859-1 LC_TIME= LC_CTYPE= ./conftest; exit) 2>/dev/null; then
                 gt_cv_locale_fr=fr_FR.ISO8859-1
               else

@@ -59,7 +59,7 @@ mbtowc_with_lock (wchar_t *pwc, const char *p, size_t m)
   return ret;
 }
 
-#elif HAVE_PTHREAD_API /* AIX, IRIX, Cygwin */
+#elif HAVE_PTHREAD_API /* AIX, Cygwin */
 
 extern
 # if defined _WIN32 || defined __CYGWIN__
@@ -67,7 +67,7 @@ extern
 # endif
   pthread_mutex_t *gl_get_mbtowc_lock (void);
 
-# if HAVE_WEAK_SYMBOLS /* IRIX */
+# if HAVE_WEAK_SYMBOLS
 
    /* Avoid the need to link with '-lpthread'.  */
 #  pragma weak pthread_mutex_lock

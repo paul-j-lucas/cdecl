@@ -78,6 +78,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module flexmember:
   # Code from module fnmatch:
   # Code from module fnmatch-h:
+  # Code from module fseterr:
   # Code from module gen-header:
   # Code from module getdelim:
   # Code from module getline:
@@ -131,6 +132,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module stdlib-h:
   # Code from module streq:
   # Code from module string-h:
+  # Code from module stringeq:
   # Code from module strndup:
   # Code from module strnlen:
   # Code from module strnlen1:
@@ -322,6 +324,8 @@ AC_DEFUN([gl_INIT],
   gl_FNMATCH_H_REQUIRE_DEFAULTS
   gl_CONDITIONAL_HEADER([fnmatch.h])
   AC_PROG_MKDIR_P
+  gl_FUNC_FSETERR
+  gl_CONDITIONAL([GL_COND_OBJ_FSETERR], [test $ac_cv_func___fseterr = no])
   gl_FUNC_GETDELIM
   gl_CONDITIONAL([GL_COND_OBJ_GETDELIM],
                  [test $HAVE_GETDELIM = 0 || test $REPLACE_GETDELIM = 1])
@@ -351,8 +355,7 @@ AC_DEFUN([gl_INIT],
   ])
   gl_UNISTD_MODULE_INDICATOR([getopt-posix])
   gl_MUSL_LIBC
-  AC_SUBST([LIBINTL])
-  AC_SUBST([LTLIBINTL])
+  gl_GETTEXT_H
   GNULIB_I18N
   AC_REQUIRE([gl_FUNC_SETLOCALE_NULL])
   HARD_LOCALE_LIB="$SETLOCALE_NULL_LIB"
@@ -492,6 +495,18 @@ AC_DEFUN([gl_INIT],
   gl_STDIO_H
   gl_STDIO_H_REQUIRE_DEFAULTS
   AC_PROG_MKDIR_P
+  USES_MSVCRT=0
+  case "$host_os" in
+    mingw* | windows*)
+      AC_EGREP_CPP([Special], [
+  #ifndef _UCRT
+   Special
+  #endif
+        ],
+        [USES_MSVCRT=1])
+      ;;
+  esac
+  gl_CONDITIONAL([GL_COND_OBJ_STDIO_CONSOLESAFE], [test $USES_MSVCRT = 1])
   gl_CONDITIONAL([GL_COND_OBJ_STDIO_READ], [test $REPLACE_STDIO_READ_FUNCS = 1])
   gl_CONDITIONAL([GL_COND_OBJ_STDIO_WRITE], [test $REPLACE_STDIO_WRITE_FUNCS = 1])
   dnl No need to create extra modules for these functions. Everyone who uses
@@ -523,6 +538,9 @@ AC_DEFUN([gl_INIT],
   gl_STRING_H
   gl_STRING_H_REQUIRE_DEFAULTS
   AC_PROG_MKDIR_P
+  gl_FUNC_STREQ
+  gl_FUNC_MEMEQ
+  gl_STRING_MODULE_INDICATOR([stringeq])
   gl_FUNC_STRNDUP
   gl_CONDITIONAL([GL_COND_OBJ_STRNDUP],
                  [test $HAVE_STRNDUP = 0 || test $REPLACE_STRNDUP = 1])
@@ -837,6 +855,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/fnmatch.c
   lib/fnmatch.in.h
   lib/fnmatch_loop.c
+  lib/fseterr.c
+  lib/fseterr.h
   lib/getdelim.c
   lib/getline.c
   lib/getopt-cdefs.in.h
@@ -894,12 +914,15 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/stdckdint.in.h
   lib/stddef.in.h
   lib/stdint.in.h
+  lib/stdio-consolesafe.c
+  lib/stdio-impl.h
   lib/stdio-read.c
   lib/stdio-write.c
   lib/stdio.in.h
   lib/stdlib.c
   lib/stdlib.in.h
   lib/streq.h
+  lib/string.c
   lib/string.in.h
   lib/strndup.c
   lib/strnlen.c
@@ -985,9 +1008,11 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/flexmember.m4
   m4/fnmatch.m4
   m4/fnmatch_h.m4
+  m4/fseterr.m4
   m4/getdelim.m4
   m4/getline.m4
   m4/getopt.m4
+  m4/gettext_h.m4
   m4/gnulib-common.m4
   m4/gnulib-i18n.m4
   m4/include_next.m4
@@ -1032,6 +1057,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/stdio_h.m4
   m4/stdlib_h.m4
   m4/string_h.m4
+  m4/stringeq.m4
   m4/strndup.m4
   m4/strnlen.m4
   m4/strsep.m4

@@ -43,11 +43,11 @@ c32_get_type_test (const char *name)
           switch (name[2])
             {
             case 'n':
-              if (strcmp (name + 3, "um") == 0)
+              if (streq (name + 3, "um"))
                 return c32isalnum;
               break;
             case 'p':
-              if (strcmp (name + 3, "ha") == 0)
+              if (streq (name + 3, "ha"))
                 return c32isalpha;
               break;
             default:
@@ -59,34 +59,34 @@ c32_get_type_test (const char *name)
         }
       break;
     case 'b':
-      if (strcmp (name + 1, "lank") == 0)
+      if (streq (name + 1, "lank"))
         return c32isblank;
       break;
     case 'c':
-      if (strcmp (name + 1, "ntrl") == 0)
+      if (streq (name + 1, "ntrl"))
         return c32iscntrl;
       break;
     case 'd':
-      if (strcmp (name + 1, "igit") == 0)
+      if (streq (name + 1, "igit"))
         return c32isdigit;
       break;
     case 'g':
-      if (strcmp (name + 1, "raph") == 0)
+      if (streq (name + 1, "raph"))
         return c32isgraph;
       break;
     case 'l':
-      if (strcmp (name + 1, "ower") == 0)
+      if (streq (name + 1, "ower"))
         return c32islower;
       break;
     case 'p':
       switch (name[1])
         {
         case 'r':
-          if (strcmp (name + 2, "int") == 0)
+          if (streq (name + 2, "int"))
             return c32isprint;
           break;
         case 'u':
-          if (strcmp (name + 2, "nct") == 0)
+          if (streq (name + 2, "nct"))
             return c32ispunct;
           break;
         default:
@@ -94,15 +94,15 @@ c32_get_type_test (const char *name)
         }
       break;
     case 's':
-      if (strcmp (name + 1, "pace") == 0)
+      if (streq (name + 1, "pace"))
         return c32isspace;
       break;
     case 'u':
-      if (strcmp (name + 1, "pper") == 0)
+      if (streq (name + 1, "pper"))
         return c32isupper;
       break;
     case 'x':
-      if (strcmp (name + 1, "digit") == 0)
+      if (streq (name + 1, "digit"))
         return c32isxdigit;
       break;
     default:

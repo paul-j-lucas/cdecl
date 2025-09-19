@@ -32,7 +32,7 @@ hard_locale (int category)
   if (setlocale_null_r (category, locale, sizeof (locale)))
     return false;
 
-  if (!(strcmp (locale, "C") == 0 || strcmp (locale, "POSIX") == 0))
+  if (!(streq (locale, "C") || streq (locale, "POSIX")))
     return true;
 
 #if defined __ANDROID__

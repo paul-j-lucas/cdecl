@@ -25,14 +25,6 @@
 
 #if @HAVE_SYSEXITS_H@
 
-/* IRIX 6.5 has an <unistd.h> that defines a macro EX_OK with a nonzero
-   value.  Override it.  See
-   <https://lists.gnu.org/r/bug-gnulib/2007-03/msg00361.html>  */
-# ifdef __sgi
-#  include <unistd.h>
-#  undef EX_OK
-# endif
-
 /* The include_next requires a split double-inclusion guard.  */
 # @INCLUDE_NEXT@ @NEXT_SYSEXITS_H@
 

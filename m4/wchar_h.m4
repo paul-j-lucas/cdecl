@@ -1,5 +1,5 @@
 # wchar_h.m4
-# serial 65
+# serial 66
 dnl Copyright (C) 2007-2025 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -239,7 +239,7 @@ AC_DEFUN([gl_WCHAR_H_DEFAULTS],
   HAVE_WCSTOK=1;        AC_SUBST([HAVE_WCSTOK])
   HAVE_WCSWIDTH=1;      AC_SUBST([HAVE_WCSWIDTH])
   HAVE_WCSFTIME=1;      AC_SUBST([HAVE_WCSFTIME])
-  HAVE_DECL_WCTOB=1;    AC_SUBST([HAVE_DECL_WCTOB])
+  HAVE_WCTOB=1;         AC_SUBST([HAVE_WCTOB])
   HAVE_DECL_WCSDUP=1;   AC_SUBST([HAVE_DECL_WCSDUP])
   HAVE_DECL_WCWIDTH=1;  AC_SUBST([HAVE_DECL_WCWIDTH])
   REPLACE_MBSTATE_T=0;  AC_SUBST([REPLACE_MBSTATE_T])

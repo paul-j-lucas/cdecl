@@ -80,6 +80,12 @@
 # include <strings.h>
 #endif
 
+_GL_INLINE_HEADER_BEGIN
+
+#ifndef _GL_STRING_INLINE
+# define _GL_STRING_INLINE _GL_INLINE
+#endif
+
 /* _GL_ATTRIBUTE_DEALLOC (F, I) declares that the function returns pointers
    that can be freed by passing them as the Ith argument to the
    function F.  */
@@ -407,6 +413,15 @@ _GL_CXXALIASWARN (memchr);
 /* Assume memchr is always declared.  */
 _GL_WARN_ON_USE (memchr, "memchr has platform-specific bugs - "
                  "use gnulib module memchr for portability" );
+#endif
+
+/* Are S1 and S2, of size N, bytewise equal?  */
+#if @GNULIB_STRINGEQ@ && !@HAVE_DECL_MEMEQ@
+_GL_STRING_INLINE bool
+memeq (void const *__s1, void const *__s2, size_t __n)
+{
+  return !memcmp (__s1, __s2, __n);
+}
 #endif
 
 /* Return the first occurrence of NEEDLE in HAYSTACK.  */
@@ -787,6 +802,15 @@ _GL_CXXALIAS_SYS (strdup, char *, (char const *__s));
 #  endif
 _GL_CXXALIASWARN (strdup);
 # endif
+#endif
+
+/* Are strings S1 and S2 equal?  */
+#if @GNULIB_STRINGEQ@ && !@HAVE_DECL_STREQ@
+_GL_STRING_INLINE bool
+streq (char const *__s1, char const *__s2)
+{
+  return !strcmp (__s1, __s2);
+}
 #endif
 
 /* Append no more than N characters from SRC onto DEST.  */
@@ -1208,7 +1232,7 @@ _GL_EXTERN_C bool str_endswith (const char *string, const char *prefix)
 # ifdef __MirBSD__  /* MirBSD defines mbslen as a macro.  Override it.  */
 #  undef mbslen
 # endif
-# if @HAVE_MBSLEN@  /* AIX, OSF/1, MirBSD define mbslen already in libc.  */
+# if @HAVE_MBSLEN@  /* AIX, MirBSD define mbslen already in libc.  */
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   define mbslen rpl_mbslen
 #  endif
@@ -1722,6 +1746,7 @@ _GL_WARN_ON_USE (strverscmp, "strverscmp is unportable - "
 # endif
 #endif
 
+_GL_INLINE_HEADER_END
 
 #endif /* _@GUARD_PREFIX@_STRING_H */
 #endif /* _@GUARD_PREFIX@_STRING_H */
