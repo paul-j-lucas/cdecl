@@ -440,7 +440,7 @@ static void rb_tree_check( rb_tree_t const *tree ) {
  * 4th ed., &sect; 12.2, p. 318.
  */
 NODISCARD
-static rb_node_t* rb_tree_minimum( rb_tree_t *tree, rb_node_t *x_node ) {
+static rb_node_t* rb_tree_minimum( rb_tree_t const *tree, rb_node_t *x_node ) {
   assert( tree != NULL );
   assert( x_node != NULL );
 
