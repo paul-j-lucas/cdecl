@@ -1,3 +1,12 @@
+2025-09-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * Makefile.am: Added dist-hook to remove .DS_Store files.
+
+2025-09-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: Added "const".
+   * red_black.c: Moved assert.
+
 2025-08-31  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: s/int/c_loc_num_t/
