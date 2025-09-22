@@ -85,6 +85,9 @@ distclean-local: distclean-coverage-local
 distclean-coverage-local:
 	rm -fr $(COVERAGE_DIR)
 
+dist-hook:
+	find $(distdir) -name .DS_Store -exec rm -f {} \;
+
 update-gnulib:
 	gnulib-tool --add-import
 	rm -f m4/.gitignore
