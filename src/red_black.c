@@ -321,7 +321,8 @@ static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
  * @param x_node A pointer to the rb_node to rotate.
  * @param dir The direction to rotate.
  *
- * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/), 4th ed., &sect; 13.2, p. 336.
+ * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
+ * 4th ed., &sect; 13.2, p. 336.
  */
 static void rb_node_rotate( rb_tree_t *tree, rb_node_t *x_node, rb_dir_t dir ) {
   assert( tree != NULL );
