@@ -28,8 +28,6 @@
 /unitypes.h
 /wchar.h
 /wctype.h
-/fseterr.c
-/fseterr.h
 /stdio-consolesafe.c
 /stdio-impl.h
 /string.c
