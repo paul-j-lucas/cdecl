@@ -1,3 +1,10 @@
+2025-09-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * stdio-consolesafe.c, stdio-impl.h, string.c: Fixed .gitignore; added
+     missing files.
+   * fseterr.c, fseterr.h: Added missing fseterr.[ch].
+   * pjl_config.h, prompt.c: Now always defining HAVE_GENUINE_GNU_READLINE.
+
 2025-09-22  Paul J. Lucas <paul@lucasmail.org>
 
    * Makefile.am: Added dist-hook to remove .DS_Store files.
