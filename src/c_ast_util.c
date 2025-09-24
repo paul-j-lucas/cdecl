@@ -513,7 +513,7 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
 NODISCARD
 static bool c_ast_vistor_kind_any( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  c_ast_kind_t const kinds = (c_ast_kind_t)user_data.ll;
+  c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, user_data.ll );
   return (ast->kind & kinds) != 0;
 }
 
