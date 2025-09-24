@@ -45,31 +45,31 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define DUMP_AST(D,KEY,AST) BLOCK( \
-  DUMP_KEY( (D), KEY ": " ); c_ast_dump_impl( (AST), (D) ); )
+#define DUMP_AST(DUMP,KEY,AST) BLOCK( \
+  DUMP_KEY( (DUMP), KEY ": " ); c_ast_dump_impl( (AST), (DUMP) ); )
 
-#define DUMP_AST_LIST(D,KEY,LIST) BLOCK( \
-  DUMP_KEY( (D), KEY ": " ); c_ast_list_dump_impl( (LIST), (D) ); )
+#define DUMP_AST_LIST(DUMP,KEY,LIST) BLOCK( \
+  DUMP_KEY( (DUMP), KEY ": " ); c_ast_list_dump_impl( (LIST), (DUMP) ); )
 
-#define DUMP_BOOL(D,KEY,BOOL) BLOCK( \
-  DUMP_KEY( (D), KEY ": " ); bool_dump( (BOOL), (D)->fout ); )
+#define DUMP_BOOL(DUMP,KEY,BOOL) BLOCK( \
+  DUMP_KEY( (DUMP), KEY ": " ); bool_dump( (BOOL), (DUMP)->fout ); )
 
-#define DUMP_FORMAT(D,...) BLOCK(                   \
-  FPUTNSP( (D)->indent * DUMP_INDENT, (D)->fout );  \
-  FPRINTF( (D)->fout, __VA_ARGS__ ); )
+#define DUMP_FORMAT(DUMP,...) BLOCK(                      \
+  FPUTNSP( (DUMP)->indent * DUMP_INDENT, (DUMP)->fout );  \
+  FPRINTF( (DUMP)->fout, __VA_ARGS__ ); )
 
-#define DUMP_KEY(D,...) BLOCK(                \
-  fput_sep( ",\n", &(D)->comma, (D)->fout );  \
-  DUMP_FORMAT( (D), __VA_ARGS__ ); )
+#define DUMP_KEY(DUMP,...) BLOCK(                   \
+  fput_sep( ",\n", &(DUMP)->comma, (DUMP)->fout );  \
+  DUMP_FORMAT( (DUMP), __VA_ARGS__ ); )
 
-#define DUMP_LOC(D,KEY,LOC) BLOCK( \
-  DUMP_KEY( (D), KEY ": " ); c_loc_dump( (LOC), (D)->fout ); )
+#define DUMP_LOC(DUMP,KEY,LOC) BLOCK( \
+  DUMP_KEY( (DUMP), KEY ": " ); c_loc_dump( (LOC), (DUMP)->fout ); )
 
-#define DUMP_SNAME(D,KEY,SNAME) BLOCK( \
-  DUMP_KEY( (D), KEY ": " ); c_sname_dump( (SNAME), (D)->fout ); )
+#define DUMP_SNAME(DUMP,KEY,SNAME) BLOCK( \
+  DUMP_KEY( (DUMP), KEY ": " ); c_sname_dump( (SNAME), (DUMP)->fout ); )
 
-#define DUMP_STR(D,KEY,STR) BLOCK( \
-  DUMP_KEY( (D), KEY ": " ); fputs_quoted( (STR), '"', (D)->fout ); )
+#define DUMP_STR(DUMP,KEY,STR) BLOCK( \
+  DUMP_KEY( (DUMP), KEY ": " ); fputs_quoted( (STR), '"', (DUMP)->fout ); )
 
 /// @endcond
 
