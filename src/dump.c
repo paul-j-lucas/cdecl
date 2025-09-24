@@ -490,7 +490,7 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
  * json_object_begin()) falls through and not begin a new JSON object when that
  * happens allowing common code in the second case to be shared with the first
  * and not be duplicated.  For example, given:
- * ```cpp
+ * ```
  *  case C1:
  *    json = json_object_begin( JSON_INIT, "K1", dump );
  *    // Do stuff unique to C1.
