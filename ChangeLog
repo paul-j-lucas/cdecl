@@ -1,3 +1,7 @@
+2025-09-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c: Added initializer of TS_NONE.
+
 2025-09-23  Paul J. Lucas <paul@lucasmail.org>
 
    * stdio-consolesafe.c, stdio-impl.h, string.c: Fixed .gitignore; added
