@@ -955,7 +955,7 @@ c_ast_t c_ast_sub_typedef( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_TYPEDEF );
 
-  c_tid_t qual_stids;
+  c_tid_t qual_stids = TS_NONE;
   c_ast_t rv_ast = *c_ast_untypedef_qual( ast, &qual_stids );
   rv_ast.align = ast->align;
   rv_ast.loc = ast->loc;
