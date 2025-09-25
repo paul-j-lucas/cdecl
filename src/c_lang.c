@@ -25,9 +25,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define C_LANG_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "c_lang.h"
 #include "options.h"
 #include "strbuf.h"
@@ -238,5 +235,12 @@ c_lang_id_t is_reserved_name( char const *name ) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline c_lang_id_t c_lang_and_newer( c_lang_id_t );
+extern inline c_lang_id_t c_lang_newer( c_lang_id_t );
+extern inline c_lang_id_t c_lang_newest( c_lang_id_t );
+extern inline char const* c_lang___STDC__( c_lang_id_t );
+extern inline c_lang_id_t c_lang_oldest( c_lang_id_t );
+extern inline bool opt_lang_is_any( c_lang_id_t );
 
 /* vim:set et sw=2 ts=2: */

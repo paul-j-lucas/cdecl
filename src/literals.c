@@ -25,9 +25,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define C_LITERALS_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "literals.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -445,4 +442,7 @@ char const L_MSC_vectorcall[]           = "vectorcall";
 char const L_MSC_WINAPI[]               = "WINAPI";
 
 ///////////////////////////////////////////////////////////////////////////////
+
+extern inline char const* alignas_name( void );
+
 /* vim:set et sw=2 ts=2: */

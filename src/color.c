@@ -25,9 +25,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define COLOR_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "color.h"
 #include "options.h"
 #include "util.h"
@@ -339,5 +336,10 @@ void colors_init( void ) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline void color_end( FILE*, char const* );
+extern inline void color_start( FILE*, char const* );
+extern inline void color_strbuf_end( strbuf_t*, char const* );
+extern inline void color_strbuf_start( strbuf_t*, char const* );
 
 /* vim:set et sw=2 ts=2: */

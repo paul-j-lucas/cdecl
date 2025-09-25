@@ -30,9 +30,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define RED_BLACK_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "red_black.h"
 #include "util.h"
 
@@ -609,5 +606,8 @@ rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline void* rb_node_data( rb_tree_t const*, rb_node_t const* );
+extern inline bool rb_tree_empty( rb_tree_t const* );
 
 /* vim:set et sw=2 ts=2: */

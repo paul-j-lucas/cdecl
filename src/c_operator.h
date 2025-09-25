@@ -37,11 +37,6 @@
 #include <limits.h>                     /* for UINT_MAX */
 #include <stdbool.h>
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_OPERATOR_H_INLINE
-# define C_OPERATOR_H_INLINE _GL_INLINE
-#endif /* C_OPERATOR_H_INLINE */
-
 /// @endcond
 
 /**
@@ -144,8 +139,8 @@ c_operator_t const* c_op_get( c_op_id_t op_id );
  * @param op The C++ operator to check.
  * @return Returns `true` only if the operator is ambiguous.
  */
-NODISCARD C_OPERATOR_H_INLINE
-bool c_op_is_ambiguous( c_operator_t const *op ) {
+NODISCARD
+inline bool c_op_is_ambiguous( c_operator_t const *op ) {
   return op->params_min == 0 && op->params_max == 2;
 }
 
@@ -160,16 +155,14 @@ bool c_op_is_ambiguous( c_operator_t const *op ) {
  * @sa graph_token_c()
  * @sa other_token_c()
  */
-NODISCARD C_OPERATOR_H_INLINE
-char const* c_op_token_c( c_op_id_t op_id ) {
+NODISCARD
+inline char const* c_op_token_c( c_op_id_t op_id ) {
   return other_token_c( c_op_get( op_id )->literal );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_operator_H */
 /* vim:set et sw=2 ts=2: */

@@ -34,7 +34,6 @@
 }
 
 %{
-#define LEXER_H_INLINE _GL_EXTERN_INLINE
 /** @endcond */
 
 // local
@@ -1817,4 +1816,9 @@ char const* printable_yytext( void ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+extern inline bool is_english_to_gibberish( void );
+extern inline bool is_gibberish_to_english( void );
+extern inline void set_yytext( char const* );
+
 /* vim:set et sw=2 ts=2: */

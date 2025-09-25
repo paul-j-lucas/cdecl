@@ -37,11 +37,6 @@
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_SGLOB_H_INLINE
-# define C_SGLOB_H_INLINE _GL_INLINE
-#endif /* C_SGLOB_H_INLINE */
-
 /// @endcond
 
 /**
@@ -87,8 +82,8 @@ void c_sglob_cleanup( c_sglob_t *sglob );
  * @param sglob The scoped glob to check.
  * @return Returns `true` only if \a sglob is empty.
  */
-NODISCARD C_SGLOB_H_INLINE
-bool c_sglob_empty( c_sglob_t const *sglob ) {
+NODISCARD
+inline bool c_sglob_empty( c_sglob_t const *sglob ) {
   return sglob->count == 0;
 }
 
@@ -101,8 +96,7 @@ bool c_sglob_empty( c_sglob_t const *sglob ) {
  *
  * @sa c_sglob_cleanup()
  */
-C_SGLOB_H_INLINE
-void c_sglob_init( c_sglob_t *sglob ) {
+inline void c_sglob_init( c_sglob_t *sglob ) {
   *sglob = (c_sglob_t){ 0 };
 }
 
@@ -126,8 +120,6 @@ void c_sglob_parse( char const *s, c_sglob_t *rv_sglob );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_sglob_H */
 /* vim:set et sw=2 ts=2: */

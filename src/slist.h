@@ -36,11 +36,6 @@
 #include <stddef.h>                     /* for NULL, size_t */
 #include <unistd.h>                     /* for ssize_t */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef SLIST_H_INLINE
-# define SLIST_H_INLINE _GL_INLINE
-#endif /* SLIST_H_INLINE */
-
 /// @endcond
 
 /**
@@ -364,8 +359,8 @@ void slist_push_list_front( slist_t *dst_list, slist_t *src_list );
  * @sa slist_back()
  * @sa slist_front()
  */
-NODISCARD SLIST_H_INLINE
-void* slist_at( slist_t const *list, size_t offset ) {
+NODISCARD
+inline void* slist_at( slist_t const *list, size_t offset ) {
   return offset < list->len ? slist_at_nocheck( list, offset ) : NULL;
 }
 
@@ -384,8 +379,8 @@ void* slist_at( slist_t const *list, size_t offset ) {
  * @sa slist_back()
  * @sa slist_front()
  */
-NODISCARD SLIST_H_INLINE
-void* slist_atr( slist_t const *list, size_t roffset ) {
+NODISCARD 
+inline void* slist_atr( slist_t const *list, size_t roffset ) {
   return roffset < list->len ?
     slist_at_nocheck( list, list->len - (roffset + 1) ) : NULL;
 }
@@ -404,8 +399,8 @@ void* slist_atr( slist_t const *list, size_t roffset ) {
  * @sa slist_atr()
  * @sa slist_front()
  */
-NODISCARD SLIST_H_INLINE
-void* slist_back( slist_t const *list ) {
+NODISCARD
+inline void* slist_back( slist_t const *list ) {
   return list->tail != NULL ? list->tail->data : NULL;
 }
 
@@ -419,8 +414,8 @@ void* slist_back( slist_t const *list ) {
  *
  * @sa slist_len()
  */
-NODISCARD SLIST_H_INLINE
-bool slist_empty( slist_t const *list ) {
+NODISCARD
+inline bool slist_empty( slist_t const *list ) {
   return list->head == NULL;
 }
 
@@ -438,8 +433,8 @@ bool slist_empty( slist_t const *list ) {
  * @sa slist_atr()
  * @sa slist_back()
  */
-NODISCARD SLIST_H_INLINE
-void* slist_front( slist_t const *list ) {
+NODISCARD
+inline void* slist_front( slist_t const *list ) {
   return list->head != NULL ? list->head->data : NULL;
 }
 
@@ -453,8 +448,7 @@ void* slist_front( slist_t const *list ) {
  * @sa slist_cleanup()
  * @sa slist_move()
  */
-SLIST_H_INLINE
-void slist_init( slist_t *list ) {
+inline void slist_init( slist_t *list ) {
   *list = (slist_t){ 0 };
 }
 
@@ -468,8 +462,8 @@ void slist_init( slist_t *list ) {
  *
  * @sa slist_empty()
  */
-NODISCARD SLIST_H_INLINE
-size_t slist_len( slist_t const *list ) {
+NODISCARD
+inline size_t slist_len( slist_t const *list ) {
   return list->len;
 }
 
@@ -501,8 +495,6 @@ slist_t slist_move( slist_t *list );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* pjl_slist_H */
 /* vim:set et sw=2 ts=2: */

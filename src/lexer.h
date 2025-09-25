@@ -40,11 +40,6 @@
 #include <stddef.h>                     /* for size_t */
 #include <stdio.h>                      /* for FILE */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef LEXER_H_INLINE
-# define LEXER_H_INLINE _GL_INLINE
-#endif /* LEXER_H_INLINE */
-
 /// @endcond
 
 /**
@@ -153,8 +148,8 @@ extern char              *yytext;
  * @sa lexer_find
  * @sa #LEXER_FIND_CDECL_KEYWORDS
  */
-NODISCARD LEXER_H_INLINE
-bool is_english_to_gibberish( void ) {
+NODISCARD
+inline bool is_english_to_gibberish( void ) {
   return (lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0;
 }
 
@@ -166,8 +161,8 @@ bool is_english_to_gibberish( void ) {
  * @sa is_english_to_gibberish()
  * @sa #LEXER_FIND_CDECL_KEYWORDS
  */
-NODISCARD LEXER_H_INLINE
-bool is_gibberish_to_english( void ) {
+NODISCARD
+inline bool is_gibberish_to_english( void ) {
   return !is_english_to_gibberish();
 }
 
@@ -241,8 +236,7 @@ char const* printable_yytext( void );
  *
  * @param s The string to set \ref yytext to.
  */
-LEXER_H_INLINE
-void set_yytext( char const *s ) {
+inline void set_yytext( char const *s ) {
   yytext = CONST_CAST( char*, s );
 }
 
@@ -276,8 +270,6 @@ void yyrestart( FILE *in_file );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_lexer_H */
 /* vim:set et sw=2 ts=2: */

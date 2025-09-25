@@ -26,9 +26,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define C_SNAME_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "c_sname.h"
 #include "c_keyword.h"
 #include "c_sglob.h"
@@ -446,5 +443,21 @@ void c_sname_warn( c_sname_t const *sname, c_loc_t const *sname_loc ) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline char const* c_sname_name_atr( c_sname_t const*, size_t );
+extern inline int c_sname_cmp( c_sname_t const*, c_sname_t const* );
+extern inline size_t c_sname_count( c_sname_t const* );
+extern inline c_sname_t c_sname_dup( c_sname_t const* );
+extern inline bool c_sname_empty( c_sname_t const* );
+extern inline bool c_sname_equal( c_sname_t const*, c_sname_t const* );
+extern inline c_type_t const* c_sname_global_type( c_sname_t const* );
+extern inline void c_sname_init( c_sname_t* );
+extern inline void c_sname_init_name( c_sname_t*, char* );
+extern inline c_type_t const* c_sname_local_type( c_sname_t const* );
+extern inline c_sname_t c_sname_move( c_sname_t* );
+extern inline void c_sname_push_back_sname( c_sname_t*, c_sname_t* );
+extern inline void c_sname_push_front_sname( c_sname_t*, c_sname_t* );
+extern inline c_type_t const* c_sname_scope_type( c_sname_t const* );
+extern inline void c_sname_set_scope_type( c_sname_t*, c_type_t const* );
 
 /* vim:set et sw=2 ts=2: */

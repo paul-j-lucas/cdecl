@@ -40,11 +40,6 @@
 #include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>                      /* for FILE */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef P_TOKEN_H_INLINE
-# define P_TOKEN_H_INLINE _GL_INLINE
-#endif /* P_TOKEN_H_INLINE */
-
 /// @endcond
 
 /**
@@ -332,9 +327,9 @@ p_token_node_t const* p_token_node_not( p_token_node_t const *token_node,
                                         p_token_kind_t kinds );
 
 /// @cond DOXYGEN_IGNORE
-NODISCARD P_TOKEN_H_INLINE
-p_token_node_t* nonconst_p_token_node_not( p_token_node_t *token_node,
-                                           p_token_kind_t kinds ) {
+NODISCARD
+inline p_token_node_t* nonconst_p_token_node_not( p_token_node_t *token_node,
+                                                  p_token_kind_t kinds ) {
   return CONST_CAST( p_token_node_t*, p_token_node_not( token_node, kinds ) );
 }
 
@@ -390,8 +385,8 @@ void print_token_list_color( p_token_list_t const *token_list, FILE *fout );
  * @sa p_punct_token_is_char()
  * @sa p_token_is_any_char()
  */
-NODISCARD P_TOKEN_H_INLINE
-bool p_punct_token_is_any_char( p_token_t const *token ) {
+NODISCARD
+inline bool p_punct_token_is_any_char( p_token_t const *token ) {
   return token->punct.value[1] == '\0';
 }
 
@@ -405,8 +400,8 @@ bool p_punct_token_is_any_char( p_token_t const *token ) {
  * @sa p_punct_token_is_any_char()
  * @sa p_token_is_punct()
  */
-NODISCARD P_TOKEN_H_INLINE
-bool p_punct_token_is_char( p_token_t const *token, char c ) {
+NODISCARD
+inline bool p_punct_token_is_char( p_token_t const *token, char c ) {
   return token->punct.value[0] == c && p_punct_token_is_any_char( token );
 }
 
@@ -419,8 +414,8 @@ bool p_punct_token_is_char( p_token_t const *token, char c ) {
  * @sa p_punct_token_is_any_char()
  * @sa p_token_is_punct()
  */
-NODISCARD P_TOKEN_H_INLINE
-bool p_token_is_any_char( p_token_t const *token ) {
+NODISCARD
+inline bool p_token_is_any_char( p_token_t const *token ) {
   return token->kind == P_PUNCTUATOR && p_punct_token_is_any_char( token );
 }
 
@@ -447,8 +442,8 @@ bool p_token_is_macro( p_token_t const *token );
  * @sa p_punct_token_is_char()
  * @sa p_token_is_any_char()
  */
-NODISCARD P_TOKEN_H_INLINE
-bool p_token_is_punct( p_token_t const *token, char punct ) {
+NODISCARD
+inline bool p_token_is_punct( p_token_t const *token, char punct ) {
   return token->kind == P_PUNCTUATOR && p_punct_token_is_char( token, punct );
 }
 
@@ -483,8 +478,8 @@ p_token_list_t* p_token_list_new_placemarker( void );
  * @sa p_token_free()
  * @sa p_token_new_loc()
  */
-NODISCARD P_TOKEN_H_INLINE
-p_token_t* p_token_new( p_token_kind_t kind, char const *literal ) {
+NODISCARD
+inline p_token_t* p_token_new( p_token_kind_t kind, char const *literal ) {
   return p_token_new_loc( kind, /*loc=*/NULL, literal );
 }
 
@@ -498,8 +493,8 @@ p_token_t* p_token_new( p_token_kind_t kind, char const *literal ) {
  *
  * @sa p_token_list_emptyish()
  */
-NODISCARD P_TOKEN_H_INLINE
-bool p_token_node_emptyish( p_token_node_t const *token_node ) {
+NODISCARD
+inline bool p_token_node_emptyish( p_token_node_t const *token_node ) {
   return p_token_node_not( token_node, P_ANY_TRANSPARENT ) == NULL;
 }
 
@@ -512,16 +507,14 @@ bool p_token_node_emptyish( p_token_node_t const *token_node ) {
  *
  * @sa p_token_node_emptyish()
  */
-NODISCARD P_TOKEN_H_INLINE
-bool p_token_list_emptyish( p_token_list_t const *token_list ) {
+NODISCARD
+inline bool p_token_list_emptyish( p_token_list_t const *token_list ) {
   return p_token_node_emptyish( token_list->head );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_p_token_H */
 /* vim:set et sw=2 ts=2: */

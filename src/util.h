@@ -45,11 +45,6 @@
 #include <sysexits.h>
 #include <time.h>                       /* for strftime(3) */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_UTIL_H_INLINE
-# define C_UTIL_H_INLINE _GL_INLINE
-#endif /* C_UTIL_H_INLINE */
-
 /// @endcond
 
 /**
@@ -1154,8 +1149,8 @@ unsigned long long check_strtoull( char const *s, unsigned long long min,
  *
  * @sa null_if_empty()
  */
-NODISCARD C_UTIL_H_INLINE
-char const* empty_if_null( char const *s ) {
+NODISCARD
+inline char const* empty_if_null( char const *s ) {
   return s == NULL ? "" : s;
 }
 
@@ -1169,8 +1164,8 @@ char const* empty_if_null( char const *s ) {
  * @sa true_clear()
  * @sa true_or_set()
  */
-NODISCARD C_UTIL_H_INLINE
-bool false_set( bool *flag ) {
+NODISCARD
+inline bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
 }
 
@@ -1293,8 +1288,8 @@ void fputsp_s( char const *s, FILE *out );
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-NODISCARD C_UTIL_H_INLINE
-bool is_01_bit( uint64_t n ) {
+NODISCARD
+inline bool is_01_bit( uint64_t n ) {
   return (n & (n - 1)) == 0;
 }
 
@@ -1313,8 +1308,8 @@ bool is_01_bit( uint64_t n ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-NODISCARD C_UTIL_H_INLINE
-bool is_0n_bit_only_in_set( uint64_t n, uint64_t set ) {
+NODISCARD
+inline bool is_0n_bit_only_in_set( uint64_t n, uint64_t set ) {
   return (n & set) == n;
 }
 
@@ -1330,8 +1325,8 @@ bool is_0n_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-NODISCARD C_UTIL_H_INLINE
-bool is_1_bit( uint64_t n ) {
+NODISCARD
+inline bool is_1_bit( uint64_t n ) {
   return n != 0 && is_01_bit( n );
 }
 
@@ -1350,8 +1345,8 @@ bool is_1_bit( uint64_t n ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-NODISCARD C_UTIL_H_INLINE
-bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
+NODISCARD
+inline bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
   return is_1_bit( n & set );
 }
 
@@ -1368,8 +1363,8 @@ bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-NODISCARD C_UTIL_H_INLINE
-bool is_1_bit_only_in_set( uint64_t n, uint64_t set ) {
+NODISCARD
+inline bool is_1_bit_only_in_set( uint64_t n, uint64_t set ) {
   return is_1_bit( n ) && is_1_bit_in_set( n, set );
 }
 
@@ -1388,8 +1383,8 @@ bool is_1_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_in_set()
  * @sa is_1_bit_only_in_set()
  */
-NODISCARD C_UTIL_H_INLINE
-bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
+NODISCARD
+inline bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
   return n != 0 && is_0n_bit_only_in_set( n, set );
 }
 
@@ -1403,8 +1398,8 @@ bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @sa #IDENT_CHARS
  * @sa is_ident_first()
  */
-NODISCARD C_UTIL_H_INLINE
-bool is_ident( char c ) {
+NODISCARD
+inline bool is_ident( char c ) {
   return isalnum( c ) || c == '_';
 }
 
@@ -1418,8 +1413,8 @@ bool is_ident( char c ) {
  * @sa #IDENT_CHARS
  * @sa is_ident()
  */
-NODISCARD C_UTIL_H_INLINE
-bool is_ident_first( char c ) {
+NODISCARD
+inline bool is_ident_first( char c ) {
   return isalpha( c ) || c == '_';
 }
 
@@ -1458,8 +1453,8 @@ uint32_t ms_bit1_32( uint32_t n );
  * @sa empty_if_null()
  * @sa str_is_empty()
  */
-NODISCARD C_UTIL_H_INLINE
-char const* null_if_empty( char const *s ) {
+NODISCARD
+inline char const* null_if_empty( char const *s ) {
   return s != NULL && *SKIP_WS( s ) == '\0' ? NULL : s;
 }
 
@@ -1504,8 +1499,8 @@ bool path_is_file( char const *path );
  * @param multiple The multiple to round up to.  It _must_ be a power of 2.
  * @return Returns \a n rounded up to a multiple of \a multiple.
  */
-NODISCARD C_UTIL_H_INLINE
-size_t round_up_pow_2( size_t n, size_t multiple ) {
+NODISCARD
+inline size_t round_up_pow_2( size_t n, size_t multiple ) {
   assert( is_1_bit( multiple ) );
   return (n + multiple - 1) & ~(multiple - 1);
 }
@@ -1540,8 +1535,8 @@ bool str_is_affirmative( char const *s );
  *
  * @sa null_if_empty()
  */
-NODISCARD C_UTIL_H_INLINE
-bool str_is_empty( char const *s ) {
+NODISCARD
+inline bool str_is_empty( char const *s ) {
   return *SKIP_WS( s ) == '\0';
 }
 
@@ -1673,8 +1668,8 @@ size_t strnspn( char const *s, char const *charset, size_t n );
  * @sa false_set()
  * @sa true_clear()
  */
-NODISCARD C_UTIL_H_INLINE
-bool true_or_set( bool *flag ) {
+NODISCARD
+inline bool true_or_set( bool *flag ) {
   return *flag || !(*flag = true);
 }
 
@@ -1688,8 +1683,8 @@ bool true_or_set( bool *flag ) {
  * @sa false_set()
  * @sa true_or_set()
  */
-NODISCARD C_UTIL_H_INLINE
-bool true_clear( bool *flag ) {
+NODISCARD
+inline bool true_clear( bool *flag ) {
   return *flag && !(*flag = false);
 }
 
@@ -1701,8 +1696,7 @@ bool true_clear( bool *flag ) {
  * sets it to `true`.  The flag should be `false` initially.
  * @param fout The `FILE` to print to.
  */
-C_UTIL_H_INLINE
-void fput_sep( char const *sep, bool *sep_flag, FILE *fout ) {
+inline void fput_sep( char const *sep, bool *sep_flag, FILE *fout ) {
   if ( true_or_set( sep_flag ) )
     FPUTS( sep, fout );
 }
@@ -1719,8 +1713,6 @@ void wait_for_debugger_attach( void );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_util_H */
 /* vim:set et sw=2 ts=2: */

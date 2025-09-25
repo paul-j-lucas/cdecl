@@ -25,9 +25,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define C_OPERATOR_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "c_operator.h"
 #include "c_lang.h"
 #include "literals.h"
@@ -149,5 +146,8 @@ c_operator_t const* c_op_get( c_op_id_t op_id ) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline bool c_op_is_ambiguous( c_operator_t const* );
+extern inline char const* c_op_token_c( c_op_id_t );
 
 /* vim:set et sw=2 ts=2: */

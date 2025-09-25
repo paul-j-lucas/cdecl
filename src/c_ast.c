@@ -25,9 +25,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define C_AST_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "c_ast.h"
 #include "util.h"
 
@@ -677,5 +674,13 @@ c_ast_t const* c_ast_visit( c_ast_t const *ast, c_ast_visit_dir_t dir,
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline bool c_ast_is_orphan( c_ast_t const* );
+extern inline bool c_ast_is_parent( c_ast_t const* );
+extern inline bool c_ast_is_referrer( c_ast_t const* );
+extern inline void c_ast_list_cleanup( c_ast_list_t* );
+extern inline c_param_t const* c_ast_params( c_ast_t const* );
+extern inline c_ast_t const* c_capture_ast( c_capture_t const* );
+extern inline c_ast_t const* c_param_ast( c_param_t const* );
 
 /* vim:set et sw=2 ts=2: */

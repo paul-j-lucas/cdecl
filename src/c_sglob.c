@@ -26,9 +26,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define C_SGLOB_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "c_sglob.h"
 #include "util.h"
 
@@ -116,4 +113,8 @@ void c_sglob_parse( char const *s, c_sglob_t *rv_sglob ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+extern inline bool c_sglob_empty( c_sglob_t const* );
+extern inline void c_sglob_init( c_sglob_t* );
+
 /* vim:set et sw=2 ts=2: */

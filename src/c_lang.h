@@ -40,11 +40,6 @@
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_LANG_H_INLINE
-# define C_LANG_H_INLINE _GL_INLINE
-#endif /* C_LANG_H_INLINE */
-
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1450,8 +1445,8 @@ typedef struct c_lang_lit c_lang_lit_t;
  * @sa c_lang_newer()
  * @sa c_lang_newest()
  */
-NODISCARD C_LANG_H_INLINE
-c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
+NODISCARD
+inline c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
   lang_id &= ~LANGX_MASK;
   assert( is_1_bit( lang_id ) );
   return BITS_GE( lang_id );
@@ -1558,8 +1553,8 @@ char const* c_lang_name( c_lang_id_t lang_id );
  * @sa c_lang_newest()
  * @sa c_lang_oldest()
  */
-NODISCARD C_LANG_H_INLINE
-c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
+NODISCARD
+inline c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
   lang_id &= ~LANGX_MASK;
   assert( is_1_bit( lang_id ) );
   return BITS_GT( lang_id );
@@ -1575,8 +1570,8 @@ c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
  * @sa c_lang_newer()
  * @sa c_lang_oldest()
  */
-NODISCARD C_LANG_H_INLINE
-c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
+NODISCARD
+inline c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
   return ms_bit1_32( lang_ids & ~LANGX_MASK );
 }
 
@@ -1607,8 +1602,8 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
  * @sa c_lang_name()
  * @sa c_lang___STDC_VERSION__()
  */
-NODISCARD C_LANG_H_INLINE
-char const* c_lang___STDC__( c_lang_id_t lang_id ) {
+NODISCARD
+inline char const* c_lang___STDC__( c_lang_id_t lang_id ) {
   assert( is_1_bit( lang_id ) );
   return (lang_id & LANG___STDC__) != LANG_NONE  ? "1" : NULL;
 }
@@ -1638,8 +1633,8 @@ char const* c_lang___STDC_VERSION__( c_lang_id_t lang_id );
  * @sa c_lang_newer()
  * @sa c_lang_newest()
  */
-NODISCARD C_LANG_H_INLINE
-c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
+NODISCARD
+inline c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
   return ls_bit1_32( lang_ids & ~LANGX_MASK ) | (lang_ids & LANGX_MASK);
 }
 
@@ -1715,16 +1710,14 @@ c_lang_id_t is_reserved_name( char const *name );
  * @sa opt_lang_id
  * @sa #OPT_LANG_IS()
  */
-NODISCARD C_LANG_H_INLINE
-bool opt_lang_is_any( c_lang_id_t lang_ids ) {
+NODISCARD
+inline bool opt_lang_is_any( c_lang_id_t lang_ids ) {
   return (opt_lang_id & lang_ids) != LANG_NONE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_lang_H */
 /* vim:set et sw=2 ts=2: */

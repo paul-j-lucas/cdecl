@@ -36,11 +36,6 @@
 #include <stdbool.h>
 #include <stdio.h>                      /* for FILE */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef P_MACRO_H_INLINE
-# define P_MACRO_H_INLINE _GL_INLINE
-#endif /* P_MACRO_H_INLINE */
-
 /// @endcond
 
 /**
@@ -192,8 +187,8 @@ p_macro_t const* p_macro_find( char const *name );
  * @param macro The \ref p_macro to check.
  * @return Returns `true` only if it is.
  */
-NODISCARD P_MACRO_H_INLINE
-bool p_macro_is_func_like( p_macro_t const *macro ) {
+NODISCARD
+inline bool p_macro_is_func_like( p_macro_t const *macro ) {
   return !macro->is_dynamic && macro->param_list != NULL;
 }
 
@@ -246,8 +241,6 @@ void p_param_list_cleanup( p_param_list_t *param_list );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_p_macro_H */
 /* vim:set et sw=2 ts=2: */

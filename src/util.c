@@ -25,9 +25,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define C_UTIL_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "util.h"
 #include "cdecl.h"
 #include "slist.h"
@@ -516,5 +513,22 @@ void wait_for_debugger_attach( void ) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline char const* empty_if_null( char const* );
+extern inline bool false_set( bool* );
+extern inline bool is_01_bit( uint64_t );
+extern inline bool is_0n_bit_only_in_set( uint64_t, uint64_t );
+extern inline bool is_1_bit( uint64_t );
+extern inline bool is_1_bit_in_set( uint64_t, uint64_t );
+extern inline bool is_1_bit_only_in_set( uint64_t, uint64_t );
+extern inline bool is_1n_bit_only_in_set( uint64_t, uint64_t );
+extern inline bool is_ident( char );
+extern inline bool is_ident_first( char );
+extern inline char const* null_if_empty( char const* );
+extern inline size_t round_up_pow_2( size_t, size_t );
+extern inline bool str_is_empty( char const* );
+extern inline bool true_or_set( bool* );
+extern inline bool true_clear( bool* );
+extern inline void fput_sep( char const*, bool*, FILE* );
 
 /* vim:set et sw=2 ts=2: */

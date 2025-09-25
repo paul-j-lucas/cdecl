@@ -26,9 +26,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define C_AST_UTIL_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "c_ast_util.h"
 #include "c_ast.h"
 #include "c_kind.h"
@@ -1028,5 +1025,24 @@ c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline c_ast_t* nonconst_c_ast_find_kind_any( c_ast_t*,
+                                                     c_ast_visit_dir_t,
+                                                     c_ast_kind_t );
+extern inline c_sname_t* nonconst_c_ast_find_name( c_ast_t*,
+                                                   c_ast_visit_dir_t );
+extern inline c_ast_t* nonconst_c_ast_find_type_any( c_ast_t*,
+                                                     c_ast_visit_dir_t,
+                                                     c_type_t const* );
+extern inline c_ast_t* nonconst_c_ast_root( c_ast_t* );
+extern inline c_ast_t* nonconst_c_ast_unpointer( c_ast_t* );
+extern inline c_ast_t* nonconst_c_ast_unreference_any( c_ast_t* );
+extern inline bool c_ast_is_param( c_ast_t const* );
+extern inline bool c_ast_is_register( c_ast_t const* );
+extern inline bool c_ast_is_size_t( c_ast_t const* );
+extern inline c_ast_t const* c_ast_is_tid_any( c_ast_t const*, c_tid_t );
+extern inline bool c_ast_op_mbr_matches( c_ast_t const*, c_operator_t const* );
+extern inline bool c_ast_parent_is_kind_any( c_ast_t const*, c_ast_kind_t );
+extern inline bool c_ast_print_as_using( c_ast_t const* );
 
 /* vim:set et sw=2 ts=2: */

@@ -36,11 +36,6 @@
 #include <stddef.h>                     /* for size_t */
 #include <string.h>
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef STRBUF_H_INLINE
-# define STRBUF_H_INLINE _GL_INLINE
-#endif /* STRBUF_H_INLINE */
-
 /// @endcond
 
 /**
@@ -87,8 +82,7 @@ void strbuf_cleanup( strbuf_t *sbuf );
  * @sa strbuf_reset()
  * @sa strbuf_take()
  */
-STRBUF_H_INLINE
-void strbuf_init( strbuf_t *sbuf ) {
+inline void strbuf_init( strbuf_t *sbuf ) {
   *sbuf = (strbuf_t){ 0 };
 }
 
@@ -152,8 +146,8 @@ char* strbuf_putsn( strbuf_t *sbuf, char const *s, size_t n );
  * @sa strbuf_puts()
  * @sa strbuf_putsn()
  */
-PJL_DISCARD STRBUF_H_INLINE
-char* strbuf_putc( strbuf_t *sbuf, char c ) {
+PJL_DISCARD
+inline char* strbuf_putc( strbuf_t *sbuf, char c ) {
   return strbuf_putsn( sbuf, &c, 1 );
 }
 
@@ -169,8 +163,8 @@ char* strbuf_putc( strbuf_t *sbuf, char c ) {
  * @sa strbuf_printf()
  * @sa strbuf_putsn()
  */
-PJL_DISCARD STRBUF_H_INLINE
-char* strbuf_puts( strbuf_t *sbuf, char const *s ) {
+PJL_DISCARD
+inline char* strbuf_puts( strbuf_t *sbuf, char const *s ) {
   return strbuf_putsn( sbuf, s, strlen( s ) );
 }
 
@@ -249,9 +243,8 @@ void strbuf_sepsn_putsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @sa strbuf_sepc_puts()
  * @sa strbuf_sepsn_putsn()
  */
-STRBUF_H_INLINE
-void strbuf_sepsn_puts( strbuf_t *sbuf, char const *sep, size_t sep_len,
-                        bool *sep_flag, char const *s ) {
+inline void strbuf_sepsn_puts( strbuf_t *sbuf, char const *sep, size_t sep_len,
+                               bool *sep_flag, char const *s ) {
   strbuf_sepsn_putsn( sbuf, sep, sep_len, sep_flag, s, strlen( s ) );
 }
 
@@ -269,9 +262,8 @@ void strbuf_sepsn_puts( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @sa strbuf_sepsn_puts()
  * @sa strbuf_sepsn_putsn()
  */
-STRBUF_H_INLINE
-void strbuf_sepc_puts( strbuf_t *sbuf, char sep, bool *sep_flag,
-                       char const *s ) {
+inline void strbuf_sepc_puts( strbuf_t *sbuf, char sep, bool *sep_flag,
+                              char const *s ) {
   strbuf_sepsn_putsn( sbuf, &sep, 1, sep_flag, s, strlen( s ) );
 }
 
@@ -285,8 +277,8 @@ void strbuf_sepc_puts( strbuf_t *sbuf, char sep, bool *sep_flag,
  * @sa strbuf_init()
  * @sa strbuf_reset()
  */
-NODISCARD STRBUF_H_INLINE
-char* strbuf_take( strbuf_t *sbuf ) {
+NODISCARD
+inline char* strbuf_take( strbuf_t *sbuf ) {
   char *const rv_str = sbuf->str;
   strbuf_init( sbuf );
   return rv_str;
@@ -295,8 +287,6 @@ char* strbuf_take( strbuf_t *sbuf ) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* pjl_strbuf_H */
 /* vim:set et sw=2 ts=2: */

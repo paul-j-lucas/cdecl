@@ -38,11 +38,6 @@
 #include <stdbool.h>
 #include <inttypes.h>                   /* for PRIX64, etc. */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_TYPE_H_INLINE
-# define C_TYPE_H_INLINE _GL_INLINE
-#endif /* C_TYPE_H_INLINE */
-
 /// @endcond
 
 /**
@@ -1409,8 +1404,8 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
  * @param tpid The \ref c_tpid_t to check against.
  * @return Returns \a tids.
  */
-PJL_DISCARD C_TYPE_H_INLINE
-c_tid_t c_tid_check( c_tid_t tids, MAYBE_UNUSED c_tpid_t tpid ) {
+PJL_DISCARD
+inline c_tid_t c_tid_check( c_tid_t tids, MAYBE_UNUSED c_tpid_t tpid ) {
   assert( (tids & TX_TPID_MASK) == tpid );
   return tids;
 }
@@ -1423,8 +1418,8 @@ c_tid_t c_tid_check( c_tid_t tids, MAYBE_UNUSED c_tpid_t tpid ) {
  *
  * @sa c_tid_compl()
  */
-NODISCARD C_TYPE_H_INLINE
-bool c_tid_is_compl( c_tid_t tids ) {
+NODISCARD
+inline bool c_tid_is_compl( c_tid_t tids ) {
   //
   // The low-order 4 bits specify the c_tpid.  Currently, type part IDs are 1
   // (0b0001), 2 (0b0010), and 4 (0b0100).  If tids is 0b1xxx, it means that it
@@ -1445,8 +1440,8 @@ bool c_tid_is_compl( c_tid_t tids ) {
  *
  * @sa c_tid_is_compl()
  */
-NODISCARD C_TYPE_H_INLINE
-c_tid_t c_tid_compl( c_tid_t tids ) {
+NODISCARD
+inline c_tid_t c_tid_compl( c_tid_t tids ) {
   assert( !c_tid_is_compl( tids ) );
   return ~tids ^ TX_TPID_MASK;
 }
@@ -1461,8 +1456,9 @@ c_tid_t c_tid_compl( c_tid_t tids ) {
  * @return Returns `true` only if \a tids contains any of \a is_tids, but not
  * any of \a except_tids.
  */
-NODISCARD C_TYPE_H_INLINE
-bool c_tid_is_except_any( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
+NODISCARD
+inline bool c_tid_is_except_any( c_tid_t tids, c_tid_t is_tids,
+                                 c_tid_t except_tids ) {
   return (tids & (is_tids | except_tids)) == is_tids;
 }
 
@@ -1474,8 +1470,8 @@ bool c_tid_is_except_any( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
  *
  * @sa c_tid_tpid()
  */
-NODISCARD C_TYPE_H_INLINE
-c_tid_t c_tid_no_tpid( c_tid_t tids ) {
+NODISCARD
+inline c_tid_t c_tid_no_tpid( c_tid_t tids ) {
   return tids & ~TX_TPID_MASK;
 }
 
@@ -1488,8 +1484,8 @@ c_tid_t c_tid_no_tpid( c_tid_t tids ) {
  *
  * @sa c_type_is_any()
  */
-NODISCARD C_TYPE_H_INLINE
-bool c_tid_is_any( c_tid_t i_tids, c_tid_t j_tids ) {
+NODISCARD
+inline bool c_tid_is_any( c_tid_t i_tids, c_tid_t j_tids ) {
   assert( c_tid_tpid( i_tids ) == c_tid_tpid( j_tids ) );
   return c_tid_no_tpid( i_tids & j_tids ) != TX_NONE;
 }
@@ -1505,8 +1501,8 @@ bool c_tid_is_any( c_tid_t i_tids, c_tid_t j_tids ) {
  *
  * @sa c_type_is_none()
  */
-NODISCARD C_TYPE_H_INLINE
-bool c_tid_is_none( c_tid_t tids ) {
+NODISCARD
+inline bool c_tid_is_none( c_tid_t tids ) {
   return c_tid_no_tpid( tids ) == TX_NONE;
 }
 
@@ -1521,8 +1517,8 @@ bool c_tid_is_none( c_tid_t tids ) {
  *
  * @sa c_ast_is_size_t()
  */
-NODISCARD C_TYPE_H_INLINE
-bool c_tid_is_size_t( c_tid_t tids ) {
+NODISCARD
+inline bool c_tid_is_size_t( c_tid_t tids ) {
   c_tid_check( tids, C_TPID_BASE );
   return (tids & c_tid_compl( TB_int )) == (TB_unsigned | TB_long);
 }
@@ -1535,16 +1531,14 @@ bool c_tid_is_size_t( c_tid_t tids ) {
  *
  * @sa c_type_equiv()
  */
-NODISCARD C_TYPE_H_INLINE
-bool c_type_is_none( c_type_t const *type ) {
+NODISCARD
+inline bool c_type_is_none( c_type_t const *type ) {
   return c_type_equiv( type, &T_NONE );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_type_H */
 /* vim:set et sw=2 ts=2: */

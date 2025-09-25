@@ -25,9 +25,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define SLIST_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "slist.h"
 #include "util.h"
 
@@ -283,4 +280,13 @@ void slist_push_list_front( slist_t *dst_list, slist_t *src_list ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+extern inline void* slist_at( slist_t const*, size_t );
+extern inline void* slist_atr( slist_t const*, size_t );
+extern inline void* slist_back( slist_t const* );
+extern inline bool slist_empty( slist_t const* );
+extern inline void* slist_front( slist_t const* );
+extern inline void slist_init( slist_t* );
+extern inline size_t slist_len( slist_t const* );
+
 /* vim:set et sw=2 ts=2: */

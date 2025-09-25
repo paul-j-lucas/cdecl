@@ -41,11 +41,6 @@
 // standard
 #include <stdbool.h>
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_AST_UTIL_H_INLINE
-# define C_AST_UTIL_H_INLINE _GL_INLINE
-#endif /* C_AST_UTIL_H_INLINE */
-
 /// @endcond
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -99,9 +94,10 @@ c_ast_t const* c_ast_find_kind_any( c_ast_t const *ast, c_ast_visit_dir_t dir,
                                     c_ast_kind_t kinds );
 
 /// @cond DOXYGEN_IGNORE
-NODISCARD C_AST_UTIL_H_INLINE
-c_ast_t* nonconst_c_ast_find_kind_any( c_ast_t *ast, c_ast_visit_dir_t dir,
-                                       c_ast_kind_t kinds ) {
+NODISCARD
+inline c_ast_t* nonconst_c_ast_find_kind_any( c_ast_t *ast,
+                                              c_ast_visit_dir_t dir,
+                                              c_ast_kind_t kinds ) {
   return CONST_CAST( c_ast_t*, c_ast_find_kind_any( ast, dir, kinds ) );
 }
 
@@ -122,8 +118,9 @@ NODISCARD
 c_sname_t const* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir );
 
 /// @cond DOXYGEN_IGNORE
-NODISCARD C_AST_UTIL_H_INLINE
-c_sname_t* nonconst_c_ast_find_name( c_ast_t *ast, c_ast_visit_dir_t dir ) {
+NODISCARD
+inline c_sname_t* nonconst_c_ast_find_name( c_ast_t *ast,
+                                            c_ast_visit_dir_t dir ) {
   return CONST_CAST( c_sname_t*, c_ast_find_name( ast, dir ) );
 }
 
@@ -163,9 +160,10 @@ c_ast_t const* c_ast_find_type_any( c_ast_t const *ast, c_ast_visit_dir_t dir,
                                     c_type_t const *type );
 
 /// @cond DOXYGEN_IGNORE
-NODISCARD C_AST_UTIL_H_INLINE
-c_ast_t* nonconst_c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
-                                       c_type_t const *type ) {
+NODISCARD
+inline c_ast_t* nonconst_c_ast_find_type_any( c_ast_t *ast,
+                                              c_ast_visit_dir_t dir,
+                                              c_type_t const *type ) {
   return CONST_CAST( c_ast_t*, c_ast_find_type_any( ast, dir, type ) );
 }
 
@@ -499,8 +497,8 @@ NODISCARD
 c_ast_t const* c_ast_root( c_ast_t const *ast );
 
 /// @cond DOXYGEN_IGNORE
-NODISCARD C_AST_UTIL_H_INLINE
-c_ast_t* nonconst_c_ast_root( c_ast_t *ast ) {
+NODISCARD
+inline c_ast_t* nonconst_c_ast_root( c_ast_t *ast ) {
   return CONST_CAST( c_ast_t*, c_ast_root( ast ) );
 }
 
@@ -551,8 +549,8 @@ NODISCARD
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
 /// @cond DOXYGEN_IGNORE
-NODISCARD C_AST_UTIL_H_INLINE
-c_ast_t* nonconst_c_ast_unpointer( c_ast_t *ast ) {
+NODISCARD
+inline c_ast_t* nonconst_c_ast_unpointer( c_ast_t *ast ) {
   return CONST_CAST( c_ast_t*, c_ast_unpointer( ast ) );
 }
 
@@ -594,8 +592,8 @@ NODISCARD
 c_ast_t const* c_ast_unreference_any( c_ast_t const *ast );
 
 /// @cond DOXYGEN_IGNORE
-NODISCARD C_AST_UTIL_H_INLINE
-c_ast_t* nonconst_c_ast_unreference_any( c_ast_t *ast ) {
+NODISCARD
+inline c_ast_t* nonconst_c_ast_unreference_any( c_ast_t *ast ) {
   return CONST_CAST( c_ast_t*, c_ast_unreference_any( ast ) );
 }
 
@@ -647,8 +645,8 @@ c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast is a parameter.
  */
-NODISCARD C_AST_UTIL_H_INLINE
-bool c_ast_is_param( c_ast_t const *ast ) {
+NODISCARD
+inline bool c_ast_is_param( c_ast_t const *ast ) {
   return ast->param_of_ast != NULL;
 }
 
@@ -658,8 +656,8 @@ bool c_ast_is_param( c_ast_t const *ast ) {
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast has the `register` storage class.
  */
-NODISCARD C_AST_UTIL_H_INLINE
-bool c_ast_is_register( c_ast_t const *ast ) {
+NODISCARD
+inline bool c_ast_is_register( c_ast_t const *ast ) {
   return c_tid_is_any( ast->type.stids, TS_register );
 }
 
@@ -674,8 +672,8 @@ bool c_ast_is_register( c_ast_t const *ast ) {
  *
  * @sa c_tid_is_size_t()
  */
-NODISCARD C_AST_UTIL_H_INLINE
-bool c_ast_is_size_t( c_ast_t const *ast ) {
+NODISCARD
+inline bool c_ast_is_size_t( c_ast_t const *ast ) {
   return c_tid_is_size_t( c_ast_untypedef( ast )->type.btids );
 }
 
@@ -692,8 +690,8 @@ bool c_ast_is_size_t( c_ast_t const *ast ) {
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_tid_any_qual()
  */
-NODISCARD C_AST_UTIL_H_INLINE
-c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
+NODISCARD
+inline c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   c_tid_t qual_stids = TS_NONE;
   return c_ast_is_tid_any_qual( ast, tids, &qual_stids );
 }
@@ -709,8 +707,8 @@ c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
  *  + The membership specification of \a ast matches the overloadability of \a
  *    op.
  */
-NODISCARD C_AST_UTIL_H_INLINE
-bool c_ast_op_mbr_matches( c_ast_t const *ast, c_operator_t const *op ) {
+NODISCARD
+inline bool c_ast_op_mbr_matches( c_ast_t const *ast, c_operator_t const *op ) {
   return  ast->oper.member == C_FUNC_UNSPECIFIED ||
           (TO_UNSIGNED_EXPR( ast->oper.member ) &
            TO_UNSIGNED_EXPR( op->overload     ) ) != 0;
@@ -725,8 +723,8 @@ bool c_ast_op_mbr_matches( c_ast_t const *ast, c_operator_t const *op ) {
  * @return Returns `true` only if the \ref c_ast::parent_ast "parent_ast" of \a
  * ast is one of \a kinds.
  */
-NODISCARD C_AST_UTIL_H_INLINE
-bool c_ast_parent_is_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
+NODISCARD
+inline bool c_ast_parent_is_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
   return ast->parent_ast != NULL && (ast->parent_ast->kind & kinds) != 0;
 }
 
@@ -740,8 +738,8 @@ bool c_ast_parent_is_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
  * @sa #LANG_using_DECLS
  * @sa opt_using
  */
-NODISCARD C_AST_UTIL_H_INLINE
-bool c_ast_print_as_using( c_ast_t const *ast ) {
+NODISCARD
+inline bool c_ast_print_as_using( c_ast_t const *ast ) {
   return  opt_using && OPT_LANG_IS( using_DECLS ) &&
           c_tid_is_any( ast->type.stids, TS_typedef );
 }
@@ -779,8 +777,6 @@ c_ast_t c_ast_sub_typedef( c_ast_t const *ast );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_ast_util_H */
 /* vim:set et sw=2 ts=2: */

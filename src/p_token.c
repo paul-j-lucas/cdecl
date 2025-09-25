@@ -20,9 +20,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define P_TOKEN_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "p_token.h"
 #include "c_lang.h"
 #include "c_operator.h"
@@ -857,5 +854,15 @@ void print_token_list_color( p_token_list_t const *token_list, FILE *fout ) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline p_token_node_t* nonconst_p_token_node_not( p_token_node_t*,
+                                                         p_token_kind_t );
+extern inline bool p_punct_token_is_any_char( p_token_t const* );
+extern inline bool p_punct_token_is_char( p_token_t const*, char );
+extern inline bool p_token_is_any_char( p_token_t const* );
+extern inline bool p_token_is_punct( p_token_t const*, char );
+extern inline p_token_t* p_token_new( p_token_kind_t, char const* );
+extern inline bool p_token_node_emptyish( p_token_node_t const* );
+extern inline bool p_token_list_emptyish( p_token_list_t const* );
 
 /* vim:set et sw=2 ts=2: */

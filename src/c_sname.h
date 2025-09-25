@@ -40,11 +40,6 @@
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_SNAME_H_INLINE
-# define C_SNAME_H_INLINE _GL_INLINE
-#endif /* C_SNAME_H_INLINE */
-
 /// @endcond
 
 /**
@@ -440,8 +435,8 @@ void c_sname_warn( c_sname_t const *sname, c_loc_t const *sname_loc );
  * @sa c_sname_scope_gibberish()
  * @sa c_sname_scope_sname()
  */
-NODISCARD C_SNAME_H_INLINE
-char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
+NODISCARD
+inline char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
   c_scope_data_t const *const data = slist_atr( sname, roffset );
   return data != NULL ? data->name : "";
 }
@@ -456,8 +451,8 @@ char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
  *
  * @sa c_sname_equal()
  */
-NODISCARD C_SNAME_H_INLINE
-int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
+NODISCARD
+inline int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
   return slist_cmp(
     i_sname, j_sname, POINTER_CAST( slist_cmp_fn_t, &c_scope_data_cmp )
   );
@@ -472,8 +467,8 @@ int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
  * @note This is named "count" rather than "len" to avoid misinterpretation
  * that "len" would be the total length of the strings and `::` separators.
  */
-NODISCARD C_SNAME_H_INLINE
-size_t c_sname_count( c_sname_t const *sname ) {
+NODISCARD
+inline size_t c_sname_count( c_sname_t const *sname ) {
   return slist_len( sname );
 }
 
@@ -485,8 +480,8 @@ size_t c_sname_count( c_sname_t const *sname ) {
  * @return Returns a duplicate of \a sname or an empty scoped name if \a sname
  * is NULL.
  */
-NODISCARD C_SNAME_H_INLINE
-c_sname_t c_sname_dup( c_sname_t const *sname ) {
+NODISCARD
+inline c_sname_t c_sname_dup( c_sname_t const *sname ) {
   return slist_dup(
     sname, -1, POINTER_CAST( slist_dup_fn_t, &c_scope_data_dup )
   );
@@ -498,8 +493,8 @@ c_sname_t c_sname_dup( c_sname_t const *sname ) {
  * @param sname The scoped name to check.
  * @return Returns `true` only if \a sname is empty.
  */
-NODISCARD C_SNAME_H_INLINE
-bool c_sname_empty( c_sname_t const *sname ) {
+NODISCARD
+inline bool c_sname_empty( c_sname_t const *sname ) {
   return slist_empty( sname );
 }
 
@@ -512,8 +507,9 @@ bool c_sname_empty( c_sname_t const *sname ) {
  *
  * @sa c_sname_cmp()
  */
-NODISCARD C_SNAME_H_INLINE
-bool c_sname_equal( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
+NODISCARD
+inline bool c_sname_equal( c_sname_t const *i_sname,
+                           c_sname_t const *j_sname ) {
   return slist_equal(
     i_sname, j_sname, POINTER_CAST( slist_equal_fn_t, &str_equal )
   );
@@ -530,8 +526,8 @@ bool c_sname_equal( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
  * @sa c_sname_local_type()
  * @sa c_sname_scope_type()
  */
-NODISCARD C_SNAME_H_INLINE
-c_type_t const* c_sname_global_type( c_sname_t const *sname ) {
+NODISCARD
+inline c_type_t const* c_sname_global_type( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? &T_NONE : &c_sname_global_data( sname )->type;
 }
 
@@ -547,8 +543,7 @@ c_type_t const* c_sname_global_type( c_sname_t const *sname ) {
  * @sa c_sname_init_name()
  * @sa c_sname_move()
  */
-C_SNAME_H_INLINE
-void c_sname_init( c_sname_t *sname ) {
+inline void c_sname_init( c_sname_t *sname ) {
   slist_init( sname );
 }
 
@@ -562,8 +557,7 @@ void c_sname_init( c_sname_t *sname ) {
  * @sa c_sname_free()
  * @sa c_sname_init()
  */
-C_SNAME_H_INLINE
-void c_sname_init_name( c_sname_t *sname, char *name ) {
+inline void c_sname_init_name( c_sname_t *sname, char *name ) {
   slist_init( sname );
   c_sname_push_back_name( sname, name );
 }
@@ -579,8 +573,8 @@ void c_sname_init_name( c_sname_t *sname, char *name ) {
  * @sa c_sname_local_data()
  * @sa c_sname_scope_type()
  */
-NODISCARD C_SNAME_H_INLINE
-c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
+NODISCARD
+inline c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? &T_NONE : &c_sname_local_data( sname )->type;
 }
 
@@ -604,8 +598,8 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
  * @sa c_sname_init()
  * @sa c_sname_set()
  */
-NODISCARD C_SNAME_H_INLINE
-c_sname_t c_sname_move( c_sname_t *sname ) {
+NODISCARD
+inline c_sname_t c_sname_move( c_sname_t *sname ) {
   return slist_move( sname );
 }
 
@@ -619,8 +613,7 @@ c_sname_t c_sname_move( c_sname_t *sname ) {
  * @sa c_sname_push_front_sname()
  * @sa c_sname_set()
  */
-C_SNAME_H_INLINE
-void c_sname_push_back_sname( c_sname_t *dst, c_sname_t *src ) {
+inline void c_sname_push_back_sname( c_sname_t *dst, c_sname_t *src ) {
   slist_push_list_back( dst, src );
 }
 
@@ -633,8 +626,7 @@ void c_sname_push_back_sname( c_sname_t *dst, c_sname_t *src ) {
  * @sa c_sname_push_back_name()
  * @sa c_sname_push_back_sname()
  */
-C_SNAME_H_INLINE
-void c_sname_push_front_sname( c_sname_t *dst, c_sname_t *src ) {
+inline void c_sname_push_front_sname( c_sname_t *dst, c_sname_t *src ) {
   slist_push_list_front( dst, src );
 }
 
@@ -650,8 +642,8 @@ void c_sname_push_front_sname( c_sname_t *dst, c_sname_t *src ) {
  * @sa c_sname_local_type()
  * @sa c_sname_set_scope_type()
  */
-NODISCARD C_SNAME_H_INLINE
-c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
+NODISCARD
+inline c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
   c_scope_data_t const *const data = slist_atr( sname, 1 );
   return data != NULL ? &data->type : &T_NONE;
 }
@@ -665,8 +657,7 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
  *
  * @sa c_sname_scope_type()
  */
-C_SNAME_H_INLINE
-void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
+inline void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
   c_scope_data_t *const data = slist_atr( sname, 1 );
   if ( data != NULL )
     data->type = *type;
@@ -675,8 +666,6 @@ void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_sname_H */
 /* vim:set et sw=2 ts=2: */

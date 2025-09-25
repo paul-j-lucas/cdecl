@@ -25,9 +25,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define C_TYPE_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "c_type.h"
 #include "c_lang.h"
 #include "gibberish.h"                  /* for other_token_c() */
@@ -1440,5 +1437,15 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type ) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline c_tid_t c_tid_check( c_tid_t, c_tpid_t );
+extern inline bool c_tid_is_compl( c_tid_t );
+extern inline c_tid_t c_tid_compl( c_tid_t );
+extern inline bool c_tid_is_except_any( c_tid_t, c_tid_t, c_tid_t );
+extern inline c_tid_t c_tid_no_tpid( c_tid_t );
+extern inline bool c_tid_is_any( c_tid_t, c_tid_t );
+extern inline bool c_tid_is_none( c_tid_t );
+extern inline bool c_tid_is_size_t( c_tid_t );
+extern inline bool c_type_is_none( c_type_t const* );
 
 /* vim:set et sw=2 ts=2: */

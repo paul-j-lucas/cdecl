@@ -39,11 +39,6 @@
 #include <stdbool.h>
 #include <stddef.h>                     /* for max_align_t */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef RED_BLACK_H_INLINE
-# define RED_BLACK_H_INLINE _GL_INLINE
-#endif /* RED_BLACK_H_INLINE */
-
 /// @endcond
 
 /**
@@ -290,8 +285,8 @@ struct rb_insert_rv {
  * @sa #RB_DINT
  * @sa #RB_DPTR
  */
-NODISCARD RED_BLACK_H_INLINE
-void* rb_node_data( rb_tree_t const *tree, rb_node_t const *node ) {
+NODISCARD
+inline void* rb_node_data( rb_tree_t const *tree, rb_node_t const *node ) {
   return tree->dloc == RB_DINT ? RB_DINT( node ) : RB_DPTR( node );
 }
 
@@ -324,8 +319,8 @@ void rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
  * @param tree A pointer to the rb_tree to check.
  * @return Returns `true` only if \a tree is empty.
  */
-NODISCARD RED_BLACK_H_INLINE
-bool rb_tree_empty( rb_tree_t const *tree ) {
+NODISCARD
+inline bool rb_tree_empty( rb_tree_t const *tree ) {
   return tree->root == &tree->nil;
 }
 
@@ -404,8 +399,6 @@ rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* pjl_red_black_H */
 /* vim:set et sw=2 ts=2: */

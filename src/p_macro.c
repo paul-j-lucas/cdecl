@@ -20,9 +20,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define P_MACRO_H_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "p_macro.h"
 #include "cdecl.h"
 #include "c_lang.h"
@@ -3107,5 +3104,7 @@ void p_param_list_cleanup( p_param_list_t *list ) {
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+extern inline bool p_macro_is_func_like( p_macro_t const* );
 
 /* vim:set et sw=2 ts=2: */

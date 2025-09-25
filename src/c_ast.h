@@ -45,11 +45,6 @@
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_AST_H_INLINE
-# define C_AST_H_INLINE _GL_INLINE
-#endif /* C_AST_H_INLINE */
-
 /// @endcond
 
 /**
@@ -631,8 +626,8 @@ void c_ast_free( c_ast_t *ast );
  * @sa c_ast_is_parent()
  * @sa c_ast_is_referrer()
  */
-NODISCARD C_AST_H_INLINE
-bool c_ast_is_orphan( c_ast_t const *ast ) {
+NODISCARD
+inline bool c_ast_is_orphan( c_ast_t const *ast ) {
   return  ast->param_of_ast == NULL &&
           (ast->parent_ast == NULL || ast->parent_ast->parent.of_ast != ast);
 }
@@ -646,8 +641,8 @@ bool c_ast_is_orphan( c_ast_t const *ast ) {
  * @sa c_ast_is_orphan()
  * @sa c_ast_is_referrer()
  */
-NODISCARD C_AST_H_INLINE
-bool c_ast_is_parent( c_ast_t const *ast ) {
+NODISCARD
+inline bool c_ast_is_parent( c_ast_t const *ast ) {
   return ast != NULL && (ast->kind & K_ANY_PARENT) != 0;
 }
 
@@ -660,8 +655,8 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
  * @sa c_ast_is_orphan()
  * @sa c_ast_is_parent()
  */
-NODISCARD C_AST_H_INLINE
-bool c_ast_is_referrer( c_ast_t const *ast ) {
+NODISCARD
+inline bool c_ast_is_referrer( c_ast_t const *ast ) {
   return ast != NULL && (ast->kind & K_ANY_REFERRER) != 0;
 }
 
@@ -672,8 +667,7 @@ bool c_ast_is_referrer( c_ast_t const *ast ) {
  *
  * @sa c_ast_free()
  */
-C_AST_H_INLINE
-void c_ast_list_cleanup( c_ast_list_t *list ) {
+inline void c_ast_list_cleanup( c_ast_list_t *list ) {
   // Do not pass &c_ast_free as the second argument since all ASTs are free'd
   // independently. Just free the list nodes.
   slist_cleanup( list, /*free_fn=*/NULL );
@@ -719,8 +713,8 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
  * @sa #FOREACH_AST_FUNC_PARAM()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
-NODISCARD C_AST_H_INLINE
-c_param_t const* c_ast_params( c_ast_t const *ast ) {
+NODISCARD
+inline c_param_t const* c_ast_params( c_ast_t const *ast ) {
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
   return ast->func.param_ast_list.head;
 }
@@ -773,8 +767,8 @@ c_ast_t const* c_ast_visit( c_ast_t const *ast, c_ast_visit_dir_t dir,
  * @sa #FOREACH_AST_LAMBDA_CAPTURE()
  * @sa #FOREACH_AST_LAMBDA_CAPTURE_UNTIL()
  */
-NODISCARD C_AST_H_INLINE
-c_ast_t const* c_capture_ast( c_capture_t const *capture ) {
+NODISCARD
+inline c_ast_t const* c_capture_ast( c_capture_t const *capture ) {
   return capture != NULL ? capture->data : NULL;
 }
 
@@ -789,16 +783,14 @@ c_ast_t const* c_capture_ast( c_capture_t const *capture ) {
  * @sa #FOREACH_AST_FUNC_PARAM()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
-NODISCARD C_AST_H_INLINE
-c_ast_t const* c_param_ast( c_param_t const *param ) {
+NODISCARD
+inline c_ast_t const* c_param_ast( c_param_t const *param ) {
   return param != NULL ? param->data : NULL;
 }
 
 /** @} */
 
 ///////////////////////////////////////////////////////////////////////////////
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_ast_H */
 /* vim:set et sw=2 ts=2: */

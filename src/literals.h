@@ -30,15 +30,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "c_lang.h"
 
-/// @cond DOXYGEN_IGNORE
-
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_LITERALS_H_INLINE
-# define C_LITERALS_H_INLINE _GL_INLINE
-#endif /* C_LITERALS_H_INLINE */
-
-/// @endcond
-
 /**
  * @defgroup literals-group Literal Strings
  * Constants for **cdecl** and C/C++ language literals.
@@ -480,16 +471,14 @@ extern char const L_MSC_WINAPI[];         // synonym for "__stdcall"
  * @return Returns either `_Alignas` (for C17 or earlier) or `alignas` (for C23
  * or later, or C++).
  */
-NODISCARD C_LITERALS_H_INLINE
-char const* alignas_name( void ) {
+NODISCARD
+inline char const* alignas_name( void ) {
   return OPT_LANG_IS( alignas ) ? L_alignas : L__Alignas;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_literals_H */
 /* vim:set et sw=2 ts=2: */
