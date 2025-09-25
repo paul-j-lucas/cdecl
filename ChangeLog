@@ -1,3 +1,7 @@
+2025-09-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c: Using (void*)0 explicitly where NULL must be a pointer.
+
 2025-09-24  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c: Added initializer of TS_NONE.
