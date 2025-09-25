@@ -111,8 +111,10 @@ static bool command_is_any( cdecl_command_t const *command,
  *
  * @param ... The function's arguments.
  */
-#define command_is_any(COMMAND,...) \
-  command_is_any( (COMMAND), (char const*[]){ __VA_ARGS__ VA_OPT( (,), __VA_ARGS__ ) NULL } )
+#define command_is_any(COMMAND,...)                                       \
+  command_is_any( (COMMAND),                                              \
+                  (char const*[]){ __VA_ARGS__ VA_OPT( (,), __VA_ARGS__ ) \
+                                   (void*)0 } )
 
 /**
  * Checks whether the string \a s is a title.
