@@ -1,5 +1,11 @@
 2025-09-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * Doxygen.sed, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_lang.c,
+     c_lang.h, c_operator.c, c_operator.h, c_sglob.c, c_sglob.h, c_sname.c,
+     c_sname.h, c_type.c, c_type.h, color.c, color.h, lexer.h, lexer.l,
+     literals.c, literals.h, p_macro.c, p_macro.h, p_token.c, p_token.h,
+     red_black.c, red_black.h, slist.c, slist.h, strbuf.c, strbuf.h, util.c,
+     util.h: Now using standard C99 inline.
    * help.c: Using (void*)0 explicitly where NULL must be a pointer.
 
 2025-09-24  Paul J. Lucas <paul@lucasmail.org>
