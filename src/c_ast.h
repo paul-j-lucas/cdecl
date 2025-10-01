@@ -144,7 +144,7 @@ typedef bool (*c_ast_visit_fn_t)( c_ast_t const *ast, user_data_t user_data );
  * @defgroup ast-nodes-group AST Nodes
  * Declaration of various types of nodes in an AST for a C/C++ declaration.
  *
- * ## Layout
+ * ## Structure Layout
  *
  * The AST node `struct`s contain members specific to each \ref c_ast_kind_t.
  * In all cases where an AST node contains:
@@ -159,6 +159,39 @@ typedef bool (*c_ast_visit_fn_t)( c_ast_t const *ast, user_data_t user_data );
  *
  * To ensure the members remain at the same offsets, a series of
  * `static_assert`s are in c_ast.c.
+ *
+ * ## Node Topology
+ *
+ * AST nodes for a declaration are connected according to its English phrasing.
+ * For example:
+ *
+ *     cdecl> explain int *x[5]
+ *     declare x as array 5 of pointer to integer
+ *
+ * results in the AST nodes:
+ *
+ *     $$_ast: {
+ *       sname: { string: "x", scopes: "none" },
+ *       kind: { value: 0x100, string: "array" },
+ *       ...
+ *       array: {
+ *         size: 5,
+ *         of_ast: {
+ *           ...
+ *           kind: { value: 0x800, string: "pointer" },
+ *           ...
+ *           ptr_ref: {
+ *             to_ast: {
+ *               ...
+ *               kind: { value: 0x2, string: "built-in type" },
+ *               ...
+ *               type: { btid: 0x0000000000004001, string: "int" },
+ *               ...
+ *             }
+ *           }
+ *         }
+ *       }
+ *     }
  *
  * ## Memory Management
  *
