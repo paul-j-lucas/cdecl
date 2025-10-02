@@ -150,10 +150,13 @@ AS_IF([test "x$enable_term_size" != xno], [
   #endif
   ])
 ])
-AC_CHECK_HEADERS([fnmatch.h])
-AC_CHECK_HEADERS([getopt.h])
+AC_CHECK_HEADERS([fnmatch.h], [],
+  [AC_MSG_ERROR([fnmatch.h required header not found])])
+AC_CHECK_HEADERS([getopt.h], [],
+  [AC_MSG_ERROR([getopt.h required header not found])])
 AC_CHECK_HEADERS([pwd.h])
-AC_CHECK_HEADERS([sysexits.h])
+AC_CHECK_HEADERS([sysexits.h], [],
+  [AC_MSG_ERROR([sysexits.h required header not found])])
 AC_HEADER_ASSERT
 AC_HEADER_STDBOOL
 gl_INIT
