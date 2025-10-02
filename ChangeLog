@@ -1,5 +1,9 @@
 2025-10-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Removed AC_MSG_ERROR from some AC_CHECK_HEADERS; now using
+     AC_REPLACE_FNMATCH.
+   * cli_options.c: Added missing #include.
+   * configure.ac: Added missing ,.
    * configure.ac: More AC_ARG_ENABLE clean-up.
 
 2025-10-01  Paul J. Lucas <paul@lucasmail.org>
