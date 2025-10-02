@@ -1,3 +1,7 @@
+2025-10-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: More AC_ARG_ENABLE clean-up.
+
 2025-10-01  Paul J. Lucas <paul@lucasmail.org>
 
    * Doxygen.sed: Added s/^NODISCARD/[[nodiscard]]/.
