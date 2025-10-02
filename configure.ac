@@ -28,8 +28,7 @@ AM_EXTRA_RECURSIVE_TARGETS([clean-coverage distclean-coverage])
 
 # Testing feature: code coverage (disabled by default)
 AC_ARG_ENABLE([coverage],
-  AS_HELP_STRING([--enable-coverage], [enable code coverage]),
-  [], []
+  AS_HELP_STRING([--enable-coverage], [enable code coverage])
 )
 AS_IF([test "x$enable_coverage" = xyes],
   #
@@ -58,7 +57,7 @@ gl_EARLY
 
 # Check if this is a maintainer tree (has .git directory).
 AS_IF([test -d "$srcdir/.git"],
-  [pjl_maintainer_tree=yes], []
+  [pjl_maintainer_tree=yes],
 )
 
 # Check for flex & bison only only in a maintainer tree; trees from a released
@@ -81,12 +80,12 @@ AS_IF([test "x$pjl_maintainer_tree" = xyes], [
 
   AX_PROG_FLEX([FLEX=$LEX],
     [AC_MSG_ERROR([required program "flex" not found])])
-  AX_PROG_FLEX_VERSION([$flex_min_version],[],
+  AX_PROG_FLEX_VERSION([$flex_min_version], [],
     [AC_MSG_ERROR([flex version $flex_min_version or later required])])
 
   AX_PROG_BISON([BISON=$YACC],
     [AC_MSG_ERROR([required program "bison" not found])])
-  AX_PROG_BISON_VERSION([$bison_min_version],[],
+  AX_PROG_BISON_VERSION([$bison_min_version], [],
     [AC_MSG_ERROR([bison version $bison_min_version or later required])])
 ])
 
@@ -95,8 +94,7 @@ AC_PROG_LN_S
 
 # External dependency: readline (enabled by default)
 AC_ARG_WITH([readline],
-  AS_HELP_STRING([--without-readline], [disable readline]),
-  [], []
+  AS_HELP_STRING([--without-readline], [disable readline])
 )
 AS_IF([test "x$with_readline" != xno], [
   AC_DEFINE([WITH_READLINE], [1], [Define to 1 if readline support is enabled.])
@@ -108,8 +106,7 @@ AS_IF([test "x$with_readline" != xno], [
 
 # Program feature: Bison debug (disabled by default)
 AC_ARG_ENABLE([bison-debug],
-  AS_HELP_STRING([--enable-bison-debug], [enable Bison debug output]),
-  [], []
+  AS_HELP_STRING([--enable-bison-debug], [enable Bison debug output])
 )
 AS_IF([test "x$enable_bison_debug" = xyes], [
   AC_DEFINE([ENABLE_BISON_DEBUG], [1], [Define to 1 if Bison debugging is enabled.])
@@ -118,8 +115,7 @@ AS_IF([test "x$enable_bison_debug" = xyes], [
 
 # Program feature: Flex debug (disabled by default)
 AC_ARG_ENABLE([flex-debug],
-  AS_HELP_STRING([--enable-flex-debug], [enable Flex debug output]),
-  [], []
+  AS_HELP_STRING([--enable-flex-debug], [enable Flex debug output])
 )
 AS_IF([test "x$enable_flex_debug" = xyes], [
   AC_DEFINE([ENABLE_FLEX_DEBUG], [1],
@@ -128,8 +124,7 @@ AS_IF([test "x$enable_flex_debug" = xyes], [
 
 # Program feature: term-size (enabled by default)
 AC_ARG_ENABLE([term-size],
-  AS_HELP_STRING([--disable-term-size], [disable terminal size]),
-  [], []
+  AS_HELP_STRING([--disable-term-size], [disable terminal size])
 )
 AS_IF([test "x$enable_term_size" != xno], [
   AC_DEFINE([ENABLE_TERM_SIZE], [1], [Define to 1 if term-size is enabled.])
@@ -174,8 +169,8 @@ AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
-AC_CHECK_MEMBERS([struct passwd.pw_dir],[],[],[[#include <pwd.h>]])
-PJL_COMPILE([__builtin_expect],[], [(void)__builtin_expect(1,1);])
+AC_CHECK_MEMBERS([struct passwd.pw_dir], [], [], [[#include <pwd.h>]])
+PJL_COMPILE([__builtin_expect], [], [(void)__builtin_expect(1,1);])
 PJL_COMPILE([__VA_OPT__],
   [#define VA_OPT_TEST(...) __VA_OPT__(int) __VA_ARGS__
   ],
@@ -186,19 +181,19 @@ PJL_COMPILE([__VA_OPT__],
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([geteuid getpwuid fmemopen strsep])
 AS_IF([test "x$with_readline" != xno], [
-  AC_CHECK_DECLS([rl_completion_matches],[],[],
+  AC_CHECK_DECLS([rl_completion_matches], [], [],
   [#include <stdio.h>
   #include <readline/readline.h>
   ])
-  AC_CHECK_DECLS([rl_ding],[],[],
+  AC_CHECK_DECLS([rl_ding], [], [],
   [#include <stdio.h>
   #include <readline/readline.h>
   ])
-  AC_CHECK_DECLS([RL_PROMPT_START_IGNORE],[],[],
+  AC_CHECK_DECLS([RL_PROMPT_START_IGNORE], [], [],
   [#include <stdio.h>
   #include <readline/readline.h>
   ])
-  AC_CHECK_DECLS([rl_gnu_readline_p],[],[],
+  AC_CHECK_DECLS([rl_gnu_readline_p], [], [],
   [#include <stdio.h>
   #include <readline/readline.h>
   ])
@@ -218,8 +213,7 @@ AS_IF([test "x$enable_term_size" != xno], [
 
 # Testing feature: Address Sanitizer (ASan)
 AC_ARG_ENABLE([asan],
-  AS_HELP_STRING([--enable-asan], [enable Address Sanitizer for debugging]),
-  [], []
+  AS_HELP_STRING([--enable-asan], [enable Address Sanitizer for debugging])
 )
 AS_IF([test "x$enable_asan" = xyes], [
   AC_DEFINE([ENABLE_ASAN], [1], [Define to 1 if Address Sanitizer is enabled.])
@@ -227,8 +221,7 @@ AS_IF([test "x$enable_asan" = xyes], [
 
 # Testing feature: Memory Sanitizer (MSan)
 AC_ARG_ENABLE([msan],
-  AS_HELP_STRING([--enable-msan], [enable Memory Sanitizer for debugging]),
-  [], []
+  AS_HELP_STRING([--enable-msan], [enable Memory Sanitizer for debugging])
 )
 AS_IF([test "x$enable_msan" = xyes], [
   AC_DEFINE([ENABLE_MSAN], [1],
@@ -237,8 +230,7 @@ AS_IF([test "x$enable_msan" = xyes], [
 
 # Testing feature: Undefined Behavior Sanitizer (UBSan)
 AC_ARG_ENABLE([ubsan],
-  AS_HELP_STRING([--enable-ubsan], [enable Undefined Bahavior Sanitizer for debugging]),
-  [], []
+  AS_HELP_STRING([--enable-ubsan], [enable Undefined Bahavior Sanitizer for debugging])
 )
 AS_IF([test "x$enable_ubsan" = xyes], [
   AC_DEFINE([ENABLE_UBSAN], [1],
