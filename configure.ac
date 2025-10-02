@@ -29,8 +29,7 @@ AM_EXTRA_RECURSIVE_TARGETS([clean-coverage distclean-coverage])
 # Testing feature: code coverage (disabled by default)
 AC_ARG_ENABLE([coverage],
   AS_HELP_STRING([--enable-coverage], [enable code coverage]),
-  [],
-  [enable_coverage=no]
+  [], []
 )
 AS_IF([test "x$enable_coverage" = xyes],
   #
@@ -59,8 +58,8 @@ gl_EARLY
 
 # Check if this is a maintainer tree (has .git directory).
 AS_IF([test -d "$srcdir/.git"],
-  [pjl_maintainer_tree=yes],
-  [pjl_maintainer_tree=no])
+  [pjl_maintainer_tree=yes], []
+)
 
 # Check for flex & bison only only in a maintainer tree; trees from a released
 # tarball shouldn't require flex & bison.
@@ -97,8 +96,7 @@ AC_PROG_LN_S
 # External dependency: readline (enabled by default)
 AC_ARG_WITH([readline],
   AS_HELP_STRING([--without-readline], [disable readline]),
-  [],
-  [with_readline=yes]
+  [], []
 )
 AS_IF([test "x$with_readline" != xno], [
   AC_DEFINE([WITH_READLINE], [1], [Define to 1 if readline support is enabled.])
@@ -111,8 +109,7 @@ AS_IF([test "x$with_readline" != xno], [
 # Program feature: Bison debug (disabled by default)
 AC_ARG_ENABLE([bison-debug],
   AS_HELP_STRING([--enable-bison-debug], [enable Bison debug output]),
-  [],
-  [enable_bison_debug=no]
+  [], []
 )
 AS_IF([test "x$enable_bison_debug" = xyes], [
   AC_DEFINE([ENABLE_BISON_DEBUG], [1], [Define to 1 if Bison debugging is enabled.])
@@ -122,8 +119,7 @@ AS_IF([test "x$enable_bison_debug" = xyes], [
 # Program feature: Flex debug (disabled by default)
 AC_ARG_ENABLE([flex-debug],
   AS_HELP_STRING([--enable-flex-debug], [enable Flex debug output]),
-  [],
-  [enable_flex_debug=no]
+  [], []
 )
 AS_IF([test "x$enable_flex_debug" = xyes], [
   AC_DEFINE([ENABLE_FLEX_DEBUG], [1],
@@ -133,10 +129,9 @@ AS_IF([test "x$enable_flex_debug" = xyes], [
 # Program feature: term-size (enabled by default)
 AC_ARG_ENABLE([term-size],
   AS_HELP_STRING([--disable-term-size], [disable terminal size]),
-  [],
-  [enable_term_size=yes]
+  [], []
 )
-AS_IF([test "x$enable_term_size" = xyes], [
+AS_IF([test "x$enable_term_size" != xno], [
   AC_DEFINE([ENABLE_TERM_SIZE], [1], [Define to 1 if term-size is enabled.])
 ])
 
@@ -148,7 +143,7 @@ AS_IF([test "x$with_readline" != xno], [
     [AC_MSG_ERROR([readline.h header not found; use --without-readline])]
   )
 ])
-AS_IF([test "x$enable_term_size" = xyes], [
+AS_IF([test "x$enable_term_size" != xno], [
   AC_CHECK_HEADERS([curses.h ncurses.h], [],
     [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
   )
@@ -212,7 +207,7 @@ AS_IF([test "x$with_readline" != xno], [
   )
   AC_SEARCH_LIBS([add_history],[readline history])
 ])
-AS_IF([test "x$enable_term_size" = xyes], [
+AS_IF([test "x$enable_term_size" != xno], [
   AC_SEARCH_LIBS([endwin],[curses ncurses], [],
     [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
   )
@@ -223,10 +218,8 @@ AS_IF([test "x$enable_term_size" = xyes], [
 
 # Testing feature: Address Sanitizer (ASan)
 AC_ARG_ENABLE([asan],
-  AS_HELP_STRING([--enable-asan],
-    [enable Address Sanitizer for debugging]),
-  [],
-  [enable_asan=no]
+  AS_HELP_STRING([--enable-asan], [enable Address Sanitizer for debugging]),
+  [], []
 )
 AS_IF([test "x$enable_asan" = xyes], [
   AC_DEFINE([ENABLE_ASAN], [1], [Define to 1 if Address Sanitizer is enabled.])
@@ -234,10 +227,8 @@ AS_IF([test "x$enable_asan" = xyes], [
 
 # Testing feature: Memory Sanitizer (MSan)
 AC_ARG_ENABLE([msan],
-  AS_HELP_STRING([--enable-msan],
-    [enable Memory Sanitizer for debugging]),
-  [],
-  [enable_msan=no]
+  AS_HELP_STRING([--enable-msan], [enable Memory Sanitizer for debugging]),
+  [], []
 )
 AS_IF([test "x$enable_msan" = xyes], [
   AC_DEFINE([ENABLE_MSAN], [1],
@@ -246,10 +237,8 @@ AS_IF([test "x$enable_msan" = xyes], [
 
 # Testing feature: Undefined Behavior Sanitizer (UBSan)
 AC_ARG_ENABLE([ubsan],
-  AS_HELP_STRING([--enable-ubsan],
-    [enable Undefined Bahavior Sanitizer for debugging]),
-  [],
-  [enable_ubsan=no]
+  AS_HELP_STRING([--enable-ubsan], [enable Undefined Bahavior Sanitizer for debugging]),
+  [], []
 )
 AS_IF([test "x$enable_ubsan" = xyes], [
   AC_DEFINE([ENABLE_UBSAN], [1],
