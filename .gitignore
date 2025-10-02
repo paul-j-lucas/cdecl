@@ -27,6 +27,7 @@ tags
 /coverage*
 /depcomp
 /docs/
+/INSTALL
 /install-sh
 /missing
 /test-driver

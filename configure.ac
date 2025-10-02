@@ -23,7 +23,7 @@
 AC_PREREQ([2.69])
 AC_INIT([cdecl],[18.6],[https://github.com/paul-j-lucas/cdecl/issues],[],[https://github.com/paul-j-lucas/cdecl])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE
 AM_EXTRA_RECURSIVE_TARGETS([clean-coverage distclean-coverage])
 
 # Testing feature: code coverage (disabled by default)
