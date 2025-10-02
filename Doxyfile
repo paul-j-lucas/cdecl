@@ -24,7 +24,7 @@ PROJECT_BRIEF           = "Compose and decipher C (or C++) type declarations or 
 INPUT                   = README.md src
 EXTENSION_MAPPING       = l=C y=C
 FILE_PATTERNS           = *.c *.h *.l *.md *.y
-FILTER_PATTERNS         = "*.h=sed -f Doxygen.sed"
+FILTER_PATTERNS         = "*.[chly]=sed -f Doxygen.sed"
 PREDEFINED              = __GNUC__ \
                           ENABLE_BISON_DEBUG \
                           ENABLE_FLEX_DEBUG \
@@ -34,10 +34,8 @@ PREDEFINED              = __GNUC__ \
 EXCLUDE                 = src/config.h \
                           src/lexer.c \
                           src/literals.h src/literals.c \
-                          src/parser.h src/parser.c \
-                          src/red_black_test.c \
-                          src/slist_test.c \
-                          src/util_test.c
+                          src/parser.h src/parser.c
+EXCLUDE_PATTERNS        = *_test.c
 
 OUTPUT_DIRECTORY        = docs
 HTML_EXTRA_STYLESHEET   = cdecl.css
