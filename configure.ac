@@ -57,7 +57,7 @@ gl_EARLY
 
 # Check if this is a maintainer tree (has .git directory).
 AS_IF([test -d "$srcdir/.git"],
-  [pjl_maintainer_tree=yes],
+  [pjl_maintainer_tree=yes]
 )
 
 # Check for flex & bison only only in a maintainer tree; trees from a released
