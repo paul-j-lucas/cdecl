@@ -544,7 +544,10 @@
                                   "0123456789"
 
 /**
- * Shorthand for `((EXPR1) ? (EXPR1) : (EXPR2))`.
+ * Shorthand for
+ * <code>((</code><i>EXPR1</i><code>)</code> <code>?</code>
+ * <code>(</code><i>EXPR1</i><code>)</code> <code>:</code>
+ * <code>(</code><i>EXPR2</i><code>))</code>.
  *
  * @param EXPR1 The first expression.
  * @param EXPR2 The second expression.
