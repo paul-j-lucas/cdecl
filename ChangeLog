@@ -1,5 +1,6 @@
 2025-10-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * Doxygen.sed: Added s/^NODISCARD/[[nodiscard]]/.
    * Doxyfile: Now running FILTER_PATTERNS on *.[chly] files; now using
      EXCLUDE_PATTERNS.
    * Doxyfile: Added WARN_IF_UNDOC_ENUM_VAL.
