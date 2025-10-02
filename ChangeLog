@@ -1,3 +1,9 @@
+2025-10-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * Doxyfile: Now running FILTER_PATTERNS on *.[chly] files; now using
+     EXCLUDE_PATTERNS.
+   * Doxyfile: Added WARN_IF_UNDOC_ENUM_VAL.
+
 2025-09-25  Paul J. Lucas <paul@lucasmail.org>
 
    * Doxygen.sed, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_lang.c,
