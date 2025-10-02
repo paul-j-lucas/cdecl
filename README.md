@@ -204,8 +204,8 @@ or you can download a
 that contains `configure`
 and the generated lexer and parser.
 In either case,
-then follow the generic installation instructions given in
-[`INSTALL`](https://github.com/paul-j-lucas/cdecl/blob/master/INSTALL).
+then follow the generic installation instructions
+given in `INSTALL`.
 
 If you would like to generate code coverage reports,
 you will also need
