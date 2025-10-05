@@ -1,5 +1,7 @@
 2025-10-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Eliminated AM_INIT_AUTOMAKE arguments and INSTALL.
+   * configure.ac: Removed extraneous ,.
    * configure.ac: Removed AC_MSG_ERROR from some AC_CHECK_HEADERS; now using
      AC_REPLACE_FNMATCH.
    * cli_options.c: Added missing #include.
