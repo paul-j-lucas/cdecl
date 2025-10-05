@@ -33,7 +33,6 @@
 #  --no-libtool \
 #  --macro-prefix=gl \
 #  bool \
-#  extern-inline \
 #  fnmatch \
 #  getline \
 #  getopt-gnu \
