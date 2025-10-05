@@ -106,34 +106,23 @@ if WITH_READLINE
 cdecl_SOURCES += autocomplete.c autocomplete.h
 endif
 
-red_black_test_SOURCES = \
+BASE_TEST_SOURCES = \
 		cdecl.h \
 		pjl_config.h config.h \
+		type_traits.h \
+		util.c util.h \
+		unit_test.c unit_test.h
+
+red_black_test_SOURCES = $(BASE_TEST_SOURCES) \
 		red_black.c red_black.h \
-		red_black_test.c \
-		slist.c slist.h \
-		strbuf.c strbuf.h \
-		types.h \
-		util.c util.h \
-		unit_test.c unit_test.h
+		red_black_test.c
 
-slist_test_SOURCES = \
-		cdecl.h \
-		pjl_config.h config.h \
+slist_test_SOURCES = $(BASE_TEST_SOURCES) \
 		slist.c slist.h \
-		slist_test.c \
-		strbuf.c strbuf.h \
-		types.h \
-		util.c util.h \
-		unit_test.c unit_test.h
+		slist_test.c
 
-util_test_SOURCES = \
-		cdecl.h \
-		pjl_config.h config.h \
-		slist.c slist.h \
-		util.c util.h \
-		util_test.c \
-		unit_test.c unit_test.h
+util_test_SOURCES = $(BASE_TEST_SOURCES) \
+		util_test.c
 
 CDECL =		cdecl$(EXEEXT)
 CPPDECL =	c++decl$(EXEEXT)
