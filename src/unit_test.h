@@ -21,6 +21,9 @@
 #ifndef pjl_unit_test_H
 #define pjl_unit_test_H
 
+// standard
+#include <stdio.h>
+
 #pragma GCC diagnostic ignored "-Wunused-value"
 
 /**
@@ -46,7 +49,7 @@
  * @return Always returns `false`.
  */
 #define TEST_FAILED(EXPR) \
-  ( EPRINTF( "%s:%d: " EXPR "\n", me, __LINE__ ), !++test_failures )
+  ( fprintf( stderr, "%s:%d: " EXPR "\n", me, __LINE__ ), !++test_failures )
 
 /**
  * Begins a test function.
