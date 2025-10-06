@@ -1,3 +1,16 @@
+2025-10-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black_test.c, slist_test.c, strbuf_test.c, util_test.c: Removed
+     unnecessary #includes.
+   * unit_test.h: No longer dependent on util.h.
+   * src/Makefile.am, strbuf_test.c: Added strbuf_test.
+
+2025-10-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Test sources clean-up.
+   * ax_cflags_warn_all.m4: Updated.
+   * ax_check_compile_flag.m4: Updated.
+
 2025-10-02  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Eliminated AM_INIT_AUTOMAKE arguments and INSTALL.
