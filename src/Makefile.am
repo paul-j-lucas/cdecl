@@ -22,7 +22,7 @@
 .MAKE.JOB.PREFIX=
 
 bin_PROGRAMS =	cdecl
-check_PROGRAMS=	red_black_test slist_test util_test
+check_PROGRAMS=	red_black_test slist_test strbuf_test util_test
 
 AM_CFLAGS =	$(CDECL_CFLAGS)
 
@@ -120,6 +120,10 @@ red_black_test_SOURCES = $(BASE_TEST_SOURCES) \
 slist_test_SOURCES = $(BASE_TEST_SOURCES) \
 		slist.c slist.h \
 		slist_test.c
+
+strbuf_test_SOURCES  = $(BASE_TEST_SOURCES) \
+		strbuf.c strbuf.h \
+		strbuf_test.c
 
 util_test_SOURCES = $(BASE_TEST_SOURCES) \
 		util_test.c
