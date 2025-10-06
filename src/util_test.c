@@ -25,7 +25,6 @@
 
 // standard
 #include <stdbool.h>
-#include <stdio.h>
 #include <string.h>
 
 #define STRLIT_LEN(S)             (S), STRLITLEN( (S) )

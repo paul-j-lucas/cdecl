@@ -21,15 +21,11 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "strbuf.h"
-#include "util.h"
 #include "unit_test.h"
 
 // standard
 #include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <sysexits.h>
 
 ////////// test functions /////////////////////////////////////////////////////
 
