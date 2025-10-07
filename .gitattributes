@@ -1,3 +1,4 @@
 lib/* linguist-vendored
 m4/* linguist-vendored
-src/*.[ch] linguist-language=C
+src/*.c linguist-language=C
+src/*.h linguist-language=C
