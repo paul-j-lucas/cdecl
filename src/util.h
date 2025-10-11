@@ -631,12 +631,12 @@
  *
  *      d = ceil(b * log10(2))
  *
- * where _log10(2)_ &asymp; 0.30102999; hence multiply _b_ by 0.30102999.
- * Since the preprocessor can't do floating-point math, that has to be
- * simulated using only integer math.
+ * where _log10(2)_ &asymp; .30102999; hence multiply _b_ by .30102999.  Since
+ * the preprocessor can't do floating-point math, that has to be simulated
+ * using only integer math.
  *
- * The expression 1233 / 4096 = 0.30102539 is a close approximation of
- * 0.30102999.  Integer division by 4096 is the same as right-shifting by 12.
+ * The expression 1233 / 4096 = .30102539 is a close approximation of
+ * .30102999.  Integer division by 4096 is the same as right-shifting by 12.
  * The number of bits _b_ = <code>sizeof(</code><i>TYPE</i><code>)</code> *
  * `CHAR_BIT`.  Therefore, multiply that by 1233, then right-shift by 12.
  *
