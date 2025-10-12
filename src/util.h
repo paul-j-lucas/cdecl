@@ -632,8 +632,8 @@
  *      d = ceil(b * log10(2))
  *
  * where _log10(2)_ &asymp; .30102999; hence multiply _b_ by .30102999.  Since
- * the preprocessor can't do floating-point math, that has to be simulated
- * using only integer math.
+ * the compiler can't do floating-point math at compile-time, that has to be
+ * simulated using only integer math.
  *
  * The expression 1233 / 4096 = .30102539 is a close approximation of
  * .30102999.  Integer division by 4096 is the same as right-shifting by 12.
