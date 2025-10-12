@@ -1,3 +1,7 @@
+2025-10-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * type_traits.h: Simplified IS_INTEGRAL_TYPE.
+
 2025-10-06  Paul J. Lucas <paul@lucasmail.org>
 
    * red_black_test.c, slist_test.c, strbuf_test.c, util_test.c: Removed
