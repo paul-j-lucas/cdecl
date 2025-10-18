@@ -1,3 +1,7 @@
+2025-10-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Deleted unnecessary AC_CHECK_HEADERS.
+
 2025-10-15  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, pjl_check_compile_flag.m4: Added PJL_CHECK_COMPILE_FLAG.
