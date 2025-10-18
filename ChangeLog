@@ -1,5 +1,6 @@
 2025-10-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * Makefile.am: Now using --no-vc-files option.
    * configure.ac: Deleted unnecessary AC_CHECK_HEADERS.
 
 2025-10-15  Paul J. Lucas <paul@lucasmail.org>
