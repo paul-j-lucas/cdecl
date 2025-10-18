@@ -319,7 +319,6 @@ PJL_CHECK_COMPILE_FLAG([-Wunreachable-code], [CDECL_CFLAGS])
 PJL_CHECK_COMPILE_FLAG([-Wunreachable-code-return], [CDECL_CFLAGS])
 PJL_CHECK_COMPILE_FLAG([-Wunused], [CDECL_CFLAGS])
 PJL_CHECK_COMPILE_FLAG([-Wwrite-strings], [CDECL_CFLAGS])
-PJL_CHECK_COMPILE_FLAG([-Wzero-as-null-pointer-constant], [CDECL_CFLAGS])
 
 # Generate files.
 AH_TOP([#ifndef cdecl_config_H
