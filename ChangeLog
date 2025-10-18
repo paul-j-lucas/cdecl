@@ -1,5 +1,8 @@
 2025-10-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Removed -Wzero-as-null-pointer-constant -- not valid for C.
+   * ax_compiler_vendor.m4, ax_prepend_flag.m4, ax_require_defined.m4:
+     Apparently, these are needed now.
    * Makefile.am: Now using --no-vc-files option.
    * configure.ac: Deleted unnecessary AC_CHECK_HEADERS.
 
