@@ -1044,6 +1044,17 @@ _GL_CXXALIASWARN (getchar);
 #   undef getdelim
 #   define getdelim rpl_getdelim
 #  endif
+#  ifndef __has_feature
+#   define __has_feature(a) 0
+#  endif
+#  if __GLIBC__ >= 2 && !(defined __SANITIZE_ADDRESS__ \
+                          || __has_feature (address_sanitizer))
+/* Arrange for the inline definition of getline() in <bits/stdio.h>
+   to call our getdelim() override.  Do not use the __getdelim symbol
+   if address sanitizer is in use, otherwise it may be overridden by
+   __interceptor_trampoline___getdelim.  */
+#   define rpl_getdelim __getdelim
+#  endif
 _GL_FUNCDECL_RPL (getdelim, ssize_t,
                   (char **restrict lineptr, size_t *restrict linesize,
                    int delimiter,
@@ -1085,14 +1096,27 @@ _GL_WARN_ON_USE (getdelim, "getdelim is unportable - "
    Return the number of bytes read and stored at *LINEPTR (not including the
    NUL terminator), or -1 on error or EOF.  */
 # if @REPLACE_GETLINE@
-#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
-#   undef getline
-#   define getline rpl_getline
-#  endif
 _GL_FUNCDECL_RPL (getline, ssize_t,
                   (char **restrict lineptr, size_t *restrict linesize,
                    FILE *restrict stream),
                   _GL_ARG_NONNULL ((1, 2, 3)) _GL_ATTRIBUTE_NODISCARD);
+#  if defined __cplusplus
+/* The C++ standard library defines std::basic_istream::getline in <istream>
+   or <string>.  */
+#   if !(__GLIBC__ >= 2)
+extern "C" {
+inline ssize_t
+getline (char **restrict lineptr, size_t *restrict linesize,
+         FILE *restrict stream)
+{
+  return rpl_getline (lineptr, linesize, stream);
+}
+}
+#   endif
+#  else
+#   undef getline
+#   define getline rpl_getline
+#  endif
 _GL_CXXALIAS_RPL (getline, ssize_t,
                   (char **restrict lineptr, size_t *restrict linesize,
                    FILE *restrict stream));

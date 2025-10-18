@@ -82,6 +82,9 @@ extern const uint32_t *
        _UC_ATTRIBUTE_PURE;
 
 #ifndef _LIBUNISTRING_NO_CONST_GENERICS
+# ifdef __cplusplus
+}
+# endif
 /* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
    want compiler warnings for 'const' related mistakes.  */
 # ifdef __cplusplus
@@ -146,6 +149,9 @@ template <>
                 uint32_t *: (uint32_t *) u32_check ((s), (n)), \
                 default   :              u32_check ((s), (n)))
 #  endif
+# endif
+# ifdef __cplusplus
+extern "C" {
 # endif
 #endif
 
@@ -513,6 +519,9 @@ extern uint32_t *
        u32_chr (const uint32_t *s, size_t n, ucs4_t uc)
        _UC_ATTRIBUTE_PURE;
 #ifndef _LIBUNISTRING_NO_CONST_GENERICS
+# ifdef __cplusplus
+}
+# endif
 /* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
    want compiler warnings for 'const' related mistakes.  */
 # ifdef __cplusplus
@@ -578,6 +587,9 @@ template <>
                 default         :                    u32_chr ((s), (n), (u)))
 #  endif
 # endif
+# ifdef __cplusplus
+extern "C" {
+# endif
 #endif
 
 /* Count the number of Unicode characters in the N units from S.  */
@@ -636,6 +648,9 @@ extern const uint16_t *
 extern const uint32_t *
        u32_next (ucs4_t *puc, const uint32_t *s);
 #ifndef _LIBUNISTRING_NO_CONST_GENERICS
+# ifdef __cplusplus
+}
+# endif
 /* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
    want compiler warnings for 'const' related mistakes.  */
 # ifdef __cplusplus
@@ -701,6 +716,9 @@ template <>
                 default   :              u32_next ((p), (s)))
 #  endif
 # endif
+# ifdef __cplusplus
+extern "C" {
+# endif
 #endif
 
 /* Backward iteration step.  Advances the pointer to point to the previous
@@ -713,6 +731,9 @@ extern const uint16_t *
 extern const uint32_t *
        u32_prev (ucs4_t *puc, const uint32_t *s, const uint32_t *start);
 #ifndef _LIBUNISTRING_NO_CONST_GENERICS
+# ifdef __cplusplus
+}
+# endif
 /* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
    want compiler warnings for 'const' related mistakes.  */
 # ifdef __cplusplus
@@ -777,6 +798,9 @@ template <>
                 uint32_t *: (uint32_t *) u32_prev ((p), (s), (start)), \
                 default   :              u32_prev ((p), (s), (start)))
 #  endif
+# endif
+# ifdef __cplusplus
+extern "C" {
 # endif
 #endif
 
@@ -926,6 +950,9 @@ extern uint32_t *
        u32_strchr (const uint32_t *str, ucs4_t uc)
        _UC_ATTRIBUTE_PURE;
 #ifndef _LIBUNISTRING_NO_CONST_GENERICS
+# ifdef __cplusplus
+}
+# endif
 /* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
    want compiler warnings for 'const' related mistakes.  */
 # ifdef __cplusplus
@@ -991,6 +1018,9 @@ template <>
                 default         :                    u32_strchr ((s), (u)))
 #  endif
 # endif
+# ifdef __cplusplus
+extern "C" {
+# endif
 #endif
 
 /* Find the last occurrence of UC in STR.  */
@@ -1005,6 +1035,9 @@ extern uint32_t *
        u32_strrchr (const uint32_t *str, ucs4_t uc)
        _UC_ATTRIBUTE_PURE;
 #ifndef _LIBUNISTRING_NO_CONST_GENERICS
+# ifdef __cplusplus
+}
+# endif
 /* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
    want compiler warnings for 'const' related mistakes.  */
 # ifdef __cplusplus
@@ -1070,6 +1103,9 @@ template <>
                 default         :                    u32_strrchr ((s), (u)))
 #  endif
 # endif
+# ifdef __cplusplus
+extern "C" {
+# endif
 #endif
 
 /* Return the length of the initial segment of STR which consists entirely
@@ -1110,6 +1146,9 @@ extern uint32_t *
        u32_strpbrk (const uint32_t *str, const uint32_t *accept)
        _UC_ATTRIBUTE_PURE;
 #ifndef _LIBUNISTRING_NO_CONST_GENERICS
+# ifdef __cplusplus
+}
+# endif
 /* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
    want compiler warnings for 'const' related mistakes.  */
 # ifdef __cplusplus
@@ -1175,6 +1214,9 @@ template <>
                 default         :                    u32_strpbrk ((s), (a)))
 #  endif
 # endif
+# ifdef __cplusplus
+extern "C" {
+# endif
 #endif
 
 /* Find the first occurrence of NEEDLE in HAYSTACK.  */
@@ -1189,6 +1231,9 @@ extern uint32_t *
        u32_strstr (const uint32_t *haystack, const uint32_t *needle)
        _UC_ATTRIBUTE_PURE;
 #ifndef _LIBUNISTRING_NO_CONST_GENERICS
+# ifdef __cplusplus
+}
+# endif
 /* Don't silently convert a 'const uintN_t *' to a 'uintN_t *'.  Programmers
    want compiler warnings for 'const' related mistakes.  */
 # ifdef __cplusplus
@@ -1253,6 +1298,9 @@ template <>
                 uint32_t const *: (uint32_t const *) u32_strstr ((h), (n)), \
                 default         :                    u32_strstr ((h), (n)))
 #  endif
+# endif
+# ifdef __cplusplus
+extern "C" {
 # endif
 #endif
 
