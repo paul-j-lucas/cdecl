@@ -58,7 +58,9 @@ static bool test_parse_identifier( void ) {
   TEST_FUNC_BEGIN();
 
   TEST( parse_identifier( "." ) == NULL );
-  TEST( *parse_identifier( "A(" ) == '(' );
+  char const *const s = parse_identifier( "A(" );
+  if ( TEST( s != NULL ) )
+    TEST( *s == '(' );
 
   TEST_FUNC_END();
 }
