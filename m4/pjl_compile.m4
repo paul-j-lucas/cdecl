@@ -32,10 +32,9 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-#serial 3
+#serial 4
 
 AC_DEFUN([PJL_COMPILE], [
-  AC_REQUIRE([AC_COMPILE_IFELSE])
   AC_CACHE_CHECK([for $1], [pjl_cv_$1],
     [AC_COMPILE_IFELSE(
       [AC_LANG_PROGRAM([$2], [$3])],
