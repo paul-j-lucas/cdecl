@@ -160,7 +160,6 @@ AC_C__GENERIC
 AS_IF([test "x$ac_cv_c__Generic" != xyes], [
   AC_MSG_ERROR([C11 _Generic support required to compile $PACKAGE_NAME])
 ])
-AC_C_INLINE
 AC_C_TYPEOF
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
