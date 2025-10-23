@@ -78,6 +78,14 @@ static void test_prog_usage( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+bool test_expr( bool expr_is_true, char const *expr, int line ) {
+  if ( !expr_is_true ) {
+    EPRINTF( "%s:%d: %s\n", me, line, expr );
+    ++test_failures;
+  }
+  return expr_is_true;
+}
+
 void test_prog_init( int argc, char const *const argv[] ) {
   ASSERT_RUN_ONCE();
   me = base_name( argv[0] );

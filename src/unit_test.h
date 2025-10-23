@@ -40,16 +40,7 @@
  * @param EXPR The expression to evaluate.
  * @return Returns `true` only if \a EXPR is non-zero; `false` only if zero.
  */
-#define TEST(EXPR)                ( !!(EXPR) || TEST_FAILED( #EXPR ) )
-
-/**
- * Prints that \a EXPR failed and increments the test failure count.
- *
- * @param EXPR The stringified expression that failed.
- * @return Always returns `false`.
- */
-#define TEST_FAILED(EXPR) \
-  ( fprintf( stderr, "%s:%d: " EXPR "\n", me, __LINE__ ), !++test_failures )
+#define TEST(EXPR)                test_expr( !!(EXPR), #EXPR, __LINE__ )
 
 /**
  * Begins a test function.
@@ -75,8 +66,24 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern char const  *me;                 ///< Program name.
 extern unsigned     test_failures;      ///< Test failure count.
+
+/**
+ * Helper function for the #TEST() macro that, if \a expr_is_true is `false`,
+ * prints that the test failed and increments the failure count.
+ *
+ * @param expr_is_true True only if the expression for the test evaluated to
+ * `true`.
+ * @param expr The stringified expression.
+ * @param line The line number of the test.
+ * @return Returns \a expr_is_true.
+ *
+ * @note This function isn't normally called directly; use the #TEST() macro
+ * instead.
+ *
+ * @sa #TEST()
+ */
+bool test_expr( bool expr_is_true, char const *expr, int line );
 
 /**
  * Initializes a unit-test program.
