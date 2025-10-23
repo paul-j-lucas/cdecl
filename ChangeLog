@@ -1,5 +1,6 @@
 2025-10-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * unit_test.h: Removed #include.
    * unit_test.h: Eliminated #pragma.
    * cdecl.c, cdecl.h, cli_options.c, parse.c, unit_test.c, util.c:
      s/me/prog_name/
