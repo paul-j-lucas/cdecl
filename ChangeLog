@@ -1,3 +1,10 @@
+2025-10-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * unit_test.h: Eliminated #pragma.
+   * cdecl.c, cdecl.h, cli_options.c, parse.c, unit_test.c, util.c:
+     s/me/prog_name/
+   * unit_test.c, unit_test.h: Now using test_expr().
+
 2025-10-19  Paul J. Lucas <paul@lucasmail.org>
 
    * pjl_compile.m4: Removed AC_REQUIRE.
