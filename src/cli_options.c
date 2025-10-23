@@ -723,13 +723,13 @@ invalid_opt:;
   char const *invalid_opt = (*pargv)[ optind - 1 ];
   if ( invalid_opt != NULL && STRNCMPLIT( invalid_opt, "--" ) == 0 ) {
     invalid_opt += STRLITLEN( "--" );
-    EPRINTF( "%s: \"%s\": invalid option", me, invalid_opt );
+    EPRINTF( "%s: \"%s\": invalid option", prog_name, invalid_opt );
     if ( !print_suggestions( DYM_CLI_OPTIONS, invalid_opt ) )
       goto use_help;
     EPUTC( '\n' );
     exit( EX_USAGE );
   }
-  EPRINTF( "%s: '%c': invalid option", me, STATIC_CAST( char, optopt ) );
+  EPRINTF( "%s: '%c': invalid option", prog_name, STATIC_CAST( char, optopt ) );
 
 use_help:
   print_use_help();
@@ -801,7 +801,7 @@ static void print_usage( int status ) {
   } // for
 
   FILE *const fout = status == EX_OK ? stdout : stderr;
-  FPRINTF( fout, "usage: %s [options] [command...]\noptions:\n", me );
+  FPRINTF( fout, "usage: %s [options] [command...]\noptions:\n", prog_name );
 
   FOREACH_CLI_OPTION( opt ) {
     FPRINTF( fout, "  --%s", opt->name );

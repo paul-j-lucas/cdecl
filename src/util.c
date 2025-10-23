@@ -206,7 +206,7 @@ unsigned long long check_strtoull( char const *s, unsigned long long min,
 
 void fatal_error( int status, char const *format, ... ) {
   assert( format != NULL );
-  EPRINTF( "%s: ", me );
+  EPRINTF( "%s: ", prog_name );
   va_list args;
   va_start( args, format );
   vfprintf( stderr, format, args );
@@ -365,7 +365,7 @@ bool path_is_file( char const *path ) {
 
 // LCOV_EXCL_START
 void perror_exit( int status ) {
-  perror( me );
+  perror( prog_name );
   exit( status );
 }
 // LCOV_EXCL_STOP
@@ -503,7 +503,7 @@ size_t strnspn( char const *s, char const *charset, size_t n ) {
 void wait_for_debugger_attach( void ) {
   EPRINTF(
     "%s: pid=%d: waiting for debugger to attach...\n",
-    me, STATIC_CAST( int, getpid() )
+    prog_name, STATIC_CAST( int, getpid() )
   );
   PERROR_EXIT_IF( raise( SIGSTOP ) == -1, EX_OSERR );
 }

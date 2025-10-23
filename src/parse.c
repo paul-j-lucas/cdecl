@@ -84,7 +84,7 @@ static bool is_c_comment( char const *s ) {
  */
 NODISCARD
 static inline bool is_cdecl( void ) {
-  return strcmp( me, CDECL ) == 0;
+  return strcmp( prog_name, CDECL ) == 0;
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -256,21 +256,24 @@ int cdecl_parse_cli( size_t cli_count,
     //
     // Is the program name itself a command, i.e., explain?
     //
-    find_what = me;
+    find_what = prog_name;
     found_command = cdecl_command_find( find_what );
     if ( found_command != NULL ) {
       if ( found_command->kind != CDECL_COMMAND_PROG_NAME ) {
         invalid_as = "a program name";
         goto invalid_command;
       }
-      command_literal = me;
+      command_literal = prog_name;
     }
   }
 
   return cdecl_parse_command( command_literal, cli_count, cli_value );
 
 invalid_command:
-  EPRINTF( "%s: \"%s\": invalid command (as %s)", me, find_what, invalid_as );
+  EPRINTF(
+    "%s: \"%s\": invalid command (as %s)",
+    prog_name, find_what, invalid_as
+  );
   if ( found_command == NULL && print_suggestions( DYM_COMMANDS, find_what ) )
     EPUTC( '\n' );
   else

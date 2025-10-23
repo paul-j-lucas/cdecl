@@ -95,7 +95,7 @@ extern bool         cdecl_is_initialized; ///< Initialized (read config. file)?
 extern char const  *cdecl_input_path;     ///< Current input file path, if any.
 extern bool         cdecl_is_interactive; ///< Interactive (connected to a tty)?
 extern bool         cdecl_is_testing;     ///< Is **cdecl** being tested?
-extern char const  *me;                   ///< Program name.
+extern char const  *prog_name;            ///< Program name.
 
 ////////// extern functions ///////////////////////////////////////////////////
 

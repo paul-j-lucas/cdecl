@@ -61,7 +61,7 @@ bool        cdecl_is_initialized;
 char const *cdecl_input_path;
 bool        cdecl_is_interactive;
 bool        cdecl_is_testing;
-char const *me;
+char const *prog_name;
 
 /// @endcond
 
@@ -92,7 +92,7 @@ bool is_cppdecl( void ) {
   };
 
   FOREACH_ARRAY_ELEMENT( char const*, name, NAMES ) {
-    if ( strcmp( me, *name ) == 0 )
+    if ( strcmp( prog_name, *name ) == 0 )
       return true;
   } // for
   return false;
@@ -106,7 +106,7 @@ bool is_cppdecl( void ) {
  * @return Returns 0 on success, non-zero on failure.
  */
 int main( int argc, char const *const argv[] ) {
-  me = base_name( argv[0] );
+  prog_name = base_name( argv[0] );
   ATEXIT( &cdecl_cleanup );
   cdecl_is_testing = str_is_affirmative( getenv( "CDECL_TEST" ) );
   if ( str_is_affirmative( getenv( "CDECL_DEBUG" ) ) )

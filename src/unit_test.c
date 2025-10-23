@@ -38,7 +38,7 @@
 /// Otherwise Doxygen generates two entries.
 
 // extern variables
-char const *me;
+char const *prog_name;
 unsigned    test_failures;
 
 /// @endcond
@@ -71,7 +71,7 @@ static void test_prog_exit( void ) {
 _Noreturn
 static void test_prog_usage( void ) {
   // LCOV_EXCL_START
-  EPRINTF( "usage: %s\n", me );
+  EPRINTF( "usage: %s\n", prog_name );
   exit( EX_USAGE );
   // LCOV_EXCL_STOP
 }
@@ -80,7 +80,7 @@ static void test_prog_usage( void ) {
 
 bool test_expr( bool expr_is_true, char const *expr, int line ) {
   if ( !expr_is_true ) {
-    EPRINTF( "%s:%d: %s\n", me, line, expr );
+    EPRINTF( "%s:%d: %s\n", prog_name, line, expr );
     ++test_failures;
   }
   return expr_is_true;
@@ -88,7 +88,7 @@ bool test_expr( bool expr_is_true, char const *expr, int line ) {
 
 void test_prog_init( int argc, char const *const argv[] ) {
   ASSERT_RUN_ONCE();
-  me = base_name( argv[0] );
+  prog_name = base_name( argv[0] );
   if ( --argc != 0 )
     test_prog_usage();                  // LCOV_EXCL_LINE
   ATEXIT( &test_prog_exit );
