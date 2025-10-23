@@ -24,8 +24,6 @@
 // standard
 #include <stdio.h>
 
-#pragma GCC diagnostic ignored "-Wunused-value"
-
 /**
  * @defgroup unit-test-group Unit Tests
  * Macros, variables, and functions for unit-test programs.
