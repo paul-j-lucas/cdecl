@@ -21,9 +21,6 @@
 #ifndef pjl_unit_test_H
 #define pjl_unit_test_H
 
-// standard
-#include <stdio.h>
-
 /**
  * @defgroup unit-test-group Unit Tests
  * Macros, variables, and functions for unit-test programs.
