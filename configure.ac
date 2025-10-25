@@ -130,8 +130,6 @@ AS_IF([test "x$enable_term_size" != xno], [
   AC_DEFINE([ENABLE_TERM_SIZE], [1], [Define to 1 if term-size is enabled.])
 ])
 
-# Checks for libraries.
-
 # Checks for header files.
 AS_IF([test "x$with_readline" != xno], [
   AC_CHECK_HEADERS([readline/readline.h readline/history.h], [],
@@ -173,6 +171,22 @@ PJL_COMPILE([__VA_OPT__],
   [int x1 = VA_OPT_TEST() 1; VA_OPT_TEST(x2 = 2);]
 )
 
+# Checks for libraries.
+AS_IF([test "x$with_readline" != xno], [
+  AC_SEARCH_LIBS([readline],[readline], [],
+    [AC_MSG_ERROR([readline library not found; use --without-readline])]
+  )
+  AC_SEARCH_LIBS([add_history],[readline history])
+])
+AS_IF([test "x$enable_term_size" != xno], [
+  AC_SEARCH_LIBS([endwin],[curses ncurses], [],
+    [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
+  )
+  AC_SEARCH_LIBS([tigetnum],[curses ncurses tinfo], [],
+    [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
+  )
+])
+
 # Checks for library functions.
 AC_REPLACE_FNMATCH
 AC_FUNC_REALLOC
@@ -194,18 +208,6 @@ AS_IF([test "x$with_readline" != xno], [
   [#include <stdio.h>
   #include <readline/readline.h>
   ])
-  AC_SEARCH_LIBS([readline],[readline], [],
-    [AC_MSG_ERROR([readline library not found; use --without-readline])]
-  )
-  AC_SEARCH_LIBS([add_history],[readline history])
-])
-AS_IF([test "x$enable_term_size" != xno], [
-  AC_SEARCH_LIBS([endwin],[curses ncurses], [],
-    [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
-  )
-  AC_SEARCH_LIBS([tigetnum],[curses ncurses tinfo], [],
-    [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
-  )
 ])
 
 # Testing feature: Address Sanitizer (ASan)
