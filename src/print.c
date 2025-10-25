@@ -88,6 +88,43 @@ print_params_t            print_params;
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Prints a message to standard error.
+ *
+ * @note In debug mode, also prints the file & line where the function was
+ * called from.
+ * @note A newline is _not_ printed.
+ *
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
+ * @param loc The location of the error; may be NULL.
+ * @param what What to print, e.g., `error` or `warning`.
+ * @param what_color The color to print \a what in, if any.
+ * @param format The `printf()` style format string.
+ * @param args The `printf()` arguments.
+ */
+static void fl_print_impl( char const *file, int line, c_loc_t const *loc,
+                           char const *what, char const *what_color,
+                           char const *format, va_list args ) {
+  assert( format != NULL );
+  assert( what != NULL );
+
+  if ( loc != NULL )
+    print_loc( loc );
+  color_start( stderr, what_color );
+  EPUTS( what );
+  color_end( stderr, what_color );
+  EPUTS( ": " );
+
+  print_debug_file_line( file, line );
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+  vfprintf( stderr, format, args );
+#pragma GCC diagnostic pop
+}
+
+/**
  * Helper function for print_suggestions() and fput_list() that gets the string
  * for a \ref did_you_mean::known "known" literal.
  *
@@ -368,19 +405,9 @@ static size_t token_len( char const *s, size_t s_len, size_t token_offset ) {
 void fl_print_error( char const *file, int line, c_loc_t const *loc,
                      char const *format, ... ) {
   assert( format != NULL );
-
-  if ( loc != NULL )
-    print_loc( loc );
-  color_start( stderr, sgr_error );
-  EPUTS( "error" );
-  color_end( stderr, sgr_error );
-  EPUTS( ": " );
-
-  print_debug_file_line( file, line );
-
   va_list args;
   va_start( args, format );
-  vfprintf( stderr, format, args );
+  fl_print_impl( file, line, loc, "error", sgr_error, format, args );
   va_end( args );
 }
 
@@ -430,19 +457,9 @@ void fl_print_error_unknown_name( char const *file, int line,
 void fl_print_warning( char const *file, int line, c_loc_t const *loc,
                        char const *format, ... ) {
   assert( format != NULL );
-
-  if ( loc != NULL )
-    print_loc( loc );
-  color_start( stderr, sgr_warning );
-  EPUTS( "warning" );
-  color_end( stderr, sgr_warning );
-  EPUTS( ": " );
-
-  print_debug_file_line( file, line );
-
   va_list args;
   va_start( args, format );
-  vfprintf( stderr, format, args );
+  fl_print_impl( file, line, loc, "warning", sgr_warning, format, args );
   va_end( args );
 }
 
