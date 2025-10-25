@@ -1,5 +1,8 @@
 2025-10-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.c: Narrowed scope of #pragma GCC diagnostic ignored
+     "-Wformat-nonliteral".
+   * print.c: Added fl_print_impl.
    * configure.ac: Reordered check-for-libraries section.
 
 2025-10-23  Paul J. Lucas <paul@lucasmail.org>
