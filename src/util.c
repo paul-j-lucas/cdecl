@@ -201,20 +201,20 @@ unsigned long long check_strtoull( char const *s, unsigned long long min,
   return ULLONG_MAX;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-
 void fatal_error( int status, char const *format, ... ) {
   assert( format != NULL );
   EPRINTF( "%s: ", prog_name );
   va_list args;
   va_start( args, format );
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
   vfprintf( stderr, format, args );
+#pragma GCC diagnostic pop
+
   va_end( args );
   exit( status );
 }
-
-#pragma GCC diagnostic pop
 
 bool fd_is_file( int fd ) {
   struct stat fd_stat;
