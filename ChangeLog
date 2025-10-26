@@ -1,3 +1,8 @@
+2025-10-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Removed unnecessary AC_SUBST.
+   * configure.ac: Don't need [[]].
+
 2025-10-25  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c: Narrowed scope of #pragma GCC diagnostic ignored
