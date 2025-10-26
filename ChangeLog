@@ -1,5 +1,6 @@
 2025-10-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Revert "Removed unnecessary AC_SUBST."
    * configure.ac: Removed unnecessary AC_SUBST.
    * configure.ac: Don't need [[]].
 
