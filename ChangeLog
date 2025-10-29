@@ -1,3 +1,7 @@
+2025-10-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl_check_compile_flag.m4: Removed inappropriate AC_REQUIRE.
+
 2025-10-26  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Revert "Removed unnecessary AC_SUBST."
