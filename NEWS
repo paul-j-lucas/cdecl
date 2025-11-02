@@ -10,6 +10,15 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.6.1
+
+** East-const `_Atomic`
+When in east-`const` mode, `_Atomic` is now also printed east.
+
+** `_Atomic void` parameters
+Such parameters are now also correctly flagged as illegal.
+
+
 * Changes in Cdecl 18.6
 
 ** Better "did you mean" suggestions

@@ -6937,7 +6937,7 @@ typeof_type_c_ast
       if ( $is_unqual ) {
         c_ast_t const *const raw_ast = c_ast_untypedef( $type_ast );
         if ( raw_ast != $type_ast &&
-             c_tid_is_any( raw_ast->type.stids, TS__Atomic | TS_CVR ) ) {
+             c_tid_is_any( raw_ast->type.stids, TS_CVRA ) ) {
           //
           // The type is a typedef and the type that it's for is ACVR-qualified
           // so we need to dup _that_ type before un-ACVR-qualifying it because
@@ -6947,7 +6947,7 @@ typeof_type_c_ast
           $type_ast = c_ast_dup_gc( raw_ast );
           $type_ast->loc = *orig_loc;
         }
-        $type_ast->type.stids &= c_tid_compl( TS__Atomic | TS_CVR );
+        $type_ast->type.stids &= c_tid_compl( TS_CVRA );
       }
 
       $$ = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );

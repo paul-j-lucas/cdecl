@@ -1334,7 +1334,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
             return false;
           }
           c_tid_t qual_stids;
-          if ( c_ast_is_tid_any_qual( param_ast, TS_CV, &qual_stids ) ) {
+          if ( c_ast_is_tid_any_qual( param_ast, TS_CVA, &qual_stids ) ) {
             print_error( &param_ast->loc,
               "\"%s\" parameters can not be \"%s\"\n",
               c_tid_error( TB_void ),

@@ -1036,8 +1036,8 @@ static char const* c_type_name_impl( c_type_t const *type,
 
   c_tid_t east_stids = TS_NONE;
   if ( opt_east_const && !in_english ) {
-    east_stids = stids & TS_CV;
-    stids &= c_tid_compl( TS_CV );
+    east_stids = stids & TS_CVA;
+    stids &= c_tid_compl( TS_CVA );
   }
 
   // Types here MUST have a corresponding row AND column in OK_QUALIFIER_LANGS.

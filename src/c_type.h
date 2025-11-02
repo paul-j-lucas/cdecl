@@ -866,8 +866,16 @@ typedef enum c_tpid c_tpid_t;
 #define TS_CV                 ( TS_const | TS_volatile )
 
 /// @ingroup c-qualifiers-group
+/// Shorthand for `const`, `volatile`, or `_Atomic`.
+#define TS_CVA                ( TS__Atomic | TS_CV )
+
+/// @ingroup c-qualifiers-group
 /// Shorthand for `const`, `volatile`, or `restrict`.
 #define TS_CVR                ( TS_CV | TS_restrict )
+
+/// @ingroup c-qualifiers-group
+/// Shorthand for `const`, `volatile`, `_Atomic`, or `restrict`.
+#define TS_CVRA               ( TS_CVA | TS_restrict )
 
 /**
  * @ingroup c-storage-like-types-group

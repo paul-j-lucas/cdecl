@@ -1094,8 +1094,8 @@ static void c_concept_ast_gibberish( c_ast_t const *ast, c_type_t *type,
   c_tid_t cv_qual_stids = TS_NONE;
 
   if ( opt_east_const ) {
-    cv_qual_stids = type->stids & TS_CV;
-    type->stids &= c_tid_compl( TS_CV );
+    cv_qual_stids = type->stids & TS_CONCEPT;
+    type->stids &= c_tid_compl( TS_CONCEPT );
   }
 
   fputs_sp( c_type_gibberish( type ), gib->fout );
@@ -1125,8 +1125,8 @@ static void c_ecsu_ast_gibberish( c_ast_t const *ast, c_type_t *type,
   bool const is_fixed_enum = ast->kind == K_ENUM && ast->enum_.of_ast != NULL;
 
   if ( opt_east_const ) {
-    cv_qual_stids = type->stids & TS_CV;
-    type->stids &= c_tid_compl( TS_CV );
+    cv_qual_stids = type->stids & TS_CVA;
+    type->stids &= c_tid_compl( TS_CVA );
   }
 
   char const *const type_name =
