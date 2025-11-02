@@ -73,12 +73,12 @@ print_result() {
 usage() {
   [ "$1" ] && { echo "$ME: $*" >&2; usage; }
   cat >&2 <<END
-usage: $ME --log-file=PATH --trs-file=PATH [options] TEST-FILE
+usage: $ME --test-name NAME --log-file PATH --trs-file PATH [options] TEST-FILE
 options:
-  --color-tests={yes|no}
-  --enable-hard-errors={yes|no}
-  --expect-failure={yes|no}
-  --test-name=NAME
+  --collect-skipped-logs {yes|no}
+  --color-tests {yes|no}
+  --enable-hard-errors {yes|no}
+  --expect-failure {yes|no}
 END
   exit 1
 }
@@ -102,23 +102,17 @@ ME=$(local_basename "$0")
 while [ $# -gt 0 ]
 do
   case $1 in
+  --collect-skipped-logs)
+    COLLECT_SKIPPED_LOGS=$2; shift
+    ;;
   --color-tests)
     COLOR_TESTS=$2; shift
-    ;;
-  --color-tests=*)
-    COLOR_TESTS=$(expr "x$1" : 'x--color-tests=\(.*\)')
     ;;
   --enable-hard-errors)
     ENABLE_HARD_ERRORS=$2; shift
     ;;
-  --enable-hard-errors=*)
-    ENABLE_HARD_ERRORS=$(expr "x$1" : 'x--enable-hard-errors=\(.*\)')
-    ;;
   --expect-failure)
     EXPECT_FAILURE=$2; shift
-    ;;
-  --expect-failure=*)
-    EXPECT_FAILURE=$(expr "x$1" : 'x--expect-failure=\(.*\)')
     ;;
   --help)
     usage
@@ -126,20 +120,11 @@ do
   --log-file)
     LOG_FILE=$2; shift
     ;;
-  --log-file=*)
-    LOG_FILE=$(expr "x$1" : 'x--log-file=\(.*\)')
-    ;;
   --test-name)
     TEST_NAME=$2; shift
     ;;
-  --test-name=*)
-    TEST_NAME=$(expr "x$1" : 'x--test-name=\(.*\)')
-    ;;
   --trs-file)
     TRS_FILE=$2; shift
-    ;;
-  --trs-file=*)
-    TRS_FILE=$(expr "x$1" : 'x--trs-file=\(.*\)')
     ;;
   --)
     shift
