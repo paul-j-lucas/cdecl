@@ -796,85 +796,139 @@ typedef enum c_tpid c_tpid_t;
                               | TA_indeterminate | TA_maybe_unused \
                               | TA_no_unique_address )
 
-/// @ingroup c-base-types-group
-/// Shorthand for any character type.
+/**
+ * @ingroup c-base-types-group
+ * Shorthand for any character type.
+ */
 #define TB_ANY_CHAR           ( TB_char | TB_wchar_t \
                               | TB_char8_t | TB_char16_t | TB_char32_t )
 
-/// @ingroup c-base-types-group
-/// Shorthand for `class`, `struct`, or `union`.
+/**
+ * @ingroup c-base-types-group
+ * Shorthand for `class`, `struct`, or `union`.
+ */
 #define TB_ANY_CLASS          ( TB_class | TB_struct | TB_union )
 
-/// @ingroup c-base-types-group
-/// Shorthand for `enum`, `class`, `struct`, or `union`.
+/**
+ * @ingroup c-base-types-group
+ * Shorthand for `enum`, `class`, `struct`, or `union`.
+ */
 #define TB_ANY_ECSU           ( TB_enum | TB_ANY_CLASS )
 
-/// @ingroup c-emc-types-group
-/// Shorthand for any Embedded C type.
+/**
+ * @ingroup c-emc-types-group
+ * Shorthand for any Embedded C type.
+ */
 #define TB_ANY_EMC            ( TB_EMC__Accum | TB_EMC__Fract )
 
-/// @ingroup c-base-types-group
-/// Shorthand for any floating-point type.
+/**
+ * @ingroup c-base-types-group
+ * Shorthand for any floating-point type.
+ */
 #define TB_ANY_FLOAT          ( TB_float | TB_double )
 
-/// @ingroup c-base-types-group
-/// Shorthand for any integral type.
+/**
+ * @ingroup c-base-types-group
+ * Shorthand for any integral type.
+ */
 #define TB_ANY_INTEGRAL       ( TB_bool | TB_ANY_CHAR | TB__BitInt | TB_int \
                               | TB_ANY_INT_MODIFIER )
 
-/// @ingroup c-base-types-group
-/// Shorthand for an any modifier.
+/**
+ * @ingroup c-base-types-group
+ * Shorthand for an any modifier.
+ */
 #define TB_ANY_INT_MODIFIER   ( TB_short | TB_long | TB_long_long | TB_signed \
                               | TB_unsigned )
 
-/// @ingroup c-base-types-group
-/// Shorthand for `class`, `struct`, `union`, or `namespace`.
+/**
+ * @ingroup c-base-types-group
+ * Shorthand for `class`, `struct`, `union`, or `namespace`.
+ */
 #define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_namespace )
 
-/// @ingroup c-storage-types-group
-/// Shorthand for any linkage.
+/**
+ * @ingroup c-storage-types-group
+ * Shorthand for any linkage.
+ */
 #define TS_ANY_LINKAGE        ( TS_extern | TS_extern_C | TS_static )
 
-/// @ingroup c-qualifiers-group
-/// Shorthand for any array qualifier.
+/**
+ * @ingroup c-qualifiers-group
+ * Shorthand for any array qualifier.
+ */
 #define TS_ANY_ARRAY_QUALIFIER \
                               ( TS_CVR | TS_NON_EMPTY_ARRAY )
 
-/// @ingroup c-qualifiers-group
-/// Shorthand for any qualifier.
+/**
+ * @ingroup c-qualifiers-group
+ * Shorthand for any qualifier.
+ */
 #define TS_ANY_QUALIFIER      ( TS_ANY_ARRAY_QUALIFIER | TS_ANY_UPC \
                               | TS__Atomic )
 
-/// @ingroup c-ref-qualifiers-group
-/// Shorthand for any reference qualifier.
+/**
+ * @ingroup c-ref-qualifiers-group
+ * Shorthand for any reference qualifier.
+ */
 #define TS_ANY_REFERENCE      ( TS_REFERENCE | TS_RVALUE_REFERENCE )
 
-/// @ingroup c-storage-types-group
-/// Shorthand for any storage.
+/**
+ * @ingroup c-storage-types-group
+ * Shorthand for any storage.
+ */
 #define TS_ANY_STORAGE        C_TID_LIT( STORE, 0x00000000FFFFFFF )
 
-/// @ingroup c-upc-qualifiers-group
-/// Shorthand for any UPC qualifier.
+/**
+ * @ingroup c-upc-qualifiers-group
+ * Shorthand for any UPC qualifier.
+ */
 #define TS_ANY_UPC            ( TS_UPC_relaxed | TS_UPC_shared | TS_UPC_strict )
 
-/// @ingroup c-qualifiers-group
-/// The only qualfiers that can apply to concepts.
+/**
+ * @ingroup c-qualifiers-group
+ * The only qualfiers that can apply to concepts.
+ */
 #define TS_CONCEPT            TS_CV
 
-/// @ingroup c-qualifiers-group
-/// Shorthand for `const` or `volatile`.
+/**
+ * @ingroup c-qualifiers-group
+ * Shorthand for `const` or `volatile`.
+ *
+ * @sa #TS_CVA
+ * @sa #TS_CVR
+ * @sa #TS_CVRA
+ */
 #define TS_CV                 ( TS_const | TS_volatile )
 
-/// @ingroup c-qualifiers-group
-/// Shorthand for `const`, `volatile`, or `_Atomic`.
+/**
+ * @ingroup c-qualifiers-group
+ * Shorthand for `const`, `volatile`, or `_Atomic`.
+ *
+ * @sa #TS_CV
+ * @sa #TS_CVR
+ * @sa #TS_CVRA
+ */
 #define TS_CVA                ( TS__Atomic | TS_CV )
 
-/// @ingroup c-qualifiers-group
-/// Shorthand for `const`, `volatile`, or `restrict`.
+/**
+ * @ingroup c-qualifiers-group
+ * Shorthand for `const`, `volatile`, or `restrict`.
+ *
+ * @sa #TS_CV
+ * @sa #TS_CVA
+ * @sa #TS_CVRA
+ */
 #define TS_CVR                ( TS_CV | TS_restrict )
 
-/// @ingroup c-qualifiers-group
-/// Shorthand for `const`, `volatile`, `_Atomic`, or `restrict`.
+/**
+ * @ingroup c-qualifiers-group
+ * Shorthand for `const`, `volatile`, `_Atomic`, or `restrict`.
+ *
+ * @sa #TS_CV
+ * @sa #TS_CVA
+ * @sa #TS_CVR
+ */
 #define TS_CVRA               ( TS_CVA | TS_restrict )
 
 /**
@@ -1031,7 +1085,7 @@ typedef enum c_tpid c_tpid_t;
  * The only types that can apply to structured bindings.
  */
 #define TS_STRUCTURED_BINDING ( TS_ANY_REFERENCE | TS_CV | TS_static \
-                              | TS_thread_local)
+                              | TS_thread_local )
 
 /**
  * @ingroup c-storage-like-types-group
