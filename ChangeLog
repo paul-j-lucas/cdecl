@@ -1,3 +1,10 @@
+2025-11-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, share/man/man1/cdecl.1, c_ast_check.c, c_type.c, c_type.h,
+     gibberish.c, parser.y, explain-error.out, explain-error.test: When in
+     east-const mode, _Atomic is now also printed east. _Atomic void parameters
+     are now also correctly flagged as illegal.
+
 2025-10-28  Paul J. Lucas <paul@lucasmail.org>
 
    * pjl_check_compile_flag.m4: Removed inappropriate AC_REQUIRE.
