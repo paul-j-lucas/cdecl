@@ -167,11 +167,6 @@ then
   COLOR_XPASS=$COLOR_RED
 fi
 
-case $EXPECT_FAILURE in
-yes) EXPECT_FAILURE=1 ;;
-  *) EXPECT_FAILURE=0 ;;
-esac
-
 [ -n "$TMPDIR" ] || TMPDIR=/tmp
 trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
