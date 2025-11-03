@@ -1,5 +1,11 @@
+2025-11-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * run_test.sh: Eliminated EXPECT_FAILURE -- not used.
+   * c_ast_check.c: Added NODISCARD static.
+
 2025-11-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * run_test.sh: Argument processing clean-up; added --collect-skipped-logs.
    * configure.ac, share/man/man1/cdecl.1, c_ast_check.c, c_type.c, c_type.h,
      gibberish.c, parser.y, explain-error.out, explain-error.test: When in
      east-const mode, _Atomic is now also printed east. _Atomic void parameters
