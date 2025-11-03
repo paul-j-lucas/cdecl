@@ -3194,7 +3194,8 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
  * @param op_id The ID of the c_operator to check.
  * @return Returns `true` only of \a op_id is one of said operators.
  */
-bool c_op_is_new_delete( c_op_id_t op_id ) {
+NODISCARD
+static bool c_op_is_new_delete( c_op_id_t op_id ) {
   switch ( op_id ) {
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
