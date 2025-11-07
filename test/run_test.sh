@@ -171,6 +171,7 @@ TEST=$1
 [ "$TRS_FILE"  ] || usage "required --trs-file not given"
 [ $# -ge 1     ] || usage "required test-file not given"
 
+assert_path_exists "$TEST"
 TEST_NAME=$(local_basename "$TEST_NAME")
 
 ########## Initialize #########################################################
@@ -203,7 +204,6 @@ trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
 DATA_DIR="$srcdir/data"
 EXPECTED_DIR="$srcdir/expected"
-DIFF_FILE="$TMPDIR/cdecl_diff_$$_"
 
 ##
 # Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
@@ -228,9 +228,10 @@ run_cdecl_test() {
   ACTUAL_EXIT=$?
   if [ "$ACTUAL_EXIT" -eq "$EXPECTED_EXIT" ]
   then
+    DIFF_FILE="$TMPDIR/cdecl_diff_$$_"
     if diff -u "$EXPECTED_OUTPUT" "$LOG_FILE" > "$DIFF_FILE"
     then pass
-    else fail; cp "$DIFF_FILE" "$LOG_FILE"
+    else fail; mv "$DIFF_FILE" "$LOG_FILE"
     fi
   else
     case "$ACTUAL_EXIT" in
@@ -250,7 +251,6 @@ run_script_test() {
 # Ensure cdecl knows it's being tested.
 export CDECL_TEST=true
 
-assert_path_exists "$TEST"
 case "$TEST" in
 *.exp)  run_script_test ;;
 *.test) run_cdecl_test ;;
