@@ -1,3 +1,8 @@
+2025-11-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * run_test.sh: Moved CDECL_TEST.
+   * run_test.sh: More robust argument checking.
+
 2025-11-03  Paul J. Lucas <paul@lucasmail.org>
 
    * run_test.sh: Eliminated EXPECT_FAILURE -- not used.
