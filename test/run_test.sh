@@ -30,8 +30,26 @@ error() {
   exit $exit_status
 }
 
-assert_exists() {
-  [ -e "$1" ] || error 66 $1: file not found
+assert_opt_is_yes_no() {
+  assert_opt_not_empty "$1" "$2"
+  case "$2" in
+  yes|no)
+    ;;
+  *)
+    error 64 "\"$2\": invalid argument; must be either \"yes\" or \"no\""
+    ;;
+  esac
+}
+
+assert_opt_not_empty() {
+  case "x$2" in
+  x|x--*)
+    error 64 "$1 requires an argument" ;;
+  esac
+}
+
+assert_path_exists() {
+  [ -e "$1" ] || error 66 "$1: file not found"
 }
 
 local_basename() {
@@ -103,27 +121,34 @@ while [ $# -gt 0 ]
 do
   case $1 in
   --collect-skipped-logs)
+    assert_opt_is_yes_no "$1" "$2"
     COLLECT_SKIPPED_LOGS=$2; shift
     ;;
   --color-tests)
+    assert_opt_is_yes_no "$1" "$2"
     COLOR_TESTS=$2; shift
     ;;
   --enable-hard-errors)
+    assert_opt_is_yes_no "$1" "$2"
     ENABLE_HARD_ERRORS=$2; shift
     ;;
   --expect-failure)
+    assert_opt_is_yes_no "$1" "$2"
     EXPECT_FAILURE=$2; shift
     ;;
   --help)
     usage
     ;;
   --log-file)
+    assert_opt_not_empty "$1" "$2"
     LOG_FILE=$2; shift
     ;;
   --test-name)
+    assert_opt_not_empty "$1" "$2"
     TEST_NAME=$2; shift
     ;;
   --trs-file)
+    assert_opt_not_empty "$1" "$2"
     TRS_FILE=$2; shift
     ;;
   --)
@@ -200,7 +225,7 @@ ulimit -c 0
 
 run_cdecl_test() {
   EXPECTED_OUTPUT="$EXPECTED_DIR/$(echo $TEST_NAME | sed s/test$/out/)"
-  assert_exists "$EXPECTED_OUTPUT"
+  assert_path_exists "$EXPECTED_OUTPUT"
 
   # Dot-execute the test so we get its value of EXPECTED_EXIT.
   . $TEST > $LOG_FILE 2>&1
@@ -227,7 +252,7 @@ run_script_test() {
   fi
 }
 
-assert_exists "$TEST"
+assert_path_exists "$TEST"
 case "$TEST" in
 *.exp)  run_script_test ;;
 *.test) run_cdecl_test ;;
