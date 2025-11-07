@@ -206,11 +206,6 @@ EXPECTED_DIR="$srcdir/expected"
 DIFF_FILE="$TMPDIR/cdecl_diff_$$_"
 
 ##
-# Ensure cdecl knows it's being tested.
-##
-export CDECL_TEST=true
-
-##
 # Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
 ##
 PATH=$BUILD_SRC:$PATH
@@ -251,6 +246,9 @@ run_script_test() {
   else fail
   fi
 }
+
+# Ensure cdecl knows it's being tested.
+export CDECL_TEST=true
 
 assert_path_exists "$TEST"
 case "$TEST" in
