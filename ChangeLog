@@ -1,5 +1,6 @@
 2025-11-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * run_test.sh: Better quoting.
    * run_test.sh: Moved CDECL_TEST.
    * run_test.sh: More robust argument checking.
 
