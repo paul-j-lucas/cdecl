@@ -327,16 +327,6 @@ void fputsp_s( char const *s, FILE *out ) {
     FPRINTF( out, " %s", s );
 }
 
-uint32_t ls_bit1_32( uint32_t n ) {
-  if ( n != 0 ) {
-    for ( uint32_t b = 1; b != 0; b <<= 1 ) {
-      if ( (n & b) != 0 )
-        return b;
-    } // for
-  }
-  return 0;                             // LCOV_EXCL_LINE
-}
-
 uint32_t ms_bit1_32( uint32_t n ) {
   if ( n != 0 ) {
     for ( uint32_t b = 0x80000000u; b != 0; b >>= 1 ) {
@@ -524,6 +514,7 @@ extern inline bool is_1_bit_only_in_set( uint64_t, uint64_t );
 extern inline bool is_1n_bit_only_in_set( uint64_t, uint64_t );
 extern inline bool is_ident( char );
 extern inline bool is_ident_first( char );
+extern inline uint32_t ls_bit1_32( uint32_t );
 extern inline char const* null_if_empty( char const* );
 extern inline size_t round_up_pow_2( size_t, size_t );
 extern inline bool str_is_empty( char const* );

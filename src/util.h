@@ -1452,7 +1452,9 @@ inline bool is_ident_first( char c ) {
  * @sa ms_bit1_32()
  */
 NODISCARD
-uint32_t ls_bit1_32( uint32_t n );
+inline uint32_t ls_bit1_32( uint32_t n ) {
+  return n & -n;
+}
 
 /**
  * Gets the value of the most significant bit that's a 1 in \a n.
