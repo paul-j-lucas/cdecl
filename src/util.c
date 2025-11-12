@@ -268,6 +268,11 @@ void fput_list( FILE *out, void const *elt,
   } // for
 }
 
+void fput_sep( char const *sep, bool *sep_flag, FILE *fout ) {
+  if ( true_or_set( sep_flag ) )
+    FPUTS( sep, fout );
+}
+
 void fputs_quoted( char const *s, char quote, FILE *fout ) {
   assert( quote == '\'' || quote == '"' );
   assert( fout != NULL );
@@ -520,6 +525,5 @@ extern inline size_t round_up_pow_2( size_t, size_t );
 extern inline bool str_is_empty( char const* );
 extern inline bool true_or_set( bool* );
 extern inline bool true_clear( bool* );
-extern inline void fput_sep( char const*, bool*, FILE* );
 
 /* vim:set et sw=2 ts=2: */

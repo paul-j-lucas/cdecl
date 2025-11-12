@@ -1722,10 +1722,7 @@ inline bool true_clear( bool *flag ) {
  * sets it to `true`.  The flag should be `false` initially.
  * @param fout The `FILE` to print to.
  */
-inline void fput_sep( char const *sep, bool *sep_flag, FILE *fout ) {
-  if ( true_or_set( sep_flag ) )
-    FPUTS( sep, fout );
-}
+void fput_sep( char const *sep, bool *sep_flag, FILE *fout );
 
 #ifndef NDEBUG
 /**
