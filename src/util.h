@@ -1268,6 +1268,16 @@ void fput_list( FILE *out, void const *elt,
                 char const* (*gets)( void const **ppelt ) );
 
 /**
+ * Possibly prints the list separator \a sep based on \a sep_flag.
+ *
+ * @param sep The separator to print.
+ * @param sep_flag If `true`, prints \a sep; if `false`, prints nothing, but
+ * sets it to `true`.  The flag should be `false` initially.
+ * @param fout The `FILE` to print to.
+ */
+void fput_sep( char const *sep, bool *sep_flag, FILE *fout );
+
+/**
  * Prints \a s as a quoted string with escaped characters.
  *
  * @param s The string to put.  If NULL, prints `null` (unquoted).
@@ -1713,16 +1723,6 @@ NODISCARD
 inline bool true_clear( bool *flag ) {
   return *flag && !(*flag = false);
 }
-
-/**
- * Possibly prints the list separator \a sep based on \a sep_flag.
- *
- * @param sep The separator to print.
- * @param sep_flag If `true`, prints \a sep; if `false`, prints nothing, but
- * sets it to `true`.  The flag should be `false` initially.
- * @param fout The `FILE` to print to.
- */
-void fput_sep( char const *sep, bool *sep_flag, FILE *fout );
 
 #ifndef NDEBUG
 /**
