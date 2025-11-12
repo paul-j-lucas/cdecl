@@ -1,5 +1,6 @@
 2025-11-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * lcovrc, share/man/man1/cdecl.1: Eliminated EX_UNAVAILABLE.
    * util.c, util.h: Moved fput_sep out-of-line.
    * util.c, util.h: Now using n & -n for least-significant bit.
 
