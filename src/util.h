@@ -79,7 +79,7 @@
  * @sa https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
  */
 #define ARGS_IS_EMPTY(...)                                                  \
-  ARGS_IS_EMPTY_HELPER(                                                     \
+  ARGS_IS_EMPTY_CASES(                                                      \
     /*  Case 1: argument with a comma,                                      \
         e.g. "ARG1, ARG2", "ARG1, ...", or ",". */                          \
     ARGS_HAS_COMMA( __VA_ARGS__ ),                                          \
@@ -98,9 +98,9 @@
   )
 
 /// @cond DOXYGEN_IGNORE
-#define ARGS_IS_EMPTY_COMMA(...)  ,
-#define ARGS_IS_EMPTY_HELPER(_1,_2,_3,_4) \
+#define ARGS_IS_EMPTY_CASES(_1,_2,_3,_4) \
   ARGS_HAS_COMMA( NAME5( ARGS_IS_EMPTY_RESULT_, _1, _2, _3, _4 ) )
+#define ARGS_IS_EMPTY_COMMA(...)  ,
 #define ARGS_IS_EMPTY_RESULT_0001 ,
 #define NAME5(A,B,C,D,E)          NAME5_HELPER( A, B, C, D, E )
 #define NAME5_HELPER(A,B,C,D,E)   A ## B ## C ## D ## E
