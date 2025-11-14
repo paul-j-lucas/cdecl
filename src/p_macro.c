@@ -143,21 +143,17 @@
  */
 enum mex_rv {
   /**
-   * Either:
+   * Macro was _not_ expanded because:
    *
    *  1. A token can not be expanded, so treat it as ordinary text; or:
    *  2. An entire expansion pass can not be performed, so skip it; or if it
-   *     already started, abort it and pretend it didn't happen.
+   *     already started, abort it and pretend it didn't happen; or:
+   *  3. An expansion pass was completed, but no tokens from from \ref
+   *     mex_state::replace_list "replace_list" were expanded onto \ref
+   *     mex_state::expand_list "expand_list", i.e., the latter is an exact
+   *     copy of the former.
    */
-  MEX_CAN_NOT_EXPAND,
-
-  /**
-   * An expansion pass was completed, but no tokens from from \ref
-   * mex_state::replace_list "replace_list" were expanded onto \ref
-   * mex_state::expand_list "expand_list", i.e., the latter is an exact copy of
-   * the former.
-   */
-  MEX_DID_NOT_EXPAND,
+  MEX_NOT_EXPANDED,
 
   /**
    * Macro was expanded, that is at least one token from \ref
@@ -1111,7 +1107,7 @@ static bool mex_expand_all_fns( mex_state_t *mex,
                                 mex_expand_all_fn_t const fns[static 1] ) {
   assert( mex != NULL );
 
-  mex_rv_t prev_rv = MEX_DID_NOT_EXPAND;
+  mex_rv_t prev_rv = MEX_NOT_EXPANDED;
 
   //
   // Perform the given expansion functions, if any, once.
@@ -1131,11 +1127,10 @@ static bool mex_expand_all_fns( mex_state_t *mex,
       NULL
     };
     switch ( mex_expand_all_fns_impl( mex, EXPAND_FNS, &prev_rv ) ) {
-      case MEX_CAN_NOT_EXPAND:
-      case MEX_DID_NOT_EXPAND:
-        return true;
       case MEX_EXPANDED:
         break;
+      case MEX_NOT_EXPANDED:
+        return true;
       case MEX_ERROR:
         return false;
     } // switch
@@ -1161,7 +1156,7 @@ static mex_rv_t mex_expand_all_fns_impl( mex_state_t *mex,
   assert( mex != NULL );
   assert( prev_rv != NULL );
 
-  mex_rv_t rv = MEX_CAN_NOT_EXPAND;
+  mex_rv_t rv = MEX_NOT_EXPANDED;
 
   for ( unsigned i = 0; fns[i] != NULL; ++i ) {
     if ( *prev_rv == MEX_EXPANDED ) {
@@ -1187,14 +1182,13 @@ static mex_rv_t mex_expand_all_fns_impl( mex_state_t *mex,
     *prev_rv = (*fns[i])( mex );
 
     switch ( *prev_rv ) {
-      case MEX_CAN_NOT_EXPAND:
-      case MEX_DID_NOT_EXPAND:
-        break;
       case MEX_EXPANDED:
         if ( !mex->expand_opt_no_trim_tokens )
           p_token_list_trim( mex->expand_list );
         mex_relocate_expand_list( mex );
         mex_print_macro( mex, mex->expand_list );
+        break;
+      case MEX_NOT_EXPANDED:
         break;
       case MEX_ERROR:
         return MEX_ERROR;
@@ -1233,14 +1227,14 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
     }
 
     identifier_token->ident.ineligible = true;
-    return MEX_CAN_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
   }
 
   if ( !p_macro_check_params( mex->macro ) )
-    return MEX_CAN_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
 
   if ( mex->arg_list == NULL && p_macro_is_func_like( mex->macro ) )
-    return MEX_CAN_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
 
   strbuf_t const *const mes_key = mex_expanding_set_key( mex );
   rb_insert_rv_t const rv_rbi =
@@ -1251,7 +1245,7 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
       "recursive macro \"%s\" will not expand\n",
       mex->macro->name
     );
-    return MEX_CAN_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
   }
 
   mex_print_macro( mex, mex->replace_list );
@@ -1344,9 +1338,9 @@ static mex_rv_t mex_expand_all_concat( mex_state_t *mex ) {
   assert( mex != NULL );
 
   if ( !OPT_LANG_IS( P_CONCAT ) )
-    return MEX_CAN_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
 
-  mex_rv_t rv = MEX_DID_NOT_EXPAND;
+  mex_rv_t rv = MEX_NOT_EXPANDED;
 
   FOREACH_SLIST_NODE( token_node, mex->replace_list ) {
     p_token_t const *const token = token_node->data;
@@ -1414,18 +1408,17 @@ NODISCARD
 static mex_rv_t mex_expand_all_macros( mex_state_t *mex ) {
   assert( mex != NULL );
 
-  mex_rv_t rv = MEX_DID_NOT_EXPAND;
+  mex_rv_t rv = MEX_NOT_EXPANDED;
 
   FOREACH_SLIST_NODE( token_node, mex->replace_list ) {
     p_token_t const *const token = token_node->data;
     if ( token->kind == P_IDENTIFIER ) {
       switch ( mex_expand_identifier( mex, &token_node ) ) {
-        case MEX_CAN_NOT_EXPAND:
-        case MEX_DID_NOT_EXPAND:
-          break;
         case MEX_EXPANDED:
           rv = MEX_EXPANDED;
           continue;
+        case MEX_NOT_EXPANDED:
+          break;
         case MEX_ERROR:
           return MEX_ERROR;
       } // switch
@@ -1448,9 +1441,9 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
   assert( mex != NULL );
 
   if ( mex->arg_list == NULL || !p_macro_is_func_like( mex->macro ) )
-    return MEX_DID_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
 
-  mex_rv_t rv = MEX_DID_NOT_EXPAND;
+  mex_rv_t rv = MEX_NOT_EXPANDED;
 
   //
   // Keep track of parameters we've expanded so we neither do redundant work of
@@ -1593,9 +1586,9 @@ static mex_rv_t mex_expand_all_stringify( mex_state_t *mex ) {
   assert( mex != NULL );
 
   if ( !OPT_LANG_IS( P_STRINGIFY ) )
-    return MEX_CAN_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
 
-  mex_rv_t rv = MEX_DID_NOT_EXPAND;
+  mex_rv_t rv = MEX_NOT_EXPANDED;
 
   FOREACH_SLIST_NODE( token_node, mex->replace_list ) {
     p_token_t *const token = token_node->data;
@@ -1626,10 +1619,10 @@ static mex_rv_t mex_expand_all___VA_ARGS__( mex_state_t *mex ) {
   assert( mex != NULL );
 
   if ( !OPT_LANG_IS( VARIADIC_MACROS ) )
-    return MEX_CAN_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
 
   bool expanded___VA_ARGS__ = false;
-  mex_rv_t rv = MEX_DID_NOT_EXPAND;
+  mex_rv_t rv = MEX_NOT_EXPANDED;
 
   p_token_list_t expanded_va_args_token_list;
   slist_init( &expanded_va_args_token_list );
@@ -1677,9 +1670,9 @@ static mex_rv_t mex_expand_all___VA_OPT__( mex_state_t *mex ) {
   assert( mex != NULL );
 
   if ( !OPT_LANG_IS( P___VA_OPT__ ) )
-    return MEX_CAN_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
 
-  mex_rv_t rv = MEX_DID_NOT_EXPAND;
+  mex_rv_t rv = MEX_NOT_EXPANDED;
 
   FOREACH_SLIST_NODE( token_node, mex->replace_list ) {
     p_token_t const *const token = token_node->data;
@@ -1716,12 +1709,12 @@ static mex_rv_t mex_expand_identifier( mex_state_t *mex,
   assert( identifier_token->kind == P_IDENTIFIER );
 
   if ( identifier_token->ident.ineligible )
-    return MEX_CAN_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
 
   p_macro_t const *const found_macro =
     p_macro_find( identifier_token->ident.name );
   if ( found_macro == NULL )            // identifier is not a macro
-    return MEX_CAN_NOT_EXPAND;
+    return MEX_NOT_EXPANDED;
 
   p_arg_list_t arg_list;
   slist_init( &arg_list );
@@ -1756,8 +1749,7 @@ static mex_rv_t mex_expand_identifier( mex_state_t *mex,
           push_back_dup_tokens( mex->expand_list, macro_mex.expand_list )
         );
         break;
-      case MEX_CAN_NOT_EXPAND:
-      case MEX_DID_NOT_EXPAND:
+      case MEX_NOT_EXPANDED:
       case MEX_ERROR:
         break;
     } // switch
