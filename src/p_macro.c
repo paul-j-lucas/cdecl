@@ -2996,7 +2996,7 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
 
   //
   // Instruct print_error() and print_warning() _not_ to print the input line
-  // before printing '^' since we need to print the macro expansion lines
+  // before printing ^ since we need to print the macro expansion lines
   // ourselves.
   //
   print_params.opt_no_print_input_line = true;
