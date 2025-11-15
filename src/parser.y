@@ -112,7 +112,7 @@
  * message); otherwise `false` (and does nothing).
  */
 #define c_sname_is_type(SNAME,LOC) \
-  fl_c_sname_is_type( __FILE__, __LINE__, (SNAME), (LOC) )
+  l_c_sname_is_type( __LINE__, (SNAME), (LOC) )
 
 /**
  * @defgroup parser-group Parser
@@ -573,6 +573,9 @@ struct in_attr {
 typedef struct in_attr in_attr_t;
 
 // local functions
+NODISCARD
+static bool l_c_sname_is_type( int, c_sname_t const*, c_loc_t const* );
+
 PJL_PRINTF_LIKE_FUNC(3)
 static void l_elaborate_error( int, dym_kind_t, char const*, ... );
 
@@ -864,45 +867,6 @@ static bool define_type( c_ast_t const *type_ast, decl_flags_t decl_flags ) {
 }
 
 /**
- * Checks whether \a sname is a type.
- *
- * @param file The name of the file where this function was called from.
- * @param line The line number within \a file where this function was called
- * from.
- * @param sname The scoped name to check.
- * @param loc The location of \a sname.
- * @return Returns `true` only if \a sname is a type (and prints an error
- * message); otherwise `false` (and does nothing).
- */
-NODISCARD
-static bool fl_c_sname_is_type( char const *file, int line,
-                                c_sname_t const *sname, c_loc_t const *loc ) {
-  assert( sname != NULL );
-  assert( loc != NULL );
-
-  c_typedef_t const *const tdef = c_typedef_find_sname( sname );
-  if ( tdef == NULL )
-    return false;
-
-  if ( tdef->is_predefined ) {
-    fl_print_error( file, line, loc,
-      "\"%s\" is a predefined type starting in %s\n",
-      c_sname_gibberish( sname ),
-      c_lang_name( c_lang_oldest( tdef->lang_ids ) )
-    );
-  } else {
-    fl_print_error( file, line, loc,
-      "\"%s\": previously declared as type \"",
-      c_sname_gibberish( sname )
-    );
-    print_type_ast( tdef, stderr );
-    EPUTS( "\"\n" );
-  }
-
-  return true;
-}
-
-/**
  * Cleans-up all resources used by \ref in_attr "inherited attributes".
  */
 static void ia_cleanup( void ) {
@@ -1072,6 +1036,44 @@ static bool l_c_ast_is_name_error( int line, c_ast_t const *ast ) {
 
   assert( !c_sname_empty( &ast->sname ) );
   fl_print_error_unknown_name( __FILE__, line, &ast->loc, &ast->sname );
+  return true;
+}
+
+/**
+ * Checks whether \a sname is a type.
+ *
+ * @param line The line number within \a file where this function was called
+ * from.
+ * @param sname The scoped name to check.
+ * @param loc The location of \a sname.
+ * @return Returns `true` only if \a sname is a type (and prints an error
+ * message); otherwise `false` (and does nothing).
+ */
+NODISCARD
+static bool l_c_sname_is_type( int line, c_sname_t const *sname,
+                               c_loc_t const *loc ) {
+  assert( sname != NULL );
+  assert( loc != NULL );
+
+  c_typedef_t const *const tdef = c_typedef_find_sname( sname );
+  if ( tdef == NULL )
+    return false;
+
+  if ( tdef->is_predefined ) {
+    fl_print_error( __FILE__, line, loc,
+      "\"%s\" is a predefined type starting in %s\n",
+      c_sname_gibberish( sname ),
+      c_lang_name( c_lang_oldest( tdef->lang_ids ) )
+    );
+  } else {
+    fl_print_error( __FILE__, line, loc,
+      "\"%s\": previously declared as type \"",
+      c_sname_gibberish( sname )
+    );
+    print_type_ast( tdef, stderr );
+    EPUTS( "\"\n" );
+  }
+
   return true;
 }
 
