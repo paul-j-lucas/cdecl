@@ -1,3 +1,8 @@
+2025-11-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: s/ARGS_HAS_COMMA_HELPER/ARG_11/
+   * parser.y: s/fl_c_sname_is_type/l_c_sname_is_type/
+
 2025-11-14  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c: Combined MEX_CAN_NOT_EXPAND and MEX_DID_NOT_EXPAND into
