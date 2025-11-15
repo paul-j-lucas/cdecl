@@ -1171,9 +1171,6 @@ stdio.h: stdio.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) 
 	$(AM_V_at)mv $@-t3 $@
 MOSTLYCLEANFILES += stdio.h stdio.h-t1 stdio.h-t2 stdio.h-t3
 
-if GL_COND_OBJ_STDIO_CONSOLESAFE
-libgnu_a_SOURCES += stdio-consolesafe.c
-endif
 if GL_COND_OBJ_STDIO_READ
 libgnu_a_SOURCES += stdio-read.c
 endif
@@ -1184,6 +1181,14 @@ endif
 EXTRA_DIST += stdio.in.h
 
 ## end   gnulib module stdio-h
+
+## begin gnulib module stdio-windows
+
+if GL_COND_OBJ_STDIO_CONSOLESAFE
+libgnu_a_SOURCES += stdio-consolesafe.c
+endif
+
+## end   gnulib module stdio-windows
 
 ## begin gnulib module stdlib-h
 
