@@ -30,6 +30,7 @@ EXTRA_DIST =	bootstrap \
 		Doxyfile \
 		lcovrc \
 		m4/gnulib-cache.m4 \
+		m4/update_m4.sh \
 		makedoc.sh \
 		README-2.5.txt \
 		README-blocks.txt \
