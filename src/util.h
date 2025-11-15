@@ -63,10 +63,10 @@
  * @return Returns `0` for 0 or 1 argument, or `1` for 2 or more arguments.
  */
 #define ARGS_HAS_COMMA(...) \
-  ARGS_HAS_COMMA_HELPER( __VA_ARGS__, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+  ARG_11( __VA_ARGS__, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 
 /// @cond DOXYGEN_IGNORE
-#define ARGS_HAS_COMMA_HELPER(_0,_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,...) _10
+#define ARG_11(_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11,...) _11
 /// @endcond
 
 /**
