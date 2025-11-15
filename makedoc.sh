@@ -1,6 +1,5 @@
 #! /usr/bin/env bash
 ##
-#       cdecl -- C gibberish translator
 #       makedoc.sh
 #
 #       Copyright (C) 2021-2025  Paul J. Lucas
