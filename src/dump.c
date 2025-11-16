@@ -30,6 +30,7 @@
 #include "c_ast_util.h"
 #include "c_operator.h"
 #include "c_type.h"
+#include "cdecl.h"
 #include "english.h"
 #include "gibberish.h"
 #include "literals.h"
@@ -61,8 +62,8 @@
 #define DUMP_LOC(DUMP,KEY,LOC) BLOCK( \
   DUMP_KEY( (DUMP), KEY ": " ); c_loc_dump( (LOC), (DUMP)->fout ); )
 
-#define DUMP_PRINTF(DUMP,...) BLOCK(                      \
-  FPUTNSP( (DUMP)->indent * DUMP_INDENT, (DUMP)->fout );  \
+#define DUMP_PRINTF(DUMP,...) BLOCK(                            \
+  FPUTNSP( (DUMP)->indent * CDECL_DUMP_INDENT, (DUMP)->fout );  \
   FPRINTF( (DUMP)->fout, __VA_ARGS__ ); )
 
 #define DUMP_SNAME(DUMP,KEY,SNAME) BLOCK( \
@@ -103,9 +104,6 @@ static json_state_t json_object_begin( json_state_t, char const*,
 static void json_object_end( json_state_t, dump_state_t* );
 static void p_param_list_dump_impl( p_param_list_t const*, dump_state_t* );
 static void p_token_list_dump_impl( p_token_list_t const*, dump_state_t* );
-
-// local constants
-static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
 
 ////////// local functions ////////////////////////////////////////////////////
 

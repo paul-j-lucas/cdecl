@@ -62,6 +62,11 @@
 #define CDECL_COPYRIGHT_YEAR      "2025"
 
 /**
+ * Spaces per dump indent level.
+ */
+#define CDECL_DUMP_INDENT         2
+
+/**
  * **cdecl** license.
  *
  * @sa #CDECL_LICENSE_URL

@@ -59,7 +59,7 @@
  * @sa #DUMP_START()
  */
 #define DUMP_END() \
-  FPRINTF( dump.fout, "\n%*s}\n", STATIC_CAST( int, dump.indent * DUMP_INDENT ), "" )
+  FPRINTF( dump.fout, "\n%*s}\n", STATIC_CAST( int, dump.indent * CDECL_DUMP_INDENT ), "" )
 
 /**
  * Possibly dumps a comma and a newline followed by the `printf()` arguments
@@ -67,9 +67,9 @@
  *
  * @param ... The `printf()` arguments.
  */
-#define DUMP_KEY(...) BLOCK(                        \
-  fput_sep( ",\n", &dump.comma, dump.fout );        \
-  FPUTNSP( dump.indent * DUMP_INDENT, dump.fout );  \
+#define DUMP_KEY(...) BLOCK(                              \
+  fput_sep( ",\n", &dump.comma, dump.fout );              \
+  FPUTNSP( dump.indent * CDECL_DUMP_INDENT, dump.fout );  \
   FPRINTF( dump.fout, "  " __VA_ARGS__ ); )
 
 /**
@@ -77,8 +77,8 @@
  *
  * @param ... The `printf()` arguments.
  */
-#define DUMP_PRINTF(...) BLOCK(                     \
-  FPUTNSP( dump.indent * DUMP_INDENT, dump.fout );  \
+#define DUMP_PRINTF(...) BLOCK(                           \
+  FPUTNSP( dump.indent * CDECL_DUMP_INDENT, dump.fout );  \
   FPRINTF( dump.fout, __VA_ARGS__ ); )
 
 /**
@@ -412,11 +412,10 @@ static void             set_substituted( p_token_node_t* );
 static void             va_args_mex_print_macro( mex_state_t* );
 
 // local constants
-static char const     ARROW[] = "=>";   ///< Separates macro name from tokens.
-static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
+static char const ARROW[] = "=>";       ///< Separates macro name from tokens.
 
 // local variables
-static rb_tree_t      macro_set;        ///< Global set of macros.
+static rb_tree_t  macro_set;            ///< Global set of macros.
 
 ////////// inline functions ///////////////////////////////////////////////////
 
