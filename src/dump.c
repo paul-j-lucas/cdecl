@@ -54,16 +54,16 @@
 #define DUMP_BOOL(DUMP,KEY,BOOL) BLOCK( \
   DUMP_KEY( (DUMP), KEY ": " ); bool_dump( (BOOL), (DUMP)->fout ); )
 
-#define DUMP_FORMAT(DUMP,...) BLOCK(                      \
-  FPUTNSP( (DUMP)->indent * DUMP_INDENT, (DUMP)->fout );  \
-  FPRINTF( (DUMP)->fout, __VA_ARGS__ ); )
-
 #define DUMP_KEY(DUMP,...) BLOCK(                   \
   fput_sep( ",\n", &(DUMP)->comma, (DUMP)->fout );  \
-  DUMP_FORMAT( (DUMP), __VA_ARGS__ ); )
+  DUMP_PRINTF( (DUMP), __VA_ARGS__ ); )
 
 #define DUMP_LOC(DUMP,KEY,LOC) BLOCK( \
   DUMP_KEY( (DUMP), KEY ": " ); c_loc_dump( (LOC), (DUMP)->fout ); )
+
+#define DUMP_PRINTF(DUMP,...) BLOCK(                      \
+  FPUTNSP( (DUMP)->indent * DUMP_INDENT, (DUMP)->fout );  \
+  FPRINTF( (DUMP)->fout, __VA_ARGS__ ); )
 
 #define DUMP_SNAME(DUMP,KEY,SNAME) BLOCK( \
   DUMP_KEY( (DUMP), KEY ": " ); c_sname_dump( (SNAME), (DUMP)->fout ); )
@@ -395,7 +395,7 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list,
   } // for
 
   FPUTC( '\n', dump->fout );
-  DUMP_FORMAT( dump, "]" );
+  DUMP_PRINTF( dump, "]" );
 }
 
 /**
@@ -551,7 +551,7 @@ static void json_object_end( json_state_t json, dump_state_t *dump ) {
   FPUTC( '\n', dump->fout );
   dump->comma = (json & JSON_COMMA) != 0;
   --dump->indent;
-  DUMP_FORMAT( dump, "}" );
+  DUMP_PRINTF( dump, "}" );
 }
 
 /**
@@ -582,7 +582,7 @@ static void p_arg_list_dump_impl( p_arg_list_t const *list,
   } // for
 
   FPUTC( '\n', dump->fout );
-  DUMP_FORMAT( dump, "]" );
+  DUMP_PRINTF( dump, "]" );
 }
 
 /**
@@ -690,7 +690,7 @@ static void p_param_list_dump_impl( p_param_list_t const *list,
   } // for
 
   FPUTC( '\n', dump->fout );
-  DUMP_FORMAT( dump, "]" );
+  DUMP_PRINTF( dump, "]" );
 }
 
 /**
@@ -718,7 +718,7 @@ static void p_token_list_dump_impl( p_token_list_t const *list,
     p_token_dump_impl( node->data, &list_dump );
 
   FPUTC( '\n', dump->fout );
-  DUMP_FORMAT( dump, "]" );
+  DUMP_PRINTF( dump, "]" );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
