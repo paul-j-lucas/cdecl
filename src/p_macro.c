@@ -77,8 +77,8 @@
  *
  * @param ... The `printf()` arguments.
  */
-#define DUMP_PRINTF(...) BLOCK(           \
-  FPUTNSP( dump.indent * 2, dump.fout );  \
+#define DUMP_PRINTF(...) BLOCK(                     \
+  FPUTNSP( dump.indent * DUMP_INDENT, dump.fout );  \
   FPRINTF( dump.fout, __VA_ARGS__ ); )
 
 /**
