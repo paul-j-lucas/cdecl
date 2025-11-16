@@ -1,5 +1,16 @@
+2025-11-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.h, dump.c, p_macro.c: Added CDECL_DUMP_INDENT.
+   * p_macro.c: s/2/DUMP_INDENT/
+   * p_macro.c: Added DUMP_PRINTF.
+   * dump.c: s/DUMP_FORMAT/DUMP_PRINTF/
+   * parser.y: s/DUMP_KEY_IMPL/DUMP_KEY/
+   * parser.y: Now using dump_state.
+
 2025-11-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * Makefile.am: Added update_m4.sh to EXTRA_DIST.
+   * update_m4.sh: New script.
    * util.h: s/ARGS_HAS_COMMA_HELPER/ARG_11/
    * parser.y: s/fl_c_sname_is_type/l_c_sname_is_type/
 
