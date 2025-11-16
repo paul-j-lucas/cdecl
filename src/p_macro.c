@@ -67,10 +67,9 @@
  *
  * @param ... The `printf()` arguments.
  */
-#define DUMP_KEY(...) BLOCK(                              \
-  fput_sep( ",\n", &dump.comma, dump.fout );              \
-  FPUTNSP( dump.indent * CDECL_DUMP_INDENT, dump.fout );  \
-  FPRINTF( dump.fout, "  " __VA_ARGS__ ); )
+#define DUMP_KEY(...) BLOCK(                  \
+  fput_sep( ",\n", &dump.comma, dump.fout );  \
+  DUMP_PRINTF( "  " __VA_ARGS__ ); )
 
 /**
  * Indents the current number of spaces and prints the given arguments.
