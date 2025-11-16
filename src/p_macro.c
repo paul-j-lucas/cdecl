@@ -73,6 +73,15 @@
   FPRINTF( dump.fout, "  " __VA_ARGS__ ); )
 
 /**
+ * Indents the current number of spaces and prints the given arguments.
+ *
+ * @param ... The `printf()` arguments.
+ */
+#define DUMP_PRINTF(...) BLOCK(           \
+  FPUTNSP( dump.indent * 2, dump.fout );  \
+  FPRINTF( dump.fout, __VA_ARGS__ ); )
+
+/**
  * Starts a dump block.
  *
  * @param INDENT The indentation to use.
@@ -85,7 +94,7 @@
 #define DUMP_START(INDENT,FOUT)         \
   dump_state_t dump;                    \
   dump_init( &dump, (INDENT), (FOUT) ); \
-  FPRINTF( dump.fout, "%*s{\n", STATIC_CAST( int, dump.indent * DUMP_INDENT ), "" )
+  DUMP_PRINTF( "{\n" )
 
 /**
  * Dumps a C string.
