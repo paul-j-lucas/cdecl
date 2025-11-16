@@ -302,7 +302,7 @@
  * @param ALIGN The \ref c_alignas to dump.
  */
 #define DUMP_ALIGN(KEY,ALIGN) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); c_alignas_dump( &(ALIGN), stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); c_alignas_dump( &(ALIGN), dump.fout ); )
 
 /**
  * Dumps an AST.
@@ -314,7 +314,7 @@
  * @sa #DUMP_AST_PAIR()
  */
 #define DUMP_AST(KEY,AST) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); c_ast_dump( (AST), stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); c_ast_dump( (AST), dump.fout ); )
 
 /**
  * Dumps an s_list of AST.
@@ -326,7 +326,7 @@
  * @sa #DUMP_AST_PAIR()
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); c_ast_list_dump( &(AST_LIST), stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); c_ast_list_dump( &(AST_LIST), dump.fout ); )
 
 /**
  * Dump a \ref c_ast_pair.
@@ -337,7 +337,7 @@
  * @sa #DUMP_AST()
  */
 #define DUMP_AST_PAIR(KEY,ASTP) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); c_ast_pair_dump( &(ASTP), stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); c_ast_pair_dump( &(ASTP), dump.fout ); )
 
 /**
  * Dumps a `bool`.
@@ -346,14 +346,15 @@
  * @param BOOL The `bool` to dump.
  */
 #define DUMP_BOOL(KEY,BOOL)  IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); bool_dump( (BOOL), stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); bool_dump( (BOOL), dump.fout ); )
 
 /**
  * Ends a dump block.
  *
  * @sa #DUMP_START()
  */
-#define DUMP_END()                IF_CDECL_DEBUG( PUTS( "\n}\n\n" ); )
+#define DUMP_END() \
+  IF_CDECL_DEBUG( FPUTS( "\n}\n\n", dump.fout ); )
 
 /**
  * Possibly dumps a comma and a newline followed by the `printf()` arguments
@@ -363,9 +364,9 @@
  *
  * @warning This _must_ only be called inside #IF_CDECL_DEBUG().
  */
-#define DUMP_KEY_IMPL(...) BLOCK(         \
-  fput_sep( ",\n", &dump_comma, stdout ); \
-  PRINTF( "  " __VA_ARGS__ ); )
+#define DUMP_KEY_IMPL(...) BLOCK(             \
+  fput_sep( ",\n", &dump.comma, dump.fout );  \
+  FPRINTF( dump.fout, "  " __VA_ARGS__ ); )
 
 /**
  * Dumps an integer.
@@ -385,7 +386,7 @@
  * @param MACRO The \ref p_macro to dump.
  */
 #define DUMP_MACRO(KEY,MACRO) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); p_macro_dump( (MACRO), stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); p_macro_dump( (MACRO), dump.fout ); )
 
 /**
  * Dumps a list of macro arguments.
@@ -393,10 +394,10 @@
  * @param KEY The key name to print.
  * @param ARG_LIST The list of arguments to dump.
  */
-#define DUMP_MACRO_ARG_LIST(KEY,ARG_LIST) IF_CDECL_DEBUG( \
-  if ( (ARG_LIST) != NULL ) {                             \
-    DUMP_KEY_IMPL( KEY ": " );                            \
-    p_arg_list_dump( (ARG_LIST), /*indent=*/1, stdout );  \
+#define DUMP_MACRO_ARG_LIST(KEY,ARG_LIST) IF_CDECL_DEBUG(       \
+  if ( (ARG_LIST) != NULL ) {                                   \
+    DUMP_KEY_IMPL( KEY ": " );                                  \
+    p_arg_list_dump( (ARG_LIST), dump.indent + 1, dump.fout );  \
   } )
 
 /**
@@ -405,10 +406,10 @@
  * @param KEY The key name to print.
  * @param PARAM_LIST The list of \ref p_param to dump.
  */
-#define DUMP_MACRO_PARAM_LIST(KEY,PARAM_LIST) IF_CDECL_DEBUG( \
-  if ( (PARAM_LIST) != NULL ) {                               \
-    DUMP_KEY_IMPL( KEY ": " );                                \
-    p_param_list_dump( (PARAM_LIST), /*indent=*/1, stdout );  \
+#define DUMP_MACRO_PARAM_LIST(KEY,PARAM_LIST) IF_CDECL_DEBUG(       \
+  if ( (PARAM_LIST) != NULL ) {                                     \
+    DUMP_KEY_IMPL( KEY ": " );                                      \
+    p_param_list_dump( (PARAM_LIST), dump.indent + 1, dump.fout );  \
   } )
 
 /**
@@ -417,10 +418,10 @@
  * @param KEY The key name to print.
  * @param TOKEN_LIST The list of \ref p_token to dump.
  */
-#define DUMP_MACRO_TOKEN_LIST(KEY,TOKEN_LIST) IF_CDECL_DEBUG( \
-  if ( (TOKEN_LIST) != NULL ) {                               \
-    DUMP_KEY_IMPL( KEY ": " );                                \
-    p_token_list_dump( (TOKEN_LIST), /*indent=*/1, stdout );  \
+#define DUMP_MACRO_TOKEN_LIST(KEY,TOKEN_LIST) IF_CDECL_DEBUG(       \
+  if ( (TOKEN_LIST) != NULL ) {                                     \
+    DUMP_KEY_IMPL( KEY ": " );                                      \
+    p_token_list_dump( (TOKEN_LIST), dump.indent + 1, dump.fout );  \
   } )
 
 /**
@@ -447,8 +448,9 @@
  *
  * @sa #DUMP_END()
  */
-#define DUMP_START(NAME,RULE) \
-  bool dump_comma = false;    \
+#define DUMP_START(NAME,RULE)     \
+  dump_state_t dump;              \
+  dump_init( &dump, 0, stdout );  \
   IF_CDECL_DEBUG( PUTS( "{\n  rule: {\n    lhs: \"" NAME "\",\n    rhs: \"" RULE "\"\n  },\n" ); )
 
 /**
@@ -461,7 +463,7 @@
  * @sa #DUMP_STR()
  */
 #define DUMP_SNAME(KEY,SNAME) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); c_sname_dump( &(SNAME), stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); c_sname_dump( &(SNAME), dump.fout ); )
 
 /**
  * Dumps a list of scoped names.
@@ -472,7 +474,7 @@
  * @sa #DUMP_SNAME()
  */
 #define DUMP_SNAME_LIST(KEY,LIST) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); c_sname_list_dump( &(LIST), stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); c_sname_list_dump( &(LIST), dump.fout ); )
 
 /**
  * Dumps a C string.
@@ -484,7 +486,7 @@
  * @sa #DUMP_SNAME()
  */
 #define DUMP_STR(KEY,STR) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); fputs_quoted( (STR), '"', stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); fputs_quoted( (STR), '"', dump.fout ); )
 
 /**
  * Dumps a \ref c_tid_t.
@@ -495,7 +497,7 @@
  * @sa #DUMP_TYPE()
  */
 #define DUMP_TID(KEY,TID) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); c_tid_dump( (TID), stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); c_tid_dump( (TID), dump.fout ); )
 
 /**
  * Dumps a \ref c_type.
@@ -506,7 +508,7 @@
  * @sa #DUMP_TID()
  */
 #define DUMP_TYPE(KEY,TYPE) IF_CDECL_DEBUG( \
-  DUMP_KEY_IMPL( KEY ": " ); c_type_dump( &(TYPE), stdout ); )
+  DUMP_KEY_IMPL( KEY ": " ); c_type_dump( &(TYPE), dump.fout ); )
 
 /** @} */
 
