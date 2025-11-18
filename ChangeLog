@@ -1,3 +1,9 @@
+2025-11-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_dym.c: prep_all() now takes did_you_mean_t*.
+   * cdecl_dym.c: Removed uncessary declaration.
+   * did_you_mean.c: dym_cleanup_all now does nothing on NULL.
+
 2025-11-16  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.h, dump.c, p_macro.c: Added CDECL_DUMP_INDENT.
