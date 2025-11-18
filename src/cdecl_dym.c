@@ -97,11 +97,11 @@ static size_t prep_all( dym_kind_t, did_you_mean_t** ),
  * @param dym A pointer to a \ref did_you_mean to clean-up.
  */
 static void dym_cleanup( did_you_mean_t const *dym ) {
-  if ( dym != NULL ) {
-    bool const free_known = POINTER_CAST( bool, dym->user_data );
-    if ( free_known )
-      FREE( dym->known );
-  }
+  if ( dym == NULL )
+    return;
+  bool const free_known = POINTER_CAST( bool, dym->user_data );
+  if ( free_known )
+    FREE( dym->known );
 }
 
 /**
