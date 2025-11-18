@@ -195,10 +195,8 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *const prompts[],
       fin, is_interactive ? prompts[ is_cont_line ] : NULL, &line_len
     );
 
-    if ( line == NULL ) {
-      FERROR( fin );
+    if ( line == NULL )
       return false;
-    }
 
     is_cont_line = is_continued_line( line, &line_len );
     if ( is_cont_line && pline_no != NULL )
