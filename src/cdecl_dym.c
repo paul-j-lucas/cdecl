@@ -135,14 +135,15 @@ static bool is_similar_enough( did_you_mean_t const *dym ) {
  * did_you_mean::known "known" of every element to a suggestion.
  *
  * @param kinds The bitwise-or of the kind(s) of things possibly meant.
- * @param pdym If NULL, determines the number of candidate suggestions; if non-
+ * @param dym If NULL, determines the number of candidate suggestions; if non-
  * NULL, sets \ref did_you_mean::known "known" of every element to a
  * suggestion.
  * @return If \a pdym is NULL, returns the number of suggestions; otherwise the
  * return value is unspecified.
  */
 PJL_DISCARD
-static size_t prep_all( dym_kind_t kinds, did_you_mean_t **pdym ) {
+static size_t prep_all( dym_kind_t kinds, did_you_mean_t *dym ) {
+  did_you_mean_t **pdym = dym != NULL ? &dym : NULL;
   return  ((kinds & DYM_COMMANDS) != DYM_NONE ?
             prep_commands( pdym ) : 0)
 
@@ -454,8 +455,7 @@ did_you_mean_t const* cdecl_dym_new( dym_kind_t kinds, char const *unknown ) {
   did_you_mean_t *const dym_array =
     calloc( dym_size + 1, sizeof( did_you_mean_t ) );
 
-  did_you_mean_t *dym = dym_array;
-  prep_all( kinds, &dym );
+  prep_all( kinds, dym_array );
 
   return dym_calc( unknown, dym_array, &is_similar_enough, &dym_cleanup ) ?
     dym_array : NULL;
