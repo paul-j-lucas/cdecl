@@ -75,8 +75,7 @@ static double const SIMILAR_ENOUGH_PERCENT = .37;
 
 // local functions
 PJL_DISCARD
-static size_t prep_all( dym_kind_t, did_you_mean_t** ),
-              prep_c_keywords( did_you_mean_t**, c_tpid_t ),
+static size_t prep_c_keywords( did_you_mean_t**, c_tpid_t ),
               prep_cdecl_keywords( did_you_mean_t** ),
               prep_commands( did_you_mean_t** ),
               prep_cli_options( did_you_mean_t** ),
