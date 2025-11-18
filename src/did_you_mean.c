@@ -58,8 +58,7 @@
  */
 static void dym_cleanup_all( did_you_mean_t const *dym,
                              dym_cleanup_fn_t cleanup_fn ) {
-  assert( dym != NULL );
-  if ( cleanup_fn == NULL )
+  if ( dym == NULL || cleanup_fn == NULL )
     return;
   while ( dym->known != NULL )
     (*cleanup_fn)( dym++ );
