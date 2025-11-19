@@ -3559,26 +3559,28 @@ show_command
 
   | Y_show show_which_opt[show] glob_opt[name] show_format_opt[format]
     {
-      bool const showed_any = show_types( $show, $name, $format, stdout );
-      if ( $name != NULL && !showed_any ) {
+      bool const ok = show_types( $show, $name, $format, stdout ) ||
+                      $name == NULL;
+      if ( !ok ) {
         print_error( &@name, "\"%s\": no such type or macro defined", $name );
         print_suggestions( DYM_C_MACROS | DYM_C_TYPES, $name );
         EPUTC( '\n' );
       }
       free( $name );
-      PARSE_ASSERT( showed_any );
+      PARSE_ASSERT( ok );
     }
 
   | Y_show show_which_opt[show] glob_opt[name] Y_as show_format_exp[format]
     {
-      bool const showed_any = show_types( $show, $name, $format, stdout );
-      if ( $name != NULL && !showed_any ) {
+      bool const ok = show_types( $show, $name, $format, stdout ) ||
+                      $name == NULL;
+      if ( !ok ) {
         print_error( &@name, "\"%s\": no such type or macro defined", $name );
         print_suggestions( DYM_C_MACROS | DYM_C_TYPES, $name );
         EPUTC( '\n' );
       }
       free( $name );
-      PARSE_ASSERT( showed_any );
+      PARSE_ASSERT( ok );
     }
 
   | Y_show show_which_opt[show] Y_macros
