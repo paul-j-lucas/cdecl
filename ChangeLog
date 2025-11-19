@@ -1,5 +1,7 @@
 2025-11-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Changed status when showing types to always be OK when $name ==
+     NULL.
    * parser.y: Added apparently missing "$name != NULL &&".
    * configure.ac: Reset version to 18.6.
 
