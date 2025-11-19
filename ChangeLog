@@ -1,5 +1,12 @@
+2025-11-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added apparently missing "$name != NULL &&".
+   * configure.ac: Reset version to 18.6.
+
 2025-11-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * read_line.c: Removed call to FERROR.
+   * lexer.l: Now checking ferror().
    * cdecl_dym.c: prep_all() now takes did_you_mean_t*.
    * cdecl_dym.c: Removed uncessary declaration.
    * did_you_mean.c: dym_cleanup_all now does nothing on NULL.
