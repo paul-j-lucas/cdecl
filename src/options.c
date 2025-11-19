@@ -68,7 +68,7 @@ bool                opt_prompt = true;
 bool                opt_read_config = true;
 bool                opt_semicolon = true;
 bool                opt_trailing_ret;
-bool                opt_typedefs = true;
+typedefs_t          opt_typedefs = TYPEDEFS_ALL;
 bool                opt_using = true;
 c_ast_kind_t        opt_west_decl_kinds = K_ANY_FUNCTION_RETURN;
 

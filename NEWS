@@ -16,6 +16,11 @@ with their complete changes, see the AUTHORS file.
 "Did you mean" suggestions now include all that are "similar enough," not only
 those that have the same Damerau-Levenshtein distance as the best suggestion.
 
+** `--no-typedefs`, `-t` option, twice
+Specifying the `-t` option twice now suppresses predefining _all_ types, even
+those normally required.  (This is a debugging aid for developers of `cdecl`
+itself.  Certain results willl be incorrect.)
+
 ** East-const `_Atomic`
 When in east-`const` mode, `_Atomic` is now also printed east.
 

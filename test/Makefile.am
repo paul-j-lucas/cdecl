@@ -107,6 +107,8 @@ TESTS+=	tests/include-empty_path.test \
 
 # Show tests
 TESTS+=	tests/show.test \
+	tests/show-t.test \
+	tests/show-tt.test \
 	tests/show-error.test
 
 # Embedded C tests

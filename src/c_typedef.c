@@ -1189,7 +1189,7 @@ void c_typedefs_init( void ) {
 
   c_lang_id_t const orig_lang_id = opt_lang_id;
 
-  if ( opt_typedefs ) {
+  if ( opt_typedefs == TYPEDEFS_ALL ) {
     //
     // Temporarily switch to the latest supported version of C so all keywords
     // will be available.
@@ -1235,7 +1235,7 @@ void c_typedefs_init( void ) {
   //
   opt_lang_id = LANG_CPP_NEW;
 
-  if ( opt_typedefs ) {
+  if ( opt_typedefs == TYPEDEFS_ALL ) {
     predef_lang_ids = LANG_MIN(CPP_OLD);
     parse_predef_types( PREDEFINED_STD_CPP );
 
@@ -1255,9 +1255,11 @@ void c_typedefs_init( void ) {
     parse_predef_types( PREDEFINED_STD_CPP_26 );
   }
 
-  predef_lang_ids = LANG_MIN(CPP_20);
-  parse_predef_types( PREDEFINED_STD_CPP_20_REQUIRED );
-  predef_lang_ids = LANG_NONE;
+  if ( opt_typedefs != TYPEDEFS_NONE ) {
+    predef_lang_ids = LANG_MIN(CPP_20);
+    parse_predef_types( PREDEFINED_STD_CPP_20_REQUIRED );
+    predef_lang_ids = LANG_NONE;
+  }
 
 #ifdef ENABLE_BISON_DEBUG
   opt_bison_debug = orig_bison_debug;

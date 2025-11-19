@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "November 11, 2025" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "November 19, 2025" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -624,13 +624,19 @@ Suppresses printing of the prompt.
 Suppresses printing of a final semicolon for C (and C++) declarations.
 .TP
 .BR \-\-no-typedefs " | " \-t
-Suppresses predefining standard types,
+Suppresses predefining all but required standard types,
 e.g.,
 \f(CWsize_t\fP,
 \f(CWuint8_t\fP,
 etc.
 (See
 .BR "PREDEFINED TYPES" .)
+If given twice,
+suppresses all standard types.
+(This is a debugging aid for developers of
+.B cdecl
+itself.
+Certain results willl be incorrect.)
 .TP
 .BR \-\-no-using " | " \-u
 Always declares types with \f(CWtypedef\fP

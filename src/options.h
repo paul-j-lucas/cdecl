@@ -98,7 +98,7 @@ extern bool         opt_prompt;         ///< Print the prompt?
 extern bool         opt_read_config;    ///< Read configuration file?
 extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?
 extern bool         opt_trailing_ret;   ///< Print trailing return type?
-extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s?
+extern typedefs_t   opt_typedefs;       ///< Which `typedef`s to predefine.
 extern bool         opt_using;          ///< Print `using` in C++11 and later?
 
 /// Kinds to print `*` and `&` "west" of the space.

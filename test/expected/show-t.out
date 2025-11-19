@@ -1,0 +1,4 @@
+cdecl> show all
+namespace std { struct partial_ordering; }
+namespace std { struct strong_ordering; }
+namespace std { struct weak_ordering; }
