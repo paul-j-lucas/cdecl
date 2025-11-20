@@ -1359,7 +1359,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 char const *d;
                 for ( d = rstr_delim; *d != '\0'; ++d, ++token_column ) {
                   int const c = input();
-                  if ( c == EOF ) {
+                  if ( c == 0 || c == EOF ) {
                     print_error( &yylloc, "unterminated string literal\n" );
                     strbuf_reset( &str_lit_buf );
                     return Y_LEXER_ERROR;
