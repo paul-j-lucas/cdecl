@@ -793,8 +793,8 @@ explain int
            ^
 292,12: error: declaration expected
 explain int
-           ^
-296,12: error: declaration expected
+        ^
+296,9: error: declaration expected
 explain int
            ^
 data/explain-error-5.cdeclrc:5,12: error: declaration expected

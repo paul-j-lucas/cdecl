@@ -50,7 +50,6 @@
 #include "p_macro.h"
 #include "parse.h"
 #include "print.h"
-#include "read_line.h"
 #include "red_black.h"
 #include "slist.h"
 #include "strbuf.h"
@@ -322,28 +321,19 @@ static void lexer_cleanup( void ) {
 NODISCARD
 static yy_size_t lexer_get_input( char *buf, yy_size_t buf_cap ) {
   assert( buf != NULL );
-  yy_size_t input_avail = input_sbuf.len - input_sent;
-  if ( input_avail == 0 ) {
-    strbuf_reset( &input_sbuf );
-    if ( !strbuf_read_line( &input_sbuf, yyin, /*prompts=*/NULL,
-                            &cdecl_is_cont_line, &yylineno ) ) {
-      if ( ferror( yyin ) )
+
+  for (;;) {
+    size_t const bytes_read = fread( buf, 1, buf_cap, yyin );
+    if ( ferror( yyin ) ) {
+      if ( errno != EINTR )
         perror_exit( EX_IOERR );
-      strbuf_reset( &input_sbuf );
+      clearerr( yyin );
+      continue;
     }
-    input_avail = STATIC_CAST( yy_size_t, input_sbuf.len );
-    input_sent = 0;
-  }
-  //
-  // Given that the default buffer capacity (YY_READ_BUF_SIZE) for Flex is
-  // 8192, it's unlikely that this will ever be true and that we'll have to
-  // return the input line in chunks; but might as well code for the case.
-  //
-  if ( unlikely( input_avail > buf_cap ) )
-    input_avail = buf_cap;              // LCOV_EXCL_LINE
-  memcpy( buf, input_sbuf.str + input_sent, input_avail );
-  input_sent += input_avail;
-  return input_avail;
+    strbuf_reset( &input_sbuf );
+    strbuf_putsn( &input_sbuf, buf, bytes_read );
+    return bytes_read;
+  } // for
 }
 
 /**
