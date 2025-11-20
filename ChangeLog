@@ -1,5 +1,6 @@
 2025-11-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Added "c == 0" for lexing comments to avoid infinite loop.
    * share/man/man1/cdecl.1, c_typedef.c, cli_options.c, options.c, options.h,
      types.h, test/Makefile.am, show-t.out, show-tt.out, show-t.test,
      show-tt.test: The -t option can now be specified twice to suppress
