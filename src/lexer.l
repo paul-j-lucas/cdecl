@@ -1496,13 +1496,14 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 <*>{
 
   "/*"        {                         /* ignore C-style comments */
-                for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
+                for ( int c, prev_c = '\0'; ; prev_c = c ) {
+                  c = input();
                   if ( c == EOF ) {
                     print_error( &yylloc, "unterminated comment\n" );
                     return Y_LEXER_ERROR;
                   }
                   ++token_column;
-                  if ( c == '/' && prev == '*' )
+                  if ( c == '/' && prev_c == '*' )
                     break;
                   if ( c == '\n' )
                     newline();
