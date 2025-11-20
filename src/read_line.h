@@ -33,9 +33,22 @@
 
 // standard
 #include <stdbool.h>
+#include <stddef.h>                     /* for size_t */
 #include <stdio.h>                      /* for FILE */
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Checks whether \a s is a "continued line," that is a line that typically
+ * ends with a `\`.
+ *
+ * @param s The string to check.
+ * @param ps_len A pointer to the length of \a s.  If \a s is a continued line,
+ * then on return, this must be decremented by the number of characters
+ * comprising the continuation sequence.
+ * @return Returns `true` only if \a s is a continued line.
+ */
+typedef bool (*sbrl_is_cont_line_fn_t)( char const *s, size_t *ps_len );
 
 /**
  * Reads a line from \a fin, perhaps interactively with editing and
@@ -64,13 +77,15 @@
  * @param prompts A pointer to a 2-element array of prompts to use: the primary
  * prompt and the secondary prompt for continuation lines (lines after ones
  * ending with `\`).  If NULL, does not read interactively.
+ * @param is_cont_line_fn A pointer to the \ref sbrl_is_cont_line_fn_t function
+ * to use.
  * @param pline_no A pointer to the current line number within a file that will
  * be incremented for every `\`-newline encountered. May be NULL.
  * @return Returns `false` only if encountered EOF.
  */
 NODISCARD
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *const prompts[],
-                       int *pline_no );
+                       sbrl_is_cont_line_fn_t is_cont_line_fn, int *pline_no );
 
 ///////////////////////////////////////////////////////////////////////////////
 

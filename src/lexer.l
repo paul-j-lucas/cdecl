@@ -48,6 +48,7 @@
 #include "options.h"
 #include "p_keyword.h"
 #include "p_macro.h"
+#include "parse.h"
 #include "print.h"
 #include "read_line.h"
 #include "red_black.h"
@@ -324,7 +325,8 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_cap ) {
   yy_size_t input_avail = input_sbuf.len - input_sent;
   if ( input_avail == 0 ) {
     strbuf_reset( &input_sbuf );
-    if ( !strbuf_read_line( &input_sbuf, yyin, /*prompts=*/NULL, &yylineno ) ) {
+    if ( !strbuf_read_line( &input_sbuf, yyin, /*prompts=*/NULL,
+                            &cdecl_is_cont_line, &yylineno ) ) {
       if ( ferror( yyin ) )
         perror_exit( EX_IOERR );
       strbuf_reset( &input_sbuf );

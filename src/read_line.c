@@ -54,8 +54,6 @@
 
 /// @endcond
 
-#define TRI_BS  "?\?/"                  /**< Trigraph <code>"\\"</code>. */
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -90,36 +88,6 @@ static char const* getline_wrapper( FILE *fin, char const *prompt,
   strn_rtrim( line, pline_len );
 
   return line;
-}
-
-/**
- * Checks whether \a s is a "continued line," that is a line that ends with a
- * `\` or `??/` (the trigraph sequence for `\`).
- *
- * @param s The string to check.
- * @param ps_len A pointer to the length of \a s.  If \a s is a continued line,
- * this is decremented by the number of characters comprising the continuation
- * sequence.
- * @return Returns `true` only if \a s is a continued line.
- */
-NODISCARD
-static bool is_continued_line( char const *s, size_t *ps_len ) {
-  assert( s != NULL );
-  assert( ps_len != NULL );
-
-  if ( *ps_len >= 1 ) {
-    if ( s[ *ps_len - 1 ] == '\\' ) {
-      --*ps_len;
-      return true;
-    }
-    if ( *ps_len >= STRLITLEN( TRI_BS ) &&
-         STRNCMPLIT( s + *ps_len - STRLITLEN( TRI_BS ), TRI_BS ) == 0 ) {
-      *ps_len -= STRLITLEN( TRI_BS );
-      return true;
-    }
-  }
-
-  return false;
 }
 
 #ifdef WITH_READLINE
@@ -181,10 +149,11 @@ static char const* read_line( FILE *fin, char const *prompt,
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *const prompts[],
-                       int *pline_no ) {
+                       sbrl_is_cont_line_fn_t is_cont_line_fn, int *pline_no ) {
   assert( sbuf != NULL );
   assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
+  assert( is_cont_line_fn != NULL );
 
   bool const is_interactive = isatty( fileno( fin ) ) && prompts != NULL;
   bool is_cont_line = false;
@@ -198,7 +167,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *const prompts[],
     if ( line == NULL )
       return false;
 
-    is_cont_line = is_continued_line( line, &line_len );
+    is_cont_line = (*is_cont_line_fn)( line, &line_len );
     if ( is_cont_line && pline_no != NULL )
       ++*pline_no;
 

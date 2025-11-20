@@ -58,6 +58,8 @@
  * @{
  */
 
+#define TRI_BS  "?\?/"                  /**< Trigraph <code>"\\"</code>. */
+
 // local functions
 NODISCARD
 static int cdecl_parse_stdin( void );
@@ -177,7 +179,8 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
 
   yylineno = 1;                         // reset before reading any file
 
-  while ( strbuf_read_line( &sbuf, fin, cdecl_prompt, &yylineno ) ) {
+  while ( strbuf_read_line( &sbuf, fin, cdecl_prompt, &cdecl_is_cont_line,
+                            &yylineno ) ) {
     // We don't just call yyrestart( fin ) and yyparse() directly because
     // cdecl_parse_string() may also insert a command for opt_infer_command.
     status = cdecl_parse_string( sbuf.str, sbuf.len );
@@ -229,6 +232,27 @@ static int cdecl_parse_stdin( void ) {
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+bool cdecl_is_cont_line( char const *s, size_t *ps_len ) {
+  assert( s != NULL );
+  assert( ps_len != NULL );
+
+  static size_t const TRI_BS_LEN = STRLITLEN( TRI_BS );
+
+  if ( *ps_len >= 1 ) {
+    if ( s[ *ps_len - 1 ] == '\\' ) {
+      --*ps_len;
+      return true;
+    }
+    if ( *ps_len >= TRI_BS_LEN &&
+         STRNCMPLIT( s + *ps_len - TRI_BS_LEN, TRI_BS ) == 0 ) {
+      *ps_len -= TRI_BS_LEN;
+      return true;
+    }
+  }
+
+  return false;
+}
 
 int cdecl_parse_cli( size_t cli_count,
                      char const *const cli_value[cli_count] ) {
