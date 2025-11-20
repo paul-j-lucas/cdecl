@@ -1,3 +1,8 @@
+2025-11-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, parse.c, parse.h, read_line.c, read_line.h: Added
+     cdecl_is_cont_line().
+
 2025-11-19  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: Added "c == 0" for lexing comments to avoid infinite loop.
