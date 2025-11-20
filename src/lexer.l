@@ -1498,7 +1498,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   "/*"        {                         /* ignore C-style comments */
                 for ( int c, prev_c = '\0'; ; prev_c = c ) {
                   c = input();
-                  if ( c == EOF ) {
+                  if ( c == 0 || c == EOF ) {
                     print_error( &yylloc, "unterminated comment\n" );
                     return Y_LEXER_ERROR;
                   }
