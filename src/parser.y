@@ -2001,6 +2001,7 @@ command
   | typedef_command semi_or_end
   | using_command semi_or_end
   | semi_or_end                         // allows for blank lines
+  | Y_LEXER_ERROR                 { PARSE_ABORT(); }
   | error
     {
       if ( printable_yytext() != NULL )
