@@ -7553,10 +7553,7 @@ gnu_attribute_arg_c
   | Y_INT_LIT
   | Y_STR_LIT                     { free( $1 ); }
   | '(' gnu_attribute_arg_list_c rparen_exp
-  | Y_LEXER_ERROR
-    {
-      PARSE_ABORT();
-    }
+  | Y_LEXER_ERROR                 { PARSE_ABORT(); }
   ;
 
 msc_attribute_specifier_list_c
