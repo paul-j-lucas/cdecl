@@ -47,19 +47,6 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Checks whether \a s is a "continued line," that is a line that ends with a
- * `\` or `??/` (the trigraph sequence for `\`).
- *
- * @param s The string to check.
- * @param ps_len A pointer to the length of \a s.  If \a s is a continued line,
- * this is decremented by the number of characters comprising the continuation
- * sequence.
- * @return Returns `true` only if \a s is a continued line.
- */
-NODISCARD
-bool cdecl_is_cont_line( char const *s, size_t *ps_len );
-
-/**
  * Parses the command-line.
  *
  * @param cli_count The size of \a cli_value.

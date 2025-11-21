@@ -92,6 +92,38 @@ static inline bool is_cdecl( void ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Checks whether \a s is a "continued line," that is a line that ends with a
+ * `\` or `??/` (the trigraph sequence for `\`).
+ *
+ * @param s The string to check.
+ * @param ps_len A pointer to the length of \a s.  If \a s is a continued line,
+ * this is decremented by the number of characters comprising the continuation
+ * sequence.
+ * @return Returns `true` only if \a s is a continued line.
+ */
+NODISCARD
+static bool cdecl_is_cont_line( char const *s, size_t *ps_len ) {
+  assert( s != NULL );
+  assert( ps_len != NULL );
+
+  static size_t const TRI_BS_LEN = STRLITLEN( TRI_BS );
+
+  if ( *ps_len >= 1 ) {
+    if ( s[ *ps_len - 1 ] == '\\' ) {
+      --*ps_len;
+      return true;
+    }
+    if ( *ps_len >= TRI_BS_LEN &&
+         STRNCMPLIT( s + *ps_len - TRI_BS_LEN, TRI_BS ) == 0 ) {
+      *ps_len -= TRI_BS_LEN;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * Checks whether we should infer a command based on \a s.
  *
  * @param s The string to check.
@@ -232,27 +264,6 @@ static int cdecl_parse_stdin( void ) {
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
-
-bool cdecl_is_cont_line( char const *s, size_t *ps_len ) {
-  assert( s != NULL );
-  assert( ps_len != NULL );
-
-  static size_t const TRI_BS_LEN = STRLITLEN( TRI_BS );
-
-  if ( *ps_len >= 1 ) {
-    if ( s[ *ps_len - 1 ] == '\\' ) {
-      --*ps_len;
-      return true;
-    }
-    if ( *ps_len >= TRI_BS_LEN &&
-         STRNCMPLIT( s + *ps_len - TRI_BS_LEN, TRI_BS ) == 0 ) {
-      *ps_len -= TRI_BS_LEN;
-      return true;
-    }
-  }
-
-  return false;
-}
 
 int cdecl_parse_cli( size_t cli_count,
                      char const *const cli_value[cli_count] ) {
