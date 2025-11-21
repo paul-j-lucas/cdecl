@@ -1,5 +1,6 @@
 2025-11-20  Paul J. Lucas <paul@lucasmail.org>
 
+   * parse.c, parse.h: Made cdecl_is_cont_line static.
    * lexer.l: Added "c == 0 ||" to match code for comments.
    * lexer.l, command_line-error.out, explain-error.out: Now using simple fread
      rather than calling strbuf_read_line.
