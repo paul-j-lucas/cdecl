@@ -70,7 +70,7 @@ static char const* getline_wrapper( FILE *fin, char const *prompt,
   assert( fin != NULL );
   assert( pline_len != NULL );
 
-  if ( prompt != NULL ) {
+  if ( prompt != NULL && prompt[0] != '\0' ) {
     PUTS( prompt );
     FFLUSH( stdout );
   }
