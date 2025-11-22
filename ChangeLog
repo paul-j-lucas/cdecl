@@ -1,3 +1,7 @@
+2025-11-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * read_line.c: Added check for empty string.
+
 2025-11-21  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Eliminated "unexpected end of command" after lexer error.
