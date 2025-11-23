@@ -409,7 +409,6 @@ _GL_CXXALIASWARN1 (memchr, void const *,
 _GL_CXXALIASWARN (memchr);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef memchr
 /* Assume memchr is always declared.  */
 _GL_WARN_ON_USE (memchr, "memchr has platform-specific bugs - "
                  "use gnulib module memchr for portability" );
@@ -674,7 +673,6 @@ _GL_WARN_ON_USE (stpncpy, "stpncpy is unportable - "
 #if defined GNULIB_POSIXCHECK
 /* strchr() does not work with multibyte strings if the locale encoding is
    GB18030 and the character to be searched is a digit.  */
-# undef strchr
 /* Assume strchr is always declared.  */
 _GL_WARN_ON_USE_CXX (strchr,
                      const char *, char *, (const char *, int),
@@ -981,7 +979,6 @@ _GL_CXXALIASWARN (strpbrk);
    Even in this simple case, it does not work with multibyte strings if the
    locale encoding is GB18030 and one of the characters to be searched is a
    digit.  */
-#  undef strpbrk
 _GL_WARN_ON_USE_CXX (strpbrk,
                      const char *, char *, (const char *, const char *),
                      "strpbrk cannot work correctly on character strings "
@@ -1011,7 +1008,6 @@ _GL_WARN_ON_USE (strspn, "strspn cannot work correctly on character strings "
 #if defined GNULIB_POSIXCHECK
 /* strrchr() does not work with multibyte strings if the locale encoding is
    GB18030 and the character to be searched is a digit.  */
-# undef strrchr
 /* Assume strrchr is always declared.  */
 _GL_WARN_ON_USE_CXX (strrchr,
                      const char *, char *, (const char *, int),

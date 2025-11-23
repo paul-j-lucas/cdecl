@@ -224,9 +224,9 @@ _GL_INLINE_HEADER_BEGIN
 
 /* Declarations for ISO C N3322.  */
 #if defined __GNUC__ && __GNUC__ >= 15 && !defined __clang__
-_GL_EXTERN_C void *bsearch (const void *__key,
-                            const void *__base, size_t __nmemb, size_t __size,
-                            int (*__compare) (const void *, const void *))
+_GL_EXTERN_C void *_GL_FUNCDECL_SYS_NAME (bsearch)
+  (const void *__key, const void *__base, size_t __nmemb, size_t __size,
+   int (*__compare) (const void *, const void *))
   _GL_ATTRIBUTE_NONNULL_IF_NONZERO (2, 3) _GL_ARG_NONNULL ((5));
 _GL_EXTERN_C void qsort (void *__base, size_t __nmemb, size_t __size,
                          int (*__compare) (const void *, const void *))
