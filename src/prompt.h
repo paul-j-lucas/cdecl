@@ -30,6 +30,7 @@
 #include "pjl_config.h"                 /* must go first */
 
 // standard
+#include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 
 /**
@@ -37,20 +38,6 @@
  * Global variables and functions for the prompt.
  * @{
  */
-
-///////////////////////////////////////////////////////////////////////////////
-
-/**
- * The prompt strings:
- *
- *  + 0 = The primary prompt.
- *  + 1 = The secondary prompt (used for continuation lines).
- *
- * @warning These may contain [Select Graphics Rendition (SGR) color
- * codes](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).  Do _not_ call
- * `strlen()` on them; use cdecl_prompt_len() instead.
- */
-extern char const  *cdecl_prompt[2];
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -60,6 +47,16 @@ extern char const  *cdecl_prompt[2];
  * @sa cdecl_prompt_init()
  */
 void cdecl_prompt_enable( void );
+
+/**
+ * Gets the current prompt.
+ *
+ * @param is_cont_line `true` only if the current line is a "continued line"
+ * from the previous one that ended with a `\`.
+ * @return Returns the string to use as the prompt.
+ */
+NODISCARD
+char const* cdecl_prompt( bool is_cont_line );
 
 /**
  * Initializes the prompt for \ref opt_lang_id.

@@ -1,0 +1,16 @@
+cdecl> explain int f( /**/ void x )
+                           ^
+3,21: error: "void" parameters can not have a name
+cdecl> 
+cdecl> /*
+cdecl* */
+cdecl> #define M1 m1
+cdecl> 
+cdecl> /**
+cdecl*  * This is a Doxygen style comment.
+cdecl*  */
+cdecl> #define M2 m2
+cdecl> 
+cdecl> show macros
+#define M1 m1
+#define M2 m2

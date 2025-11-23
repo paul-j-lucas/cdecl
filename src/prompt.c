@@ -32,6 +32,7 @@
 #include "c_lang.h"
 #include "cdecl.h"
 #include "color.h"
+#include "lexer.h"
 #include "options.h"
 #include "strbuf.h"
 #include "util.h"
@@ -39,6 +40,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
 
@@ -77,16 +79,28 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/// @cond DOXYGEN_IGNORE
-/// Otherwise Doxygen generates two entries.
-
-// extern variable definitions
-char const         *cdecl_prompt[2];
-
-/// @endcond
-
 // local variable definitions
-static strbuf_t     prompt_buf[2];      ///< Buffers for prompts.
+
+/**
+ * The prompt strings:
+ *
+ *  + 0 = The normal prompt.
+ *  + 1 = The "continued line" prompt.
+ *  + 2 = The "in a C comment" prompt.
+ *
+ * @warning These may contain [Select Graphics Rendition (SGR) color
+ * codes](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).  Do _not_ call
+ * `strlen()` on them; use cdecl_prompt_len() instead.
+ * @warning All prompts _must_ be the same length.
+ */
+static strbuf_t     prompt_buf[3];
+
+static char const  *prompt_ptr[3];      ///< Pointers to \ref prompt_buf.
+
+static_assert(
+  ARRAY_SIZE( prompt_buf ) == ARRAY_SIZE( prompt_ptr ),
+  "ARRAY_SIZE( prompt_buf ) != ARRAY_SIZE( prompt_ptr )",
+);
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -110,8 +124,8 @@ static inline bool color_prompt( void ) {
  * @sa cdecl_prompt_init()
  */
 static void prompt_cleanup( void ) {
-  strbuf_cleanup( &prompt_buf[0] );
-  strbuf_cleanup( &prompt_buf[1] );
+  for ( unsigned i = 0; i < ARRAY_SIZE( prompt_buf ); ++i )
+    strbuf_cleanup( &prompt_buf[i] );
 }
 
 /**
@@ -146,20 +160,29 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+char const* cdecl_prompt( bool is_cont_line ) {
+  return lexer_in_c_comment ? prompt_ptr[2] : prompt_ptr[ is_cont_line ];
+}
+
 void cdecl_prompt_enable( void ) {
   if ( opt_prompt ) {
-    cdecl_prompt[0] = prompt_buf[0].str;
-    cdecl_prompt[1] = prompt_buf[1].str;
-  } else {
-    cdecl_prompt[0] = cdecl_prompt[1] = "";
+    for ( unsigned i = 0; i < ARRAY_SIZE( prompt_ptr ); ++i )
+      prompt_ptr[i] = prompt_buf[i].str;
+  }
+  else {
+    for ( unsigned i = 0; i < ARRAY_SIZE( prompt_ptr ); ++i )
+      prompt_ptr[i] = "";
   }
 }
 
 void cdecl_prompt_init( void ) {
   RUN_ONCE ATEXIT( &prompt_cleanup );
 
-  prompt_create( '>', &prompt_buf[0] );
-  prompt_create( '+', &prompt_buf[1] );
+  static char const PROMPT_CHAR[] = ">+*";
+
+  for ( unsigned i = 0; i < ARRAY_SIZE( prompt_ptr ); ++i )
+    prompt_create( PROMPT_CHAR[i], &prompt_buf[i] );
+
   cdecl_prompt_enable();
 }
 

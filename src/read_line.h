@@ -39,8 +39,8 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Checks whether \a s is a "continued line," that is a line that typically
- * ends with a `\`.
+ * The signature for functions passed to strbuf_read_line() that check whether
+ * \a s is a "continued line," that is a line that typically ends with a `\`.
  *
  * @param s The string to check.
  * @param ps_len A pointer to the length of \a s.  If \a s is a continued line,
@@ -51,6 +51,17 @@
 typedef bool (*sbrl_is_cont_line_fn_t)( char const *s, size_t *ps_len );
 
 /**
+ * The signature for functions passed to strbuf_read_line() that get the prompt
+ * to use, if any.
+ *
+ * @param is_cont_line `true` only if the current line is a "continued line"
+ * from the previous one that ended with a `\`.
+ * @return Returns the string to use as the prompt, or either empty or NULL for
+ * none.
+ */
+typedef char const* (*sbrl_prompt_fn_t)( bool is_cont_line );
+
+/**
  * Reads a line from \a fin, perhaps interactively with editing and
  * autocompletion.
  *
@@ -59,7 +70,6 @@ typedef bool (*sbrl_is_cont_line_fn_t)( char const *s, size_t *ps_len );
  * Only if:
  *
  *  + \a fin is connected to a TTY; and:
- *  + \a prompts is non-NULL; and:
  *  + GNU **readline**(3) is compiled in;
  *
  * then reads interactively by:
@@ -74,17 +84,14 @@ typedef bool (*sbrl_is_cont_line_fn_t)( char const *s, size_t *ps_len );
  * @param sbuf The \ref strbuf to use.
  * @param fin The file to read from.  If \a fin is not connected to a TTY, does
  * not read interactively.
- * @param prompts A pointer to a 2-element array of prompts to use: the primary
- * prompt and the secondary prompt for continuation lines (lines after ones
- * ending with `\`).  If NULL, does not read interactively.
- * @param is_cont_line_fn A pointer to the \ref sbrl_is_cont_line_fn_t function
- * to use.
+ * @param prompt_fn The \ref sbrl_prompt_fn_t function to use.
+ * @param is_cont_line_fn The \ref sbrl_is_cont_line_fn_t function to use.
  * @param pline_no A pointer to the current line number within a file that will
  * be incremented for every `\`-newline encountered. May be NULL.
  * @return Returns `false` only if encountered EOF.
  */
 NODISCARD
-bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *const prompts[],
+bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, sbrl_prompt_fn_t prompt_fn,
                        sbrl_is_cont_line_fn_t is_cont_line_fn, int *pline_no );
 
 ///////////////////////////////////////////////////////////////////////////////

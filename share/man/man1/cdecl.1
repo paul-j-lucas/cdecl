@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "November 19, 2025" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "November 23, 2025" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1453,7 +1453,28 @@ changes to either
 or
 .B c++decl+
 to indicate that the current line
-will be a continuation of the previons line.
+will be a continuation
+of the previons line.
+.P
+Both C-style \f(CW/*\fP \f(CW*/\fP comments
+(even those that span multiple lines)
+and C++-style \f(CW//\fP comments
+within commands
+are ignored
+(but see
+.BR "Other Caveats" ).
+If \f(CW/*\fP is entered on a line
+without its closing \f(CW*/\fP on the same line,
+the next prompt
+(if enabled)
+changes to either
+.B cdecl*
+or
+.B c++decl*
+to indicate that the current line
+will be a continuation
+of the comment
+until \f(CW*/\fP is entered.
 .SS English
 In what follows,
 .B []
@@ -3491,6 +3512,15 @@ The C++20 \f(CWexplicit\fP specifier with an expression
 is not supported.
 .SS Other Caveats
 .IP \(bu 3
+Multi-line C-style comments
+can be used only on lines
+by themselves,
+or either before
+or after commands,
+but
+.I not
+within commands.
+.IP \(bu
 Macros are expanded
 .I only
 via the

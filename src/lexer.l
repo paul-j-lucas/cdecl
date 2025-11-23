@@ -100,14 +100,14 @@
  * @sa #BEGIN_RETURN
  */
 #define BEGIN_CALL(STATE) \
-  BLOCK( yy_start_stack_push(); BEGIN( STATE ); )
+  BLOCK( yy_start_stack_push(); lexer_begin( STATE ); )
 
 /**
  * Switch to the previous lexer start-state saved by #BEGIN_CALL().
  *
  * @sa #BEGIN_CALL()
  */
-#define BEGIN_RETURN              BEGIN( yy_start_stack_pop() )
+#define BEGIN_RETURN              lexer_begin( yy_start_stack_pop() )
 
 /**
  * A **cdecl**-specfic version of Flex's `REJECT` that also undoes
@@ -184,6 +184,7 @@ typedef struct include_file_info include_file_info_t;
 
 // extern variables
 lexer_find_kind_t lexer_find = LEXER_FIND_ANY;
+bool              lexer_in_c_comment;
 bool              lexer_is_param_list_decl;
 c_keyword_ctx_t   lexer_keyword_ctx;
 
@@ -237,6 +238,8 @@ static int        yy_start_stack[1];
 static int        yy_start_stack_top = -1;
 
 // local functions
+static void       lexer_begin( int );
+
 _Noreturn
 static void       lexer_fatal( char const* );
 
@@ -691,6 +694,11 @@ hex_flt       {hex_pfx}({hex_frac}|{H}+){bexp}
 flt_lit       -?({dec_flt}|{hex_flt}){flt_sfx}?
 
 /*
+ * For C-style comments.
+ */
+%x X_C_COMMENT
+
+/*
  * For the "expand" command.
  */
 %x X_EXPAND
@@ -816,7 +824,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 //
                 str_lit_loc = yylloc;
                 str_lit_loc.first_column = yylloc.last_column;
-                BEGIN( X_INCLUDE );
+                lexer_begin( X_INCLUDE );
               }
 
               /*
@@ -1076,7 +1084,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                       // but also return a few more that ordinarily aren't
                       // returned to the parser.
                       //
-                      BEGIN( X_EXPAND );
+                      lexer_begin( X_EXPAND );
                     }
                     else if ( cdk->literal == L_set ) {
                       //
@@ -1084,13 +1092,13 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                       // character sequence for the command's options, so we
                       // use an exclusive start state.
                       //
-                      BEGIN( X_SET );
+                      lexer_begin( X_SET );
                     }
                     else if ( cdk->literal == L_show ) {
                       //
                       // For the "show" command, we need to allow globs.
                       //
-                      BEGIN( S_SHOW );
+                      lexer_begin( S_SHOW );
                     }
                     return cdk->y_token_id;
                   }
@@ -1231,7 +1239,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * so Flex will match this rule before that rule.
                */
 ^{S}*"#"      {
-                BEGIN( X_PRE_COMMAND );
+                lexer_begin( X_PRE_COMMAND );
                 return '#';
               }
 
@@ -1240,7 +1248,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                */
 ^{S}*"%:"     {
                 set_digraph( "#" );
-                BEGIN( X_PRE_COMMAND );
+                lexer_begin( X_PRE_COMMAND );
                 return '#';
               }
 
@@ -1249,7 +1257,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                */
 ^{S}*"??="    {
                 set_trigraph( "#" );
-                BEGIN( X_PRE_COMMAND );
+                lexer_begin( X_PRE_COMMAND );
                 return '#';
               }
 
@@ -1470,7 +1478,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 <X_INCLUDE>\" {
                 push_file( str_lit_buf.str, &str_lit_loc );
                 strbuf_reset( &str_lit_buf );
-                BEGIN( INITIAL );
+                lexer_begin( INITIAL );
               }
 
 <X_STR>\"     {
@@ -1487,20 +1495,21 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 
 <*>{
 
-  "/*"        {                         /* ignore C-style comments */
-                for ( int c, prev_c = '\0'; ; prev_c = c ) {
-                  c = input();
-                  if ( c == 0 || c == EOF ) {
-                    print_error( &yylloc, "unterminated comment\n" );
-                    return Y_LEXER_ERROR;
-                  }
-                  ++token_column;
-                  if ( c == '/' && prev_c == '*' )
-                    break;
-                  if ( c == '\n' )
-                    newline();
-                } // for
+  "/*"        { BEGIN_CALL( X_C_COMMENT ); }
+  "//".*      ;                         /* ignore C++-style comments */
 
+} /* <*> */
+
+<X_C_COMMENT>{
+
+  ([^*]|\*+[^/])+ {                    // ignore C-style comment except for */
+                token_column += yyleng;
+              }
+
+  \n          { newline(); }
+
+  "*/"        {
+                BEGIN_RETURN;
                 if ( YY_START == X_PRE_TOKENS ) {
                   //
                   // When lexing tokens for the C preprocessor, comments have
@@ -1517,9 +1526,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 }
               }
 
-  "//".*      ;                         /* ignore C++-style comments */
-
-} /* <*> */
+} /* <X_C_COMMENT> */
 
   /***************************************************************************/
   /*  WHITESPACE                                                             */
@@ -1537,7 +1544,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 
 <*>\n         {
                 newline();
-                BEGIN( INITIAL );
+                lexer_begin( INITIAL );
                 return Y_END;
               }
 
@@ -1567,7 +1574,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   // We can switch to X_PRE_TOKENS now; otherwise we switch
                   // after lexing ')' below.
                   //
-                  BEGIN( X_PRE_TOKENS );
+                  lexer_begin( X_PRE_TOKENS );
                 }
                 return Y_NAME;
               }
@@ -1575,7 +1582,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   "("         |
   ","         { return yytext[0]    ; }
   ")"         {
-                BEGIN( X_PRE_TOKENS );
+                lexer_begin( X_PRE_TOKENS );
                 return ')';
               }
 
@@ -1623,12 +1630,12 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 
   {identifier} {                        // object-like macro
                 yylval.name = check_strdup( yytext );
-                BEGIN( X_PRE_TOKENS );
+                lexer_begin( X_PRE_TOKENS );
                 return Y_NAME;
               }
 
   "("         {
-                BEGIN( X_PRE_TOKENS );
+                lexer_begin( X_PRE_TOKENS );
                 return '(';
               }
 
@@ -1647,7 +1654,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 
   "="         { return yytext[0]; }
   ";"         {
-                BEGIN( INITIAL );
+                lexer_begin( INITIAL );
                 return yytext[0];
               }
 
@@ -1661,7 +1668,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
               }
 
   ";"         {
-                BEGIN( INITIAL );
+                lexer_begin( INITIAL );
                 return yytext[0];
               }
 
@@ -1677,7 +1684,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 
 <*><<EOF>>    {
                 newline();
-                BEGIN( INITIAL );
+                if ( YY_START != X_C_COMMENT )
+                  lexer_begin( INITIAL );
 
                 if ( pop_file() )
                   return Y_END;
@@ -1708,6 +1716,17 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
  * @addtogroup lexer-group
  * @{
  */
+
+/**
+ * Wrapper around the Flex `BEGIN` macro so that we can do additional things
+ * when switching lexer start states.
+ *
+ * @param start The lexer start state to switch to.
+ */
+static void lexer_begin( int start ) {
+  BEGIN( start );
+  lexer_in_c_comment = YY_START == X_C_COMMENT;
+}
 
 // LCOV_EXCL_START
 /**
@@ -1764,7 +1783,7 @@ c_loc_t lexer_loc( void ) {
 void lexer_pop_string( void ) {
   lexer_pop_buffer();
   yylineno_stack_pop();
-  BEGIN( INITIAL );
+  lexer_begin( INITIAL );
 }
 
 void lexer_push_string( char const *s, size_t s_len, c_loc_num_t line_no ) {
@@ -1775,7 +1794,7 @@ void lexer_push_string( char const *s, size_t s_len, c_loc_num_t line_no ) {
   yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
   yylineno_stack_push();
   yylineno = line_no;
-  BEGIN( X_PRE_TOKENS );
+  lexer_begin( X_PRE_TOKENS );
 }
 
 void lexer_reset( bool hard_reset ) {
@@ -1787,7 +1806,10 @@ void lexer_reset( bool hard_reset ) {
     if ( opt_lineno == 0 )
       yylineno = 1;
   }
-  BEGIN( INITIAL );
+  if ( hard_reset || !lexer_in_c_comment ) {
+    lexer_begin( INITIAL );
+    yy_start_stack_top = -1;
+  }
   digraph_warned = trigraph_warned = false;
   strbuf_reset( &input_sbuf );
   input_sent = 0;
@@ -1798,7 +1820,6 @@ void lexer_reset( bool hard_reset ) {
   lexer_keyword_ctx = C_KW_CTX_DEFAULT;
   strbuf_reset( &str_lit_buf );
   yylineno_stack_top = -1;
-  yy_start_stack_top = -1;
 }
 
 char const* printable_yytext( void ) {

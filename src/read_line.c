@@ -148,22 +148,22 @@ static char const* read_line( FILE *fin, char const *prompt,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *const prompts[],
-                       sbrl_is_cont_line_fn_t is_cont_line_fn, int *pline_no ) {
+bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, sbrl_prompt_fn_t prompt_fn,
+                       sbrl_is_cont_line_fn_t is_cont_line_fn,
+                       int *pline_no ) {
   assert( sbuf != NULL );
   assert( fin != NULL );
-  assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
   assert( is_cont_line_fn != NULL );
 
-  bool const is_interactive = isatty( fileno( fin ) ) && prompts != NULL;
+  bool const is_interactive = isatty( fileno( fin ) );
   bool is_cont_line = false;
 
   do {
     size_t line_len;
-    char const *const line = read_line(
-      fin, is_interactive ? prompts[ is_cont_line ] : NULL, &line_len
-    );
+    char const *const prompt = is_interactive && prompt_fn != NULL ?
+      (*prompt_fn)( is_cont_line ) : NULL;
 
+    char const *const line = read_line( fin, prompt, &line_len );
     if ( line == NULL )
       return false;
 

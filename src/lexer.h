@@ -106,6 +106,17 @@ typedef enum lexer_find_kind lexer_find_kind_t;
 extern lexer_find_kind_t  lexer_find;
 
 /**
+ * Set to `true` only when were currently "in" a C-style comment, that is we
+ * encountered <code>/\*</code> but not its closing
+ * <code>\*</code><code>/</code> (yet).
+ *
+ * @remarks Ideally, we'd just be able to check `yy_start` `==` `X_C_COMMENT`,
+ * but the former is declared `static` and the latter is a macro declared in
+ * `lexer.c`.
+ */
+extern bool               lexer_in_c_comment;
+
+/**
  * Lets the lexer know whether we're currently parsing a C/C++ function-like
  * parameter list.
  */

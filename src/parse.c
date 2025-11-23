@@ -211,7 +211,7 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
 
   yylineno = 1;                         // reset before reading any file
 
-  while ( strbuf_read_line( &sbuf, fin, cdecl_prompt, &cdecl_is_cont_line,
+  while ( strbuf_read_line( &sbuf, fin, &cdecl_prompt, &cdecl_is_cont_line,
                             &yylineno ) ) {
     // We don't just call yyrestart( fin ) and yyparse() directly because
     // cdecl_parse_string() may also insert a command for opt_infer_command.
@@ -370,7 +370,8 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     strn_rtrim( print_params.command_line, &echo_len );
     PRINTF(
       "%s%.*s\n",
-      cdecl_prompt[0], STATIC_CAST( int, echo_len ), print_params.command_line
+      cdecl_prompt( false ),
+      STATIC_CAST( int, echo_len ), print_params.command_line
     );
     FFLUSH( stdout );
   }

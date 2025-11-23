@@ -27,6 +27,9 @@ When in east-`const` mode, `_Atomic` is now also printed east.
 ** `_Atomic void` parameters
 Such parameters are now also correctly flagged as illegal.
 
+** Multiline comments
+Multiline C-style comments `/* */` are now supported (mostly).
+
 
 * Changes in Cdecl 18.5.1
 

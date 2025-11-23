@@ -1,0 +1,17 @@
+EXPECTED_EXIT=0
+cdecl -bEL$LINENO <<END
+explain int f( /**/ void x )
+
+/*
+*/
+#define M1 m1
+
+/**
+ * This is a Doxygen style comment.
+ */
+#define M2 m2
+
+show macros
+END
+
+# vim:set syntax=sh et sw=2 ts=2:

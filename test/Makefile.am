@@ -38,6 +38,9 @@ TESTS+= tests/cli_options.test \
 TESTS+=	tests/cast.test \
 	tests/cast-error.test
 
+# C comment tests
+TESTS+=	tests/c-comments.test
+
 # Concept using tests
 TESTS+=	tests/concept.test \
 	tests/concept-error.test
