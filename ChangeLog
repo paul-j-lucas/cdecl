@@ -1,3 +1,10 @@
+2025-11-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1, lexer.h, lexer.l, parse.c, prompt.c, prompt.h,
+     read_line.c, read_line.h, test/Makefile.am, c-comments.out,
+     c-comments.test: Mostly fixed issue #39: Can't parse multi-line /*...*/
+     comments.
+
 2025-11-22  Paul J. Lucas <paul@lucasmail.org>
 
    * read_line.c: Added check for empty string.
