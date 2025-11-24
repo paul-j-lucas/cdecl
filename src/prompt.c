@@ -99,7 +99,7 @@ static char const  *prompt_ptr[3];      ///< Pointers to \ref prompt_buf.
 
 static_assert(
   ARRAY_SIZE( prompt_buf ) == ARRAY_SIZE( prompt_ptr ),
-  "ARRAY_SIZE( prompt_buf ) != ARRAY_SIZE( prompt_ptr )",
+  "ARRAY_SIZE( prompt_buf ) != ARRAY_SIZE( prompt_ptr )"
 );
 
 ////////// inline functions ///////////////////////////////////////////////////
