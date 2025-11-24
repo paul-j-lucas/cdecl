@@ -1,3 +1,8 @@
+2025-11-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, cli_options.c: Fixed initial color prompt.
+   * prompt.c: Removed extraneous ','.
+
 2025-11-23  Paul J. Lucas <paul@lucasmail.org>
 
    * share/man/man1/cdecl.1, lexer.h, lexer.l, parse.c, prompt.c, prompt.h,
