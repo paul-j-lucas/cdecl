@@ -925,7 +925,6 @@ void cli_options_init( int *const pargc, char const *const *pargv[] ) {
   }
 
   parse_options( pargc, pargv );
-  lang_set( opt_lang_id );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -116,6 +116,9 @@ int main( int argc, char const *const argv[] ) {
   colors_init();                        // must call before cdecl_term_init()
   cdecl_term_init();                    // call before possible print_error()
 
+  // Must call after cli_options_init(), colors_init().
+  lang_set( opt_lang_id );
+
   // The order of these doesn't matter.
   c_keywords_init();
   cdecl_keywords_init();

@@ -27,6 +27,9 @@ When in east-`const` mode, `_Atomic` is now also printed east.
 ** `_Atomic void` parameters
 Such parameters are now also correctly flagged as illegal.
 
+** Color prompts
+Initial color prompts have been fixed.
+
 ** Multiline comments
 Multiline C-style comments `/* */` are now supported (mostly).
 
