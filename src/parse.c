@@ -370,7 +370,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     strn_rtrim( print_params.command_line, &echo_len );
     PRINTF(
       "%s%.*s\n",
-      cdecl_prompt( false ),
+      cdecl_prompt( /*is_cont_line=*/false ),
       STATIC_CAST( int, echo_len ), print_params.command_line
     );
     FFLUSH( stdout );
