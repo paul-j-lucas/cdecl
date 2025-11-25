@@ -180,7 +180,7 @@ void cdecl_prompt_init( void ) {
 
   static char const PROMPT_CHAR[] = ">+*";
 
-  for ( unsigned i = 0; i < ARRAY_SIZE( prompt_ptr ); ++i )
+  for ( unsigned i = 0; i < ARRAY_SIZE( prompt_buf ); ++i )
     prompt_create( PROMPT_CHAR[i], &prompt_buf[i] );
 
   cdecl_prompt_enable();
