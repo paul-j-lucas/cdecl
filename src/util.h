@@ -151,7 +151,7 @@
  */
 #define ARRAY_SIZE(ARRAY) (                                                   \
   STATIC_ASSERT_EXPR( IS_ARRAY_EXPR( (ARRAY) ), #ARRAY " must be an array" )  \
-  * sizeof (ARRAY) / sizeof 0[ (ARRAY) ] )
+  * sizeof ((ARRAY)) / sizeof 0[ (ARRAY) ] )
 
 /**
  * Like **assert**(3) except can be used in an expression.
@@ -432,7 +432,7 @@
  * @sa #FOR_N_TIMES()
  */
 #define FOREACH_ARRAY_ELEMENT(TYPE,VAR,ARRAY) \
-  for ( TYPE const *VAR = (ARRAY); VAR < ARRAY_END(ARRAY); ++VAR )
+  for ( TYPE const *VAR = (ARRAY); VAR < ARRAY_END( (ARRAY) ); ++VAR )
 
 /**
  * Convenience macro for iterating \a N times.
@@ -444,7 +444,7 @@
  */
 #define FOR_N_TIMES(N)                                                \
   for ( size_t UNIQUE_NAME(i) = STATIC_CAST( size_t,                  \
-        STATIC_IF( IS_SIGNED_EXPR(N),                                 \
+        STATIC_IF( IS_SIGNED_EXPR( (N) ),                             \
                    ASSERT_EXPR( (N) > 0 || (N) == 0 ) * (N), (N) ) ); \
         UNIQUE_NAME(i) > 0;                                           \
         --UNIQUE_NAME(i) )
@@ -649,10 +649,10 @@
  *
  * @sa https://stackoverflow.com/a/13546502/99089
  */
-#define MAX_DEC_INT_DIGITS(TYPE)                                \
-  (((sizeof(TYPE) * CHAR_BIT * 1233) >> 12)                     \
-    + STATIC_ASSERT_EXPR( IS_INTEGRAL_TYPE(TYPE),               \
-                          #TYPE " must be an integral type " )  \
+#define MAX_DEC_INT_DIGITS(TYPE)                              \
+  (((sizeof(TYPE) * CHAR_BIT * 1233) >> 12)                   \
+    + STATIC_ASSERT_EXPR( IS_INTEGRAL_TYPE(TYPE),             \
+                          #TYPE " must be an integral type" ) \
     + IS_SIGNED_TYPE(TYPE))
 
 /**
