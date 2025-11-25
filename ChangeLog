@@ -1,5 +1,6 @@
 2025-11-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * prompt.c: s/prompt_ptr/prompt_buf/
    * cdecl.c, cli_options.c: Fixed initial color prompt.
    * prompt.c: Removed extraneous ','.
 
