@@ -1,3 +1,7 @@
+2025-11-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Added () around more macro parameters.
+
 2025-11-24  Paul J. Lucas <paul@lucasmail.org>
 
    * prompt.c: s/prompt_ptr/prompt_buf/
