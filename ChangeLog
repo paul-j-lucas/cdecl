@@ -1,3 +1,8 @@
+2025-11-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * .idea/codeStyles/codeStyleConfig.xml, .idea/editor.xml, .idea/misc.xml,
+     .idea/vcs.xml: JetBrains IDE.
+
 2025-11-25  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Added () around more macro parameters.
