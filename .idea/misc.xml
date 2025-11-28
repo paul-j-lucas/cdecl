@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakePythonSetting">
+    <option name="pythonIntegrationState" value="YES" />
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MakefileSettings">
+    <option name="linkedExternalProjectsSettings">
+      <MakefileProjectSettings>
+        <option name="buildDirectory" value="" />
+        <option name="buildOptions" value="--makefile=Makefile" />
+        <option name="buildSystemName" value="GNU Autotools" />
+        <option name="buildTarget" value="" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+          </set>
+        </option>
+        <option name="preConfigureCommands" value="#!/bin/sh&#10;cd ${PROJECT_DIR:-.}&#10;./bootstrap&#10;./configure" />
+        <option name="switches" value="--makefile=Makefile " />
+        <option name="version" value="2" />
+      </MakefileProjectSettings>
+    </option>
+  </component>
+  <component name="MakefileWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
+</project>
