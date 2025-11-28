@@ -159,10 +159,10 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, sbrl_prompt_fn_t prompt_fn,
   bool is_cont_line = false;
 
   do {
-    size_t line_len;
     char const *const prompt = is_interactive && prompt_fn != NULL ?
       (*prompt_fn)( is_cont_line ) : NULL;
 
+    size_t line_len;
     char const *const line = read_line( fin, prompt, &line_len );
     if ( line == NULL )
       return false;
