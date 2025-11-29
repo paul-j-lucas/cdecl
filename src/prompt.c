@@ -40,7 +40,6 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
 
@@ -95,12 +94,8 @@
  */
 static strbuf_t     prompt_buf[3];
 
-static char const  *prompt_ptr[3];      ///< Pointers to \ref prompt_buf.
-
-static_assert(
-  ARRAY_SIZE( prompt_buf ) == ARRAY_SIZE( prompt_ptr ),
-  "ARRAY_SIZE( prompt_buf ) != ARRAY_SIZE( prompt_ptr )"
-);
+/// Pointers to \ref prompt_buf.
+static char const  *prompt_ptr[ ARRAY_SIZE( prompt_buf ) ];
 
 ////////// inline functions ///////////////////////////////////////////////////
 
