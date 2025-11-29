@@ -1,3 +1,7 @@
+2025-11-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * prompt.c: Eliminated static_assert.
+
 2025-11-28  Paul J. Lucas <paul@lucasmail.org>
 
    * .idea/codeStyles/codeStyleConfig.xml, .idea/editor.xml, .idea/misc.xml,
