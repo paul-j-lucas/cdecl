@@ -528,6 +528,9 @@ static predef_type_t const PREDEFINED_STD_CPP_11[] = {
 
 /**
  * Predefined types for C++17.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_CPP_17[] = {
   PT( "namespace std             { enum class     align_val_t; }" ),
@@ -568,6 +571,9 @@ static predef_type_t const PREDEFINED_STD_CPP_17[] = {
 
 /**
  * Predefined types for C++20.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  *
  * @sa PREDEFINED_STD_CPP_20_REQUIRED
  */
@@ -627,6 +633,9 @@ static predef_type_t const PREDEFINED_STD_CPP_20[] = {
 /**
  * Predefined required types for C++20.
  *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
+ *
  * @sa PREDEFINED_STD_CPP_20
  */
 static predef_type_t const PREDEFINED_STD_CPP_20_REQUIRED[] = {
@@ -640,6 +649,9 @@ static predef_type_t const PREDEFINED_STD_CPP_20_REQUIRED[] = {
 
 /**
  * Predefined types for C++23.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_CPP_23[] = {
   PT( "namespace std {      using   float16_t = float; }" ),
@@ -665,6 +677,9 @@ static predef_type_t const PREDEFINED_STD_CPP_23[] = {
 
 /**
  * Predefined types for C++26.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_CPP_26[] = {
   PT( "namespace std::contracts { enum class assertion_kind; }" ),
