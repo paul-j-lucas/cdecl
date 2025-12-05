@@ -175,6 +175,8 @@ void cdecl_prompt_init( void ) {
 
   static char const PROMPT_CHAR[] = ">+*";
 
+  STATIC_ASSERT( STRLITLEN( PROMPT_CHAR ) == ARRAY_SIZE( prompt_buf ) );
+
   for ( unsigned i = 0; i < ARRAY_SIZE( prompt_buf ); ++i )
     prompt_create( PROMPT_CHAR[i], &prompt_buf[i] );
 
