@@ -37,82 +37,64 @@
 
 /// @endcond
 
-static_assert(
+STATIC_ASSERT(
   offsetof( c_builtin_ast_t, bit_width ) ==
-  offsetof( c_bit_field_ast_t, bit_width ),
-  "offsetof bit_width in c_builtin_ast_t & c_bit_field_ast_t must equal"
+  offsetof( c_bit_field_ast_t, bit_width )
 );
 
-static_assert(
+STATIC_ASSERT(
   offsetof( c_enum_ast_t, bit_width ) ==
-  offsetof( c_bit_field_ast_t, bit_width ),
-  "offsetof bit_width in enum_ast_t & c_bit_field_ast_t must equal"
+  offsetof( c_bit_field_ast_t, bit_width )
 );
 
-static_assert(
+STATIC_ASSERT(
   offsetof( c_typedef_ast_t, bit_width ) ==
-  offsetof( c_bit_field_ast_t, bit_width ),
-  "offsetof bit_width in c_typedef_ast_t & c_bit_field_ast_t must equal"
+  offsetof( c_bit_field_ast_t, bit_width )
 );
 
-static_assert(
+STATIC_ASSERT(
   offsetof( c_apple_block_ast_t, param_ast_list ) ==
-  offsetof( c_function_ast_t, param_ast_list ),
-  "offsetof param_ast_list in c_apple_block_ast_t & c_function_ast_t must equal"
+  offsetof( c_function_ast_t, param_ast_list )
 );
 
-static_assert(
-  offsetof( c_concept_ast_t, concept_sname ) ==
-  offsetof( c_name_ast_t, sname ),
-  "offsetof concept_sname != offsetof sname"
+STATIC_ASSERT(
+  offsetof( c_concept_ast_t, concept_sname ) == offsetof( c_name_ast_t, sname )
 );
 
-static_assert(
+STATIC_ASSERT(
   offsetof( c_constructor_ast_t, param_ast_list ) ==
-  offsetof( c_function_ast_t, param_ast_list ),
-  "offsetof param_ast_list in c_constructor_ast_t & c_function_ast_t must equal"
+  offsetof( c_function_ast_t, param_ast_list )
 );
 
-static_assert(
-  offsetof( c_csu_ast_t, csu_sname ) ==
-  offsetof( c_name_ast_t, sname ),
-  "offsetof csu_sname != offsetof sname"
+STATIC_ASSERT(
+  offsetof( c_csu_ast_t, csu_sname ) == offsetof( c_name_ast_t, sname )
 );
 
-static_assert(
-  offsetof( c_enum_ast_t, enum_sname ) ==
-  offsetof( c_name_ast_t, sname ),
-  "offsetof enum_sname != offsetof sname"
+STATIC_ASSERT(
+  offsetof( c_enum_ast_t, enum_sname ) == offsetof( c_name_ast_t, sname )
 );
 
-static_assert(
+STATIC_ASSERT(
   offsetof( c_lambda_ast_t, param_ast_list ) ==
-  offsetof( c_function_ast_t, param_ast_list ),
-  "offsetof param_ast_list in c_lambda_ast_t & c_function_ast_t must equal"
+  offsetof( c_function_ast_t, param_ast_list )
 );
 
-static_assert(
+STATIC_ASSERT(
   offsetof( c_operator_ast_t, param_ast_list ) ==
-  offsetof( c_function_ast_t, param_ast_list ),
-  "offsetof param_ast_list in c_operator_ast_t & c_function_ast_t must equal"
+  offsetof( c_function_ast_t, param_ast_list )
 );
 
-static_assert(
-  offsetof( c_ptr_mbr_ast_t, class_sname ) ==
-  offsetof( c_name_ast_t, sname ),
-  "offsetof class_sname != offsetof sname"
+STATIC_ASSERT(
+  offsetof( c_ptr_mbr_ast_t, class_sname ) == offsetof( c_name_ast_t, sname )
 );
 
-static_assert(
+STATIC_ASSERT(
   offsetof( c_udef_lit_ast_t, param_ast_list ) ==
-  offsetof( c_function_ast_t, param_ast_list ),
-  "offsetof param_ast_list in c_udef_lit_ast_t & c_function_ast_t must equal"
+  offsetof( c_function_ast_t, param_ast_list )
 );
 
-static_assert(
-  offsetof( c_operator_ast_t, member ) ==
-  offsetof( c_function_ast_t, member ),
-  "offsetof member in c_operator_ast_t & c_function_ast_t must equal"
+STATIC_ASSERT(
+  offsetof( c_operator_ast_t, member ) == offsetof( c_function_ast_t, member )
 );
 
 ///////////////////////////////////////////////////////////////////////////////

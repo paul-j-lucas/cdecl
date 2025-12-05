@@ -498,9 +498,8 @@ static c_lang_id_t const OK_QUALIFIER_LANGS[ ARRAY_SIZE( C_QUALIFIER_INFO ) ][ A
   { XXX,UPC,XXX,XXX,XXX,UPC,UPC,  XXX,UPC,UPC }, // strict
 };
 
-static_assert(
-  ARRAY_SIZE( C_QUALIFIER_INFO ) == ARRAY_SIZE( OK_QUALIFIER_LANGS ),
-  "ARRAY_SIZE( C_QUALIFIER_INFO ) == ARRAY_SIZE( OK_QUALIFIER_LANGS )"
+STATIC_ASSERT(
+  ARRAY_SIZE( C_QUALIFIER_INFO ) == ARRAY_SIZE( OK_QUALIFIER_LANGS )
 );
 
 /**
@@ -540,10 +539,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[ ARRAY_SIZE( C_STORAGE_INFO ) ][ ARRAY
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX_VIR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,VIR    ,XXX    ,NOE    ,OVR    ,XXX    ,VIR    ,VIR    ,VIR },// pure
 };
 
-static_assert(
-  ARRAY_SIZE( C_STORAGE_INFO ) == ARRAY_SIZE( OK_STORAGE_LANGS ),
-  "ARRAY_SIZE( C_STORAGE_INFO ) == ARRAY_SIZE( OK_STORAGE_LANGS )"
-);
+STATIC_ASSERT( ARRAY_SIZE( C_STORAGE_INFO ) == ARRAY_SIZE( OK_STORAGE_LANGS ) );
 
 /**
  * Legal combinations of types in languages.
@@ -582,10 +578,7 @@ static c_lang_id_t const OK_TYPE_LANGS[ ARRAY_SIZE( C_TYPE_INFO ) ][ ARRAY_SIZE(
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,XXX,UPC,XXX,UPC,UPC,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,UPC,UPC },// _Sat
 };
 
-static_assert(
-  ARRAY_SIZE( C_TYPE_INFO ) == ARRAY_SIZE( OK_TYPE_LANGS ),
-  "ARRAY_SIZE( C_TYPE_INFO ) == ARRAY_SIZE( OK_TYPE_LANGS )"
-);
+STATIC_ASSERT( ARRAY_SIZE( C_TYPE_INFO ) == ARRAY_SIZE( OK_TYPE_LANGS ) );
 
 ////////// inline functions ///////////////////////////////////////////////////
 

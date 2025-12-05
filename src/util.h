@@ -877,6 +877,13 @@
   PERROR_EXIT_IF( stat( (PATH), (PSTAT) ) < 0, EX_IOERR )
 
 /**
+ * C23-like version of single-argument form of `static_assert`.
+ *
+ * @param EXPR The expression to use.
+ */
+#define STATIC_ASSERT(EXPR)       static_assert( (EXPR), #EXPR )
+
+/**
  * C version of C++'s `static_cast`.
  *
  * @param TYPE The type to cast to.
