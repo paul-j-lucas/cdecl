@@ -90,7 +90,7 @@
  * @warning These may contain [Select Graphics Rendition (SGR) color
  * codes](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).  Do _not_ call
  * `strlen()` on them; use cdecl_prompt_len() instead.
- * @warning All prompts _must_ be the same length.
+ * @warning All prompts for the same language _must_ be the same length.
  */
 static strbuf_t     prompt_buf[3];
 
