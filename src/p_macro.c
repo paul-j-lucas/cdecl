@@ -476,6 +476,37 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
 }
 
 /**
+ * Checks \a name for validity.
+ *
+ * @param name The name of the macro to check.
+ * @param name_loc The source location of \a name.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool macro_name_check( char const *name, c_loc_t const *name_loc ) {
+  assert( name != NULL );
+  assert( name_loc != NULL );
+
+  if ( !cdecl_is_initialized )
+    return true;
+
+  if ( is_predefined_macro_name( name ) ) {
+    print_error( name_loc,
+      "\"%s\": predefined macro may not be redefined\n", name
+    );
+    return false;
+  }
+
+  if ( OPT_LANG_IS( C_ANY ) && str_is_prefix( "__STDC_", name ) ) {
+    print_warning( name_loc,
+      "\"%s\": macro names beginning with \"__STDC_\" are reserved\n", name
+    );
+  }
+
+  return true;
+}
+
+/**
  * Appends supplied "arguments" to a non-function-like macro.
  *
  * @param mex The mex_state to use.
@@ -2864,6 +2895,7 @@ bool is_predefined_macro_name( char const *name ) {
   return macro != NULL && macro->is_dynamic;
 }
 
+
 void p_arg_list_cleanup( p_arg_list_t *arg_list ) {
   if ( arg_list == NULL )
     return;                             // LCOV_EXCL_LINE
@@ -2885,13 +2917,8 @@ p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
   assert( name != NULL );
   assert( name_loc != NULL );
 
-  if ( is_predefined_macro_name( name ) ) {
-    print_error( name_loc,
-      "\"%s\": predefined macro may not be redefined\n", name
-    );
+  if ( !macro_name_check( name, name_loc ) )
     goto error;
-  }
-
   if ( param_list != NULL && !check_macro_params( param_list ) )
     goto error;
 
@@ -2921,12 +2948,6 @@ p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
   if ( !ok ) {
     p_macro_cleanup( &new_macro );
     return NULL;
-  }
-
-  if ( cdecl_is_initialized && str_is_prefix( "__STDC_", name ) ) {
-    print_warning( name_loc,
-      "\"%s\": macro names beginning with \"__STDC_\" are reserved\n", name
-    );
   }
 
   if ( p_macro_is_func_like( &new_macro ) )
