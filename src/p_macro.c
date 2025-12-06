@@ -2923,6 +2923,12 @@ p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
     return NULL;
   }
 
+  if ( cdecl_is_initialized && str_is_prefix( "__STDC_", name ) ) {
+    print_warning( name_loc,
+      "\"%s\": macro names beginning with \"__STDC_\" are reserved\n", name
+    );
+  }
+
   if ( p_macro_is_func_like( &new_macro ) )
     p_macro_relocate_params( &new_macro );
 

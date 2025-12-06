@@ -7,6 +7,7 @@ cdecl -bEL$LINENO <<END
 #define __LINE__                  X
 #define __STDC__                  X
 #define __STDC_VERSION__          X
+#define __STDC_X                  X
 #define __TIME__                  X
 #define __VA_ARGS__               X
 #define __VA_OPT__                X
