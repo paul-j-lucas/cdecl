@@ -436,47 +436,6 @@ static inline bool macro_name_is__VA_( char const *name ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Checks macro parameters, if any, for semantic errors.
- *
- * @param param_list The list of \ref p_param to check.
- * @return Returns `true` only if all checks passed.
- */
-NODISCARD
-static bool check_macro_params( p_param_list_t const *param_list ) {
-  assert( param_list != NULL );
-
-  FOREACH_SLIST_NODE( param_node, param_list ) {
-    p_param_t const *const param = param_node->data;
-    if ( strcmp( param->name, L_ELLIPSIS ) == 0 ) {
-      if ( !OPT_LANG_IS( VARIADIC_MACROS ) ) {
-        print_error( &param->loc,
-          "variadic macros not supported%s\n",
-          C_LANG_WHICH( VARIADIC_MACROS )
-        );
-        return false;
-      }
-      if ( param_node->next != NULL ) {
-        print_error( &param->loc, "\"...\" must be last parameter\n" );
-        return false;
-      }
-    }
-
-    FOREACH_SLIST_NODE_UNTIL( prev_param_node, param_list, param_node ) {
-      p_param_t const *const prev_param = prev_param_node->data;
-      if ( strcmp( param->name, prev_param->name ) == 0 ) {
-        print_error( &param->loc,
-          "\"%s\": duplicate macro parameter\n",
-          param->name
-        );
-        return false;
-      }
-    } // for
-  } // for
-
-  return true;
-}
-
-/**
  * Checks \a name for validity.
  *
  * @param name The name of the macro to check.
@@ -506,6 +465,47 @@ static bool macro_name_check( char const *name, c_loc_t const *name_loc ) {
       "\"%s\": macro names beginning with \"__STDC_\" are reserved\n", name
     );
   }
+
+  return true;
+}
+
+/**
+ * Checks macro parameters, if any, for semantic errors.
+ *
+ * @param param_list The list of \ref p_param to check.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool macro_params_check( p_param_list_t const *param_list ) {
+  assert( param_list != NULL );
+
+  FOREACH_SLIST_NODE( param_node, param_list ) {
+    p_param_t const *const param = param_node->data;
+    if ( strcmp( param->name, L_ELLIPSIS ) == 0 ) {
+      if ( !OPT_LANG_IS( VARIADIC_MACROS ) ) {
+        print_error( &param->loc,
+          "variadic macros not supported%s\n",
+          C_LANG_WHICH( VARIADIC_MACROS )
+        );
+        return false;
+      }
+      if ( param_node->next != NULL ) {
+        print_error( &param->loc, "\"...\" must be last parameter\n" );
+        return false;
+      }
+    }
+
+    FOREACH_SLIST_NODE_UNTIL( prev_param_node, param_list, param_node ) {
+      p_param_t const *const prev_param = prev_param_node->data;
+      if ( strcmp( param->name, prev_param->name ) == 0 ) {
+        print_error( &param->loc,
+          "\"%s\": duplicate macro parameter\n",
+          param->name
+        );
+        return false;
+      }
+    } // for
+  } // for
 
   return true;
 }
@@ -2923,7 +2923,7 @@ p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
 
   if ( !macro_name_check( name, name_loc ) )
     goto error;
-  if ( param_list != NULL && !check_macro_params( param_list ) )
+  if ( param_list != NULL && !macro_params_check( param_list ) )
     goto error;
 
   p_macro_t new_macro = {
