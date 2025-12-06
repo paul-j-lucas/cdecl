@@ -1,3 +1,11 @@
+2025-12-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c: s/check_macro_params/macro_params_check/
+   * p_macro.c: s/is_VA_macro_name/macro_name_is__VA_/
+   * c_sname.c, p_macro.c, p_macro.h:
+     s/is_predefined_macro_name/macro_name_is_predefined/
+   * p_macro.c: Now checking __STDC_ prefix only when language is C.
+
 2025-12-05  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, p_macro.c, preprocessor-error.out, preprocessor-error.test:
