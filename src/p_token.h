@@ -426,7 +426,7 @@ inline bool p_token_is_any_char( p_token_t const *token ) {
  * @param token The \ref p_token to use.
  * @return Returns `true` only if it is.
  *
- * @sa is_predefined_macro_name()
+ * @sa macro_name_is_predefined()
  */
 NODISCARD
 bool p_token_is_macro( p_token_t const *token );
