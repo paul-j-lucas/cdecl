@@ -424,6 +424,7 @@ static rb_tree_t  macro_set;            ///< Global set of macros.
  * @param name The name to check.
  * @return Returns `true` only if it is.
  *
+ * @sa macro_name_check()
  * @sa macro_name_is_predefined()
  */
 NODISCARD
@@ -481,6 +482,9 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
  * @param name The name of the macro to check.
  * @param name_loc The source location of \a name.
  * @return Returns `true` only if all checks passed.
+ *
+ * @sa macro_name_is_predefined()
+ * @sa macro_name_is__VA_()
  */
 NODISCARD
 static bool macro_name_check( char const *name, c_loc_t const *name_loc ) {
