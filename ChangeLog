@@ -1,5 +1,8 @@
 2025-12-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac, p_macro.c, preprocessor-error.out, preprocessor-error.test:
+     Defining a macro with a name beginning with `__STDC_` now results in a
+     warning that such names are reserved.
    * prompt.c: Added STATIC_ASSERT.
    * c_ast.c, c_type.c, util.h: Added STATIC_ASSERT.
 
