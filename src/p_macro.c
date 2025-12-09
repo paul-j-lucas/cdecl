@@ -1131,6 +1131,58 @@ static void mex_cleanup( mex_state_t *mex ) {
 }
 
 /**
+ * Concatenates all adjacent #P_STR_LIT tokens, if any, together.
+ *
+ * @param mex The mex_state to use.
+ * @return Returns a \ref mex_rv.
+ */
+NODISCARD
+static mex_rv_t mex_concat_string_literals( mex_state_t *mex ) {
+  assert( mex != NULL );
+
+  mex_rv_t rv = MEX_NOT_EXPANDED;
+
+  FOREACH_SLIST_NODE( token_node, mex->replace_list ) {
+    p_token_t const *const token = token_node->data;
+    if ( token->kind != P_STR_LIT )
+      goto skip;
+
+    strbuf_t sbuf;
+    strbuf_init( &sbuf );
+
+    while ( token_node->next != NULL ) {
+      p_token_node_t *const next_node =
+        p_token_node_not( token_node->next, P_ANY_TRANSPARENT );
+      if ( next_node == NULL )
+        break;
+      p_token_t const *const next_token = next_node->data;
+      if ( next_token->kind != P_STR_LIT )
+        break;
+
+      if ( sbuf.len == 0 )
+        strbuf_puts( &sbuf, token->lit.value );
+      strbuf_puts( &sbuf, next_token->lit.value );
+      token_node = next_node;
+    } // while
+
+    if ( sbuf.len != 0 ) {
+      p_token_t *const concatted_token =
+        p_token_new_loc( P_STR_LIT, &token->loc, strbuf_take( &sbuf ) );
+      strbuf_cleanup( &sbuf );
+      concatted_token->is_substituted = true;
+      p_token_list_push_back( mex->expand_list, concatted_token );
+      rv = MEX_EXPANDED;
+      continue;
+    }
+
+skip:
+    p_token_list_push_back( mex->expand_list, p_token_dup( token ) );
+  } // for
+
+  return rv;
+}
+
+/**
  * Performs the set of expansion functions given by \a fns once followed by
  * mex_expand_all_macros() repeatedly as long as expansions happen.
  *
@@ -3057,6 +3109,16 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
     if ( mex_expand( &mex, &token ) == MEX_ERROR )
       goto done;
   }
+
+  //
+  // Lastly, concatenate all adjacent string literals, if any.
+  //
+  static mex_expand_all_fn_t const EXPAND_FNS[] = {
+    &mex_concat_string_literals,
+    NULL
+  };
+  MAYBE_UNUSED mex_rv_t const rv = mex_expand_all_fns( &mex, EXPAND_FNS );
+  assert( rv != MEX_ERROR );
 
   ok = true;
 

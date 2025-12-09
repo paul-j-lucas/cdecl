@@ -12,6 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 18.7
 
+** Concatenate adjacent string literals
+When expanding macros, a new final step of concatenating adjacent string
+literals has been added.
+
 ** `__STDC_` macros
 Defining a macro with a name beginning with `__STDC_` now results in a warning
 that such names are reserved.

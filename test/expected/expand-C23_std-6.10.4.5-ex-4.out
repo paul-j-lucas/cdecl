@@ -11,6 +11,7 @@ debug(1, 2) => printf("x" # s "= %d, x" # t "= %s", x ## s, x ## t)
 debug(1, 2) => printf("x" "1" "= %d, x" "2" "= %s", x ## s, x ## t)
 debug(1, 2) => printf("x" "1" "= %d, x" "2" "= %s", x ## 1, x ## 2)
 debug(1, 2) => printf("x" "1" "= %d, x" "2" "= %s", x1, x2)
+debug(1, 2) => printf("x1= %d, x2= %s", x1, x2)
 cdecl> expand str(strncmp("abc\0d", "abc", '\4') == 0)
 str(strncmp("abc\0d", "abc", '\4') == 0) => # s
 str(strncmp("abc\0d", "abc", '\4') == 0) => "strncmp(\"abc\\0d\", \"abc\", '\\4') == 0"
@@ -37,3 +38,4 @@ xglue(HIGH, LOW ", world") => glue(HIGH, LOW ", world")
 | | HIGHLOW => "hello"
 | glue(HIGH, LOW ", world") => "hello" ", world"
 xglue(HIGH, LOW ", world") => "hello" ", world"
+xglue(HIGH, LOW ", world") => "hello, world"
