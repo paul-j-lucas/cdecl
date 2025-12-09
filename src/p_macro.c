@@ -1273,7 +1273,7 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
   }
 
   if ( !p_macro_check_params( mex->macro ) )
-    return MEX_NOT_EXPANDED;
+    return MEX_ERROR;
 
   if ( mex->arg_list == NULL && p_macro_is_func_like( mex->macro ) )
     return MEX_NOT_EXPANDED;
