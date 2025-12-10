@@ -84,7 +84,7 @@ struct p_token {
       ///   The `F` in the definition is _not_ expanded because it's already
       ///   being expanded.
       ///
-      /// + It’s a dynamic macro that's not supported in the current language.
+      /// + It's a dynamic macro that's not supported in the current language.
       ///
       /// + It's a function-like macro that's either _not_ followed by `(` or
       ///   followed by a token that's already been substituted (which means it
