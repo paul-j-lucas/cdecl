@@ -295,6 +295,8 @@ p_token_t* p_token_new_loc( p_token_kind_t kind, c_loc_t const *loc,
  * @param kinds The bitwise-or of kind(s) to check for.
  * @return Returns `true` only if \a token_node is not NULL and its token is
  * one of \a kinds.
+ *
+ * @sa p_token_node_is_punct()
  */
 NODISCARD 
 bool p_token_node_is_any( p_token_node_t const *token_node,
