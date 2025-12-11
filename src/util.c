@@ -239,7 +239,7 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
     return NULL;
 
   if ( likely( fwrite( buf, 1, size, temp_file ) == size &&
-               fseek( temp_file, 0L, SEEK_SET ) != 0 ) ) {
+               fseek( temp_file, 0L, SEEK_SET ) == 0 ) ) {
     return temp_file;
   }
 
