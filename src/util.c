@@ -222,34 +222,6 @@ bool fd_is_file( int fd ) {
   return S_ISREG( fd_stat.st_mode );
 }
 
-#ifndef HAVE_FMEMOPEN
-FILE* fmemopen( void *buf, size_t size, char const *mode ) {
-  assert( buf != NULL );
-  assert( mode != NULL );
-  assert( mode[0] == 'r' );
-#ifdef NDEBUG
-  (void)mode;
-#endif /* NDEBUG */
-
-  if ( unlikely( size == 0 ) )
-    return NULL;
-
-  FILE *const temp_file = tmpfile();
-  if ( unlikely( temp_file == NULL ) )
-    return NULL;
-
-  if ( likely( fwrite( buf, 1, size, temp_file ) == size &&
-               fseek( temp_file, 0L, SEEK_SET ) == 0 ) ) {
-    return temp_file;
-  }
-
-  int const orig_errno = errno;
-  fclose( temp_file );
-  errno = orig_errno;
-  return NULL;
-}
-#endif /* HAVE_FMEMOPEN */
-
 void fput_list( FILE *out, void const *elt,
                 char const* (*gets)( void const** ) ) {
   assert( out != NULL );

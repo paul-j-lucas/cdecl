@@ -1226,26 +1226,6 @@ _Noreturn void fatal_error( int status, char const *format, ... );
 NODISCARD
 bool fd_is_file( int fd );
 
-#ifndef HAVE_FMEMOPEN
-/**
- * Partial implementation of POSIX 2008 **fmemopen**(3) for systems that don't
- * have it to read at most \a size bytes of memory starting at \a buf as if it
- * were a `FILE`.
- *
- * @param buf A pointer to the buffer to use.  Unlike the standard
- * **fmemopen**, \a buf can not be NULL.
- * @param size The size of \a buf.
- * @param mode The open mode.  Unlike the standard **fmemopen**, it _must_
- * contain `r` and `b` (if given) is ignored.
- * @return Returns a `FILE*` containing the contents of \a buf or NULL if
- * either \a size is 0 or upon error.
- *
- * @warning \a buf must remain valid for as along as the `FILE` is open.
- */
-NODISCARD
-FILE* fmemopen( void *buf, size_t size, char const *mode );
-#endif /* HAVE_FMEMOPEN */
-
 /**
  * Prints a zero-or-more element list of strings where for:
  *
