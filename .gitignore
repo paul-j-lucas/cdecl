@@ -21,9 +21,10 @@ tags
 /ar-lib
 /autom4te.cache/
 /compile
+/confdefs.h
 /config.*
 /configure
-/conftest*
+/conftest.*
 /coverage*
 /depcomp
 /docs/
