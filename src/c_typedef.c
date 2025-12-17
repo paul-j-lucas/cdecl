@@ -1204,7 +1204,7 @@ void c_typedefs_init( void ) {
 
   c_lang_id_t const orig_lang_id = opt_lang_id;
 
-  if ( opt_typedefs == TYPEDEFS_ALL ) {
+  if ( opt_predef_types == PREDEF_TYPES_ALL ) {
     //
     // Temporarily switch to the latest supported version of C so all keywords
     // will be available.
@@ -1250,7 +1250,7 @@ void c_typedefs_init( void ) {
   //
   opt_lang_id = LANG_CPP_NEW;
 
-  if ( opt_typedefs == TYPEDEFS_ALL ) {
+  if ( opt_predef_types == PREDEF_TYPES_ALL ) {
     predef_lang_ids = LANG_MIN(CPP_OLD);
     parse_predef_types( PREDEFINED_STD_CPP );
 
@@ -1270,7 +1270,7 @@ void c_typedefs_init( void ) {
     parse_predef_types( PREDEFINED_STD_CPP_26 );
   }
 
-  if ( opt_typedefs != TYPEDEFS_NONE ) {
+  if ( opt_predef_types != PREDEF_TYPES_NONE ) {
     predef_lang_ids = LANG_MIN(CPP_20);
     parse_predef_types( PREDEFINED_STD_CPP_20_REQUIRED );
     predef_lang_ids = LANG_NONE;

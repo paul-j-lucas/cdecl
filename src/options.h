@@ -94,15 +94,15 @@ extern unsigned     opt_lineno;         ///< Add to all line numbers.
 /// Allow unknown names and keywords in other languages to be types?
 extern bool         opt_permissive_types;
 
-extern bool         opt_prompt;         ///< Print the prompt?
-extern bool         opt_read_config;    ///< Read configuration file?
-extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?
-extern bool         opt_trailing_ret;   ///< Print trailing return type?
-extern typedefs_t   opt_typedefs;       ///< Which `typedef`s to predefine.
-extern bool         opt_using;          ///< Print `using` in C++11 and later?
+extern predef_types_t opt_predef_types; ///< Which types to predefine.
+extern bool           opt_prompt;       ///< Print the prompt?
+extern bool           opt_read_config;  ///< Read configuration file?
+extern bool           opt_semicolon;    ///< Print `;` at end of gibberish?
+extern bool           opt_trailing_ret; ///< Print trailing return type?
+extern bool           opt_using;        ///< Print `using` in C++11 and later?
 
 /// Kinds to print `*` and `&` "west" of the space.
-extern c_ast_kind_t opt_west_decl_kinds;
+extern c_ast_kind_t   opt_west_decl_kinds;
 
 /// What `*` expands into for `set debug=*`.
 extern char const   OPT_CDECL_DEBUG_ALL[];

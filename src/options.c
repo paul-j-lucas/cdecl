@@ -64,11 +64,11 @@ bool                opt_infer_command;
 c_lang_id_t         opt_lang_id;
 unsigned            opt_lineno;
 bool                opt_permissive_types;
+predef_types_t      opt_predef_types = PREDEF_TYPES_ALL;
 bool                opt_prompt = true;
 bool                opt_read_config = true;
 bool                opt_semicolon = true;
 bool                opt_trailing_ret;
-typedefs_t          opt_typedefs = TYPEDEFS_ALL;
 bool                opt_using = true;
 c_ast_kind_t        opt_west_decl_kinds = K_ANY_FUNCTION_RETURN;
 

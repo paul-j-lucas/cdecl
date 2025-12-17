@@ -421,12 +421,12 @@ enum decl_flags {
 #define C_TYPE_DECL_ANY           ( C_ENG_DECL | C_GIB_DECL_ANY )
 
 /**
- * Which `typedef`s to predefine.
+ * Which types to predefine.
  */
-enum typedefs {
-  TYPEDEFS_NONE,                        ///< No `typedef`s.
-  TYPEDEFS_REQUIRED,                    ///< Required `typedef`s only.
-  TYPEDEFS_ALL                          ///< All `typedef`s.
+enum predef_types {
+  PREDEF_TYPES_NONE,                    ///< No predefined types.
+  PREDEF_TYPES_REQUIRED,                ///< Required predefined types only.
+  PREDEF_TYPES_ALL                      ///< All predefined types.
 };
 
 ////////// typedefs ///////////////////////////////////////////////////////////
@@ -541,7 +541,7 @@ typedef slist_t                   p_param_list_t; ///< Macro parameter list.
 typedef struct p_token            p_token_t;
 typedef slist_t                   p_token_list_t; ///< Preprocessor token list.
 typedef slist_node_t              p_token_node_t; ///< Preprocessor token node.
-typedef enum   typedefs           typedefs_t;
+typedef enum   predef_types       predef_types_t;
 typedef union  user_data          user_data_t;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.

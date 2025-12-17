@@ -621,8 +621,8 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
         opt_semicolon = false;
         break;
       case COPT(NO_TYPEDEFS):
-        if ( opt_typedefs > TYPEDEFS_NONE )
-          --opt_typedefs;
+        if ( opt_predef_types > PREDEF_TYPES_NONE )
+          --opt_predef_types;
         break;
       case COPT(NO_USING):
         opt_using = false;
