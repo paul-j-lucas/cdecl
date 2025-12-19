@@ -748,7 +748,7 @@ inline bool c_ast_print_as_using( c_ast_t const *ast ) {
  * Creates a temporary AST node that is a copy of the AST node that \a ast is a
  * `typedef` for, but keeping the original's alignment, bit-field width (only
  * if it's an integral type), source location, and qualifiers bitwise-or'd in,
- * effectively substituting the `typedef`'d
+ * effectively substituting the `typedef`'d type.
  *
  * For example, given:
  *
