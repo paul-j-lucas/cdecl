@@ -95,7 +95,7 @@ static void eng_init( eng_state_t*, FILE* );
 static inline void c_ast_visit_english( c_ast_t const *ast,
                                         eng_state_t const *eng ) {
   c_ast_visit(
-    ast, C_VISIT_DOWN, &c_ast_visitor_english, (user_data_t){ .pc = eng }
+    ast, C_VISIT_DOWN, &c_ast_visitor_english, (user_data_t){ .pcv = eng }
   );
 }
 
@@ -379,7 +379,7 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *fout ) {
 NODISCARD
 static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  eng_state_t const *const eng = user_data.pc;
+  eng_state_t const *const eng = user_data.pcv;
   assert( eng != NULL );
 
   switch ( ast->kind ) {

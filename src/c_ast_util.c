@@ -539,7 +539,7 @@ static bool c_ast_visitor_name( c_ast_t const *ast, user_data_t user_data ) {
 NODISCARD
 static bool c_ast_vistor_type_any( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  c_type_t const *const type = user_data.pc;
+  c_type_t const *const type = user_data.pcv;
   return c_type_is_any( &ast->type, type );
 }
 
@@ -611,7 +611,7 @@ c_ast_t const* c_ast_find_param_named( c_ast_t const *func_ast,
 c_ast_t const* (c_ast_find_type_any)( c_ast_t const *ast, c_ast_visit_dir_t dir,
                                       c_type_t const *type ) {
   return c_ast_visit(
-    ast, dir, &c_ast_vistor_type_any, (user_data_t){ .pc = type }
+    ast, dir, &c_ast_vistor_type_any, (user_data_t){ .pcv = type }
   );
 }
 
