@@ -377,9 +377,9 @@ static char const* get_opt_format( char short_opt ) {
  */
 NODISCARD
 static char const* get_opt_help( int opt ) {
-  unsigned const uopt = STATIC_CAST( unsigned, opt );
-  assert( uopt < ARRAY_SIZE( CLI_OPTIONS_HELP ) );
-  char const *const help = CLI_OPTIONS_HELP[ uopt ];
+  assert( opt > 0 );
+  assert( (unsigned)opt < ARRAY_SIZE( CLI_OPTIONS_HELP ) );
+  char const *const help = CLI_OPTIONS_HELP[ opt ];
   assert( help != NULL );
   return help;
 }
