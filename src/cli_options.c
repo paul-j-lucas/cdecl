@@ -289,7 +289,7 @@ static void check_opt_mutually_exclusive( char opt, char const *opts ) {
 }
 
 /**
- * Chekcs option combinations for semantic errors.
+ * Checks option combinations for semantic errors.
  */
 static void check_options( void ) {
   check_opt_exclusive( COPT(HELP) );
