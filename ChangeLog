@@ -1,3 +1,12 @@
+2025-12-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Added assert(); removed uopt.
+
+2025-12-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, cli_options.c, options.c, options.h, types.h:
+     s/opt_typedefs/opt_predef_types/
+
 2025-12-10  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, util.c, util.h: Eliminated our own fmemopen.
