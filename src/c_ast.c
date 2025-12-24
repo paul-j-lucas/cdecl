@@ -628,7 +628,7 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
     //        }
     //      }
     //
-    // where it's a parameter pack of references, not a reference to a
+    // where it's a parameter pack of a reference, not a reference to a
     // parameter pack.
     //
     child_ast->is_param_pack = false;
