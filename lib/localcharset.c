@@ -813,10 +813,9 @@ locale_charset (void)
      environment variables (if present) or the codepage as a number.  */
   if (codeset != NULL && streq (codeset, "US-ASCII"))
     {
-      const char *locale;
       static char resultbuf[2 + 10 + 1];
 
-      locale = getenv ("LC_ALL");
+      const char *locale = getenv ("LC_ALL");
       if (locale == NULL || locale[0] == '\0')
         {
           locale = getenv ("LC_CTYPE");
@@ -912,16 +911,13 @@ locale_charset (void)
 
 # elif defined OS2
 
-  const char *locale;
   static char resultbuf[2 + 10 + 1];
-  ULONG cp[3];
-  ULONG cplen;
 
   codeset = NULL;
 
   /* Allow user to override the codeset, as set in the operating system,
      with standard language environment variables.  */
-  locale = getenv ("LC_ALL");
+  const char *locale = getenv ("LC_ALL");
   if (locale == NULL || locale[0] == '\0')
     {
       locale = getenv ("LC_CTYPE");
@@ -958,6 +954,9 @@ locale_charset (void)
 
   if (codeset == NULL)
     {
+      ULONG cp[3];
+      ULONG cplen;
+
       /* OS/2 has a function returning the locale's codepage as a number.  */
       if (DosQueryCp (sizeof (cp), cp, &cplen))
         codeset = "";

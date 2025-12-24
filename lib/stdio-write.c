@@ -107,10 +107,9 @@
     return (EXPRESSION);                                                      \
   else                                                                        \
     {                                                                         \
-      RETTYPE ret;                                                            \
       CLEAR_ERRNO                                                             \
       CLEAR_LastError                                                         \
-      ret = (EXPRESSION);                                                     \
+      RETTYPE ret = (EXPRESSION);                                             \
       if (FAILED)                                                             \
         {                                                                     \
           HANDLE_ENOSPC                                                       \
@@ -124,11 +123,9 @@
 int
 printf (const char *format, ...)
 {
-  int retval;
   va_list args;
-
   va_start (args, format);
-  retval = vfprintf (stdout, format, args);
+  int retval = vfprintf (stdout, format, args);
   va_end (args);
 
   return retval;
@@ -139,11 +136,9 @@ printf (const char *format, ...)
 int
 fprintf (FILE *stream, const char *format, ...)
 {
-  int retval;
   va_list args;
-
   va_start (args, format);
-  retval = vfprintf (stream, format, args);
+  int retval = vfprintf (stream, format, args);
   va_end (args);
 
   return retval;

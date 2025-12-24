@@ -27,11 +27,10 @@ mbtowc (wchar_t *pwc, const char *s, size_t n)
   else
     {
       mbstate_t state;
-      wchar_t wc;
-      size_t result;
-
       mbszero (&state);
-      result = mbrtowc (&wc, s, n, &state);
+
+      wchar_t wc;
+      size_t result = mbrtowc (&wc, s, n, &state);
       if (result == (size_t)-1 || result == (size_t)-2)
         {
           errno = EILSEQ;

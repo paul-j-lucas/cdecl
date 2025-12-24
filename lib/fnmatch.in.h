@@ -104,7 +104,6 @@ _GL_CXXALIAS_SYS (fnmatch, int,
 _GL_CXXALIASWARN (fnmatch);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef fnmatch
 # if HAVE_RAW_DECL_FNMATCH
 _GL_WARN_ON_USE (fnmatch,
                  "fnmatch does not portably work - "

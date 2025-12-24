@@ -128,7 +128,7 @@
   _GL_EXTERN_C_FUNC __VA_ARGS__ rettype rpl_func parameters
 
 /* _GL_FUNCDECL_SYS_NAME (func) expands to plain func if C++, and to
-   parenthsized func otherwise.  Parenthesization is needed in C23 if
+   parenthesized func otherwise.  Parenthesization is needed in C23 if
    the function is like strchr and so is a qualifier-generic macro
    that expands to something more complicated.  */
 #ifdef __cplusplus

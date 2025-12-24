@@ -165,7 +165,6 @@ mbrtoc32 (char32_t *pwc, const char *s, size_t n, mbstate_t *ps)
       char buf[4];
       const char *p;
       size_t m;
-      int res;
 
       switch (nstate)
         {
@@ -198,6 +197,7 @@ mbrtoc32 (char32_t *pwc, const char *s, size_t n, mbstate_t *ps)
 
       /* Here m > 0.  */
 
+      int res;
       {
 #  define FITS_IN_CHAR_TYPE(wc)  1
 #  include "mbrtowc-impl-utf8.h"

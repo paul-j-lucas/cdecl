@@ -80,7 +80,6 @@ _GL_CXXALIAS_SYS (isalnum_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (isalnum_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef isalnum_l
 # if HAVE_RAW_DECL_ISALNUM_L
 _GL_WARN_ON_USE (isalnum_l, "isalnum_l is unportable - "
                  "use gnulib module isalnum_l for portability");
@@ -98,7 +97,6 @@ _GL_CXXALIAS_SYS (isalpha_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (isalpha_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef isalpha_l
 # if HAVE_RAW_DECL_ISALPHA_L
 _GL_WARN_ON_USE (isalpha_l, "isalpha_l is unportable - "
                  "use gnulib module isalpha_l for portability");
@@ -111,7 +109,6 @@ _GL_WARN_ON_USE (isalpha_l, "isalpha_l is unportable - "
 _GL_EXTERN_C int isblank (int c);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef isblank
 # if HAVE_RAW_DECL_ISBLANK
 _GL_WARN_ON_USE (isblank, "isblank is unportable - "
                  "use gnulib module isblank for portability");
@@ -129,7 +126,6 @@ _GL_CXXALIAS_SYS (isblank_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (isblank_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef isblank_l
 # if HAVE_RAW_DECL_ISBLANK_L
 _GL_WARN_ON_USE (isblank_l, "isblank_l is unportable - "
                  "use gnulib module isblank_l for portability");
@@ -147,7 +143,6 @@ _GL_CXXALIAS_SYS (iscntrl_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (iscntrl_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef iscntrl_l
 # if HAVE_RAW_DECL_ISCNTRL_L
 _GL_WARN_ON_USE (iscntrl_l, "iscntrl_l is unportable - "
                  "use gnulib module iscntrl_l for portability");
@@ -165,7 +160,6 @@ _GL_CXXALIAS_SYS (isdigit_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (isdigit_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef isdigit_l
 # if HAVE_RAW_DECL_ISDIGIT_L
 _GL_WARN_ON_USE (isdigit_l, "isdigit_l is unportable - "
                  "use gnulib module isdigit_l for portability");
@@ -183,7 +177,6 @@ _GL_CXXALIAS_SYS (isgraph_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (isgraph_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef isgraph_l
 # if HAVE_RAW_DECL_ISGRAPH_L
 _GL_WARN_ON_USE (isgraph_l, "isgraph_l is unportable - "
                  "use gnulib module isgraph_l for portability");
@@ -201,7 +194,6 @@ _GL_CXXALIAS_SYS (islower_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (islower_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef islower_l
 # if HAVE_RAW_DECL_ISLOWER_L
 _GL_WARN_ON_USE (islower_l, "islower_l is unportable - "
                  "use gnulib module islower_l for portability");
@@ -219,7 +211,6 @@ _GL_CXXALIAS_SYS (isprint_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (isprint_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef isprint_l
 # if HAVE_RAW_DECL_ISPRINT_L
 _GL_WARN_ON_USE (isprint_l, "isprint_l is unportable - "
                  "use gnulib module isprint_l for portability");
@@ -237,7 +228,6 @@ _GL_CXXALIAS_SYS (ispunct_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (ispunct_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef ispunct_l
 # if HAVE_RAW_DECL_ISPUNCT_L
 _GL_WARN_ON_USE (ispunct_l, "ispunct_l is unportable - "
                  "use gnulib module ispunct_l for portability");
@@ -255,7 +245,6 @@ _GL_CXXALIAS_SYS (isspace_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (isspace_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef isspace_l
 # if HAVE_RAW_DECL_ISSPACE_L
 _GL_WARN_ON_USE (isspace_l, "isspace_l is unportable - "
                  "use gnulib module isspace_l for portability");
@@ -273,7 +262,6 @@ _GL_CXXALIAS_SYS (isupper_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (isupper_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef isupper_l
 # if HAVE_RAW_DECL_ISUPPER_L
 _GL_WARN_ON_USE (isupper_l, "isupper_l is unportable - "
                  "use gnulib module isupper_l for portability");
@@ -291,7 +279,6 @@ _GL_CXXALIAS_SYS (isxdigit_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (isxdigit_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef isxdigit_l
 # if HAVE_RAW_DECL_ISXDIGIT_L
 _GL_WARN_ON_USE (isxdigit_l, "isxdigit_l is unportable - "
                  "use gnulib module isxdigit_l for portability");
@@ -309,7 +296,6 @@ _GL_CXXALIAS_SYS (tolower_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (tolower_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef tolower_l
 # if HAVE_RAW_DECL_TOLOWER_L
 _GL_WARN_ON_USE (tolower_l, "tolower_l is unportable - "
                  "use gnulib module tolower_l for portability");
@@ -327,7 +313,6 @@ _GL_CXXALIAS_SYS (toupper_l, int, (int c, locale_t locale));
 _GL_CXXALIASWARN (toupper_l);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef toupper_l
 # if HAVE_RAW_DECL_TOUPPER_L
 _GL_WARN_ON_USE (toupper_l, "toupper_l is unportable - "
                  "use gnulib module toupper_l for portability");

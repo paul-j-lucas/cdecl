@@ -42,11 +42,10 @@ btoc32 (int c)
   if (c != EOF)
     {
       mbstate_t state;
-      char s[1];
-      char32_t wc;
-
       mbszero (&state);
+      char s[1];
       s[0] = (unsigned char) c;
+      char32_t wc;
       if (mbrtoc32 (&wc, s, 1, &state) <= 1)
         return wc;
     }

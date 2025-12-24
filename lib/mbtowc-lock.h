@@ -50,10 +50,9 @@ static int
 mbtowc_with_lock (wchar_t *pwc, const char *p, size_t m)
 {
   CRITICAL_SECTION *lock = gl_get_mbtowc_lock ();
-  int ret;
 
   EnterCriticalSection (lock);
-  ret = mbtowc_unlocked (pwc, p, m);
+  int ret = mbtowc_unlocked (pwc, p, m);
   LeaveCriticalSection (lock);
 
   return ret;
@@ -89,11 +88,10 @@ mbtowc_with_lock (wchar_t *pwc, const char *p, size_t m)
   if (pthread_in_use())
     {
       pthread_mutex_t *lock = gl_get_mbtowc_lock ();
-      int ret;
 
       if (pthread_mutex_lock (lock))
         abort ();
-      ret = mbtowc_unlocked (pwc, p, m);
+      int ret = mbtowc_unlocked (pwc, p, m);
       if (pthread_mutex_unlock (lock))
         abort ();
 
@@ -111,11 +109,10 @@ static int
 mbtowc_with_lock (wchar_t *pwc, const char *p, size_t m)
 {
   mtx_t *lock = gl_get_mbtowc_lock ();
-  int ret;
 
   if (mtx_lock (lock) != thrd_success)
     abort ();
-  ret = mbtowc_unlocked (pwc, p, m);
+  int ret = mbtowc_unlocked (pwc, p, m);
   if (mtx_unlock (lock) != thrd_success)
     abort ();
 

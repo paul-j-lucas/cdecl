@@ -653,7 +653,6 @@ _GL_CXXALIAS_SYS (wctype, wctype_t, (const char *name));
 _GL_CXXALIASWARN (wctype);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef wctype
 # if HAVE_RAW_DECL_WCTYPE
 _GL_WARN_ON_USE (wctype, "wctype is unportable - "
                  "use gnulib module wctype for portability");
@@ -681,7 +680,6 @@ _GL_CXXALIAS_SYS (iswctype, int, (wint_t wc, wctype_t desc));
 _GL_CXXALIASWARN (iswctype);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef iswctype
 # if HAVE_RAW_DECL_ISWCTYPE
 _GL_WARN_ON_USE (iswctype, "iswctype is unportable - "
                  "use gnulib module iswctype for portability");
@@ -735,7 +733,6 @@ _GL_CXXALIAS_SYS (wctrans, wctrans_t, (const char *name));
 _GL_CXXALIASWARN (wctrans);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef wctrans
 # if HAVE_RAW_DECL_WCTRANS
 _GL_WARN_ON_USE (wctrans, "wctrans is unportable - "
                  "use gnulib module wctrans for portability");
@@ -763,7 +760,6 @@ _GL_CXXALIAS_SYS (towctrans, wint_t, (wint_t wc, wctrans_t desc));
 _GL_CXXALIASWARN (towctrans);
 # endif
 #elif defined GNULIB_POSIXCHECK
-# undef towctrans
 # if HAVE_RAW_DECL_TOWCTRANS
 _GL_WARN_ON_USE (towctrans, "towctrans is unportable - "
                  "use gnulib module towctrans for portability");
