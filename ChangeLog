@@ -1,3 +1,8 @@
+2025-12-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Simpler DECL_UNUSED.
+   * util.c, util.h: Made IDENT_CHARS and WS_CHARS be constants, not macros.
+
 2025-12-23  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, c_ast_util.c, english.c, types.h: s/pc/pcv/
