@@ -533,17 +533,6 @@
   PERROR_EXIT_IF( fstat( (FD), (PSTAT) ) < 0, EX_IOERR )
 
 /**
- * Identifier characters.
- *
- * @sa is_ident()
- * @sa is_ident_first()
- * @sa str_is_ident_prefix()
- */
-#define IDENT_CHARS               "ABCDEFGHIJKLMNOPQRSTUVWXYZ_" \
-                                  "abcdefghijklmnopqrstuvwxyz" \
-                                  "0123456789"
-
-/**
  * Shorthand for
  * <code>((</code><i>EXPR1</i><code>)</code> <code>?</code>
  * <code>(</code><i>EXPR1</i><code>)</code> <code>:</code>
@@ -1031,10 +1020,21 @@
   /// @endcond
 #endif /* HAVE___VA_OPT__ */
 
+////////// extern variables ///////////////////////////////////////////////////
+
+/**
+ * Identifier characters.
+ *
+ * @sa is_ident()
+ * @sa is_ident_first()
+ * @sa str_is_ident_prefix()
+ */
+extern char const IDENT_CHARS[];
+
 /**
  * Whitespace characters.
  */
-#define WS_CHARS                  " \n\t\r\f\v"
+extern char const WS_CHARS[];
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -1416,7 +1416,7 @@ inline bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @return Returns `true` only if \a c is either an alphanumeric or `_`
  * character.
  *
- * @sa #IDENT_CHARS
+ * @sa IDENT_CHARS
  * @sa is_ident_first()
  */
 NODISCARD
@@ -1431,7 +1431,7 @@ inline bool is_ident( char c ) {
  * @return Returns `true` only if \a c is either an alphabetic or `_`
  * character.
  *
- * @sa #IDENT_CHARS
+ * @sa IDENT_CHARS
  * @sa is_ident()
  */
 NODISCARD
@@ -1582,7 +1582,7 @@ inline bool str_is_empty( char const *s ) {
  * @param s_len The length of \a s.
  * @return Returns `true` only if it is.
  *
- * @sa #IDENT_CHARS
+ * @sa IDENT_CHARS
  * @sa str_is_prefix()
  */
 NODISCARD

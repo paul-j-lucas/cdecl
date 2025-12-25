@@ -47,6 +47,12 @@
 #include <sys/stat.h>                   /* for fstat() */
 #include <sysexits.h>
 
+char const IDENT_CHARS[] =        "ABCDEFGHIJKLMNOPQRSTUVWXYZ_" \
+                                  "abcdefghijklmnopqrstuvwxyz" \
+                                  "0123456789";
+
+char const WS_CHARS[] =           " \n\t\r\f\v";
+
 /// @endcond
 
 /**
