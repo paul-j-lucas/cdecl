@@ -353,8 +353,7 @@
  * @param TYPE The type of the object.
  * @param N The array size.
  */
-#define DECL_UNUSED(TYPE,N) \
-  _Alignas(TYPE) char UNIQUE_NAME(unused)[ sizeof(TYPE) * (N) ]
+#define DECL_UNUSED(TYPE,N)       TYPE UNIQUE_NAME(unused)[ (N) ]
 
 /**
  * Shorthand for printing to standard error.
