@@ -98,7 +98,7 @@ static rb_tree_t    typedef_set;        ///< Global set of `typedef`s.
  * that far.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_KNR_C[] = {
   PT( "typedef          char *caddr_t" ),
@@ -117,7 +117,7 @@ static predef_type_t const PREDEFINED_KNR_C[] = {
  * Predefined types for C89.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_C_89[] = {
   PT( "typedef          long    clock_t" ),
@@ -130,7 +130,12 @@ static predef_type_t const PREDEFINED_STD_C_89[] = {
   PT( "struct                   fpos_t" ),
   PT( "typedef          long    ptrdiff_t" ),
   PT( "typedef          int     sig_atomic_t" ),
+
+  //
+  // If this is changed, c_tid_is_size_t() must be changed to match.
+  //
   PT( "typedef unsigned long    size_t" ),
+
   PT( "typedef          long   ssize_t" ),
   PT( "typedef          void   *va_list" ),
 
@@ -141,7 +146,7 @@ static predef_type_t const PREDEFINED_STD_C_89[] = {
  * Predefined types for C95.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_C_95[] = {
   PT( "struct                 mbstate_t" ),
@@ -156,7 +161,7 @@ static predef_type_t const PREDEFINED_STD_C_95[] = {
  * Predefined types for C99.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_C_99[] = {
   PT( "typedef   signed char   int8_t" ),
@@ -198,7 +203,7 @@ static predef_type_t const PREDEFINED_STD_C_99[] = {
  * Predefined types for C11.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_C_11[] = {
   PT( "typedef _Atomic          _Bool     atomic_bool" ),
@@ -264,7 +269,7 @@ static predef_type_t const PREDEFINED_STD_C_11[] = {
  * Predefined types for C23.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_C_23[] = {
   PT( "typedef void  *nullptr_t" ),
@@ -276,7 +281,7 @@ static predef_type_t const PREDEFINED_STD_C_23[] = {
  * Predefined types for Floating-point extensions for C.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_FLOATING_POINT_EXTENSIONS[] = {
   PT( "typedef          float       _Float16" ),
@@ -315,7 +320,7 @@ static predef_type_t const PREDEFINED_FLOATING_POINT_EXTENSIONS[] = {
  * Predefined types for `pthread.h`.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_PTHREAD_H[] = {
   PT( "typedef unsigned long  pthread_t" ),
@@ -338,7 +343,7 @@ static predef_type_t const PREDEFINED_PTHREAD_H[] = {
  * Predefined types for C++.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_CPP[] = {
   PT( "namespace std { class                    bad_alloc; }" ),
@@ -421,7 +426,7 @@ static predef_type_t const PREDEFINED_STD_CPP[] = {
  * Predefined types for C++11.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_CPP_11[] = {
   PT( "namespace std           {    struct      adopt_lock_t; }" ),
@@ -530,7 +535,7 @@ static predef_type_t const PREDEFINED_STD_CPP_11[] = {
  * Predefined types for C++17.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_CPP_17[] = {
   PT( "namespace std             { enum class     align_val_t; }" ),
@@ -573,7 +578,7 @@ static predef_type_t const PREDEFINED_STD_CPP_17[] = {
  * Predefined types for C++20.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  *
  * @sa PREDEFINED_STD_CPP_20_REQUIRED
  */
@@ -634,7 +639,7 @@ static predef_type_t const PREDEFINED_STD_CPP_20[] = {
  * Predefined required types for C++20.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  *
  * @sa PREDEFINED_STD_CPP_20
  */
@@ -651,7 +656,7 @@ static predef_type_t const PREDEFINED_STD_CPP_20_REQUIRED[] = {
  * Predefined types for C++23.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_CPP_23[] = {
   PT( "namespace std {      using   float16_t = float; }" ),
@@ -679,7 +684,7 @@ static predef_type_t const PREDEFINED_STD_CPP_23[] = {
  * Predefined types for C++26.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_STD_CPP_26[] = {
   PT( "namespace std::contracts { enum class assertion_kind; }" ),
@@ -726,7 +731,7 @@ static predef_type_t const PREDEFINED_EMBEDDED_C[] = {
  * Predefined GNU C types.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_GNU_C[] = {
   PT( "typedef _Float128   __float128" ),
@@ -773,7 +778,7 @@ static predef_type_t const PREDEFINED_GNU_C[] = {
  * Predefined miscellaneous standard-ish types.
  *
  * @note The underlying types used here are merely typical and do not
- * necessarily match the underlying type on any particular platform.
+ * necessarily match the underlying types on any particular platform.
  */
 static predef_type_t const PREDEFINED_MISC[] = {
   PT( "typedef  int32_t       blkcnt_t" ),

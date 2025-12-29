@@ -1509,7 +1509,7 @@ inline c_tid_t c_tid_compl( c_tid_t tids ) {
 }
 
 /**
- * Checks whether \a tids is all of \a is_tids but not also any one of \a
+ * Checks whether \a tids is all of \a is_tids but _not_ also any one of \a
  * except_tids.
  *
  * @param tids The \ref c_tid_t to check.
@@ -1517,6 +1517,8 @@ inline c_tid_t c_tid_compl( c_tid_t tids ) {
  * @param except_tids The bitwise-or of \ref c_tid_t to exclude.
  * @return Returns `true` only if \a tids contains any of \a is_tids, but not
  * any of \a except_tids.
+ *
+ * @sa c_tid_is_any()
  */
 NODISCARD
 inline bool c_tid_is_except_any( c_tid_t tids, c_tid_t is_tids,
@@ -1544,6 +1546,9 @@ inline c_tid_t c_tid_no_tpid( c_tid_t tids ) {
  * @param j_tids The second \ref c_tid_t.
  * @return Returns `true` only if any \a i_tids are among any \a j_tids.
  *
+ * @sa c_tid_is_except_any()
+ * @sa c_tid_is_none()
+ * @sa c_tid_is_size_t()
  * @sa c_type_is_any()
  */
 NODISCARD
@@ -1561,6 +1566,7 @@ inline bool c_tid_is_any( c_tid_t i_tids, c_tid_t j_tids ) {
  * @note This function is useful only when the part ID of \a tids can be any
  * part ID.
  *
+ * @sa c_tid_is_any()
  * @sa c_type_is_none()
  */
 NODISCARD
