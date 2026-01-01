@@ -70,6 +70,11 @@
 # include <sys/loadavg.h>
 #endif
 
+/* QNX declares getprogname() in <sys/process.h>.  */
+#if (@GNULIB_GETPROGNAME@ || defined GNULIB_POSIXCHECK) && @HAVE_SYS_PROCESS_H@
+# include <sys/process.h>
+#endif
+
 /* Native Windows platforms declare _mktemp() in <io.h>.  */
 #if defined _WIN32 && !defined __CYGWIN__
 # include <io.h>

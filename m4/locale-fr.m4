@@ -156,7 +156,7 @@ AC_DEFUN_ONCE([gt_LOCALE_FR_UTF8],
       *-musl* | midipix*)
         dnl On musl libc, all kinds of ll_CC.UTF-8 locales exist, even without
         dnl any locale file on disk. But they are effectively equivalent to the
-        dnl C.UTF-8 locale, except for locale categories (such as LC_MESSSAGES)
+        dnl C.UTF-8 locale, except for locale categories (such as LC_MESSAGES)
         dnl for which localizations (.mo files) have been installed.
         gt_cv_locale_fr_utf8=fr_FR.UTF-8
         ;;
