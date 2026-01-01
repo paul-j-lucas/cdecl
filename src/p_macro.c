@@ -3173,7 +3173,7 @@ void p_macros_init( void ) {
   );
   ATEXIT( &p_macros_cleanup );
 
-  extern void p_predefine_macros( void );
+  void p_predefine_macros( void );
   p_predefine_macros();
 }
 
