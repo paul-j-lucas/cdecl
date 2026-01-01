@@ -2113,25 +2113,6 @@
    * c_sname.c: Added NODISCARD.
    * parse.c: Replaced cdecl_parse_comment_start() and cdecl_parse_q() with
      no_infer_command().
-   * Doxyfile, Makefile.am, bootstrap, cdecl.css, configure.ac, lcovrc,
-     pjl_compile.m4, makedoc.sh, man/Makefile.am, man/man1/Makefile.am,
-     man/man1/c++decl.1, cdecl.1, src/Makefile.am, autocomplete.c,
-     autocomplete.h, c_ast.c, c_ast.h, c_ast_check.c, c_ast_check.h,
-     c_ast_util.c, c_ast_util.h, c_keyword.c, c_keyword.h, c_kind.c, c_kind.h,
-     c_lang.c, c_lang.h, c_operator.c, c_operator.h, c_sglob.c, c_sglob.h,
-     c_sname.c, c_sname.h, c_type.c, c_type.h, c_typedef.c, c_typedef.h,
-     cdecl.c, cdecl.h, cdecl_command.c, cdecl_command.h, cdecl_keyword.c,
-     cdecl_keyword.h, cdecl_lldb.py, cdecl_parser.h, cli_options.c,
-     cli_options.h, color.c, color.h, conf_file.c, conf_file.h, dam_lev.c,
-     dam_lev.h, decl_flags.h, did_you_mean.c, did_you_mean.h, dump.c, dump.h,
-     english.c, english.h, gibberish.c, gibberish.h, help.c, help.h, lexer.h,
-     lexer.l, lines.sh, literals.c, literals.h, options.c, options.h, parse.c,
-     parse.h, parser.y, pjl_config.h, print.c, print.h, prompt.c, prompt.h,
-     read_line.c, read_line.h, red_black.c, red_black.h, red_black_test.c,
-     set_options.c, set_options.h, show.c, show.h, slist.c, slist.h,
-     slist_test.c, strbuf.c, strbuf.h, types.h, unit_test.h, util.c, util.h,
-     test/Makefile.am, not_in_Makefile.sh, run_test.sh, update_test.sh: Updated
-     copyright year.
    * infer-command.out, infer-command.test: Added test for // and /* for
      infer-command.
 
@@ -4059,24 +4040,6 @@
      consolidation.
    * test/Makefile.am, semicolon.out, semicolon.test: Test consolidation.
    * run_test.sh: Simplified.
-   * Doxyfile, Makefile.am, bootstrap, cdecl.css, configure.ac, lcovrc,
-     makedoc.sh, man/Makefile.am, man/man1/Makefile.am, man/man1/c++decl.1,
-     cdecl.1, src/Makefile.am, autocomplete.c, c_ast.c, c_ast.h, c_ast_check.c,
-     c_ast_check.h, c_ast_util.c, c_ast_util.h, c_keyword.c, c_keyword.h,
-     c_kind.c, c_kind.h, c_lang.c, c_lang.h, c_operator.c, c_operator.h,
-     c_sglob.c, c_sglob.h, c_sname.c, c_sname.h, c_type.c, c_type.h,
-     c_typedef.c, c_typedef.h, cdecl.c, cdecl.h, cdecl_command.c,
-     cdecl_command.h, cdecl_keyword.c, cdecl_keyword.h, cdecl_lldb.py,
-     cdecl_parser.h, cli_options.c, cli_options.h, color.c, color.h, dam_lev.c,
-     dam_lev.h, did_you_mean.c, did_you_mean.h, dump.c, dump.h, english.c,
-     english.h, gibberish.c, gibberish.h, help.c, help.h, lexer.h, lexer.l,
-     lines.sh, literals.c, literals.h, options.c, options.h, parser.y,
-     pjl_config.h, print.c, print.h, prompt.c, prompt.h, read_line.c,
-     read_line.h, red_black.c, red_black.h, red_black_test.c, set_options.c,
-     set_options.h, slist.c, slist.h, slist_test.c, strbuf.c, strbuf.h,
-     types.h, unit_test.h, util.c, util.h, test/Makefile.am,
-     not_in_Makefile.sh, run_test.sh, update_test.sh: Updated copyright year
-     range latest year to 2023.
    * test/Makefile.am: Test consolidation.
 
 2023-01-03  Paul J. Lucas <paul@lucasmail.org>
@@ -6229,10 +6192,6 @@
    * parser.y: s/bitmask/flags/
    * gibberish.c, gibberish.h, parser.y, types.h: s/c_gib_flags_t/unsigned/
    * c_typedef.c, cdecl.c, strbuf.c, util.c, util.h: s/IF_EXIT/perror_exit_if/
-
-2022-03-13  Paul J. Lucas <paul@lucasmail.org>
-
-   * pjl_compile.m4: Updated copyright year to 2022.
 
 2022-03-12  Paul J. Lucas <paul@lucasmail.org>
 
@@ -9405,18 +9364,6 @@
    * parser.y: s/enum_class_struct_union_ast/enum_class_struct_union_c_ast/
    * did_you_mean.c: No longer doing unnecessary != comparison.
    * did_you_mean.c: Simplification in copy_keywords().
-   * Doxyfile, Makefile.am, configure.ac, pjl_compile.m4, man/Makefile.am,
-     man/man1/Makefile.am, cdecl.1, src/Makefile.am, autocomplete.c, c_ast.c,
-     c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c, c_keyword.h, c_kind.c,
-     c_kind.h, c_lang.c, c_lang.h, c_operator.c, c_operator.h, c_sname.c,
-     c_sname.h, c_type.c, c_type.h, c_typedef.c, c_typedef.h, cdecl.c, cdecl.h,
-     cdecl_lldb.py, color.c, color.h, dam_lev.c, dam_lev.h, debug.c, debug.h,
-     did_you_mean.c, did_you_mean.h, english.c, english.h, errors.c,
-     gibberish.c, gibberish.h, help.c, lexer.h, lexer.l, literals.c,
-     literals.h, options.c, options.h, parser.y, pjl_config.h, print.c,
-     print.h, prompt.c, prompt.h, red_black.c, red_black.h, set.c, slist.c,
-     slist.h, types.h, util.c, util.h, test/Makefile.am, not_in_Makefile.sh,
-     run_test.sh, update_test.sh: Updated copyright year to 2021.
 
 2020-12-31  Paul J. Lucas <paul@lucasmail.org>
 
@@ -11198,15 +11145,6 @@
 
 2020-01-06  Paul J. Lucas <paul@lucasmail.org>
 
-   * Doxyfile, Makefile.am, man/Makefile.am, man/man1/Makefile.am,
-     src/Makefile.am, autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c,
-     c_ast_util.h, c_keyword.c, c_keyword.h, c_kind.c, c_kind.h, c_lang.c,
-     c_lang.h, c_operator.c, c_operator.h, c_sname.c, c_sname.h, c_type.h,
-     c_typedef.c, c_typedef.h, cdecl.c, cdecl.h, color.c, color.h, debug.c,
-     debug.h, english.c, english.h, errors.c, gibberish.c, gibberish.h, help.c,
-     lexer.h, lexer.l, literals.c, literals.h, pjl_config.h, prompt.c,
-     prompt.h, red_black.c, red_black.h, slist.c, slist.h, typedefs.h, util.c,
-     util.h, run_test.sh: Updated copyright year to 2020.
    * configure.ac, cdecl.1, c_type.c, options.c, options.h, parser.y, print.c,
      print.h, set.c, test/Makefile.am, cdecl-Ii.out, cdecl-Iis.out,
      cdecl-Iiu.out, cdecl-Il.out, cdecl-Ill.out, cdecl-Ilull.out, cdecl-Is.out,
@@ -13687,7 +13625,6 @@
      parser.y, prompt.c, prompt.h, set.c, types.c, util.c, util.h: Added more
      @file comments.
    * color.c, color.h, options.c: Renamed parse_gcc_colors to colors_parse.
-   * lexer.l, parser.y: Added missing copyright/license.
    * AUTHORS: Added Alexander Dupuy; list of languages; mention of AST.
    * cdecl.1: Added Alexander Dupuy; fixed small stuff.
 
