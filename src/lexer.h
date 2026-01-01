@@ -65,7 +65,7 @@ enum lexer_find_kind {
   /**
    * Find C/C++ keywords.
    */
-  LEXER_FIND_C_KEYWORDS     = (1 << 0),
+  LEXER_FIND_C_KEYWORDS     = 1 << 0,
 
   /**
    * Find **cdecl** keywords.
@@ -77,12 +77,12 @@ enum lexer_find_kind {
    * @sa is_english_to_gibberish()
    * @sa is_gibberish_to_english()
    */
-  LEXER_FIND_CDECL_KEYWORDS = (1 << 1),
+  LEXER_FIND_CDECL_KEYWORDS = 1 << 1,
 
   /**
    * Find `typedef`'d names.
    */
-  LEXER_FIND_TYPES          = (1 << 2)
+  LEXER_FIND_TYPES          = 1 << 2
 };
 typedef enum lexer_find_kind lexer_find_kind_t;
 
