@@ -123,7 +123,6 @@ struct p_macro {
  * @param name The name to check.
  * @return Returns `true` only if it is.
  *
- * @sa is_VA_macro_name()
  * @sa p_token_is_macro()
  */
 NODISCARD
