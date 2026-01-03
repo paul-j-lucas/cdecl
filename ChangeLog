@@ -1,3 +1,7 @@
+2026-01-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1: Added mention about -t being given twice.
+
 2026-01-01  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c: Removed "extern".
