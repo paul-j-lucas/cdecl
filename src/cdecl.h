@@ -59,7 +59,7 @@
 /**
  * **cdecl** latest copyright year.
  */
-#define CDECL_COPYRIGHT_YEAR      "2025"
+#define CDECL_COPYRIGHT_YEAR      "2026"
 
 /**
  * Spaces per dump indent level.
