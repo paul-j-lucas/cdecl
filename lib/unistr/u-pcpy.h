@@ -1,5 +1,5 @@
 /* Copy piece of UTF-8/16/32 string, return pointer after last written unit.
-   Copyright (C) 2020-2025 Free Software Foundation, Inc.
+   Copyright (C) 2020-2026 Free Software Foundation, Inc.
    Written by Bruno Haible <bruno@clisp.org>, 2023.
 
    This file is free software: you can redistribute it and/or modify
