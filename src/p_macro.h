@@ -126,7 +126,7 @@ struct p_macro {
  * @sa p_token_is_macro()
  */
 NODISCARD
-bool macro_name_is_predefined( char const *name );
+bool macro_is_predefined( char const *name );
 
 /**
  * Frees all memory used by \a arg_list but _not_ \a arg_list itself.

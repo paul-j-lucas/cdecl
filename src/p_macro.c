@@ -424,8 +424,8 @@ static rb_tree_t  macro_set;            ///< Global set of macros.
  * @param name The name to check.
  * @return Returns `true` only if it is.
  *
+ * @sa macro_is_predefined()
  * @sa macro_name_check()
- * @sa macro_name_is_predefined()
  */
 NODISCARD
 static inline bool macro_name_is__VA_( char const *name ) {
@@ -442,7 +442,7 @@ static inline bool macro_name_is__VA_( char const *name ) {
  * @param name_loc The source location of \a name.
  * @return Returns `true` only if all checks passed.
  *
- * @sa macro_name_is_predefined()
+ * @sa macro_is_predefined()
  * @sa macro_name_is__VA_()
  */
 NODISCARD
@@ -453,7 +453,7 @@ static bool macro_name_check( char const *name, c_loc_t const *name_loc ) {
   if ( !cdecl_is_initialized )
     return true;
 
-  if ( macro_name_is_predefined( name ) ) {
+  if ( macro_is_predefined( name ) ) {
     print_error( name_loc,
       "\"%s\": predefined macro may not be redefined\n", name
     );
@@ -2938,7 +2938,7 @@ static void va_args_mex_print_macro( mex_state_t *mex ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool macro_name_is_predefined( char const *name ) {
+bool macro_is_predefined( char const *name ) {
   assert( name != NULL );
   if ( macro_name_is__VA_( name ) )
     return true;

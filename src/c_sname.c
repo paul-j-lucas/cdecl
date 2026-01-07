@@ -175,7 +175,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     c_scope_data_t const *const scope_data = c_scope_data( scope );
     char const *const name = scope_data->name;
 
-    ok = !macro_name_is_predefined( name );
+    ok = !macro_is_predefined( name );
     if ( !ok ) {
       print_error( sname_loc, "\"%s\" is a predefined macro\n", name );
       break;
