@@ -31,7 +31,6 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "red_black.h"
-#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -40,6 +39,7 @@
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL */
 #include <stdlib.h>                     /* or free(3) */
+#include <string.h>                     /* for memcpy */
 
 /// @endcond
 
@@ -584,8 +584,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
     tree->root = z_new_node;            // tree was empty
   } else {
     // Determine which child of the parent the new node should be.
-    rb_dir_t const dir =
-      STATIC_CAST( rb_dir_t, rb_tree_cmp( tree, y_parent, data ) >= 0 );
+    rb_dir_t const dir = (rb_dir_t)(rb_tree_cmp( tree, y_parent, data ) >= 0);
     assert( y_parent->child[dir] == &tree->nil );
     y_parent->child[dir] = z_new_node;
   }
