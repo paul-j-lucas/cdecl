@@ -39,6 +39,13 @@
 #include <stdbool.h>
 #include <stddef.h>                     /* for max_align_t */
 
+#ifndef NODISCARD
+# define NODISCARD                      /* nothing */
+#endif /* NODISCARD */
+#ifndef PJL_DISCARD
+# define PJL_DISCARD                    /* nothing */
+#endif /* PJL_DISCARD */
+
 /// @endcond
 
 /**
