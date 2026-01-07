@@ -428,7 +428,7 @@ static rb_tree_t  macro_set;            ///< Global set of macros.
  * @sa macro_name_check()
  */
 NODISCARD
-static inline bool macro_name_is__VA_( char const *name ) {
+static inline bool macro_is__VA_( char const *name ) {
   return  strcmp( name, L_PRE___VA_ARGS__ ) == 0 ||
           strcmp( name, L_PRE___VA_OPT__  ) == 0;
 }
@@ -443,7 +443,7 @@ static inline bool macro_name_is__VA_( char const *name ) {
  * @return Returns `true` only if all checks passed.
  *
  * @sa macro_is_predefined()
- * @sa macro_name_is__VA_()
+ * @sa macro_is__VA_()
  */
 NODISCARD
 static bool macro_name_check( char const *name, c_loc_t const *name_loc ) {
@@ -2940,7 +2940,7 @@ static void va_args_mex_print_macro( mex_state_t *mex ) {
 
 bool macro_is_predefined( char const *name ) {
   assert( name != NULL );
-  if ( macro_name_is__VA_( name ) )
+  if ( macro_is__VA_( name ) )
     return true;
   p_macro_t const *const macro = p_macro_find( name );
   return macro != NULL && macro->is_dynamic;
@@ -3028,7 +3028,7 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
   assert( name_loc != NULL );
   assert( fout != NULL );
 
-  if ( macro_name_is__VA_( name ) ) {
+  if ( macro_is__VA_( name ) ) {
     print_error( name_loc, "\"%s\" only valid in macro definition\n", name );
     return false;
   }
@@ -3134,7 +3134,7 @@ bool p_macro_undef( char const *name, c_loc_t const *name_loc ) {
   assert( name != NULL );
   assert( name_loc != NULL );
 
-  if ( macro_name_is__VA_( name ) )
+  if ( macro_is__VA_( name ) )
     goto predef_macro;
 
   p_macro_t const find_macro = { .name = name };
