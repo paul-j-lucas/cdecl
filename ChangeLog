@@ -1,3 +1,15 @@
+2026-01-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c: s/macro_name_is__VA_/macro_is__VA_/
+   * c_sname.c, p_macro.c, p_macro.h, p_token.h:
+     s/macro_name_is_predefined/macro_is_predefined/
+
+2026-01-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: No longer using STATIC_CAST & util.h; added missing
+     <string.h>.
+   * red_black.h: Added #ifndef for NODISCARD and PJL_DISCARD.
+
 2026-01-03  Paul J. Lucas <paul@lucasmail.org>
 
    * share/man/man1/cdecl.1: Added missing C23-nullptr_t from predefined types.
