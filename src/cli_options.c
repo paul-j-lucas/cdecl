@@ -691,6 +691,8 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
     setvbuf( stdout, /*buf=*/NULL, _IONBF, /*size=*/0 );
 
   if ( opt_commands ) {
+    if ( *pargc > 0 )                   // cdecl -K foo
+      print_usage( EX_USAGE );
     print_commands();
     exit( EX_OK );
   }
@@ -704,6 +706,8 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
     opt_read_config = true;
 
   if ( opt_options ) {
+    if ( *pargc > 0 )                   // cdecl -O foo
+      print_usage( EX_USAGE );
     print_options();
     exit( EX_OK );
   }
