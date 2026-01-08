@@ -1,5 +1,6 @@
 2026-01-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.c: Added assert().
    * cli_options-error.out, cli_options-error.test: Added tests for -K and -O.
    * util.c, cli_options-error.out: fatal_error() now includes the word
      "error".
