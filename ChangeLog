@@ -1,3 +1,8 @@
+2026-01-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: -K and -O options now check there are no command-line
+     arguments.
+
 2026-01-07  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c: s/macro_name_is__VA_/macro_is__VA_/
