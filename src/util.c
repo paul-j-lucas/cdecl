@@ -208,7 +208,9 @@ unsigned long long check_strtoull( char const *s, unsigned long long min,
 }
 
 void fatal_error( int status, char const *format, ... ) {
+  assert( status != EX_OK );
   assert( format != NULL );
+
   EPRINTF( "%s: error: ", prog_name );
   va_list args;
   va_start( args, format );
