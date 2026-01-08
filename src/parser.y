@@ -235,7 +235,7 @@
  * @sa #PARSE_ASSERT()
  */
 #define PARSE_ABORT() \
-  BLOCK( parse_cleanup( /*fatal_error=*/true ); YYABORT; )
+  BLOCK( parse_cleanup( /*is_fatal_error=*/true ); YYABORT; )
 
 /**
  * Evaluates \a EXPR: if `false`, calls #PARSE_ABORT().
@@ -1212,19 +1212,19 @@ static void l_punct_expected( int line, char punct ) {
 /**
  * Cleans up individial parse data after each parse.
  *
- * @param fatal_error Must be `true` only if a fatal semantic error has
+ * @param is_fatal_error Must be `true` only if a fatal semantic error has
  * occurred and `YYABORT` is about to be called to bail out of parsing by
  * returning from yyparse().
  */
-static void parse_cleanup( bool fatal_error ) {
+static void parse_cleanup( bool is_fatal_error ) {
   //
   // We need to reset the lexer differently depending on whether we completed a
   // parse with a fatal error.  If so, do a "hard" reset that also resets the
   // EOF flag of the lexer.
   //
-  lexer_reset( /*hard_reset=*/fatal_error );
+  lexer_reset( /*hard_reset=*/is_fatal_error );
 
-  if ( fatal_error && yytext[0] != '\n' ) {
+  if ( is_fatal_error && yytext[0] != '\n' ) {
     //
     // Generally, PARSE_ABORT() was called before getting to the '\n' at the
     // end of the line, so Flex will not have incremented yylineno: manually
@@ -1286,7 +1286,7 @@ static void yyerror( char const *msg ) {
   // called so we won't bail out of parsing by returning from yyparse(); hence,
   // parsing will continue.
   //
-  parse_cleanup( /*fatal_error=*/false );
+  parse_cleanup( /*is_fatal_error=*/false );
 }
 
 /** @} */
@@ -1981,7 +1981,7 @@ command_list
     { //
       // We get here only after a successful parse.
       //
-      parse_cleanup( /*fatal_error=*/false );
+      parse_cleanup( /*is_fatal_error=*/false );
     }
   ;
 
