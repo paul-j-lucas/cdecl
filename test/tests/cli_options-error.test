@@ -11,6 +11,10 @@ test_cdecl -k
 test_cdecl --color=X
 test_cdecl -kX
 
+test_cdecl --commands X
+test_cdecl -K X
+test_cdecl --commands=X
+
 test_cdecl --config
 test_cdecl --config=
 test_cdecl -c
@@ -46,7 +50,6 @@ test_cdecl -LX
 test_cdecl --help X
 test_cdecl -h X
 test_cdecl --help=X
-test_cdecl -hX
 test_cdecl --help --version
 test_cdecl -hv
 
@@ -54,6 +57,10 @@ test_cdecl --lang
 test_cdecl -X
 test_cdecl --lang=X
 test_cdecl -xX
+
+test_cdecl --options X
+test_cdecl -O X
+test_cdecl --options=X
 
 test_cdecl --output
 test_cdecl --output=
@@ -67,6 +74,5 @@ test_cdecl -wX
 test_cdecl --version X
 test_cdecl -v X
 test_cdecl --version=X
-test_cdecl -vX
 
 # vim:set syntax=sh et sw=2 ts=2:

@@ -6,6 +6,78 @@ $ cdecl --color=X
 cdecl: error: "X": invalid value for --color/-k; must be always, auto, isatty, never, not_file, not_isreg, tty
 $ cdecl -kX
 cdecl: error: "X": invalid value for --color/-k; must be always, auto, isatty, never, not_file, not_isreg, tty
+$ cdecl --commands X
+usage: cdecl [options] [command...]
+options:
+  --alt-tokens        (-a) Print alternative tokens.
+  --color=ARG         (-k) Colorize output [default: not_file].
+  --commands          (-K) Print commands (for shell completion).
+  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --debug[=ARG]       (-d) Print cdecl debug output.
+  --digraphs          (-2) Print digraphs.
+  --east-const        (-e) Print in "east const" form.
+  --echo-commands     (-E) Echo commands given before corresponding output.
+  --explicit-ecsu=ARG (-S) Print "class", "struct", "union" explicitly.
+  --explicit-int=ARG  (-i) Print "int" explicitly.
+  --file=ARG          (-f) Read from file [default: stdin].
+  --help              (-h) Print this help and exit.
+  --infer-command     (-I) Try to infer command when none is given.
+  --language=ARG      (-x) Use language.
+  --lineno=ARG        (-L) Add to all line numbers in messages.
+  --no-buffer-stdout  (-b) Set stdout to unbuffered.
+  --no-config         (-C) Suppress reading configuration file.
+  --no-english-types  (-T) Print types in C/C++, not English.
+  --no-prompt         (-P) Suppress printing prompts.
+  --no-semicolon      (-s) Suppress printing final semicolon for declarations.
+  --no-typedefs       (-t) Suppress predefining standard types.
+  --no-using          (-u) Declare types with typedef, not using, in C++.
+  --options           (-O) Print command-line options (for shell completion).
+  --output=ARG        (-o) Write to file [default: stdout].
+  --permissive-types  (-p) Permit other language keywords as types.
+  --trailing-return   (-r) Print trailing return type in C++.
+  --trigraphs         (-3) Print trigraphs.
+  --version           (-v) Print version and exit.
+  --west-decl=ARG     (-w) Print *, &, and && next to type.
+
+cdecl home page: https://github.com/paul-j-lucas/cdecl
+Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
+$ cdecl -K X
+usage: cdecl [options] [command...]
+options:
+  --alt-tokens        (-a) Print alternative tokens.
+  --color=ARG         (-k) Colorize output [default: not_file].
+  --commands          (-K) Print commands (for shell completion).
+  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --debug[=ARG]       (-d) Print cdecl debug output.
+  --digraphs          (-2) Print digraphs.
+  --east-const        (-e) Print in "east const" form.
+  --echo-commands     (-E) Echo commands given before corresponding output.
+  --explicit-ecsu=ARG (-S) Print "class", "struct", "union" explicitly.
+  --explicit-int=ARG  (-i) Print "int" explicitly.
+  --file=ARG          (-f) Read from file [default: stdin].
+  --help              (-h) Print this help and exit.
+  --infer-command     (-I) Try to infer command when none is given.
+  --language=ARG      (-x) Use language.
+  --lineno=ARG        (-L) Add to all line numbers in messages.
+  --no-buffer-stdout  (-b) Set stdout to unbuffered.
+  --no-config         (-C) Suppress reading configuration file.
+  --no-english-types  (-T) Print types in C/C++, not English.
+  --no-prompt         (-P) Suppress printing prompts.
+  --no-semicolon      (-s) Suppress printing final semicolon for declarations.
+  --no-typedefs       (-t) Suppress predefining standard types.
+  --no-using          (-u) Declare types with typedef, not using, in C++.
+  --options           (-O) Print command-line options (for shell completion).
+  --output=ARG        (-o) Write to file [default: stdout].
+  --permissive-types  (-p) Permit other language keywords as types.
+  --trailing-return   (-r) Print trailing return type in C++.
+  --trigraphs         (-3) Print trigraphs.
+  --version           (-v) Print version and exit.
+  --west-decl=ARG     (-w) Print *, &, and && next to type.
+
+cdecl home page: https://github.com/paul-j-lucas/cdecl
+Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
+$ cdecl --commands=X
+cdecl: "commands=X": invalid option; did you mean "commands"?
 $ cdecl --config
 cdecl: error: "--config/-c" requires an argument
 $ cdecl --config=
@@ -128,8 +200,6 @@ cdecl home page: https://github.com/paul-j-lucas/cdecl
 Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
 $ cdecl --help=X
 cdecl: "help=X": invalid option; use --help or -h for help
-$ cdecl -hX
-cdecl: 'X': invalid option; use --help or -h for help
 $ cdecl --help --version
 cdecl: error: --help/-h can be given only by itself
 $ cdecl -hv
@@ -142,6 +212,78 @@ $ cdecl --lang=X
 cdecl: error: "X": invalid value for --language/-x; must be C, K&RC, C89, C95, C99, C11, C17, C23, C++, C++98, C++03, C++11, C++14, C++17, C++20, C++23, C++26
 $ cdecl -xX
 cdecl: error: "X": invalid value for --language/-x; must be C, K&RC, C89, C95, C99, C11, C17, C23, C++, C++98, C++03, C++11, C++14, C++17, C++20, C++23, C++26
+$ cdecl --options X
+usage: cdecl [options] [command...]
+options:
+  --alt-tokens        (-a) Print alternative tokens.
+  --color=ARG         (-k) Colorize output [default: not_file].
+  --commands          (-K) Print commands (for shell completion).
+  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --debug[=ARG]       (-d) Print cdecl debug output.
+  --digraphs          (-2) Print digraphs.
+  --east-const        (-e) Print in "east const" form.
+  --echo-commands     (-E) Echo commands given before corresponding output.
+  --explicit-ecsu=ARG (-S) Print "class", "struct", "union" explicitly.
+  --explicit-int=ARG  (-i) Print "int" explicitly.
+  --file=ARG          (-f) Read from file [default: stdin].
+  --help              (-h) Print this help and exit.
+  --infer-command     (-I) Try to infer command when none is given.
+  --language=ARG      (-x) Use language.
+  --lineno=ARG        (-L) Add to all line numbers in messages.
+  --no-buffer-stdout  (-b) Set stdout to unbuffered.
+  --no-config         (-C) Suppress reading configuration file.
+  --no-english-types  (-T) Print types in C/C++, not English.
+  --no-prompt         (-P) Suppress printing prompts.
+  --no-semicolon      (-s) Suppress printing final semicolon for declarations.
+  --no-typedefs       (-t) Suppress predefining standard types.
+  --no-using          (-u) Declare types with typedef, not using, in C++.
+  --options           (-O) Print command-line options (for shell completion).
+  --output=ARG        (-o) Write to file [default: stdout].
+  --permissive-types  (-p) Permit other language keywords as types.
+  --trailing-return   (-r) Print trailing return type in C++.
+  --trigraphs         (-3) Print trigraphs.
+  --version           (-v) Print version and exit.
+  --west-decl=ARG     (-w) Print *, &, and && next to type.
+
+cdecl home page: https://github.com/paul-j-lucas/cdecl
+Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
+$ cdecl -O X
+usage: cdecl [options] [command...]
+options:
+  --alt-tokens        (-a) Print alternative tokens.
+  --color=ARG         (-k) Colorize output [default: not_file].
+  --commands          (-K) Print commands (for shell completion).
+  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --debug[=ARG]       (-d) Print cdecl debug output.
+  --digraphs          (-2) Print digraphs.
+  --east-const        (-e) Print in "east const" form.
+  --echo-commands     (-E) Echo commands given before corresponding output.
+  --explicit-ecsu=ARG (-S) Print "class", "struct", "union" explicitly.
+  --explicit-int=ARG  (-i) Print "int" explicitly.
+  --file=ARG          (-f) Read from file [default: stdin].
+  --help              (-h) Print this help and exit.
+  --infer-command     (-I) Try to infer command when none is given.
+  --language=ARG      (-x) Use language.
+  --lineno=ARG        (-L) Add to all line numbers in messages.
+  --no-buffer-stdout  (-b) Set stdout to unbuffered.
+  --no-config         (-C) Suppress reading configuration file.
+  --no-english-types  (-T) Print types in C/C++, not English.
+  --no-prompt         (-P) Suppress printing prompts.
+  --no-semicolon      (-s) Suppress printing final semicolon for declarations.
+  --no-typedefs       (-t) Suppress predefining standard types.
+  --no-using          (-u) Declare types with typedef, not using, in C++.
+  --options           (-O) Print command-line options (for shell completion).
+  --output=ARG        (-o) Write to file [default: stdout].
+  --permissive-types  (-p) Permit other language keywords as types.
+  --trailing-return   (-r) Print trailing return type in C++.
+  --trigraphs         (-3) Print trigraphs.
+  --version           (-v) Print version and exit.
+  --west-decl=ARG     (-w) Print *, &, and && next to type.
+
+cdecl home page: https://github.com/paul-j-lucas/cdecl
+Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
+$ cdecl --options=X
+cdecl: "options=X": invalid option; did you mean "options"?
 $ cdecl --output
 cdecl: error: "--output/-o" requires an argument
 $ cdecl --output=
@@ -228,5 +370,3 @@ cdecl home page: https://github.com/paul-j-lucas/cdecl
 Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
 $ cdecl --version=X
 cdecl: "version=X": invalid option; did you mean "version"?
-$ cdecl -vX
-cdecl: 'X': invalid option; use --help or -h for help
