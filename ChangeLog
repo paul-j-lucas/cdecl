@@ -1,3 +1,7 @@
+2026-01-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Better ms_bit1_32 implementation.
+
 2026-01-08  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c: Added assert().
