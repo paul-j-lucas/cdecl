@@ -313,13 +313,12 @@ void fputsp_s( char const *s, FILE *out ) {
 }
 
 uint32_t ms_bit1_32( uint32_t n ) {
-  if ( n != 0 ) {
-    for ( uint32_t b = 0x80000000u; b != 0; b >>= 1 ) {
-      if ( (n & b) != 0 )
-        return b;
-    } // for
-  }
-  return 0;                             // LCOV_EXCL_LINE
+  n |= n >>  1;                         // "smear" MSB to the right
+  n |= n >>  2;
+  n |= n >>  4;
+  n |= n >>  8;
+  n |= n >> 16;
+  return n ^ (n >> 1);                  // isolate MSB
 }
 
 char const* parse_identifier( char const *s ) {
