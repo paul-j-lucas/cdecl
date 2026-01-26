@@ -777,7 +777,7 @@ AC_DEFUN([_AC_CXX_CXX11_TEST_BODY],
 }
 {
   // Unicode literals
-  char const *utf8 = u8"UTF-8 string \u2500";
+  auto const *utf8 = u8"UTF-8 string \u2500"; // This is portable to C++20.
   char16_t const *utf16 = u"UTF-8 string \u2500";
   char32_t const *utf32 = U"UTF-32 string \u2500";
 }
