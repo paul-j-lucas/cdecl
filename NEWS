@@ -12,6 +12,12 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 18.7
 
+** Compound literal storage class
+Compound literals now allow a storage class per C23:
+
+    cdecl> explain (static struct chan*[])
+    cast into array of pointer to static structure chan
+
 ** Concatenate adjacent string literals
 When expanding macros, a new final step of concatenating adjacent string
 literals has been added.

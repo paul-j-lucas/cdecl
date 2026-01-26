@@ -1,6 +1,7 @@
 EXPECTED_EXIT=0
 cdecl -bEL$LINENO <<END
 explain (int* (^*)(void))x
+explain (static struct chan*[])
 explain [[reproducible]] void f()
 explain [[unsequenced]] void f()
 explain _Alignas(0) char c

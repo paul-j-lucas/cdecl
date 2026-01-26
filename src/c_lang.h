@@ -584,6 +584,11 @@
 #define LANG__Complex                   LANG_C_MIN(99)
 
 /**
+ * Languages storage classes for compound literals are supported in.
+ */
+#define LANG_COMPOUND_LITERAL_STORAGE   LANG_C_MIN(23)
+
+/**
  * Languages the `concept` keyword is supported in.
  */
 #define LANG_concept                    LANG_CPP_MIN(20)

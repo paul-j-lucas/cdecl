@@ -580,11 +580,20 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   );
 
   if ( storage_ast != NULL ) {
-    print_error( &to_ast->loc,
-      "can not cast into \"%s\"\n",
-      c_tid_error( storage_ast->type.stids & TS_ANY_STORAGE )
-    );
-    return false;
+    if ( !c_sname_empty( &ast->sname ) ) {
+      print_error( &to_ast->loc,
+        "can not cast into \"%s\"\n",
+        c_tid_error( storage_ast->type.stids & TS_ANY_STORAGE )
+      );
+      return false;
+    }
+    if ( !OPT_LANG_IS( COMPOUND_LITERAL_STORAGE ) ) {
+      print_error( &ast->loc,
+        "compound literal storage class not supported%s\n",
+        C_LANG_WHICH( COMPOUND_LITERAL_STORAGE )
+      );
+      return false;
+    }
   }
 
   c_ast_t const *const leaf_ast = c_ast_leaf( ast );

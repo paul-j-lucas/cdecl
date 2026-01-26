@@ -165,6 +165,7 @@ explain int _Fract
 explain thread_local int x
 
 set c17
+explain (static struct chan*[])
 explain constexpr int x
 explain enum E : int x
 explain typeof(int) x
