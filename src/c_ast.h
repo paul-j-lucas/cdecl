@@ -601,7 +601,7 @@ struct c_ast {
  * @sa c_ast_free()
  * @sa c_ast_new()
  */
-void c_ast_cleanup( void );
+void c_ast_cleanup_all( void );
 
 /**
  * Duplicates \a ast.
@@ -639,7 +639,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast );
  * may have.  Hence to free all AST nodes, they all be kept track of
  * independently via some other data structure, e.g., a \ref c_ast_list_t.
  *
- * @sa c_ast_cleanup()
+ * @sa c_ast_cleanup_all()
  * @sa c_ast_dup()
  * @sa c_ast_list_cleanup()
  * @sa c_ast_new()
@@ -728,7 +728,7 @@ void c_ast_list_set_param_of( c_ast_list_t *param_ast_list, c_ast_t *func_ast );
  * @param dst_list The list to append the new AST node onto.
  * @return Returns a pointer to a new AST.
  *
- * @sa c_ast_cleanup()
+ * @sa c_ast_cleanup_all()
  * @sa c_ast_dup()
  * @sa c_ast_free()
  */

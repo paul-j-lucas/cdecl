@@ -75,7 +75,7 @@ char const *prog_name;
  * @sa main()
  */
 static void cdecl_cleanup( void ) {
-  c_ast_cleanup();
+  c_ast_cleanup_all();
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

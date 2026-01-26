@@ -253,7 +253,7 @@ static inline bool c_ast_list_equal( c_ast_list_t const *i_list,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_cleanup( void ) {
+void c_ast_cleanup_all( void ) {
   assert( c_ast_count == 0 );
 }
 
