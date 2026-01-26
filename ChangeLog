@@ -1,3 +1,11 @@
+2026-01-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_lang.h, explain-error.out, explain.out,
+     explain-error.test, explain.test: Added support for C23 compound literal
+     storage classes.
+   * c_ast.c, c_ast.h, cdecl.c: s/c_ast_cleanup/c_ast_cleanup_all/
+   * configure.ac: Added -fstrict-flex-arrays.
+
 2026-01-09  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c: Better ms_bit1_32 implementation.
