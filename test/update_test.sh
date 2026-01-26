@@ -88,12 +88,6 @@ EXPECTED_DIR="$srcdir/expected"
 ACTUAL_OUTPUT="$TMPDIR/cdecl_test_output_$$_"
 
 ##
-# Ensure cdecl knows it's being tested.
-##
-CDECL_TEST=true
-export CDECL_TEST
-
-##
 # Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
 ##
 PATH=$BUILD_SRC:$PATH
@@ -122,6 +116,9 @@ update_cdecl_test() {
   else fail
   fi
 }
+
+# Ensure cdecl knows it's being tested.
+export CDECL_TEST=true
 
 for TEST in $*
 do
