@@ -1,5 +1,7 @@
 2026-01-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am, cdecl.c, config_file.c: Eliminated virtually pointless
+     config_file.h.
    * config_file.c, config-error.out: Now emitting end config file marker only
      upon success.
 
