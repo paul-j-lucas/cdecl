@@ -224,10 +224,8 @@ static bool         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
 NODISCARD
-static char const*  get_opt_format( char );
-
-NODISCARD
-static char const*  get_opt_long( char );
+static char const*  get_opt_format( char ),
+                 *  get_opt_long( char );
 
 static void         print_commands( void );
 static void         print_options( void );
