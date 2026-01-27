@@ -220,7 +220,7 @@ static char const *const CLI_OPTIONS_HELP[] = {
 };
 
 // local variables
-static bool         opts_given[ 128 ];  ///< Table of options that were given.
+static bool         is_opt_given[128];  ///< Table of options that were given.
 
 // local functions
 NODISCARD
@@ -246,13 +246,13 @@ static void         print_version( bool );
  * @sa check_opt_mutually_exclusive()
  */
 static void check_opt_exclusive( char opt ) {
-  if ( !opts_given[ STATIC_CAST( unsigned, opt ) ] )
+  if ( !is_opt_given[ STATIC_CAST( unsigned, opt ) ] )
     return;
-  for ( size_t i = '0'; i < ARRAY_SIZE( opts_given ); ++i ) {
+  for ( size_t i = '0'; i < ARRAY_SIZE( is_opt_given ); ++i ) {
     char const curr_opt = STATIC_CAST( char, i );
     if ( curr_opt == opt )
       continue;
-    if ( opts_given[ STATIC_CAST( unsigned, curr_opt ) ] ) {
+    if ( is_opt_given[ STATIC_CAST( unsigned, curr_opt ) ] ) {
       fatal_error( EX_USAGE,
         "%s can be given only by itself\n",
         get_opt_format( opt )
@@ -272,11 +272,11 @@ static void check_opt_exclusive( char opt ) {
  */
 static void check_opt_mutually_exclusive( char opt, char const *opts ) {
   assert( opts != NULL );
-  if ( !opts_given[ STATIC_CAST( unsigned, opt ) ] )
+  if ( !is_opt_given[ STATIC_CAST( unsigned, opt ) ] )
     return;
   for ( ; *opts != '\0'; ++opts ) {
     assert( *opts != opt );
-    if ( opts_given[ STATIC_CAST( unsigned, *opts ) ] ) {
+    if ( is_opt_given[ STATIC_CAST( unsigned, *opts ) ] ) {
       fatal_error( EX_USAGE,
         "%s and %s are mutually exclusive\n",
         get_opt_format( opt ),
@@ -669,7 +669,7 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
         );
         // LCOV_EXCL_STOP
     } // switch
-    opts_given[ opt ] = true;
+    is_opt_given[ opt ] = true;
   } // for
 
   FREE( short_opts );
