@@ -187,9 +187,9 @@ static int cdecl_parse_command( char const *command, size_t cli_count,
   //
   yylineno = opt_lineno == 0;
 
-  int const status = cdecl_parse_string( sbuf.str, sbuf.len );
+  int const rv_parse = cdecl_parse_string( sbuf.str, sbuf.len );
   strbuf_cleanup( &sbuf );
-  return status;
+  return rv_parse;
 }
 
 /**
@@ -207,7 +207,7 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
 
   strbuf_t sbuf;
   strbuf_init( &sbuf );
-  int status = EX_OK;
+  int rv_parse = EX_OK;
 
   yylineno = 1;                         // reset before reading any file
 
@@ -215,14 +215,14 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
                             &yylineno ) ) {
     // We don't just call yyrestart( fin ) and yyparse() directly because
     // cdecl_parse_string() may also insert a command for opt_infer_command.
-    status = cdecl_parse_string( sbuf.str, sbuf.len );
-    if ( status != EX_OK && return_on_error )
+    rv_parse = cdecl_parse_string( sbuf.str, sbuf.len );
+    if ( rv_parse != EX_OK && return_on_error )
       break;
     strbuf_reset( &sbuf );
   } // while
 
   strbuf_cleanup( &sbuf );
-  return status;
+  return rv_parse;
 }
 
 /**
