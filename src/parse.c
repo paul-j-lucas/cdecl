@@ -181,9 +181,9 @@ static int cdecl_parse_command( char const *command, size_t cli_count,
   //
   //  + If opt_lineno is 0, just reset yylineno = 1 as usual.
   //
-  //  + If opt_line > 0, we need to make all line numbers we print relative to
-  //    $LINENO (the presumed argument of the line number in the script cdecl
-  //    is being called from), so yylineno must start off = 0.
+  //  + If opt_lineno > 0, we need to make all line numbers we print relative
+  //    to $LINENO (the presumed argument of the line number in the script
+  //    cdecl is being called from), so yylineno must start off = 0.
   //
   yylineno = opt_lineno == 0;
 
