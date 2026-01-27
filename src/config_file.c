@@ -111,7 +111,7 @@ void config_init( void ) {
       if ( echo_file_markers )
         PRINTF( "/* begin \"%s\" */\n", config_path );
       rv_parse = cdecl_parse_file( config_file );
-      if ( echo_file_markers )
+      if ( echo_file_markers && rv_parse == EX_OK )
         PRINTF( "/* end \"%s\" */\n", config_path );
       fclose( config_file );
     }
