@@ -25,7 +25,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "config_file.h"
 #include "cdecl.h"
 #include "options.h"
 #include "parse.h"
@@ -47,7 +46,8 @@
 /// @endcond
 
 /**
- * @ingroup config-file-group
+ * @defgroup config-file-group Configuration File
+ * Functions for reading **cdecl**'s configuration file.
  * @{
  */
 
@@ -80,6 +80,21 @@ static char const* home_dir( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+/**
+ * Reads the configuration file, if any.
+ *
+ * @remarks
+ * @parblock
+ * The path of the configuration file is determined as follows (in priority
+ * order):
+ *
+ *  1. The value of either the `--config` or `-c` command-line option; or:
+ *  2. The value of `CDECLRC` environment variable or:
+ *  3. <code>~/</code>#CONF_FILE_NAME_DEFAULT.
+ * @endparblock
+ *
+ * @note This function must be called as most once.
+ */
 void config_init( void ) {
   ASSERT_RUN_ONCE();
 

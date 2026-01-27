@@ -34,7 +34,6 @@
 #include "cdecl_term.h"
 #include "cli_options.h"
 #include "color.h"
-#include "config_file.h"
 #include "lexer.h"
 #include "options.h"
 #include "p_keyword.h"
@@ -129,8 +128,10 @@ int main( int argc, char const *const argv[] ) {
   // uses the parser.
   c_typedefs_init();
 
-  if ( opt_read_config )
+  if ( opt_read_config ) {
+    void config_init( void );
     config_init();
+  }
 
   cdecl_is_initialized = true;
 
