@@ -1,3 +1,7 @@
+2026-01-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now calling isprint() only for values in [0,255].
+
 2026-01-27  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am, cdecl.c, config_file.c: Eliminated virtually pointless
