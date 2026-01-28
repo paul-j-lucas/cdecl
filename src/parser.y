@@ -70,6 +70,7 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
+#include <limits.h>                     /* for UCHAR_MAX */
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
@@ -9703,7 +9704,11 @@ static bool print_error_token( char const *token ) {
         EPUTS( " [<UNDEF>]" );
         break;
       default:
-        EPRINTF( isprint( yychar ) ? " ['%c']" : " [%d]", yychar );
+        EPRINTF(
+          yychar > 0 && yychar <= UCHAR_MAX && isprint( yychar ) ?
+            " ['%c']" : " [%d]",
+          yychar
+        );
     } // switch
     // LCOV_EXCL_STOP
   }
