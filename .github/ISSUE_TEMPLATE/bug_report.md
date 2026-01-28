@@ -11,7 +11,9 @@ assignees: ''
 
 1. **USE THIS TEMPLATE ONLY TO REPORT BUGS**.  Anything that is not a bug will be closed and deleted immediately.
 
-2. Please delete sections that do not apply to your particular bug.
+2. Before submitting a bug report, please check the CAVEATS section of the **cdecl**(1) man page to see whether your issue is already addressed.
+
+3. Please delete sections from this template that do not apply to your particular bug.
 
 ## Issue Type
 

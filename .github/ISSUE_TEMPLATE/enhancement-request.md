@@ -12,7 +12,9 @@ assignees: ''
 
 1. **USE THIS TEMPLATE ONLY FOR ENHANCEMENT REQUESTS**.  Anything that is not an enhancement request will be closed and deleted immediately.
 
-2. Please delete sections that do not apply to your particular request.
+2. Before submitting an enhancement request, please check the CAVEATS section of the **cdecl**(1) man page to see whether your issue is already addressed.
+
+3. Please delete sections from this template that do not apply to your particular enhancement request.
 
 ## Issue Type
 
