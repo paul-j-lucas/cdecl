@@ -338,7 +338,7 @@ bool parse_west_decl( char const *wd_format ) {
         kinds |= K_FUNCTION;
         break;
       case 'l':
-        kinds |= K_UDEF_LIT;
+        kinds |= K_USER_DEFINED_LIT;
         break;
       case 'o':
         kinds |= K_OPERATOR;
@@ -369,7 +369,7 @@ char const* west_decl_str( void ) {
     *s++ = 'b';
   if ( (opt_west_decl_kinds & K_FUNCTION) != 0 )
     *s++ = 'f';
-  if ( (opt_west_decl_kinds & K_UDEF_LIT) != 0 )
+  if ( (opt_west_decl_kinds & K_USER_DEFINED_LIT) != 0 )
     *s++ = 'l';
   if ( (opt_west_decl_kinds & K_OPERATOR) != 0 )
     *s++ = 'o';

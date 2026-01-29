@@ -306,7 +306,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
     case K_CONSTRUCTOR:
       kind_json = json_object_begin( kind_json, "ctor", dump );
       FALLTHROUGH;
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_LIT:
       kind_json = json_object_begin( kind_json, "udef_lit", dump );
       c_func_ast_param_ret_dump( ast, dump );
       json_object_end( kind_json, dump );
@@ -344,7 +344,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
     case K_RVALUE_REFERENCE:
       kind_json = json_object_begin( kind_json, "ptr_ref", dump );
       FALLTHROUGH;
-    case K_UDEF_CONV:
+    case K_USER_DEFINED_CONV:
       kind_json = json_object_begin( kind_json, "udef_conv", dump );
       DUMP_AST( dump, "to_ast", ast->ptr_ref.to_ast );
       json_object_end( kind_json, dump );

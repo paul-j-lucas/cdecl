@@ -63,8 +63,8 @@ char const* c_kind_name( c_ast_kind_t kind ) {
     case K_RVALUE_REFERENCE   : return "rvalue reference";
     case K_STRUCTURED_BINDING : return "structured binding";
     case K_TYPEDEF            : return "typedef";
-    case K_UDEF_CONV          : return "user-defined conversion operator";
-    case K_UDEF_LIT           : return "user-defined literal";
+    case K_USER_DEFINED_CONV  : return "user-defined conversion operator";
+    case K_USER_DEFINED_LIT   : return "user-defined literal";
     case K_VARIADIC           : return "variadic";
 
     case K_CLASS_STRUCT_UNION :

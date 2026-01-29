@@ -309,7 +309,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
   switch ( ast->kind ) {
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
-    case K_UDEF_CONV:
+    case K_USER_DEFINED_CONV:
       //
       // Since none of these have a return type, no space needs to be printed
       // before the name, so lie and set the "space" flag.
@@ -319,7 +319,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
 
     case K_FUNCTION:
     case K_OPERATOR:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_LIT:
       //
       // These things aren't printed as part of the type beforehand, so strip
       // them out of the type here, but print them after the parameters.
@@ -370,7 +370,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
            ( !c_tid_is_any( type.stids, TS_ANY_ARRAY_QUALIFIER ) ) ) {
         fputs_sp( c_type_gibberish( &type ), gib->fout );
       }
-      if ( ast->kind == K_UDEF_CONV ) {
+      if ( ast->kind == K_USER_DEFINED_CONV ) {
         if ( !c_sname_empty( &ast->sname ) )
           FPRINTF( gib->fout, "%s::", c_sname_gibberish( &ast->sname ) );
         FPUTS( "operator ", gib->fout );
@@ -583,8 +583,8 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       case K_FUNCTION:
       case K_LAMBDA:
       case K_OPERATOR:
-      case K_UDEF_CONV:
-      case K_UDEF_LIT:
+      case K_USER_DEFINED_CONV:
+      case K_USER_DEFINED_LIT:
         c_ast_postfix_gibberish( parent_ast, gib );
         break;
 
@@ -688,8 +688,8 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
-    case K_UDEF_CONV:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_CONV:
+    case K_USER_DEFINED_LIT:
       FPUTC( '(', gib->fout );
       c_ast_list_gibberish( &ast->func.param_ast_list, gib );
       FPUTC( ')', gib->fout );
@@ -946,7 +946,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_CAST:
-    case K_UDEF_CONV:
+    case K_USER_DEFINED_CONV:
     case K_STRUCTURED_BINDING:
     case K_VARIADIC:
       // Do nothing since these don't have names.
@@ -976,7 +976,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       );
       break;
 
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_LIT:
       gib_print_space_once( gib );
       if ( c_sname_count( &ast->sname ) > 1 )
         FPRINTF( gib->fout, "%s::", c_sname_scope_gibberish( &ast->sname ) );

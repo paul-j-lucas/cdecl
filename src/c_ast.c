@@ -317,7 +317,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *dst_list ) {
     case K_APPLE_BLOCK:
       // ret_ast duplicated by referrer code below
     case K_CONSTRUCTOR:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_LIT:
       dup_ast->func.param_ast_list =
         c_ast_list_dup( &ast->func.param_ast_list, dst_list );
       break;
@@ -341,7 +341,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *dst_list ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-    case K_UDEF_CONV:
+    case K_USER_DEFINED_CONV:
       // of_ast duplicated by referrer code below
     case K_DESTRUCTOR:
     case K_PLACEHOLDER:
@@ -431,7 +431,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_APPLE_BLOCK:
       // ret_ast checked by referrer code below
     case K_CONSTRUCTOR:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_LIT:
       if ( !c_ast_list_equal( &i_ast->func.param_ast_list,
                               &j_ast->func.param_ast_list ) ) {
         return false;
@@ -472,7 +472,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-    case K_UDEF_CONV:
+    case K_USER_DEFINED_CONV:
       // checked by referrer code below
     case K_DESTRUCTOR:
     case K_PLACEHOLDER:
@@ -510,7 +510,7 @@ void c_ast_free( c_ast_t *ast ) {
       case K_CONSTRUCTOR:
       case K_FUNCTION:
       case K_OPERATOR:
-      case K_UDEF_LIT:
+      case K_USER_DEFINED_LIT:
         // Do not pass &c_ast_free as the second argument since all ASTs are
         // free'd via the free( ast ) below. Just free the list nodes.
         slist_cleanup( &ast->func.param_ast_list, /*free_fn=*/NULL );
@@ -535,7 +535,7 @@ void c_ast_free( c_ast_t *ast ) {
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
       case K_TYPEDEF:
-      case K_UDEF_CONV:
+      case K_USER_DEFINED_CONV:
       case K_VARIADIC:
         // nothing to do
         break;

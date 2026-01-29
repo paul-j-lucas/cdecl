@@ -302,8 +302,8 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
       case K_LAMBDA:
       case K_NAME:
       case K_OPERATOR:
-      case K_UDEF_CONV:
-      case K_UDEF_LIT:
+      case K_USER_DEFINED_CONV:
+      case K_USER_DEFINED_LIT:
       case K_VARIADIC:
         UNEXPECTED_INT_VALUE( ast->parent.of_ast->kind );
     } // switch

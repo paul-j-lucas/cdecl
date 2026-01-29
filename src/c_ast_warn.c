@@ -120,11 +120,11 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       }
       break;
 
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_LIT:
       if ( c_sname_local_name( &raw_ast->sname )[0] != '_' ) {
         print_warning( &ast->loc,
           "%ss not starting with '_' are reserved\n",
-          c_kind_name( K_UDEF_LIT )
+          c_kind_name( K_USER_DEFINED_LIT )
         );
       }
       FALLTHROUGH;
@@ -182,7 +182,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
     case K_CAPTURE:
     case K_CAST:
     case K_CONCEPT:
-    case K_UDEF_CONV:
+    case K_USER_DEFINED_CONV:
     case K_VARIADIC:
       // nothing to check
       break;

@@ -248,14 +248,14 @@ enum c_ast_kind {
    *
    * @sa c_udef_conv_ast
    */
-  K_UDEF_CONV           = 1 << 22,
+  K_USER_DEFINED_CONV   = 1 << 22,
 
   /**
    * C++ user-defined literal.
    *
    * @sa c_udef_lit_ast
    */
-  K_UDEF_LIT            = 1 << 23,
+  K_USER_DEFINED_LIT    = 1 << 23,
 };
 typedef enum c_ast_kind c_ast_kind_t;
 
@@ -279,8 +279,8 @@ typedef enum c_ast_kind c_ast_kind_t;
 
 /**
  * Shorthand for any kind of function-like AST: #K_APPLE_BLOCK, #K_CONSTRUCTOR,
- * #K_DESTRUCTOR, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_UDEF_CONV, or
- * #K_UDEF_LIT.
+ * #K_DESTRUCTOR, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_USER_DEFINED_CONV, or
+ * #K_USER_DEFINED_LIT.
  *
  * @sa #K_ANY_FUNCTION_RETURN
  * @sa #K_ANY_TRAILING_RETURN
@@ -290,14 +290,14 @@ typedef enum c_ast_kind c_ast_kind_t;
 
 /**
  * Shorthand for any kind of function-like AST that has a return type:
- * #K_APPLE_BLOCK, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_UDEF_CONV, or
- * #K_UDEF_LIT.
+ * #K_APPLE_BLOCK, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_USER_DEFINED_CONV,
+ * or #K_USER_DEFINED_LIT.
  *
  * @sa #K_ANY_FUNCTION_LIKE
  * @sa #K_ANY_TRAILING_RETURN
  */
 #define K_ANY_FUNCTION_RETURN     ( K_ANY_TRAILING_RETURN | K_APPLE_BLOCK \
-                                  | K_UDEF_CONV | K_UDEF_LIT )
+                                  | K_USER_DEFINED_CONV | K_USER_DEFINED_LIT )
 
 /**
  * Shorthand for any kind that has a name: #K_CLASS_STRUCT_UNION, #K_CONCEPT,
@@ -335,7 +335,8 @@ typedef enum c_ast_kind c_ast_kind_t;
 /**
  * Shorthand for any kind of parent: #K_APPLE_BLOCK, #K_ARRAY, #K_CAST,
  * #K_ENUM, #K_FUNCTION, #K_OPERATOR, #K_POINTER, #K_POINTER_TO_MEMBER,
- * #K_REFERENCE, #K_RVALUE_REFERENCE, #K_UDEF_CONV, or #K_UDEF_LIT.
+ * #K_REFERENCE, #K_RVALUE_REFERENCE, #K_USER_DEFINED_CONV, or
+ * #K_USER_DEFINED_LIT.
  *
  * @note #K_TYPEDEF is intentionally _not_ included.
  *

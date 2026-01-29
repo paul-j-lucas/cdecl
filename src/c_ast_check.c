@@ -444,8 +444,8 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
     case K_PLACEHOLDER:
     case K_STRUCTURED_BINDING:
     case K_TYPEDEF:                     // impossible after c_ast_untypedef()
-    case K_UDEF_CONV:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_CONV:
+    case K_USER_DEFINED_LIT:
     case K_VARIADIC:
       UNEXPECTED_INT_VALUE( raw_of_ast->kind );
   } // switch
@@ -467,7 +467,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_ast_t const *tdef_ast ) {
   assert( tdef_ast == NULL || tdef_ast->kind == K_TYPEDEF );
 
   if ( ast->type.btids == TB_NONE && !OPT_LANG_IS( IMPLICIT_int ) &&
-       !c_ast_parent_is_kind_any( ast, K_UDEF_CONV ) ) {
+       !c_ast_parent_is_kind_any( ast, K_USER_DEFINED_CONV ) ) {
     print_error( &ast->loc,
       "implicit \"%s\" is illegal%s\n",
       c_tid_error( TB_int ),
@@ -1038,7 +1038,7 @@ static bool c_ast_check_func_default_delete( c_ast_t const *ast ) {
       break;
 
     case K_FUNCTION:
-    case K_UDEF_CONV:
+    case K_USER_DEFINED_CONV:
       if ( c_tid_is_any( ast->type.stids, TS_default ) )
         goto only_special;
       break;
@@ -1099,7 +1099,7 @@ static bool c_ast_check_func_default_delete( c_ast_t const *ast ) {
     case K_RVALUE_REFERENCE:
     case K_STRUCTURED_BINDING:
     case K_TYPEDEF:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_LIT:
     case K_VARIADIC:
       //
       // The grammar allows only functions, operators, constructors,
@@ -1426,8 +1426,8 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       case K_PLACEHOLDER:
       case K_STRUCTURED_BINDING:
       case K_TYPEDEF:                   // impossible after c_ast_untypedef()
-      case K_UDEF_CONV:
-      case K_UDEF_LIT:
+      case K_USER_DEFINED_CONV:
+      case K_USER_DEFINED_LIT:
         UNEXPECTED_INT_VALUE( raw_param_ast->kind );
     } // switch
 
@@ -1582,8 +1582,8 @@ static bool c_ast_check_func_ret_type( c_ast_t const *ast ) {
     case K_NAME:
     case K_OPERATOR:
     case K_PLACEHOLDER:
-    case K_UDEF_CONV:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_CONV:
+    case K_USER_DEFINED_LIT:
     case K_VARIADIC:
       UNEXPECTED_INT_VALUE( raw_ret_ast->kind );
   } // switch
@@ -1591,7 +1591,7 @@ static bool c_ast_check_func_ret_type( c_ast_t const *ast ) {
   if ( c_tid_is_any( ast->type.stids, TS_explicit ) ) {
     c_lang_id_t which_lang_ids = LANG_NONE;
     switch ( ast->kind ) {
-      case K_UDEF_CONV:
+      case K_USER_DEFINED_CONV:
         if ( OPT_LANG_IS( explicit_USER_DEF_CONVS ) )
           break;
         which_lang_ids = LANG_explicit_USER_DEF_CONVS;
@@ -2533,8 +2533,8 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
     case K_LAMBDA:
     case K_OPERATOR:
     case K_PLACEHOLDER:
-    case K_UDEF_CONV:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_CONV:
+    case K_USER_DEFINED_LIT:
     case K_VARIADIC:
       UNEXPECTED_INT_VALUE( raw_to_ast->kind );
   } // switch
@@ -2635,7 +2635,7 @@ static bool c_ast_check_restrict( c_ast_t const *ast ) {
     case K_OPERATOR:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-    case K_UDEF_CONV:
+    case K_USER_DEFINED_CONV:
       //
       // These being declared "restrict" is already made an error by checks
       // elsewhere.
@@ -2671,7 +2671,7 @@ static bool c_ast_check_restrict( c_ast_t const *ast ) {
     case K_PLACEHOLDER:
     case K_STRUCTURED_BINDING:
     case K_TYPEDEF:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_LIT:
     case K_VARIADIC:
       UNEXPECTED_INT_VALUE( raw_ast->kind );
   } // switch
@@ -2724,15 +2724,15 @@ static bool c_ast_check_structured_binding( c_ast_t const *ast ) {
 }
 
 /**
- * Checks a #K_UDEF_CONV AST for errors.
+ * Checks a #K_USER_DEFINED_CONV AST for errors.
  *
- * @param ast The #K_UDEF_CONV AST to check.
+ * @param ast The #K_USER_DEFINED_CONV AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
 static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind == K_UDEF_CONV );
+  assert( ast->kind == K_USER_DEFINED_CONV );
 
   if ( c_tid_is_any( ast->type.stids, c_tid_compl( TS_USER_DEF_CONV ) ) ) {
     error_kind_not_tid( ast, ast->type.stids, LANG_NONE, "\n" );
@@ -2763,15 +2763,15 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
 }
 
 /**
- * Checks all #K_UDEF_LIT parameters for semantic errors.
+ * Checks all #K_USER_DEFINED_LIT parameters for semantic errors.
  *
- * @param ast The #K_UDEF_LIT AST to check.
+ * @param ast The #K_USER_DEFINED_LIT AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
 static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind == K_UDEF_LIT );
+  assert( ast->kind == K_USER_DEFINED_LIT );
 
   c_param_t const *param = c_ast_params( ast );
   assert( param != NULL );
@@ -3071,12 +3071,12 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
       user_data.pcv = &(c_ast_check_state_t){ .tdef_ast = ast };
       return c_ast_visitor_error( &temp_ast, user_data );
 
-    case K_UDEF_CONV:
+    case K_USER_DEFINED_CONV:
       if ( !c_ast_check_udef_conv( ast ) )
         return VISITOR_ERROR_FOUND;
       break;
 
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_LIT:
       if ( !(c_ast_check_func_ret_type( ast ) &&
              c_ast_check_func( ast ) &&
              c_ast_check_udef_lit_params( ast )) ) {
@@ -3283,8 +3283,8 @@ static bool c_type_ast_visitor_error( c_ast_t const *ast,
 
     case K_LAMBDA:
     case K_OPERATOR:
-    case K_UDEF_CONV:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_CONV:
+    case K_USER_DEFINED_LIT:
       // even though these have parameters, they can't be used in a typedef
     case K_PLACEHOLDER:
       UNEXPECTED_INT_VALUE( ast->kind );

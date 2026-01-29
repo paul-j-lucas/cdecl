@@ -392,7 +392,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
     case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
-    case K_UDEF_LIT:
+    case K_USER_DEFINED_LIT:
       c_func_like_ast_english( ast, eng );
       break;
 
@@ -447,7 +447,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       c_typedef_ast_english( ast, eng );
       break;
 
-    case K_UDEF_CONV:
+    case K_USER_DEFINED_CONV:
       c_udef_conv_ast_english( ast, eng );
       break;
 
@@ -569,7 +569,7 @@ static void c_enum_ast_english( c_ast_t const *ast, eng_state_t const *eng ) {
 
 /**
  * Prints a #K_APPLE_BLOCK, #K_CONSTRUCTOR, #K_DESTRUCTOR, #K_FUNCTION,
- * #K_OPERATOR, or #K_UDEF_LIT \a ast as pseudo-English.
+ * #K_OPERATOR, or #K_USER_DEFINED_LIT \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -578,7 +578,7 @@ static void c_func_like_ast_english( c_ast_t const *ast,
                                      eng_state_t const *eng ) {
   assert( ast != NULL );
   assert( (ast->kind & (K_APPLE_BLOCK | K_CONSTRUCTOR | K_DESTRUCTOR |
-                        K_FUNCTION | K_OPERATOR | K_UDEF_LIT)) != 0 );
+                        K_FUNCTION | K_OPERATOR | K_USER_DEFINED_LIT)) != 0 );
   assert( eng != NULL );
 
   c_type_name_nobase_english( &ast->type, eng->fout );
@@ -794,7 +794,7 @@ static void c_typedef_ast_english( c_ast_t const *ast,
 }
 
 /**
- * Prints a #K_UDEF_CONV \a ast as pseudo-English.
+ * Prints a #K_USER_DEFINED_CONV \a ast as pseudo-English.
  *
  * @param ast The AST to print.
  * @param eng The eng_state to use.
@@ -802,7 +802,7 @@ static void c_typedef_ast_english( c_ast_t const *ast,
 static void c_udef_conv_ast_english( c_ast_t const *ast,
                                      eng_state_t const *eng ) {
   assert( ast != NULL );
-  assert( ast->kind == K_UDEF_CONV );
+  assert( ast->kind == K_USER_DEFINED_CONV );
   assert( eng != NULL );
 
   fputs_sp( c_type_english( &ast->type ), eng->fout );
@@ -944,13 +944,13 @@ void c_ast_english( c_ast_t const *ast, decl_flags_t eng_flags, FILE *fout ) {
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
       case K_TYPEDEF:
-      case K_UDEF_LIT:
+      case K_USER_DEFINED_LIT:
         c_ast_name_english( ast, fout );
         FPUTS( " as ", fout );
         break;
 
       case K_LAMBDA:
-      case K_UDEF_CONV:
+      case K_USER_DEFINED_CONV:
         break;                          // these don't have names
 
       case K_STRUCTURED_BINDING:

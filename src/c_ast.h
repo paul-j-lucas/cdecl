@@ -511,7 +511,7 @@ struct c_typedef_ast {
 };
 
 /**
- * AST node for a #K_UDEF_CONV.
+ * AST node for a #K_USER_DEFINED_CONV.
  */
 struct c_udef_conv_ast {
   c_ast_t  *to_ast;                     ///< What it's a conversion to.
@@ -525,7 +525,7 @@ struct c_udef_conv_ast {
 };
 
 /**
- * AST node for a #K_UDEF_LIT.
+ * AST node for a #K_USER_DEFINED_LIT.
  *
  * @note Members are laid out in the same order as c_function_ast: this is
  * taken advantage of.
@@ -576,8 +576,8 @@ struct c_ast {
     c_ptr_ref_ast_t     ptr_ref;    ///< #K_POINTER or #K_ANY_REFERENCE members.
     c_struct_bind_ast_t struct_bind;///< #K_STRUCTURED_BINDING members.
     c_typedef_ast_t     tdef;       ///< #K_TYPEDEF members.
-    c_udef_conv_ast_t   udef_conv;  ///< #K_UDEF_CONV members.
-    c_udef_lit_ast_t    udef_lit;   ///< #K_UDEF_LIT members.
+    c_udef_conv_ast_t   udef_conv;  ///< #K_USER_DEFINED_CONV members.
+    c_udef_lit_ast_t    udef_lit;   ///< #K_USER_DEFINED_LIT members.
                     // nothing needed for K_VARIADIC
   };
 };
