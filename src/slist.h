@@ -232,6 +232,10 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n, slist_dup_fn_t dup_fn );
 /**
  * Compares two lists for equality.
  *
+ * @remarks This function is provided in addition to slist_cmp() for when you
+ * have a list of objects that are equality-comparable but not less-than-
+ * comparable.
+ *
  * @param i_list The first list.
  * @param j_list The second list.
  * @param equal_fn A pointer to a function to use to compare data at each node
