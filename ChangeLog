@@ -1,5 +1,6 @@
 2026-01-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c, c_ast.h, parser.y: Eliminated c_ast_list_cleanup().
    * parser.y: Now calling isprint() only for values in [0,255].
 
 2026-01-27  Paul J. Lucas <paul@lucasmail.org>
