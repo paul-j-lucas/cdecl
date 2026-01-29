@@ -610,7 +610,6 @@ static inline c_ast_t* c_ast_dup_gc( c_ast_t const *ast ) {
  *
  * @param ast_list The AST list to free the nodes of.
  *
- * @sa c_ast_list_cleanup()
  * @sa c_ast_dup_gc()
  * @sa c_ast_new_gc()
  * @sa c_ast_pair_new_gc()
@@ -1962,7 +1961,7 @@ static void yyerror( char const *msg ) {
 //
 // Clean-up of AST nodes is done via garbage collection using gc_ast_list.
 //
-%destructor { DTRACE; c_ast_list_cleanup( &$$ );              } <ast_list>
+%destructor { DTRACE; slist_cleanup( &$$, /*free_fn=*/NULL ); } <ast_list>
 %destructor { DTRACE; FREE( $$ );                             } <name>
 %destructor { DTRACE; p_arg_list_cleanup( $$ );   FREE( $$ ); } <p_arg_list>
 %destructor { DTRACE; p_param_free( $$ );                     } <p_param>
@@ -5376,7 +5375,7 @@ noexcept_c_stid_opt
     }
   | Y_throw lparen_exp param_c_ast_list[ast_list] ')'
     {
-      c_ast_list_cleanup( &$ast_list );
+      slist_cleanup( &$ast_list, /*free_fn=*/NULL );
 
       if ( OPT_LANG_IS( throw ) )
         UNSUPPORTED( &@ast_list, "dynamic exception specifications" );

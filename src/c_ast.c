@@ -214,7 +214,6 @@ static bool c_ast_has_cycle( c_ast_t const *ast ) {
  * is NULL.
  *
  * @sa c_ast_dup()
- * @sa c_ast_list_cleanup()
  */
 NODISCARD
 static c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
@@ -503,14 +502,18 @@ void c_ast_free( c_ast_t *ast ) {
           FREE( ast->array.size_name );
         break;
       case K_LAMBDA:
-        c_ast_list_cleanup( &ast->lambda.capture_ast_list );
+        // Do not pass &c_ast_free as the second argument since all ASTs are
+        // free'd via the free( ast ) below. Just free the list nodes.
+        slist_cleanup( &ast->lambda.capture_ast_list, /*free_fn=*/NULL );
         FALLTHROUGH;
       case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
       case K_FUNCTION:
       case K_OPERATOR:
       case K_UDEF_LIT:
-        c_ast_list_cleanup( &ast->func.param_ast_list );
+        // Do not pass &c_ast_free as the second argument since all ASTs are
+        // free'd via the free( ast ) below. Just free the list nodes.
+        slist_cleanup( &ast->func.param_ast_list, /*free_fn=*/NULL );
         break;
       case K_CLASS_STRUCT_UNION:
       case K_CONCEPT:
@@ -660,7 +663,6 @@ c_ast_t const* c_ast_visit( c_ast_t const *ast, c_ast_visit_dir_t dir,
 extern inline bool c_ast_is_orphan( c_ast_t const* );
 extern inline bool c_ast_is_parent( c_ast_t const* );
 extern inline bool c_ast_is_referrer( c_ast_t const* );
-extern inline void c_ast_list_cleanup( c_ast_list_t* );
 extern inline c_param_t const* c_ast_params( c_ast_t const* );
 extern inline c_ast_t const* c_capture_ast( c_capture_t const* );
 extern inline c_ast_t const* c_param_ast( c_param_t const* );

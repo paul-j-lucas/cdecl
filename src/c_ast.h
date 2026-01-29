@@ -641,7 +641,6 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast );
  *
  * @sa c_ast_cleanup_all()
  * @sa c_ast_dup()
- * @sa c_ast_list_cleanup()
  * @sa c_ast_new()
  */
 void c_ast_free( c_ast_t *ast );
@@ -691,19 +690,6 @@ inline bool c_ast_is_parent( c_ast_t const *ast ) {
 NODISCARD
 inline bool c_ast_is_referrer( c_ast_t const *ast ) {
   return ast != NULL && (ast->kind & K_ANY_REFERRER) != 0;
-}
-
-/**
- * Cleans-up \a list by freeing only its nodes but _not_ \a list itself.
- *
- * @param list The AST list to free the list nodes of.
- *
- * @sa c_ast_free()
- */
-inline void c_ast_list_cleanup( c_ast_list_t *list ) {
-  // Do not pass &c_ast_free as the second argument since all ASTs are free'd
-  // independently. Just free the list nodes.
-  slist_cleanup( list, /*free_fn=*/NULL );
 }
 
 /**
