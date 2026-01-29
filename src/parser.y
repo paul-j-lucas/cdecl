@@ -612,7 +612,6 @@ static inline c_ast_t* c_ast_dup_gc( c_ast_t const *ast ) {
  *
  * @sa c_ast_dup_gc()
  * @sa c_ast_new_gc()
- * @sa c_ast_pair_new_gc()
  */
 static inline void c_ast_list_cleanup_gc( c_ast_list_t *ast_list ) {
   slist_cleanup( ast_list, POINTER_CAST( slist_free_fn_t, &c_ast_free ) );
@@ -626,7 +625,6 @@ static inline void c_ast_list_cleanup_gc( c_ast_list_t *ast_list ) {
  * @return Returns a pointer to a new AST.
  *
  * @sa c_ast_dup_gc()
- * @sa c_ast_pair_new_gc()
  */
 NODISCARD
 static inline c_ast_t* c_ast_new_gc( c_ast_kind_t kind, c_loc_t const *loc ) {
