@@ -68,43 +68,43 @@ struct p_token {
     struct {
       char const *name;                 ///< Identifier name.
 
-      ///
-      /// Ineligible for expansion?
-      ///
-      /// @remarks
-      /// @parblock
-      /// A #P_IDENTIFIER becomes _ineligible_ for expansion when any of the
-      /// following is true:
-      ///
-      /// + It is already in the process of being expanded, either directly or
-      ///   indirectly, to prevent an infinite recursive expansion loop, e.g.:
-      ///
-      ///         #define F(X)    F( __FILE__, __LINE__, (X) )
-      ///
-      ///   The `F` in the definition is _not_ expanded because it's already
-      ///   being expanded.
-      ///
-      /// + It's a dynamic macro that's not supported in the current language.
-      ///
-      /// + It's a function-like macro that's either _not_ followed by `(` or
-      ///   followed by a token that's already been substituted (which means it
-      ///   can never become a `(`).
-      ///
-      /// + Is `__VA_OPT__` and it's not supported in the current language.
-      ///
-      /// + Is a #P_IDENTIFIER whose \ref name is either `__VA_ARGS__` or
-      ///   `__VA_OPT__` that resulted from concatenation, e.g.:
-      ///
-      ///         cdecl> #define M(...) __VA ## _ARGS__
-      ///         cdecl> expand M(x)
-      ///         M(x) => __VA_ARGS__
-      ///
-      ///   Such tokens are treated as #P_IDENTIFIER and _not_ expanded.
-      ///
-      /// Of these cases, only the first is strictly necesessary; but since the
-      /// flag exists, might as well use it for the other cases.
-      /// @endparblock
-      ///
+      /**
+       * Ineligible for expansion?
+       *
+       * @remarks
+       * @parblock
+       * A #P_IDENTIFIER becomes _ineligible_ for expansion when any of the
+       * following is true:
+       *
+       * + It is already in the process of being expanded, either directly or
+       *   indirectly, to prevent an infinite recursive expansion loop, e.g.:
+       *
+       *         #define F(X)    F( __FILE__, __LINE__, (X) )
+       *
+       *   The `F` in the definition is _not_ expanded because it's already
+       *   being expanded.
+       *
+       * + It's a dynamic macro that's not supported in the current language.
+       *
+       * + It's a function-like macro that's either _not_ followed by `(` or
+       *   followed by a token that's already been substituted (which means it
+       *   can never become a `(`).
+       *
+       * + Is `__VA_OPT__` and it's not supported in the current language.
+       *
+       * + Is a #P_IDENTIFIER whose \ref name is either `__VA_ARGS__` or
+       *   `__VA_OPT__` that resulted from concatenation, e.g.:
+       *
+       *         cdecl> #define M(...) __VA ## _ARGS__
+       *         cdecl> expand M(x)
+       *         M(x) => __VA_ARGS__
+       *
+       *   Such tokens are treated as #P_IDENTIFIER and _not_ expanded.
+       *
+       * Of these cases, only the first is strictly necesessary; but since the
+       * flag exists, might as well use it for the other cases.
+       * @endparblock
+       */
       bool        ineligible;
     } ident;
 
@@ -126,12 +126,12 @@ struct p_token {
      * #P_PUNCTUATOR members.
      */
     struct {
-      ///
-      /// #P_PUNCTUATOR value.
-      ///
-      /// @remarks It's large enough to hold the longest operators of `->*`,
-      /// `<<=`, `<=>`, or `>>=`, plus a terminating `\0`.
-      ///
+      /**
+       * #P_PUNCTUATOR value.
+       *
+       * @remarks It's large enough to hold the longest operators of `->*`,
+       * `<<=`, `<=>`, or `>>=`, plus a terminating `\0`.
+       */
       char        value[4];
     } punct;
   };
