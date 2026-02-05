@@ -27,11 +27,12 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "types.h"
 
 // standard
 #include <stdbool.h>
+#include <stddef.h>                     /* for NULL */
 
 /**
  * @defgroup printing-help-group Printing Help

@@ -25,12 +25,14 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "c_ast_util.h"
 #include "c_ast.h"
 #include "c_kind.h"
 #include "c_operator.h"
+#include "c_sname.h"
 #include "c_type.h"
+#include "slist.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "dam_lev.h"
 #include "util.h"
 
@@ -33,7 +33,6 @@
 #include <stdalign.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
-#include <string.h>
 
 ////////// inline functions ///////////////////////////////////////////////////
 

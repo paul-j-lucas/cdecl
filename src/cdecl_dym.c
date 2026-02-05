@@ -25,7 +25,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "cdecl_dym.h"
 #include "c_ast.h"
 #include "c_keyword.h"

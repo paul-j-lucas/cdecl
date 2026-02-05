@@ -30,7 +30,7 @@
 %option yylineno
 
 %top {
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 }
 
 %{
@@ -67,6 +67,7 @@
 #include <stdio.h>
 #include <stdlib.h>                     /* for strtol(3) */
 #include <string.h>
+#include <sysexits.h>
 #include <wordexp.h>
 
 // Silence these warnings for Flex-generated code.

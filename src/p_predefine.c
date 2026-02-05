@@ -19,7 +19,7 @@
 */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "c_lang.h"
 #include "cdecl.h"
 #include "lexer.h"

@@ -19,7 +19,7 @@
 */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "p_token.h"
 #include "c_lang.h"
 #include "color.h"

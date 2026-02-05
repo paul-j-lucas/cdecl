@@ -24,8 +24,9 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "c_ast.h"
+#include "c_sname.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -34,6 +35,8 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t, offsetof() */
+#include <stdlib.h>                     /* for free(3) */
+#include <string.h>
 
 /// @endcond
 

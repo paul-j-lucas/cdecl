@@ -27,7 +27,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #ifndef WITH_READLINE
 #error "This file should not be included unless WITH_READLINE is defined."
 #endif /* WITH_READLINE */

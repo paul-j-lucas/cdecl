@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "autocomplete.h"
 #include "c_keyword.h"
 #include "c_lang.h"
@@ -36,6 +36,7 @@
 #include "options.h"
 #include "set_options.h"
 #include "strbuf.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -43,8 +44,6 @@
 // standard
 #include <assert.h>
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL, size_t */
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <readline/readline.h>          /* must go after stdio.h */

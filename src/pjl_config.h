@@ -32,13 +32,13 @@
 #endif /* cdecl_config_H */
 
 // local
-#include "config.h"                     /* must go first */
+#include "config.h"               /* IWYU pragma: export */
 // Undefine this since it clashes with our VERSION command-line option.  We
 // don't need this since PACKAGE_VERSION is also defined.
 #undef VERSION
 
 // standard
-#include <attribute.h>
+#include <attribute.h>            /* IWYU pragma: export */
 
 /**
  * Defined to an expression that evaluates to `true` only if we're running

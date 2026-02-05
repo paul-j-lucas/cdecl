@@ -28,7 +28,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #ifdef WITH_READLINE
 #include "autocomplete.h"
 #endif /* WITH_READLINE */
@@ -38,6 +38,7 @@
 
 // standard
 #include <stdbool.h>
+#include <stddef.h>                     /* for NULL */
 
 /**
  * @defgroup cdecl-keywords-group Cdecl Keywords

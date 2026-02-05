@@ -25,7 +25,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "c_typedef.h"
 #include "c_ast.h"
 #include "c_lang.h"
@@ -34,6 +34,7 @@
 #include "lexer.h"
 #include "options.h"
 #include "parse.h"
+#include "slist.h"
 #include "types.h"
 #include "util.h"
 

@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "options.h"
 #include "c_lang.h"
 #include "c_type.h"

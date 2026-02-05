@@ -24,12 +24,11 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "parse.h"
 #include "cdecl.h"
 #include "cdecl_command.h"
 #include "cdecl_parser.h"
-#include "cli_options.h"
 #include "help.h"
 #include "lexer.h"
 #include "options.h"
@@ -38,6 +37,7 @@
 #include "prompt.h"
 #include "read_line.h"
 #include "strbuf.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

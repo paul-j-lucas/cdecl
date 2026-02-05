@@ -27,7 +27,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 
 /**
  * @defgroup terminal-group Terminal Capabilities

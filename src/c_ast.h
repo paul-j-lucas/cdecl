@@ -30,9 +30,8 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "c_kind.h"
-#include "c_sname.h"
 #include "c_type.h"
 #include "slist.h"
 #include "types.h"

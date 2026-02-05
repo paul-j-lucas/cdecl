@@ -19,7 +19,7 @@
 */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "p_macro.h"
 #include "cdecl.h"
 #include "c_lang.h"

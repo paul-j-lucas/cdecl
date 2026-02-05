@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "dump.h"
 #include "c_ast.h"
 #include "c_ast_util.h"

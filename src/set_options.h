@@ -31,7 +31,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -39,6 +39,7 @@
 // standard
 #include <getopt.h>                     /* {no|required|optional}_argument */
 #include <stdbool.h>
+#include <stddef.h>                     /* for NULL */
 
 /// @endcond
 

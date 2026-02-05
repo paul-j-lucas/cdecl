@@ -27,8 +27,9 @@
  */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "p_kind.h"
+#include "slist.h"
 #include "strbuf.h"
 #include "types.h"
 #include "util.h"
