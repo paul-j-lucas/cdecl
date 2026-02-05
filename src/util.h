@@ -36,8 +36,8 @@
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
+#include <limits.h>                     /* for CHAR_BIT */
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL, size_t */
 #include <stdint.h>                     /* for uint*_t */
 #include <stdio.h>                      /* for FILE */
 #include <stdlib.h>                     /* for atexit(3) */
