@@ -29,6 +29,7 @@
 #include "c_typedef.h"
 #include "c_ast.h"
 #include "c_lang.h"
+#include "c_sname.h"
 #include "cdecl.h"
 #include "lexer.h"
 #include "options.h"
@@ -40,8 +41,7 @@
 
 // standard
 #include <assert.h>
-#include <stddef.h>                     /* for NULL */
-#include <stdlib.h>
+#include <string.h>                     /* for strlen(3) */
 #include <sysexits.h>
 
 /// @endcond

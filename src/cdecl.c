@@ -29,8 +29,8 @@
 #include "c_ast.h"
 #include "c_keyword.h"
 #include "c_typedef.h"
-#include "cdecl_command.h"
 #include "cdecl_keyword.h"
+#include "cdecl_parser.h"
 #include "cdecl_term.h"
 #include "cli_options.h"
 #include "color.h"
@@ -44,8 +44,8 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <stddef.h>                     /* for size_t */
 #include <stdlib.h>
+#include <string.h>
 #include <sysexits.h>
 
 /// @endcond

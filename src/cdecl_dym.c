@@ -27,8 +27,10 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "cdecl_dym.h"
+#include "c_ast.h"
 #include "c_keyword.h"
 #include "c_lang.h"
+#include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl_command.h"
 #include "cdecl_keyword.h"
@@ -39,14 +41,15 @@
 #include "lexer.h"
 #include "p_macro.h"
 #include "set_options.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
-#include <stddef.h>                     /* for NULL, size_t */
-#include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>                     /* for calloc(3), NULL, size_t */
 
 /// @endcond
 

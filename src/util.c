@@ -27,7 +27,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "util.h"
 #include "cdecl.h"
-#include "slist.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -40,12 +39,13 @@
 #include <signal.h>                     /* for raise(3) */
 #endif /* NDEBUG */
 #include <stdarg.h>
-#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>                    /* for strcasecmp(3) */
 #include <sys/stat.h>                   /* for fstat() */
 #include <sysexits.h>
+#include <unistd.h>                     /* for getpid(2) */
 
 char const IDENT_CHARS[] =        "ABCDEFGHIJKLMNOPQRSTUVWXYZ_" \
                                   "abcdefghijklmnopqrstuvwxyz" \

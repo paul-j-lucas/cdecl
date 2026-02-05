@@ -24,15 +24,17 @@
 #include "cdecl.h"
 #include "lexer.h"
 #include "options.h"
+#include "p_kind.h"
 #include "p_macro.h"
 #include "p_token.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
-#include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <time.h>
 

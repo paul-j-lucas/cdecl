@@ -28,6 +28,7 @@
 #include "pjl_config.h"                 /* must go first */
 #include "p_keyword.h"
 #include "literals.h"
+#include "types.h"
 #include "util.h"
 #include "cdecl_parser.h"               /* must go last */
 
@@ -35,7 +36,6 @@
 
 // standard
 #include <assert.h>
-#include <stddef.h>                     /* for NULL */
 #include <stdlib.h>
 #include <string.h>
 

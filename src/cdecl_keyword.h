@@ -32,7 +32,7 @@
 #ifdef WITH_READLINE
 #include "autocomplete.h"
 #endif /* WITH_READLINE */
-#include "c_ast.h"
+#include "c_lang.h"
 #include "types.h"
 #include "cdecl_parser.h"               /* must go last */
 

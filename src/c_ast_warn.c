@@ -30,6 +30,7 @@
 #include "c_ast_util.h"
 #include "c_lang.h"
 #include "c_sname.h"
+#include "c_type.h"
 #include "print.h"
 #include "util.h"
 
@@ -39,6 +40,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL */
+#include <stdio.h>
 
 /// @endcond
 

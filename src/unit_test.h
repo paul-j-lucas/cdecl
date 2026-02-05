@@ -21,6 +21,13 @@
 #ifndef pjl_unit_test_H
 #define pjl_unit_test_H
 
+/// @cond DOXYGEN_IGNORE
+
+// standard
+#include <stdbool.h>
+
+/// @endcond
+
 /**
  * @defgroup unit-test-group Unit Tests
  * Macros, variables, and functions for unit-test programs.

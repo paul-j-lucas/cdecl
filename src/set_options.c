@@ -27,7 +27,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "set_options.h"
 #include "c_lang.h"
-#include "c_type.h"
 #include "cdecl.h"
 #include "cdecl_dym.h"
 #include "literals.h"
@@ -46,6 +45,7 @@
 #include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <string.h>
+#include <sysexits.h>
 
 /// @endcond
 

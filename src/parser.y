@@ -38,15 +38,14 @@
 #include "c_ast_check.h"
 #include "c_ast_util.h"
 #include "c_keyword.h"
+#include "c_kind.h"
 #include "c_lang.h"
 #include "c_operator.h"
-#include "c_sglob.h"
 #include "c_sname.h"
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
 #include "cdecl_dym.h"
-#include "cdecl_keyword.h"
 #include "color.h"
 #include "dump.h"
 #include "english.h"
@@ -73,9 +72,9 @@
 #include <limits.h>                     /* for UCHAR_MAX */
 #include <stdarg.h>
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Silence these warnings for Bison-generated code.
 #pragma GCC diagnostic push

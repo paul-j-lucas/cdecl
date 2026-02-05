@@ -28,7 +28,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "p_macro.h"
 #include "types.h"
 
 // standard

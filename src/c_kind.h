@@ -28,7 +28,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "types.h"
 
 /**
  * @defgroup c-kinds-group C/C++ Declaration Kinds

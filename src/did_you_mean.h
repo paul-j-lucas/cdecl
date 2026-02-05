@@ -31,6 +31,7 @@
 #include "pjl_config.h"                 /* must go first */
 
 // standard
+#include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 
 /**

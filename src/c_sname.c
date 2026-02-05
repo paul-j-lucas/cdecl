@@ -27,6 +27,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "c_sname.h"
+#include "c_ast.h"
 #include "c_keyword.h"
 #include "c_sglob.h"
 #include "c_type.h"
@@ -35,14 +36,16 @@
 #include "options.h"
 #include "p_macro.h"
 #include "print.h"
-#include "strbuf.h"
 #include "util.h"
 
 // standard
 #include <assert.h>
+#include <ctype.h>                      /* for isspace(3) */
 #include <fnmatch.h>
 #include <stddef.h>                     /* for NULL, size_t */
+#include <stdio.h>                      /* for stderr */
 #include <stdlib.h>                     /* for free(3) */
+#include <string.h>                     /* for strcmp(3), strlen(3) */
 
 /**
  * @addtogroup sname-group

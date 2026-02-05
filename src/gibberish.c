@@ -28,11 +28,15 @@
 #include "gibberish.h"
 #include "c_ast.h"
 #include "c_ast_util.h"
+#include "c_kind.h"
 #include "c_lang.h"
 #include "c_operator.h"
+#include "c_sname.h"
+#include "c_type.h"
 #include "c_typedef.h"
 #include "literals.h"
 #include "options.h"
+#include "strbuf.h"
 #include "type_traits.h"
 #include "types.h"
 #include "util.h"
@@ -43,8 +47,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL, size_t */
-#include <stdlib.h>
+#include <stddef.h>                     /* for unreachable(3) */
 
 /// @endcond
 

@@ -26,22 +26,23 @@
 #include "color.h"
 #include "dump.h"
 #include "gibberish.h"
-#include "lexer.h"
 #include "literals.h"
 #include "options.h"
+#include "p_kind.h"
 #include "p_token.h"
 #include "print.h"
 #include "red_black.h"
 #include "show.h"
+#include "strbuf.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
+#include <stdint.h>                     /* for SIZE_MAX */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

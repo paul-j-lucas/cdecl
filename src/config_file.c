@@ -34,14 +34,14 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <assert.h>
 #if HAVE_PWD_H
 # include <pwd.h>                       /* for getpwuid() */
 #endif /* HAVE_PWD_H */
+#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h>                     /* for exit(3), getenv(3) */
 #include <sysexits.h>
-#include <unistd.h>                     /* for geteuid() */
+#include <unistd.h>                     /* for geteuid(2) */
 
 /// @endcond
 

@@ -30,16 +30,20 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "c_ast.h"
+#include "c_kind.h"
+#include "c_lang.h"
 #include "c_operator.h"
 #include "c_type.h"
 #include "options.h"                    /* for opt_using */
 #include "type_traits.h"
 #include "types.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <stdbool.h>
+#include <stddef.h>                     /* for NULL */
 
 /// @endcond
 

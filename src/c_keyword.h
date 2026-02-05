@@ -29,9 +29,15 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "c_ast.h"
 #include "types.h"
 #include "cdecl_parser.h"               /* must go last */
+
+/// @cond DOXYGEN_IGNORE
+
+// standard
+#include <stddef.h>                     /* for NULL */
+
+/// @endcond
 
 /**
  * @defgroup c-keywords-group C/C++ Keywords

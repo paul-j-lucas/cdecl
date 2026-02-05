@@ -27,7 +27,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "c_kind.h"
 #include "c_lang.h"
-#include "options.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

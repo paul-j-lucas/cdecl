@@ -34,8 +34,10 @@
 
 // standard
 #include <assert.h>
+#include <ctype.h>                      /* for isupper(3) */
 #include <stddef.h>                     /* for NULL */
 #include <string.h>
+#include <strings.h>
 
 /// @endcond
 

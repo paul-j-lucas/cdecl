@@ -40,8 +40,6 @@
 // standard
 #include <assert.h>
 #include <stddef.h>                     /* for NULL, size_t */
-#include <stdlib.h>
-#include <string.h>
 
 #define C_TYPE_CHECK(LANG_IDS) BLOCK(       \
   c_lang_id_t const lang_ids = (LANG_IDS);  \

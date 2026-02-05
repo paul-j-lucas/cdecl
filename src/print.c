@@ -26,16 +26,20 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "print.h"
+#include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_keyword.h"
+#include "c_kind.h"
 #include "c_lang.h"
 #include "c_sname.h"
+#include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
 #include "cdecl_dym.h"
 #include "cdecl_keyword.h"
 #include "cdecl_term.h"
 #include "color.h"
+#include "did_you_mean.h"
 #include "english.h"
 #include "gibberish.h"
 #include "lexer.h"
@@ -52,7 +56,6 @@
 #include <assert.h>
 #include <ctype.h>                      /* for isspace(3) */
 #include <stdarg.h>
-#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <string.h>
 

@@ -22,7 +22,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "p_token.h"
 #include "c_lang.h"
-#include "c_operator.h"
 #include "color.h"
 #include "gibberish.h"
 #include "lexer.h"
@@ -38,7 +37,6 @@
 // standard
 #include <assert.h>
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

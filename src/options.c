@@ -26,16 +26,18 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "options.h"
+#include "c_lang.h"
 #include "c_type.h"
 #include "prompt.h"
 #include "strbuf.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
 #include <ctype.h>
-#include <stddef.h>                     /* for NULL */
+#include <string.h>
 
 /// @endcond
 

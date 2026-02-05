@@ -33,16 +33,20 @@
 #include "c_typedef.h"
 #include "gibberish.h"
 #include "options.h"
+#include "p_macro.h"
 #include "p_token.h"
 #include "print.h"
+#include "slist.h"
+#include "type_traits.h"
 #include "types.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL */
+#include <string.h>
 
 /// @endcond
 

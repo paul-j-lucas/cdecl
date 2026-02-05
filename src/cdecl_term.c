@@ -44,6 +44,7 @@
 # include <stdlib.h>                    /* for getenv(3) */
 # include <term.h>                      /* for setupterm(3) */
 # undef _BOOL
+# include <stdio.h>                     /* for ctermid(3) */
 # include <unistd.h>                    /* for close() */
 #endif /* ENABLE_TERM_SIZE */
 

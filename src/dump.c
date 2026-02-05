@@ -28,14 +28,19 @@
 #include "dump.h"
 #include "c_ast.h"
 #include "c_ast_util.h"
+#include "c_kind.h"
 #include "c_operator.h"
+#include "c_sname.h"
 #include "c_type.h"
 #include "cdecl.h"
 #include "english.h"
 #include "gibberish.h"
 #include "literals.h"
+#include "options.h"
+#include "p_kind.h"
 #include "p_macro.h"
 #include "p_token.h"
+#include "slist.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -43,8 +48,6 @@
 // standard
 #include <assert.h>
 #include <stddef.h>                     /* for NULL */
-#include <stdint.h>
-#include <stdlib.h>
 
 #define DUMP_AST(DUMP,KEY,AST) BLOCK( \
   DUMP_KEY( (DUMP), KEY ": " ); c_ast_dump_impl( (AST), (DUMP) ); )

@@ -37,7 +37,6 @@
 
 // standard
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>                      /* for FILE */
 
 /// @endcond

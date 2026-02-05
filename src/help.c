@@ -27,7 +27,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "help.h"
 #include "c_lang.h"
-#include "cdecl.h"
 #include "cdecl_command.h"
 #include "color.h"
 #include "literals.h"
@@ -43,7 +42,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 
 /// @endcond
 
