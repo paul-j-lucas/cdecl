@@ -1,3 +1,16 @@
+2026-02-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.h, c_ast_warn.c, c_keyword.c, c_keyword.h, c_kind.c, c_kind.h,
+     c_lang.c, c_sname.c, c_type.c, c_type.h, c_typedef.c, cdecl.c, cdecl.h,
+     cdecl_command.c, cdecl_dym.c, cdecl_keyword.h, cdecl_parser.h,
+     cdecl_term.c, cli_options.c, color.c, config_file.c, did_you_mean.c,
+     did_you_mean.h, dump.c, english.c, gibberish.c, help.c, lexer.h, lexer.l,
+     options.c, p_keyword.c, p_macro.c, p_macro.h, p_predefine.c, p_token.c,
+     p_token.h, parse.c, parse.h, parser.y, print.c, print.h, read_line.h,
+     set_options.c, show.c, show.h, slist.c, slist.h, slist_test.c, strbuf.c,
+     strbuf.h, unit_test.h, util.c, util_test.c: Fixed-up #includes using
+     include-what-you-use.
+
 2026-02-03  Paul J. Lucas <paul@lucasmail.org>
 
    * Doxyfile: Added PAGE_OUTLINE_PANEL.
