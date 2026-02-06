@@ -41,6 +41,7 @@
 
 // standard
 #include <assert.h>
+#include <getopt.h>                     /* {no|required|optional}_argument */
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
