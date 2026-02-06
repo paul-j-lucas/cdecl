@@ -28,7 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* IWYU pragma: keep */
-#include "cdecl_dym.h"
+#include "cdecl_dym.h"                  /* IWYU pragma: export */
 #include "types.h"                      /* for c_loc_t */
 
 // standard
