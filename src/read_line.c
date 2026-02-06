@@ -47,7 +47,7 @@
 #   include <readline/readline.h>
 # endif /* HAVE_READLINE_READLINE_H */
 # ifdef HAVE_READLINE_HISTORY_H
-#   include <readline/history.h>
+#   include <readline/history.h>        /* IWYU pragma: keep */
 # endif /* HAVE_READLINE_HISTORY_H */
 #endif /* WITH_READLINE */
 
