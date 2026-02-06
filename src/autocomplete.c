@@ -43,6 +43,7 @@
 
 // standard
 #include <assert.h>
+#include <getopt.h>                     /* for required_argument */
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
