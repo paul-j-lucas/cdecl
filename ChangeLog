@@ -1,5 +1,14 @@
+2026-02-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, bit_util.c, bit_util.h, c_ast.c, c_ast.h, c_ast_check.c,
+     c_ast_util.c, c_ast_warn.c, c_kind.c, c_lang.c, c_lang.h, c_type.c,
+     c_typedef.c, dump.c, english.c, gibberish.c, options.c, parser.y, print.c,
+     set_options.c, util.c, util.h, debug.out: Split out bit macros and
+     functions into bit_util.[hc].
+
 2026-02-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * debug.out: Updated.
    * read_line.c: Added IWYU pragma: keep.
    * set_options.c, set_options.h: Moved #include <getopt.h>.
    * read_line.c: Removed unnecessary #include <stddef.h>.
