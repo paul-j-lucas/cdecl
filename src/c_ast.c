@@ -26,6 +26,9 @@
 // local
 #include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "c_ast.h"
+#ifndef NDEBUG
+#include "bit_util.h"
+#endif /* NDEBUG */
 #include "c_sname.h"
 #include "util.h"
 

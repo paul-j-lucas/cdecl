@@ -26,6 +26,9 @@
 // local
 #include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "c_type.h"
+#ifndef NDEBUG
+#include "bit_util.h"
+#endif /* NDEBUG */
 #include "c_lang.h"
 #include "gibberish.h"                  /* for other_token_c() */
 #include "lexer.h"

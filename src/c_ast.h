@@ -31,6 +31,9 @@
 
 // local
 #include "pjl_config.h"                 /* IWYU pragma: keep */
+#ifndef NDEBUG
+#include "bit_util.h"
+#endif /* NDEBUG */
 #include "c_kind.h"
 #include "c_type.h"
 #include "slist.h"

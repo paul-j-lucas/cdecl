@@ -26,6 +26,9 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "print.h"
+#ifndef NDEBUG
+#include "bit_util.h"
+#endif /* NDEBUG */
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_keyword.h"

@@ -27,6 +27,7 @@
 // local
 #include "pjl_config.h"                 /* IWYU pragma: keep */
 #include "c_ast_util.h"
+#include "bit_util.h"
 #include "c_ast.h"
 #include "c_kind.h"
 #include "c_operator.h"

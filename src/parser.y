@@ -34,6 +34,9 @@
 
 // local
 #include "pjl_config.h"                 /* IWYU pragma: keep */
+#ifndef NDEBUG
+#include "bit_util.h"
+#endif /* NDEBUG */
 #include "c_ast.h"
 #include "c_ast_check.h"
 #include "c_ast_util.h"

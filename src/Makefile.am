@@ -54,6 +54,7 @@ BUILT_SOURCES =	parser.c parser.h lexer.c
 
 cdecl_SOURCES =	parser.y \
 		lexer.l lexer.h \
+		bit_util.c bit_util.h \
 		c_ast.c c_ast.h \
 		c_ast_check.c c_ast_check.h \
 		c_ast_util.c c_ast_util.h \

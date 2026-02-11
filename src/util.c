@@ -312,15 +312,6 @@ void fputsp_s( char const *s, FILE *out ) {
     FPRINTF( out, " %s", s );
 }
 
-uint32_t ms_bit1_32( uint32_t n ) {
-  n |= n >>  1;                         // "smear" MSB to the right
-  n |= n >>  2;
-  n |= n >>  4;
-  n |= n >>  8;
-  n |= n >> 16;
-  return n ^ (n >> 1);                  // isolate MSB
-}
-
 char const* parse_identifier( char const *s ) {
   assert( s != NULL );
   if ( !is_ident_first( s[0] ) )
@@ -490,15 +481,8 @@ void wait_for_debugger_attach( void ) {
 
 extern inline char const* empty_if_null( char const* );
 extern inline bool false_set( bool* );
-extern inline bool is_01_bit( uint64_t );
-extern inline bool is_0n_bit_only_in_set( uint64_t, uint64_t );
-extern inline bool is_1_bit( uint64_t );
-extern inline bool is_1_bit_in_set( uint64_t, uint64_t );
-extern inline bool is_1_bit_only_in_set( uint64_t, uint64_t );
-extern inline bool is_1n_bit_only_in_set( uint64_t, uint64_t );
 extern inline bool is_ident( char );
 extern inline bool is_ident_first( char );
-extern inline uint32_t ls_bit1_32( uint32_t );
 extern inline char const* null_if_empty( char const* );
 extern inline size_t round_up_pow_2( size_t, size_t );
 extern inline bool str_is_empty( char const* );
