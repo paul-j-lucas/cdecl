@@ -474,8 +474,6 @@
  *
  * @param FD The file descriptor to stat.
  * @param PSTAT A pointer to a `struct stat` to receive the result.
- *
- * @sa #STAT()
  */
 #define FSTAT(FD,PSTAT) \
   PERROR_EXIT_IF( fstat( (FD), (PSTAT) ) < 0, EX_IOERR )
