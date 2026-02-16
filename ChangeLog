@@ -1,5 +1,6 @@
 2026-02-16  Paul J. Lucas <paul@lucasmail.org>
 
+   * config.out, config.test: Better config.test.
    * lexer.l, util.c, util.h: Eliminated path_is_file().
    * src/Makefile.am: Added missing bit_util.[ch].
 
