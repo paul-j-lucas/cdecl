@@ -108,6 +108,7 @@ cdecl_SOURCES += autocomplete.c autocomplete.h
 endif
 
 BASE_TEST_SOURCES = \
+		bit_util.c bit_util.h \
 		cdecl.h \
 		pjl_config.h config.h \
 		type_traits.h \
