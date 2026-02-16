@@ -1,3 +1,8 @@
+2026-02-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, util.c, util.h: Eliminated path_is_file().
+   * src/Makefile.am: Added missing bit_util.[ch].
+
 2026-02-10  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am, bit_util.c, bit_util.h, c_ast.c, c_ast.h, c_ast_check.c,
