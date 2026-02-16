@@ -67,6 +67,7 @@
 #include <stdio.h>
 #include <stdlib.h>                     /* for strtol(3) */
 #include <string.h>
+#include <sys/stat.h>
 #include <sysexits.h>
 #include <wordexp.h>
 
@@ -509,7 +510,14 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
     goto done;
   }
 
-  if ( !path_is_file( real_path ) ) {
+  struct stat st;
+  if ( stat( real_path, &st ) < 0 ) {
+    // LCOV_EXCL_START
+    print_error( path_loc, "\"%s\": %s\n", real_path, STRERROR() );
+    goto done;
+    // LCOV_EXCL_STOP
+  }
+  if ( !S_ISREG( st.st_mode ) ) {
     // LCOV_EXCL_START
     print_error( path_loc, "\"%s\": not a plain file\n", path );
     goto done;

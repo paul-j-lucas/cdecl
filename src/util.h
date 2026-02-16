@@ -803,17 +803,6 @@
 #define SKIP_WS(S)                SKIP_CHARS( (S), WS_CHARS )
 
 /**
- * Calls **stat**(2), checks for an error, and exits if there was one.
- *
- * @param PATH The path to stat.
- * @param PSTAT A pointer to a `struct stat` to receive the result.
- *
- * @sa #FSTAT()
- */
-#define STAT(PATH,PSTAT) \
-  PERROR_EXIT_IF( stat( (PATH), (PSTAT) ) < 0, EX_IOERR )
-
-/**
  * C23-like version of single-argument form of `static_assert`.
  *
  * @param EXPR The expression to use.
@@ -1168,8 +1157,6 @@ _Noreturn void fatal_error( int status, char const *format, ... );
  *
  * @param fd The file descriptor to check.
  * @return Returns `true` only if \a fd refers to a regular file.
- *
- * @sa path_is_file()
  */
 NODISCARD
 bool fd_is_file( int fd );
@@ -1313,17 +1300,6 @@ char const* parse_identifier( char const *s );
  * @sa #UNEXPECTED_INT_VALUE()
  */
 _Noreturn void perror_exit( int status );
-
-/**
- * Checks whether \a path refers to a regular file.
- *
- * @param path The path to check.
- * @return Returns `true` only if \a path refers to a regular file.
- *
- * @sa fd_is_file()
- */
-NODISCARD
-bool path_is_file( char const *path );
 
 /**
  * Rounds \a n up to a multiple of \a multiple.

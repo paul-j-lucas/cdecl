@@ -43,7 +43,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>                    /* for strcasecmp(3) */
-#include <sys/stat.h>                   /* for fstat() */
+#include <sys/stat.h>                   /* for stat() */
 #include <sysexits.h>
 #include <unistd.h>                     /* for getpid(2) */
 
@@ -319,13 +319,6 @@ char const* parse_identifier( char const *s ) {
   while ( is_ident( *++s ) )
     ;
   return s;
-}
-
-bool path_is_file( char const *path ) {
-  assert( path != NULL );
-  struct stat path_stat;
-  STAT( path, &path_stat );
-  return S_ISREG( path_stat.st_mode );
 }
 
 // LCOV_EXCL_START
