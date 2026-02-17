@@ -24,7 +24,7 @@ tags
 /confdefs.h
 /config.*
 /configure
-/conftest.*
+/conftest*
 /coverage*
 /depcomp
 /docs/
