@@ -1,3 +1,8 @@
+2026-02-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * config_file.c: Now warning on select errors when attempting to read a
+     configuration file.
+
 2026-02-16  Paul J. Lucas <paul@lucasmail.org>
 
    * share/man/man1/cdecl.1, cdecl.c, cdecl.h, cdecl_term.c, cli_options.c,
