@@ -1,5 +1,10 @@
 2026-02-16  Paul J. Lucas <paul@lucasmail.org>
 
+   * share/man/man1/cdecl.1, cdecl.c, cdecl.h, cdecl_term.c, cli_options.c,
+     config_file.c, options.c, options.h, p_predefine.c, types.h,
+     test/Makefile.am, xdg/cdecl, cli_options-error.out, cli_options.out,
+     xdg.out, run_test.sh, explain.test, xdg.test, update_test.sh: Added
+     support for the XDG Base Directory Specification.
    * config.out, config.test: Better config.test.
    * lexer.l, util.c, util.h: Eliminated path_is_file().
    * src/Makefile.am: Added missing bit_util.[ch].
