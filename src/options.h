@@ -212,6 +212,30 @@ NODISCARD
 bool parse_cdecl_debug( char const *debug_format );
 
 /**
+ * Parses the value of the `CDECL_TEST` environment variable.
+ *
+ * @param test_format
+ * @parblock
+ * The null-terminated **cdecl** test format string (case sensitive) to parse.
+ * Value format are:
+ *
+ * Format | Meaning
+ * -------|-----------------------------------------------------------------
+ * `c`    | Do not read any configuration file by default.
+ * `C`    | Ignore actual terminal columns and `COLUMNS`; always use 80.
+ * `h`    | Do not read any file under the user's home directory by default.
+ * `m`    | Return constant values for dynamic macros.
+ *
+ * Multiple formats may be given, one immediately after the other, e.g., `su`
+ * means `struct` and `union`.  Alternatively, `*` may be given to mean "all"
+ * or either the empty string or `-` may be given to mean "none."
+ * @endparblock
+ * @return Returns the parsed value.
+ */
+NODISCARD
+cdecl_test_t parse_cdecl_test( char const *test_format );
+
+/**
  * Parses the explicit `enum`, `class`, `struct`, `union` option.
  *
  * @param ecsu_format

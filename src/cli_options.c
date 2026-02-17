@@ -187,7 +187,7 @@ static char const *const CLI_OPTIONS_HELP[] = {
 #endif /* ENABLE_BISON_DEBUG */
   [ COPT(COLOR) ] = "Colorize output [default: not_file]",
   [ COPT(COMMANDS) ] = "Print commands (for shell completion)",
-  [ COPT(CONFIG) ] = "Configuration file path [default: ~/" CONF_FILE_NAME_DEFAULT "]",
+  [ COPT(CONFIG) ] = "Configuration file path",
   [ COPT(CDECL_DEBUG) ] = "Print " CDECL " debug output",
   [ COPT(DIGRAPHS) ] = "Print digraphs",
   [ COPT(EAST_CONST) ] = "Print in \"east const\" form",
@@ -917,10 +917,10 @@ void cli_options_init( int *const pargc, char const *const *pargv[] ) {
   opt_flex_debug = false;
 #endif /* ENABLE_FLEX_DEBUG */
 
-  if ( cdecl_is_testing ) {
+  if ( (cdecl_test & CDECL_TEST_NO_DEFAULT_CONFIG) != 0 ) {
     //
-    // Don't read user's ~/.cdeclrc, if any, by default since it'll interfere
-    // with testing.
+    // Don't read any configuration file by default since it'll interfere with
+    // testing.
     //
     opt_read_config = false;
   }

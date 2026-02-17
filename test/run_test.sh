@@ -249,7 +249,7 @@ run_script_test() {
 }
 
 # Ensure cdecl knows it's being tested.
-export CDECL_TEST=true
+export CDECL_TEST=*
 
 case "$TEST" in
 *.exp)  run_script_test ;;

@@ -59,7 +59,7 @@
  * @sa get___TIME___str()
  */
 static char const* get___DATE___str( void ) {
-  if ( cdecl_is_testing )
+  if ( (cdecl_test & CDECL_TEST_NO_DYNAMIC_MACROS) != 0 )
     return "Sep 09 1941";
   // LCOV_EXCL_START
   static char buf[ ARRAY_SIZE( "MMM DD YYYY" ) ];
@@ -77,7 +77,7 @@ static char const* get___DATE___str( void ) {
  * @sa get___LINE___str()
  */
 static char const* get___FILE___str( void ) {
-  if ( cdecl_is_testing ) {
+  if ( (cdecl_test & CDECL_TEST_NO_DYNAMIC_MACROS) != 0 ) {
     static char const *const VALUE[] = { "testing.c", "testing.cpp" };
     return VALUE[ OPT_LANG_IS( CPP_ANY ) ];
   }
@@ -96,7 +96,7 @@ static char const* get___FILE___str( void ) {
  * @sa get___FILE___str()
  */
 static char const* get___LINE___str( void ) {
-  if ( cdecl_is_testing )
+  if ( (cdecl_test & CDECL_TEST_NO_DYNAMIC_MACROS) != 0 )
     return "42";
   // LCOV_EXCL_START
   static char buf[ MAX_DEC_INT_DIGITS(int) + 1/*\0*/ ];
@@ -115,7 +115,7 @@ static char const* get___LINE___str( void ) {
  * @sa get___DATE___str()
  */
 static char const* get___TIME___str( void ) {
-  if ( cdecl_is_testing )
+  if ( (cdecl_test & CDECL_TEST_NO_DYNAMIC_MACROS) != 0 )
     return "12:34:56";
   // LCOV_EXCL_START
   static char buf[ ARRAY_SIZE( "hh:mm:ss" ) ];

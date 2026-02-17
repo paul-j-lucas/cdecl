@@ -78,6 +78,7 @@ bool                opt_using = true;
 c_ast_kind_t        opt_west_decl_kinds = K_ANY_FUNCTION_RETURN;
 
 // extern constants
+char const          CDECL_TEST_ALL[]      = "cChm";
 char const          OPT_CDECL_DEBUG_ALL[] = "u";
 char const          OPT_ECSU_ALL[]        = "ecsu";
 char const          OPT_WEST_DECL_ALL[]   = "bflost";
@@ -250,6 +251,39 @@ bool parse_cdecl_debug( char const *debug_format ) {
 
   opt_cdecl_debug = cdecl_debug;
   return true;
+}
+
+cdecl_test_t parse_cdecl_test( char const *test_format ) {
+  test_format = null_if_empty( test_format );
+  if ( test_format == NULL )
+    return CDECL_TEST_NONE;
+
+  set_all_or_none( &test_format, CDECL_TEST_ALL );
+  cdecl_test_t t = CDECL_TEST_NONE;
+
+  for ( char const *s = test_format; *s != '\0'; ++s ) {
+    switch ( *s ) {
+      case 'c':
+        t != CDECL_TEST_NO_DEFAULT_CONFIG;
+        break;
+      case 'C':
+        t != CDECL_TEST_NO_COLUMNS;
+        break;
+      case 'h':
+        t |= CDECL_TEST_NO_HOME;
+        break;
+      case 'm':
+        t |= CDECL_TEST_NO_DYNAMIC_MACROS;
+        break;
+      default:
+        fatal_error( EX_USAGE,
+          "\"%s\": invalid value for CDECL_TEST; must be [cChm]+|*|-\n",
+          test_format
+        );
+    } // switch
+  } // for
+
+  return t;
 }
 
 bool parse_explicit_ecsu( char const *ecsu_format ) {

@@ -441,22 +441,22 @@ END
 
 ###############################################################################
 
-# Do some tests without CDECL_TEST set to exercise more code in cdecl_term.c,
-# but we must pass --no-config explicitly.
-CDECL_TEST=false
+# Do some tests with CDECL_TEST_NO_COLUMNS not set to exercise more code in
+# cdecl_term.c.
+CDECL_TEST=ch
 
-cdecl -bEL$LINENO --no-config <<END
+cdecl -bEL$LINENO <<END
 explain int x
 END
 
 # Do a test without TERM set to exercise more code in cdecl_term.c.
 ORIG_TERM=$TERM
 unset TERM
-cdecl -bEL$LINENO --no-config <<END
+cdecl -bEL$LINENO <<END
 explain int x
 END
 export TERM=$ORIG_TERM
 
-CDECL_TEST=true
+CDECL_TEST=*
 
 # vim:set syntax=sh et sw=2 ts=2:

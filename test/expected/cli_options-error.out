@@ -12,7 +12,7 @@ options:
   --alt-tokens        (-a) Print alternative tokens.
   --color=ARG         (-k) Colorize output [default: not_file].
   --commands          (-K) Print commands (for shell completion).
-  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --config=ARG        (-c) Configuration file path.
   --debug[=ARG]       (-d) Print cdecl debug output.
   --digraphs          (-2) Print digraphs.
   --east-const        (-e) Print in "east const" form.
@@ -47,7 +47,7 @@ options:
   --alt-tokens        (-a) Print alternative tokens.
   --color=ARG         (-k) Colorize output [default: not_file].
   --commands          (-K) Print commands (for shell completion).
-  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --config=ARG        (-c) Configuration file path.
   --debug[=ARG]       (-d) Print cdecl debug output.
   --digraphs          (-2) Print digraphs.
   --east-const        (-e) Print in "east const" form.
@@ -134,7 +134,7 @@ options:
   --alt-tokens        (-a) Print alternative tokens.
   --color=ARG         (-k) Colorize output [default: not_file].
   --commands          (-K) Print commands (for shell completion).
-  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --config=ARG        (-c) Configuration file path.
   --debug[=ARG]       (-d) Print cdecl debug output.
   --digraphs          (-2) Print digraphs.
   --east-const        (-e) Print in "east const" form.
@@ -169,7 +169,7 @@ options:
   --alt-tokens        (-a) Print alternative tokens.
   --color=ARG         (-k) Colorize output [default: not_file].
   --commands          (-K) Print commands (for shell completion).
-  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --config=ARG        (-c) Configuration file path.
   --debug[=ARG]       (-d) Print cdecl debug output.
   --digraphs          (-2) Print digraphs.
   --east-const        (-e) Print in "east const" form.
@@ -218,7 +218,7 @@ options:
   --alt-tokens        (-a) Print alternative tokens.
   --color=ARG         (-k) Colorize output [default: not_file].
   --commands          (-K) Print commands (for shell completion).
-  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --config=ARG        (-c) Configuration file path.
   --debug[=ARG]       (-d) Print cdecl debug output.
   --digraphs          (-2) Print digraphs.
   --east-const        (-e) Print in "east const" form.
@@ -253,7 +253,7 @@ options:
   --alt-tokens        (-a) Print alternative tokens.
   --color=ARG         (-k) Colorize output [default: not_file].
   --commands          (-K) Print commands (for shell completion).
-  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --config=ARG        (-c) Configuration file path.
   --debug[=ARG]       (-d) Print cdecl debug output.
   --digraphs          (-2) Print digraphs.
   --east-const        (-e) Print in "east const" form.
@@ -304,7 +304,7 @@ options:
   --alt-tokens        (-a) Print alternative tokens.
   --color=ARG         (-k) Colorize output [default: not_file].
   --commands          (-K) Print commands (for shell completion).
-  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --config=ARG        (-c) Configuration file path.
   --debug[=ARG]       (-d) Print cdecl debug output.
   --digraphs          (-2) Print digraphs.
   --east-const        (-e) Print in "east const" form.
@@ -339,7 +339,7 @@ options:
   --alt-tokens        (-a) Print alternative tokens.
   --color=ARG         (-k) Colorize output [default: not_file].
   --commands          (-K) Print commands (for shell completion).
-  --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
+  --config=ARG        (-c) Configuration file path.
   --debug[=ARG]       (-d) Print cdecl debug output.
   --digraphs          (-2) Print digraphs.
   --east-const        (-e) Print in "east const" form.

@@ -91,7 +91,8 @@ TESTS+=	tests/ntu.test \
 
 # Config file tests
 TESTS+=	tests/config.test \
-	tests/config-error.test
+	tests/config-error.test \
+	tests/xdg.test
 
 # File tests
 TESTS+=	tests/file.test \

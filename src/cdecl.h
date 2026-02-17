@@ -28,6 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "types.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -43,9 +44,6 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-
-/** Default configuration file (not path) name. */
-#define CONF_FILE_NAME_DEFAULT    "." CDECL "rc"
 
 /**
  * Program name when composing or deciphering C.
@@ -98,7 +96,7 @@
 extern bool         cdecl_is_initialized; ///< Initialized (read config. file)?
 extern char const  *cdecl_input_path;     ///< Current input file path, if any.
 extern bool         cdecl_is_interactive; ///< Interactive (connected to a tty)?
-extern bool         cdecl_is_testing;     ///< Is **cdecl** being tested?
+extern cdecl_test_t cdecl_test;           ///< Is **cdecl** being tested?
 extern char const  *prog_name;            ///< Program name.
 
 ////////// extern functions ///////////////////////////////////////////////////

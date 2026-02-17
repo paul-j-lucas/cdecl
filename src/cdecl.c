@@ -56,11 +56,11 @@
 /// Otherwise Doxygen generates two entries.
 
 // extern variable definitions
-bool        cdecl_is_initialized;
-char const *cdecl_input_path;
-bool        cdecl_is_interactive;
-bool        cdecl_is_testing;
-char const *prog_name;
+bool          cdecl_is_initialized;
+char const   *cdecl_input_path;
+bool          cdecl_is_interactive;
+cdecl_test_t  cdecl_test;
+char const   *prog_name;
 
 /// @endcond
 
@@ -107,7 +107,7 @@ bool is_cppdecl( void ) {
 int main( int argc, char const *const argv[] ) {
   prog_name = base_name( argv[0] );
   ATEXIT( &cdecl_cleanup );
-  cdecl_is_testing = str_is_affirmative( getenv( "CDECL_TEST" ) );
+  cdecl_test = parse_cdecl_test( getenv( "CDECL_TEST" ) );
   if ( str_is_affirmative( getenv( "CDECL_DEBUG" ) ) )
     wait_for_debugger_attach();
 

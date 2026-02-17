@@ -40,6 +40,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>                     /* for exit(3), getenv(3) */
+#include <sys/stat.h>
 #include <sysexits.h>
 #include <unistd.h>                     /* for geteuid(2) */
 
@@ -64,19 +65,34 @@ static char const* home_dir( void ) {
   static char const *home;
 
   RUN_ONCE {
-    home = null_if_empty( getenv( "HOME" ) );
+    if ( (cdecl_test & CDECL_TEST_NO_HOME) == 0 ) {
+      home = null_if_empty( getenv( "HOME" ) );
 #if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
-    if ( home == NULL ) {
-      struct passwd const *const pw = getpwuid( geteuid() );
-      if ( pw != NULL )
-        home = null_if_empty( pw->pw_dir );
-    }
+      if ( home == NULL ) {
+        struct passwd const *const pw = getpwuid( geteuid() );
+        if ( pw != NULL )
+          home = null_if_empty( pw->pw_dir );
+      }
 #endif /* HAVE_GETEUID && && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR */
+    }
   }
 
   return home;
 }
 // LCOV_EXCL_STOP
+
+/**
+ * Checks whether \a path exists and is a regular file.
+ *
+ * @param path The path to test.
+ * @return Returns `true` only if \a path exists and is a regular file.
+ */
+NODISCARD
+static bool path_is_file( char const *path ) {
+  assert( path != NULL );
+  struct stat st;
+  return stat( path, &st ) == 0 && S_ISREG( st.st_mode );
+}
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -90,7 +106,9 @@ static char const* home_dir( void ) {
  *
  *  1. The value of either the `--config` or `-c` command-line option; or:
  *  2. The value of `CDECLRC` environment variable or:
- *  3. <code>~/</code>#CONF_FILE_NAME_DEFAULT.
+ *  3. `~/.cdeclrc`; or:
+ *  4. `$XDG_CONFIG_HOME/cdecl` or `~/.config/cdecl`; or:
+ *  5. `$XDG_CONFIG_DIRS/cdecl` for each path or `/etc/xdg/cdecl`.
  * @endparblock
  *
  * @note This function must be called as most once.
@@ -98,21 +116,77 @@ static char const* home_dir( void ) {
 void config_init( void ) {
   ASSERT_RUN_ONCE();
 
-  char const *config_path = opt_config_path;
-  if ( config_path == NULL )
-    config_path = null_if_empty( getenv( "CDECLRC" ) );
-
   strbuf_t sbuf;
   strbuf_init( &sbuf );
 
+  // 1. Try --config/-c command-line option.
+  char const *config_path = opt_config_path;
+
+  // 2. Try $CDECLRC.
+  if ( config_path == NULL )
+    config_path = null_if_empty( getenv( "CDECLRC" ) );
+
+  // 3. Try $HOME/.cdeclrc.
   if ( config_path == NULL ) {
-    // LCOV_EXCL_START
     char const *const home = home_dir();
+    // LCOV_EXCL_START
     if ( home != NULL ) {
       strbuf_puts( &sbuf, home );
-      config_path = strbuf_paths( &sbuf, CONF_FILE_NAME_DEFAULT );
+      strbuf_paths( &sbuf, "." CDECL "rc" );
+      if ( path_is_file( sbuf.str ) )
+        config_path = sbuf.str;
+      else
+        strbuf_reset( &sbuf );
     }
     // LCOV_EXCL_STOP
+  }
+
+  // 4. Try $XDG_CONFIG_HOME/cdecl and $HOME/.config/cdecl.
+  if ( config_path == NULL ) {
+    char const *const config_dir = null_if_empty( getenv( "XDG_CONFIG_HOME" ) );
+    if ( config_dir != NULL ) {
+      strbuf_puts( &sbuf, config_dir );
+    }
+    else {
+      char const *const home = home_dir();
+      // LCOV_EXCL_START
+      if ( home != NULL ) {
+        strbuf_puts( &sbuf, home );
+        strbuf_paths( &sbuf, ".config" );
+      }
+      // LCOV_EXCL_STOP
+    }
+    if ( sbuf.len > 0 ) {
+      strbuf_paths( &sbuf, CDECL );
+      if ( path_is_file( sbuf.str ) )
+        config_path = sbuf.str;
+      else
+        strbuf_reset( &sbuf );
+    }
+  }
+
+  // 5. Try $XDG_CONFIG_DIRS/cdecl and /etc/xdg/cdecl.
+  if ( config_path == NULL ) {
+    char const *config_dirs = null_if_empty( getenv( "XDG_CONFIG_DIRS" ) );
+    if ( config_dirs == NULL )
+      config_dirs = "/etc/xdg";         // LCOV_EXCL_LINE
+    for (;;) {
+      char const *const next_sep = strchr( config_dirs, ':' );
+      size_t const dir_len = next_sep != NULL ?
+        STATIC_CAST( size_t, next_sep - config_dirs ) : strlen( config_dirs );
+      if ( dir_len > 0 ) {
+        strbuf_putsn( &sbuf, config_dirs, dir_len );
+        strbuf_paths( &sbuf, CDECL );
+        if ( path_is_file( sbuf.str ) ) {
+          config_path = sbuf.str;
+          break;
+        }
+        strbuf_reset( &sbuf );
+      }
+      if ( next_sep == NULL )
+        break;
+      config_dirs = next_sep + 1;
+    } // for
   }
 
   int rv_parse = EX_OK;

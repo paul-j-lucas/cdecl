@@ -26,6 +26,11 @@ literals has been added.
 Defining a macro with a name beginning with `__STDC_` now results in a warning
 that such names are reserved.
 
+** XDG Base Directory Specification
+`cdecl` now additionally supports this specification for locating its
+configuration file, specifically the `XDG_CONFIG_HOME` and `XDG_CONFIG_DIRS`
+environment variables.
+
 
 * Changes in Cdecl 18.6
 

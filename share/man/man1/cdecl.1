@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 3, 2026" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "February 16, 2026" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -413,7 +413,7 @@ are:
 .RE
 .PD
 .IP
-Multiple format may be given,
+Multiple formats may be given,
 one immediately after the other.
 Alternatively,
 \f(CW*\fP may be given to mean ``all''
@@ -2927,10 +2927,8 @@ that use or keywords in language versions
 other than the current language
 as types.
 .SH CONFIGURATION FILES
-.SS cdeclrc
-The
-.B cdeclrc
-file is used to configure
+A configuration file
+can be used to configure
 .B cdecl
 by executing the contained commands
 on start-up
@@ -2939,44 +2937,62 @@ on start-up
 or
 .B \-C
 option is given).
-The full path of this file can be specified by either the
+.PP
+The file's full path
+is the first to be specified by
+or that exists in:
+.IP \(bu 3
+The value of either the
 .B \-\-config
 or
 .B \-c
-option;
-or,
-if not,
-the path is taken from the value of the
+option.
+.IP \(bu
+The value of the
 .B CDECLRC
+environment variable.
+.IP \(bu
+The first of these files:
+.RS 8
+.TP
+.PD 0
+.B ~/.cdeclrc
+.TP
+.B $XDG_CONFIG_HOME/cdecl
+.TP
+.B ~/.config/cdecl
+.RE
+.PD
+.IP \(bu
+If the
+.B XDG_CONFIG_DIRS
 environment variable
-unless it is either unset or empty
-in which case the path defaults to
-.BR ~/.cdeclrc .
+is set to a colon separated list of paths,
+then for each
+.I path
+in it,
+the first of
+.IB path /cdecl
+that exists.
+.IP \(bu
+.B /etc/xdg/cdecl
 .PP
 The commands useful within a configuration file are:
-.IP \(bu 3
-.BR class ,
-.BR define ,
-.BR enum ,
-.BR namespace ,
-.BR struct ,
-.BR typedef ,
-.BR union ,
-or
-.B using
-to pre-define user-specific types
+.TP 9
+.BR class " | " define " | " enum " | " namespace " | " struct " | " typedef " | " union " | " using
+Pre-define user-specific types
 so that they may be subsequently used
 when either composing or deciphering declarations.
-.IP \(bu
+.TP
 .BR #define
-to pre-define macros
+Pre-define macros
 so that they may be subsequently expanded.
-.IP \(bu
+.TP
 .B include
-to include other configuration files.
-.IP \(bu
+Include other configuration files.
+.TP
 .B set
-to set the language
+Set the language
 or other options
 initially.
 .P
@@ -3243,37 +3259,44 @@ was compiled with
 defined.
 .TP
 .B CDECL_TEST
-If set to an ``affirmative'' value
-(one of
-.BR 1 ,
-.BR t ,
-.BR true ,
-.BR y ,
-or
-.BR yes ,
-case-insensitive),
-then
+Facilitates testing
+when set to a non-empty value
+of one or more of the following letters
+(case-sensitive):
+.RS 10
+.TP 4
+.B c
+Do not read any
 .B cdecl
-will (not) do the following to facilitate testing:
-.RS 6
-.IP \(bu 3
-Not read any
-.B cdeclrc
-file
-unless specified explicitly
-via either the
+configuration file
+by default.
+Either the
 .B \-\-config
 or
 .B \-c
-option.
-.IP \(bu
-Use 80 for the number of columns of the terminal
-ignoring its actual width
+option
+must be used explicitly.
+.TP
+.B C
+Ignore actual terminal columns
 and the
 .B COLUMNS
-variable.
-.IP \(bu
-Use constant values
+variable;
+always use 80.
+.TP
+.B h
+Do not read any file
+under the user's home directory
+by default.
+Either the
+.B \-\-config
+or
+.B \-c
+option
+must be used explicitly.
+.TP
+.B m
+Return constant values
 for the
 .BR __DATE__ ,
 .BR __FILE__ ,
@@ -3282,6 +3305,14 @@ and
 .B __TIME__
 macros.
 .RE
+.PD
+.IP
+Multiple letters may be given,
+one immediately after the other.
+Alternatively,
+\f(CW*\fP may be given to mean ``all''
+or
+\f(CW-\fP may be given to mean ``none.''
 .TP
 .B CDECLRC
 The full path to the user-specific configuration file
@@ -3322,6 +3353,14 @@ is being run.
 .SH FILES
 .TP 4
 .B ~/.cdeclrc
+.PD 0
+.TP
+.B $XDG_CONFIG_HOME/cdecl
+.TP
+.B ~/.config/cdecl
+.TP
+.B /etc/xdg/cdecl
+.PD
 The default
 .B cdecl
 configuration file

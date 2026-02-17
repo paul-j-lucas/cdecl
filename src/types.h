@@ -224,6 +224,36 @@ enum cdecl_show {
 };
 
 /**
+ * **Cdecl** test mode.
+ */
+enum cdecl_test {
+  /**
+   * **Cdecl** is not being tested.
+   */
+  CDECL_TEST_NONE               = 0,
+
+  /**
+   * Ignore actual terminal columns and `COLUMNS`; always use 80.
+   */
+  CDECL_TEST_NO_COLUMNS         = 1 << 0,
+
+  /**
+   * Do not read any configuration file by default.
+   */
+  CDECL_TEST_NO_DEFAULT_CONFIG  = 1 << 1,
+
+  /**
+   * Return constant values for dynamic macros.
+   */
+  CDECL_TEST_NO_DYNAMIC_MACROS  = 1 << 2,
+
+  /**
+   * Do not read any file under the user's home directory by default.
+   */
+  CDECL_TEST_NO_HOME            = 1 << 3
+};
+
+/**
  * Declaration flags for:
  *
  *  + How a declaration was originally declared; and:
@@ -519,6 +549,7 @@ typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
 typedef enum   cdecl_debug        cdecl_debug_t;
 typedef enum   cdecl_show         cdecl_show_t;
+typedef enum   cdecl_test         cdecl_test_t;
 typedef enum   decl_flags         decl_flags_t;
 
 /**

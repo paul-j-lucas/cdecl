@@ -1,0 +1,29 @@
+EXPECTED_EXIT=0
+
+# These tests must be done CDECL_TEST_NO_DEFAULT_CONFIG ('C') not set so a
+# default configuration file will be searched for and read.
+CDECL_TEST=h
+
+# Don't check this yet.
+export XDG_CONFIG_DIRS=/does/not/exist
+
+export XDG_CONFIG_HOME=$PWD/data/xdg
+# These tests can't use -E since file markers would be absolute paths.
+cdecl -bL$LINENO <<END
+explain c_ast_id_t x
+END
+unset XDG_CONFIG_HOME
+
+export XDG_CONFIG_DIRS=$PWD/data/xdg
+cdecl -bL$LINENO <<END
+explain c_ast_id_t x
+END
+export XDG_CONFIG_DIRS=/does/not/exist:$PWD/data/xdg:/does/not/exist/either
+cdecl -bL$LINENO <<END
+explain c_ast_id_t x
+END
+unset XDG_CONFIG_DIRS
+
+CDECL_TEST=*
+
+# vim:set syntax=sh et sw=2 ts=2:
