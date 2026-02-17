@@ -28,6 +28,7 @@
 #include "cdecl.h"
 #include "options.h"
 #include "parse.h"
+#include "print.h"
 #include "strbuf.h"
 #include "util.h"
 
@@ -40,7 +41,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>                     /* for exit(3), getenv(3) */
-#include <sys/stat.h>
 #include <sysexits.h>
 #include <unistd.h>                     /* for geteuid(2) */
 
@@ -51,6 +51,16 @@
  * Functions for reading **cdecl**'s configuration file.
  * @{
  */
+
+/**
+ * Options for the config_open() function.
+ */
+enum config_opts {
+  CONFIG_OPT_NONE              = 0,       ///< No options.
+  CONFIG_OPT_ERROR_IS_FATAL    = 1 << 0,  ///< An error is fatal.
+  CONFIG_OPT_IGNORE_NOT_FOUND  = 1 << 1   ///< Ignore file not found.
+};
+typedef enum config_opts config_opts_t;
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -82,16 +92,50 @@ static char const* home_dir( void ) {
 // LCOV_EXCL_STOP
 
 /**
- * Checks whether \a path exists and is a regular file.
+ * Tries to open a configuration file given by \a path.
  *
- * @param path The path to test.
- * @return Returns `true` only if \a path exists and is a regular file.
+ * @note If successful, also sets \ref cdecl_input_path to \a path.
+ *
+ * @param path The full path to try to open.  May be NULL.
+ * @param opts The configuration options, if any.
+ * @return Returns a `FILE*` to the open file upon success or NULL upon either
+ * error or if \a path is NULL.
  */
 NODISCARD
-static bool path_is_file( char const *path ) {
-  assert( path != NULL );
-  struct stat st;
-  return stat( path, &st ) == 0 && S_ISREG( st.st_mode );
+static FILE* config_open( char const *path, config_opts_t opts ) {
+  if ( path == NULL )
+    return NULL;
+  FILE *const config_file = fopen( path, "r" );
+  if ( config_file == NULL ) {
+    switch ( errno ) {
+      case ENOENT:
+        if ( (opts & CONFIG_OPT_IGNORE_NOT_FOUND) != 0 )
+          break;
+        FALLTHROUGH;
+      case EACCES:
+      case EILSEQ:
+      case ELOOP:
+      case EMFILE:
+      case ENAMETOOLONG:
+      case ENFILE:
+      case ENOTDIR:
+        EPRINTF( "%s: ", prog_name );
+        if ( (opts & CONFIG_OPT_ERROR_IS_FATAL) != 0 ) {
+          print_error( /*loc=*/NULL,
+            "configuration file \"%s\": %s\n", path, STRERROR()
+          );
+          exit( EX_NOINPUT );
+        }
+        print_warning( /*loc=*/NULL,
+          "configuration file \"%s\": %s\n", path, STRERROR()
+        );
+        break;
+    } // switch
+  }
+  else {
+    cdecl_input_path = path;
+  }
+  return config_file;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -120,29 +164,29 @@ void config_init( void ) {
   strbuf_init( &sbuf );
 
   // 1. Try --config/-c command-line option.
-  char const *config_path = opt_config_path;
+  FILE *config_file = config_open( opt_config_path, CONFIG_OPT_ERROR_IS_FATAL );
 
   // 2. Try $CDECLRC.
-  if ( config_path == NULL )
-    config_path = null_if_empty( getenv( "CDECLRC" ) );
+  if ( config_file == NULL ) {
+    char const *const cdeclrc_path = null_if_empty( getenv( "CDECLRC" ) );
+    config_file = config_open( cdeclrc_path, CONFIG_OPT_NONE );
+  }
 
   // 3. Try $HOME/.cdeclrc.
-  if ( config_path == NULL ) {
+  if ( config_file == NULL ) {
     char const *const home = home_dir();
     // LCOV_EXCL_START
     if ( home != NULL ) {
       strbuf_puts( &sbuf, home );
       strbuf_paths( &sbuf, "." CDECL "rc" );
-      if ( path_is_file( sbuf.str ) )
-        config_path = sbuf.str;
-      else
-        strbuf_reset( &sbuf );
+      config_file = config_open( sbuf.str, CONFIG_OPT_IGNORE_NOT_FOUND );
+      strbuf_reset( &sbuf );
     }
     // LCOV_EXCL_STOP
   }
 
   // 4. Try $XDG_CONFIG_HOME/cdecl and $HOME/.config/cdecl.
-  if ( config_path == NULL ) {
+  if ( config_file == NULL ) {
     char const *const config_dir = null_if_empty( getenv( "XDG_CONFIG_HOME" ) );
     if ( config_dir != NULL ) {
       strbuf_puts( &sbuf, config_dir );
@@ -158,15 +202,13 @@ void config_init( void ) {
     }
     if ( sbuf.len > 0 ) {
       strbuf_paths( &sbuf, CDECL );
-      if ( path_is_file( sbuf.str ) )
-        config_path = sbuf.str;
-      else
-        strbuf_reset( &sbuf );
+      config_file = config_open( sbuf.str, CONFIG_OPT_IGNORE_NOT_FOUND );
+      strbuf_reset( &sbuf );
     }
   }
 
   // 5. Try $XDG_CONFIG_DIRS/cdecl and /etc/xdg/cdecl.
-  if ( config_path == NULL ) {
+  if ( config_file == NULL ) {
     char const *config_dirs = null_if_empty( getenv( "XDG_CONFIG_DIRS" ) );
     if ( config_dirs == NULL )
       config_dirs = "/etc/xdg";         // LCOV_EXCL_LINE
@@ -177,11 +219,10 @@ void config_init( void ) {
       if ( dir_len > 0 ) {
         strbuf_putsn( &sbuf, config_dirs, dir_len );
         strbuf_paths( &sbuf, CDECL );
-        if ( path_is_file( sbuf.str ) ) {
-          config_path = sbuf.str;
-          break;
-        }
+        config_file = config_open( sbuf.str, CONFIG_OPT_IGNORE_NOT_FOUND );
         strbuf_reset( &sbuf );
+        if ( config_file != NULL )
+          break;
       }
       if ( next_sep == NULL )
         break;
@@ -191,23 +232,14 @@ void config_init( void ) {
 
   int rv_parse = EX_OK;
 
-  if ( config_path != NULL ) {
-    cdecl_input_path = config_path;
-
-    FILE *const config_file = fopen( config_path, "r" );
-    if ( config_file != NULL ) {
-      bool const echo_file_markers = opt_echo_commands && !cdecl_is_interactive;
-      if ( echo_file_markers )
-        PRINTF( "/* begin \"%s\" */\n", config_path );
-      rv_parse = cdecl_parse_file( config_file );
-      if ( echo_file_markers && rv_parse == EX_OK )
-        PRINTF( "/* end \"%s\" */\n", config_path );
-      fclose( config_file );
-    }
-    else if ( opt_config_path != NULL ) {
-      fatal_error( EX_NOINPUT, "\"%s\": %s\n", config_path, STRERROR() );
-    }
-
+  if ( config_file != NULL ) {
+    bool const echo_file_markers = opt_echo_commands && !cdecl_is_interactive;
+    if ( echo_file_markers )
+      PRINTF( "/* begin \"%s\" */\n", cdecl_input_path );
+    rv_parse = cdecl_parse_file( config_file );
+    if ( echo_file_markers && rv_parse == EX_OK )
+      PRINTF( "/* end \"%s\" */\n", cdecl_input_path );
+    fclose( config_file );
     cdecl_input_path = NULL;
   }
 
