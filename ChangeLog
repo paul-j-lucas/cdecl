@@ -1,5 +1,6 @@
 2026-02-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * config_file.c: Replaced errno macros with default.
    * config.out, config.test: Added test for warning for non-readable config
      file.
    * config.out, config.test: Added test for non-existant CDECLRC.
