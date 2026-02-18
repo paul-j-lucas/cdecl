@@ -160,6 +160,7 @@ static FILE* config_open( char const *path, config_opts_t opts ) {
 void config_init( void ) {
   ASSERT_RUN_ONCE();
 
+  char const *home = NULL;
   strbuf_t sbuf;
   strbuf_init( &sbuf );
 
@@ -173,15 +174,12 @@ void config_init( void ) {
   }
 
   // 3. Try $HOME/.cdeclrc.
-  if ( config_file == NULL ) {
-    char const *const home = home_dir();
+  if ( config_file == NULL && (home = home_dir()) != NULL ) {
     // LCOV_EXCL_START
-    if ( home != NULL ) {
-      strbuf_puts( &sbuf, home );
-      strbuf_paths( &sbuf, "." CDECL "rc" );
-      config_file = config_open( sbuf.str, CONFIG_OPT_IGNORE_NOT_FOUND );
-      strbuf_reset( &sbuf );
-    }
+    strbuf_puts( &sbuf, home );
+    strbuf_paths( &sbuf, "." CDECL "rc" );
+    config_file = config_open( sbuf.str, CONFIG_OPT_IGNORE_NOT_FOUND );
+    strbuf_reset( &sbuf );
     // LCOV_EXCL_STOP
   }
 
@@ -191,13 +189,10 @@ void config_init( void ) {
     if ( config_dir != NULL ) {
       strbuf_puts( &sbuf, config_dir );
     }
-    else {
-      char const *const home = home_dir();
+    else if ( home != NULL ) {
       // LCOV_EXCL_START
-      if ( home != NULL ) {
-        strbuf_puts( &sbuf, home );
-        strbuf_paths( &sbuf, ".config" );
-      }
+      strbuf_puts( &sbuf, home );
+      strbuf_paths( &sbuf, ".config" );
       // LCOV_EXCL_STOP
     }
     if ( sbuf.len > 0 ) {
