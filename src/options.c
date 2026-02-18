@@ -264,10 +264,10 @@ cdecl_test_t parse_cdecl_test( char const *test_format ) {
   for ( char const *s = test_format; *s != '\0'; ++s ) {
     switch ( *s ) {
       case 'c':
-        t != CDECL_TEST_NO_DEFAULT_CONFIG;
+        t |= CDECL_TEST_NO_DEFAULT_CONFIG;
         break;
       case 'C':
-        t != CDECL_TEST_NO_COLUMNS;
+        t |= CDECL_TEST_NO_COLUMNS;
         break;
       case 'h':
         t |= CDECL_TEST_NO_HOME;
