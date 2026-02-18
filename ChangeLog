@@ -1,5 +1,7 @@
 2026-02-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * config.test: Added missing CDECL_TEST.
+   * options.c: s/!=/|=/
    * config_file.c: Replaced errno macros with default.
    * config.out, config.test: Added test for warning for non-readable config
      file.
