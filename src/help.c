@@ -273,8 +273,7 @@ static void print_h( char const *format, ... ) {
             default:
               UNEXPECTED_INT_VALUE( *s );
           } // switch
-          ++s;
-          break;
+          continue;
         case ':':                       // ends a title
           if ( true_clear( &in_title ) )
             color_end( stdout, recent_color );
