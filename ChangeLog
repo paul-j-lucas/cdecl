@@ -1,5 +1,6 @@
 2026-02-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * help.c: Fixed omitting color for [ after a %s.
    * share/man/man1/cdecl.1: Changed to numbered list.
 
 2026-02-17  Paul J. Lucas <paul@lucasmail.org>
