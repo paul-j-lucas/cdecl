@@ -112,13 +112,7 @@ static FILE* config_open( char const *path, config_opts_t opts ) {
         if ( (opts & CONFIG_OPT_IGNORE_NOT_FOUND) != 0 )
           break;
         FALLTHROUGH;
-      case EACCES:
-      case EILSEQ:
-      case ELOOP:
-      case EMFILE:
-      case ENAMETOOLONG:
-      case ENFILE:
-      case ENOTDIR:
+      default:
         EPRINTF( "%s: ", prog_name );
         if ( (opts & CONFIG_OPT_ERROR_IS_FATAL) != 0 ) {
           print_error( /*loc=*/NULL,
