@@ -1,5 +1,10 @@
 2026-02-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * config.out, config.test: Added test for warning for non-readable config
+     file.
+   * config.out, config.test: Added test for non-existant CDECLRC.
+   * config-error.out, config-error.test: Added test for non-existant --config
+     file.
    * config_file.c: Now warning on select errors when attempting to read a
      configuration file.
 
