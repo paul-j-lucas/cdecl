@@ -9,3 +9,5 @@ c++decl> using Int = int
 /* end "data/config_using_i.cdeclrc" */
 c++decl> explain Int x
 declare x as Int
+cdecl: warning: configuration file "/does/not/exist": No such file or directory
+cdecl> 
