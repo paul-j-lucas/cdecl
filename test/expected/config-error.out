@@ -1,4 +1,4 @@
-cdecl: error: configuration file "/does/not/exist": No such file or directory
+cdecl: error: configuration file "/tmp/does_not_exist": No such file or directory
 /* begin "data/error.cdeclrc" */
 cdecl> typedef int
                   ^
