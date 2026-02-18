@@ -7,6 +7,8 @@ cdecl -bEL$LINENO --config=data/config_using_i.cdeclrc <<END
 explain Int x
 END
 
+CDECL_TEST=h
+
 export CDECLRC=/does/not/exist
 echo | cdecl -b
 
@@ -16,5 +18,7 @@ chmod 000 $CDECLRC
 echo | cdecl -b
 rm -f $CDECLRC
 unset CDECLRC
+
+CDECL_TEST=*
 
 # vim:set syntax=sh et sw=2 ts=2:
