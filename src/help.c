@@ -274,13 +274,16 @@ static void print_h( char const *format, ... ) {
               UNEXPECTED_INT_VALUE( *s );
           } // switch
           continue;
+
         case ':':                       // ends a title
           if ( true_clear( &in_title ) )
             color_end( stdout, recent_color );
           break;
+
         case '<':                       // begins non-terminal
           color_start( stdout, recent_color = sgr_help_nonterm );
           break;
+
         case '*':                       // other EBNF chars
         case '+':
         case '[':
@@ -294,6 +297,7 @@ static void print_h( char const *format, ... ) {
           PUTC( *s );
           color_end( stdout, recent_color );
           continue;
+
         case '\\':                      // escapes next char
           is_escaped = true;
           continue;
