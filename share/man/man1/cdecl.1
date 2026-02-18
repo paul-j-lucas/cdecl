@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "February 16, 2026" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "February 18, 2026" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2939,19 +2939,21 @@ or
 option is given).
 .PP
 The file's full path
-is the first to be specified by
-or that exists in:
-.IP \(bu 3
+is derived from the first of these files
+that exists
+and is readable:
+.nr step 1 1
+.IP \n[step]. 3
 The value of either the
 .B \-\-config
 or
 .B \-c
 option.
-.IP \(bu
+.IP \n+[step].
 The value of the
 .B CDECLRC
 environment variable.
-.IP \(bu
+.IP \n+[step].
 The first of these files:
 .RS 8
 .TP
@@ -2963,7 +2965,7 @@ The first of these files:
 .B ~/.config/cdecl
 .RE
 .PD
-.IP \(bu
+.IP \n+[step].
 If the
 .B XDG_CONFIG_DIRS
 environment variable
@@ -2972,9 +2974,8 @@ then for each
 .I path
 in it,
 the first of
-.IB path /cdecl
-that exists.
-.IP \(bu
+.IB path /cdecl \f1.\fP
+.IP \n+[step].
 .B /etc/xdg/cdecl
 .PP
 The commands useful within a configuration file are:
