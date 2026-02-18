@@ -388,7 +388,7 @@ static void print_help_command( cdecl_command_t const *command ) {
     } else {
       PUTS( command->literal );
       if ( command->literal == L_inline )
-        PRINTF( " %s", L_namespace );
+        PUTS( " namespace" );
     }
     print_h( " <name>" );
     if ( OPT_LANG_IS( NESTED_TYPES ) ) {
