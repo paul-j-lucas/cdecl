@@ -1,3 +1,6 @@
+EXPECTED_EXIT=66
+echo | cdecl -bE --config=/does/not/exist
+
 EXPECTED_EXIT=65
 # The EOF from the pipe will cause cdecl to exit rather than be interactive in
 # the event it doesn't exit from the error.
