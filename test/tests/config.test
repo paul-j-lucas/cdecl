@@ -8,7 +8,13 @@ explain Int x
 END
 
 export CDECLRC=/does/not/exist
-echo | cdecl -bE
+echo | cdecl -b
+
+export CDECLRC=/tmp/is_not_readable
+touch $CDECLRC
+chmod 000 $CDECLRC
+echo | cdecl -b
+rm -f $CDECLRC
 unset CDECLRC
 
 # vim:set syntax=sh et sw=2 ts=2:

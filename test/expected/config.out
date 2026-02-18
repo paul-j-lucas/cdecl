@@ -10,4 +10,4 @@ c++decl> using Int = int
 c++decl> explain Int x
 declare x as Int
 cdecl: warning: configuration file "/does/not/exist": No such file or directory
-cdecl> 
+cdecl: warning: configuration file "/tmp/is_not_readable": Permission denied
