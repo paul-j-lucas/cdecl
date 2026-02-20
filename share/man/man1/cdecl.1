@@ -3339,13 +3339,15 @@ Takes precedence over the number of columns specified by the
 variable.
 .TP
 .B HOME
-The user's home directory:
-used to locate the default configuration file.
+Used to locate a default configuration file
+under the user's home directory.
 If unset,
 the home directory is obtained from the password database entry
 for the effective user.
 If that fails,
-no default configuration file is read.
+no default configuration file
+under the user's home directory
+is read.
 .TP
 .B TERM
 The type of the terminal on which
