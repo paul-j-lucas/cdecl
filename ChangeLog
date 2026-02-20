@@ -1,3 +1,7 @@
+2026-02-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1: Added #include to config file section.
+
 2026-02-18  Paul J. Lucas <paul@lucasmail.org>
 
    * help.c: Fixed omitting color for [ after a %s.
