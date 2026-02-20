@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "February 18, 2026" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "February 20, 2026" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2989,7 +2989,7 @@ when either composing or deciphering declarations.
 Pre-define macros
 so that they may be subsequently expanded.
 .TP
-.B include
+.BR include " | " #include
 Include other configuration files.
 .TP
 .B set
@@ -3282,7 +3282,7 @@ must be used explicitly.
 Ignore actual terminal columns
 and the
 .B COLUMNS
-variable;
+environment variable;
 always use 80.
 .TP
 .B h
