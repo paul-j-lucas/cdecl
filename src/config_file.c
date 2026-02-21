@@ -64,33 +64,6 @@ typedef enum config_opts config_opts_t;
 
 ////////// local functions ////////////////////////////////////////////////////
 
-// LCOV_EXCL_START
-/**
- * Gets the full path of the user's home directory.
- *
- * @return Returns said directory or NULL if it is not obtainable.
- */
-NODISCARD
-static char const* home_dir( void ) {
-  static char const *home;
-
-  RUN_ONCE {
-    if ( (cdecl_test & CDECL_TEST_NO_HOME) == 0 ) {
-      home = null_if_empty( getenv( "HOME" ) );
-#if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
-      if ( home == NULL ) {
-        struct passwd const *const pw = getpwuid( geteuid() );
-        if ( pw != NULL )
-          home = null_if_empty( pw->pw_dir );
-      }
-#endif /* HAVE_GETEUID && && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR */
-    }
-  }
-
-  return home;
-}
-// LCOV_EXCL_STOP
-
 /**
  * Tries to open a configuration file given by \a path.
  *
@@ -131,6 +104,33 @@ static FILE* config_open( char const *path, config_opts_t opts ) {
   }
   return config_file;
 }
+
+// LCOV_EXCL_START
+/**
+ * Gets the full path of the user's home directory.
+ *
+ * @return Returns said directory or NULL if it is not obtainable.
+ */
+NODISCARD
+static char const* home_dir( void ) {
+  static char const *home;
+
+  RUN_ONCE {
+    if ( (cdecl_test & CDECL_TEST_NO_HOME) == 0 ) {
+      home = null_if_empty( getenv( "HOME" ) );
+#if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
+      if ( home == NULL ) {
+        struct passwd const *const pw = getpwuid( geteuid() );
+        if ( pw != NULL )
+          home = null_if_empty( pw->pw_dir );
+      }
+#endif /* HAVE_GETEUID && && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR */
+    }
+  }
+
+  return home;
+}
+// LCOV_EXCL_STOP
 
 ////////// extern functions ///////////////////////////////////////////////////
 
