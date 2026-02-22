@@ -3267,9 +3267,7 @@ of one or more of the following letters
 .RS 10
 .TP 4
 .B c
-Do not read any
-.B cdecl
-configuration file
+Do not read any configuration file
 by default.
 Either the
 .B \-\-config
@@ -3316,7 +3314,7 @@ or
 \f(CW-\fP may be given to mean ``none.''
 .TP
 .B CDECLRC
-The full path to the user-specific configuration file
+The full path to a configuration file
 (see
 .BR "CONFIGURATION FILES" ).
 Used only if not empty
@@ -3353,6 +3351,29 @@ is read.
 The type of the terminal on which
 .B cdecl
 is being run.
+.TP
+.B XDG_CONFIG_DIRS
+If set to a colon separated list of paths,
+then for each
+.I path
+in it,
+the first of
+.IB path /cdecl
+to exist
+and be readable
+is used as the configuration file
+(see
+.BR "CONFIGURATION FILES" ).
+.TP
+.B XDG_CONFIG_HOME
+If set to a path
+of a directory
+and
+.B $XDG_CONFIG_HOME/cdecl
+exists and is readable,
+then that used as the configuration file
+(see
+.BR "CONFIGURATION FILES" ).
 .SH FILES
 .TP 4
 .B ~/.cdeclrc
@@ -3364,9 +3385,7 @@ is being run.
 .TP
 .B /etc/xdg/cdecl
 .PD
-The default
-.B cdecl
-configuration file
+The default configuration file
 (see
 .BR "CONFIGURATION FILES" ).
 .TP
