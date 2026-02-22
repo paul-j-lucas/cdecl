@@ -1,3 +1,9 @@
+2026-02-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1: Added mention of XDG_CONFIG_DIRS and
+     XDG_CONFIG_HOME.
+   * share/man/man1/cdecl.1: Removed ','.
+
 2026-02-20  Paul J. Lucas <paul@lucasmail.org>
 
    * share/man/man1/cdecl.1: Added #include to config file section.
