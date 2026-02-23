@@ -129,8 +129,8 @@ int main( int argc, char const *const argv[] ) {
   c_typedefs_init();
 
   if ( opt_read_config ) {
-    void config_init( void );
-    config_init();
+    void config_init( char const* );
+    config_init( opt_config_path );
   }
 
   cdecl_is_initialized = true;

@@ -233,15 +233,18 @@ static char const* home_dir( void ) {
 /**
  * Initializes **cdecl** via a configuration file.
  *
- * @note This function must be called as most once.
+ * @param config_path The full path of the configuration file to read. May be
+ * NULL.
+ *
+ * @note This function must be called at most once.
  */
-void config_init( void ) {
+void config_init( char const *config_path ) {
   ASSERT_RUN_ONCE();
 
   strbuf_t sbuf;
   strbuf_init( &sbuf );
 
-  FILE *const config_file = config_find( opt_config_path, &sbuf );
+  FILE *const config_file = config_find( config_path, &sbuf );
 
   int rv_parse = EX_OK;
 
