@@ -1,3 +1,7 @@
+2026-02-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * config_file.c: Factored out config_open().
+
 2026-02-22  Paul J. Lucas <paul@lucasmail.org>
 
    * share/man/man1/cdecl.1: Added mention of XDG_CONFIG_DIRS and
