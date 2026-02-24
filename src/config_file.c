@@ -35,12 +35,15 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <assert.h>
+#include <errno.h>
 #if HAVE_PWD_H
 # include <pwd.h>                       /* for getpwuid() */
 #endif /* HAVE_PWD_H */
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>                     /* for exit(3), getenv(3) */
+#include <string.h>
 #include <sysexits.h>
 #include <unistd.h>                     /* for geteuid(2) */
 
