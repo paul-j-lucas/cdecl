@@ -1,5 +1,7 @@
 2026-02-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * config_file.c: No longer setting cdecl_input_path is config_open().
+   * cdecl.c, config_file.c: config_init() now takes config_path.
    * config_file.c: Factored out config_open().
 
 2026-02-22  Paul J. Lucas <paul@lucasmail.org>
