@@ -87,7 +87,7 @@ mbrtoc32 (char32_t *pwc, const char *s, size_t n, mbstate_t *ps)
 # include <wchar.h>
 
 # include "localcharset.h"
-# include "streq.h"
+# include "streq-opt.h"
 
 # if MBRTOC32_IN_C_LOCALE_MAYBE_EILSEQ
 #  include "hard-locale.h"

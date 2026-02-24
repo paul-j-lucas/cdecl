@@ -131,7 +131,7 @@ AC_DEFUN([gl_EARLY],
   gl_STDIO_H_EARLY
   # Code from module stdio-windows:
   # Code from module stdlib-h:
-  # Code from module streq:
+  # Code from module streq-opt:
   # Code from module string-h:
   # Code from module stringeq:
   # Code from module strndup:
@@ -924,7 +924,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/stdio.in.h
   lib/stdlib.c
   lib/stdlib.in.h
-  lib/streq.h
+  lib/streq-opt.h
   lib/string.c
   lib/string.in.h
   lib/strndup.c

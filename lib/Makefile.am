@@ -1362,12 +1362,12 @@ EXTRA_DIST += stdlib.in.h
 
 ## end   gnulib module stdlib-h
 
-## begin gnulib module streq
+## begin gnulib module streq-opt
 
 
-EXTRA_DIST += streq.h
+EXTRA_DIST += streq-opt.h
 
-## end   gnulib module streq
+## end   gnulib module streq-opt
 
 ## begin gnulib module string-h
 
@@ -1416,6 +1416,7 @@ string.h: string.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's/@''GNULIB_STRNCPY''@/$(GL_GNULIB_STRNCPY)/g' \
 	      -e 's/@''GNULIB_STRNDUP''@/$(GL_GNULIB_STRNDUP)/g' \
 	      -e 's/@''GNULIB_STRNLEN''@/$(GL_GNULIB_STRNLEN)/g' \
+	      -e 's/@''GNULIB_STRNUL''@/$(GL_GNULIB_STRNUL)/g' \
 	      -e 's/@''GNULIB_STRPBRK''@/$(GL_GNULIB_STRPBRK)/g' \
 	      -e 's/@''GNULIB_STRSEP''@/$(GL_GNULIB_STRSEP)/g' \
 	      -e 's/@''GNULIB_STRSTR''@/$(GL_GNULIB_STRSTR)/g' \

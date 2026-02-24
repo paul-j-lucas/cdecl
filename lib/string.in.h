@@ -1230,6 +1230,66 @@ _GL_WARN_ON_USE (strtok_r, "strtok_r is unportable - "
 /* The following functions are not specified by POSIX.  They are gnulib
    extensions.  */
 
+#if @GNULIB_STRNUL@
+/* Returns a pointer to the terminating NUL byte of STRING.
+     strnul (string)
+   This is a type-generic macro:
+   If STRING is a 'const char *', the result is 'const char *'.
+   If STRING is a 'char *', the result is 'char *'.
+   It is equivalent to
+     string + strlen (string)
+   or to
+     strchr (string, '\0').  */
+# ifdef __cplusplus
+extern "C" {
+# endif
+_GL_STRING_INLINE const char *gl_strnul (const char *string)
+     _GL_ATTRIBUTE_PURE
+     _GL_ARG_NONNULL ((1));
+_GL_STRING_INLINE const char *gl_strnul (const char *string)
+{
+  /* In gcc >= 7 or clang >= 4, we could use the expression
+       strchr (string, '\0')
+     because these compiler versions produce identical code for both
+     expressions.  But this optimization in not available in older
+     compiler versions, and is also not available when the compiler
+     option '-fno-builtin' is in use.  */
+  return string + strlen (string);
+}
+# ifdef __cplusplus
+}
+# endif
+# ifdef __cplusplus
+_GL_BEGIN_NAMESPACE
+template <typename T> T strnul (T);
+template <> inline const char *strnul<const char *> (const char *s)
+{ return gl_strnul (s); }
+template <> inline       char *strnul<      char *> (      char *s)
+{ return const_cast<char *>(gl_strnul (s)); }
+_GL_END_NAMESPACE
+# else
+#  if (defined __GNUC__ && __GNUC__ + (__GNUC_MINOR__ >= 9) > 4 && !defined __cplusplus) \
+      || (defined __clang__ && __clang_major__ >= 3) \
+      || (defined __SUNPRO_C && __SUNPRO_C >= 0x5150) \
+      || (__STDC_VERSION__ >= 201112L && !defined __GNUC__)
+/* The compiler supports _Generic from ISO C11.  */
+/* Since in C (but not in C++!), any function that accepts a '[const] char *'
+   also accepts a '[const] void *' as argument, we make sure that the function-
+   like macro does the same, by mapping its type first:
+     char *, void *             -> void *
+     const char *, const void * -> const void *
+   This mapping is done through the conditional expression.  */
+#   define strnul(s) \
+      _Generic (1 ? (s) : (void *) 99, \
+                void *       : (char *) gl_strnul (s), \
+                const void * : gl_strnul (s))
+#  else
+#   define strnul(s) \
+      ((char *) gl_strnul (s))
+#  endif
+# endif
+#endif
+
 #if @GNULIB_STR_STARTSWITH@
 /* Returns true if STRING starts with PREFIX.
    Returns false otherwise.  */

@@ -21,7 +21,7 @@
 
 #if GNULIB_defined_mbstate_t
 # include "localcharset.h"
-# include "streq.h"
+# include "streq-opt.h"
 #endif
 
 #if GL_CHAR32_T_IS_UNICODE

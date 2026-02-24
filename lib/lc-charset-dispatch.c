@@ -24,7 +24,7 @@
 #if GNULIB_defined_mbstate_t
 
 # include "localcharset.h"
-# include "streq.h"
+# include "streq-opt.h"
 
 # if GNULIB_WCHAR_SINGLE_LOCALE
 /* When we know that the locale does not change, provide a speedup by
