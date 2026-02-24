@@ -86,7 +86,8 @@ static char const*  home_dir( void );
  * @endparblock
  *
  * @param config_path The full path to a configuration file.  May be NULL.
- * @param sbuf The strbuf to use. It _must_ be initialized.
+ * @param sbuf The strbuf to use. It _must_ be initialized. Upon return, it
+ * contains the full path of the configuration file that was found, if any.
  * @return Returns the `FILE*` for the configuration file if found or NULL if
  * not.
  */
@@ -98,11 +99,15 @@ static FILE* config_find( char const *config_path, strbuf_t *sbuf ) {
 
   // 1. Try --config/-c command-line option.
   FILE *config_file = config_open( config_path, CONFIG_OPT_ERROR_IS_FATAL );
+  if ( config_file != NULL )
+    strbuf_puts( sbuf, config_path );
 
   // 2. Try $CDECLRC.
   if ( config_file == NULL ) {
     char const *const cdeclrc_path = null_if_empty( getenv( "CDECLRC" ) );
     config_file = config_open( cdeclrc_path, CONFIG_OPT_NONE );
+    if ( config_file != NULL )
+      strbuf_puts( sbuf, cdeclrc_path );
   }
 
   // 3. Try $HOME/.cdeclrc.
@@ -111,13 +116,13 @@ static FILE* config_find( char const *config_path, strbuf_t *sbuf ) {
     strbuf_puts( sbuf, home );
     strbuf_paths( sbuf, "." CDECL "rc" );
     config_file = config_open( sbuf->str, CONFIG_OPT_IGNORE_NOT_FOUND );
-    strbuf_reset( sbuf );
     // LCOV_EXCL_STOP
   }
 
   // 4. Try $XDG_CONFIG_HOME/cdecl and $HOME/.config/cdecl.
   if ( config_file == NULL ) {
     char const *const config_dir = null_if_empty( getenv( "XDG_CONFIG_HOME" ) );
+    strbuf_reset( sbuf );
     if ( config_dir != NULL ) {
       strbuf_puts( sbuf, config_dir );
     }
@@ -130,7 +135,6 @@ static FILE* config_find( char const *config_path, strbuf_t *sbuf ) {
     if ( sbuf->len > 0 ) {
       strbuf_paths( sbuf, CDECL );
       config_file = config_open( sbuf->str, CONFIG_OPT_IGNORE_NOT_FOUND );
-      strbuf_reset( sbuf );
     }
   }
 
@@ -139,6 +143,7 @@ static FILE* config_find( char const *config_path, strbuf_t *sbuf ) {
     char const *config_dirs = null_if_empty( getenv( "XDG_CONFIG_DIRS" ) );
     if ( config_dirs == NULL )
       config_dirs = "/etc/xdg";         // LCOV_EXCL_LINE
+    strbuf_reset( sbuf );
     for (;;) {
       char const *const next_sep = strchr( config_dirs, ':' );
       size_t const dir_len = next_sep != NULL ?
@@ -147,9 +152,9 @@ static FILE* config_find( char const *config_path, strbuf_t *sbuf ) {
         strbuf_putsn( sbuf, config_dirs, dir_len );
         strbuf_paths( sbuf, CDECL );
         config_file = config_open( sbuf->str, CONFIG_OPT_IGNORE_NOT_FOUND );
-        strbuf_reset( sbuf );
         if ( config_file != NULL )
           break;
+        strbuf_reset( sbuf );
       }
       if ( next_sep == NULL )
         break;
@@ -163,8 +168,6 @@ static FILE* config_find( char const *config_path, strbuf_t *sbuf ) {
 /**
  * Tries to open a configuration file given by \a path.
  *
- * @note If successful, also sets \ref cdecl_input_path to \a path.
- *
  * @param path The full path to try to open.  May be NULL.
  * @param opts The configuration options, if any.
  * @return Returns a `FILE*` to the open file upon success or NULL upon either
@@ -174,6 +177,7 @@ NODISCARD
 static FILE* config_open( char const *path, config_opts_t opts ) {
   if ( path == NULL )
     return NULL;
+
   FILE *const config_file = fopen( path, "r" );
   if ( config_file == NULL ) {
     switch ( errno ) {
@@ -195,9 +199,7 @@ static FILE* config_open( char const *path, config_opts_t opts ) {
         break;
     } // switch
   }
-  else {
-    cdecl_input_path = path;
-  }
+
   return config_file;
 }
 
@@ -249,6 +251,7 @@ void config_init( char const *config_path ) {
   int rv_parse = EX_OK;
 
   if ( config_file != NULL ) {
+    cdecl_input_path = sbuf.str;
     bool const echo_file_markers = opt_echo_commands && !cdecl_is_interactive;
     if ( echo_file_markers )
       PRINTF( "/* begin \"%s\" */\n", cdecl_input_path );
