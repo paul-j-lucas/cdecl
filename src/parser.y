@@ -48,7 +48,8 @@
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
-#include "cdecl_dym.h"
+#include "cdecl_dym.h"                  /* IWYU pragma: keep */
+#include "cdecl_parser.h"
 #include "color.h"
 #include "dump.h"
 #include "english.h"
@@ -57,6 +58,7 @@
 #include "lexer.h"
 #include "literals.h"
 #include "options.h"
+#include "p_kind.h"
 #include "p_macro.h"
 #include "p_token.h"
 #include "print.h"
