@@ -247,6 +247,21 @@ static void       lexer_fatal( char const* );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Checks whether \a s is null: if so, returns a copy of the empty string.
+ *
+ * @param s The pointer to check.
+ * @return If \a s is null, returns a copy of the empty string; otherwise
+ * returns \a s.
+ *
+ * @sa empty_if_null()
+ */
+static char* empty_dup_if_null( char *s ) {
+  if ( s == NULL )
+    s = check_strdup( "" );
+  return s;
+}
+
+/**
  * Frees all memory associated with \a ifi _including_ \a ifi itself.
  *
  * @param ifi The \ref include_file_info to free.  If NULL, does nothing.
@@ -1410,7 +1425,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 if ( *d == '\0' ) {     // found delimiter
                   yylloc.first_line   = str_lit_loc.first_line;
                   yylloc.first_column = str_lit_loc.first_column;
-                  yylval.str_val = strbuf_take( &str_lit_buf );
+                  yylval.str_val =
+                    empty_dup_if_null( strbuf_take( &str_lit_buf ) );
                   BEGIN_RETURN;
                   return Y_STR_LIT;
                 }
@@ -1492,7 +1508,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 <X_STR>\"     {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;
-                yylval.str_val = strbuf_take( &str_lit_buf );
+                yylval.str_val =
+                  empty_dup_if_null( strbuf_take( &str_lit_buf ) );
                 BEGIN_RETURN;
                 return Y_STR_LIT;
               }

@@ -4,6 +4,9 @@ cdecl -bEL$LINENO <<END
 #define AVOID_PASTE_1             -EMPTY-
 expand AVOID_PASTE_1
 
+#define EMPTY_STRING              ""
+show EMPTY_STRING
+
 #define AVOID_PASTE_2(X)          -X
 expand AVOID_PASTE_2(-)
 expand AVOID_PASTE_2(->)
