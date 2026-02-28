@@ -1,3 +1,8 @@
+2026-02-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, lexer.l, expand.out, expand.test: Fixed issue #41: "" in
+     macro crash.
+
 2026-02-27  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: #include fixes.
