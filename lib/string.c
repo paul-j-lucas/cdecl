@@ -1,4 +1,4 @@
-/* streq, memeq, gl_strnul functions.
+/* streq, memeq functions.
    Copyright (C) 2025-2026 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify

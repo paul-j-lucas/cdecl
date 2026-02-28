@@ -50,16 +50,19 @@
  #error "Please include config.h first."
 #endif
 
-#if @HAVE_WINT_T@
-/* Solaris 2.5 has a bug: <wchar.h> must be included before <wctype.h>.  */
+/* Solaris 2.5 has a bug: <wchar.h> must be included before <wctype.h>.
+   But don't do it in very old mingw, when <wchar.h> is already partially
+   processed.  */
+#if @HAVE_WINT_T@ && !(defined __MINGW32__ && defined _WCHAR_H)
 # include <wchar.h>
 #endif
 
 /* Native Windows (mingw, MSVC) have declarations of towupper, towlower, and
    isw* functions in <ctype.h>, <wchar.h> as well as in <wctype.h>.  Include
    <ctype.h>, <wchar.h> in advance to avoid rpl_ prefix being added to the
-   declarations.  */
-#if defined _WIN32 && ! defined __CYGWIN__
+   declarations.  But don't do it in very old mingw, when <wchar.h> is already
+   partially processed.  */
+#if defined _WIN32 && !defined __CYGWIN__ && !(defined __MINGW32__ && defined _WCHAR_H)
 # include <ctype.h>
 # include <wchar.h>
 #endif
