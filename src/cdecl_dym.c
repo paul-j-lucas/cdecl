@@ -455,9 +455,7 @@ did_you_mean_t const* cdecl_dym_new( dym_kind_t kinds, char const *unknown ) {
   if ( dym_size == 0 )
     return NULL;
 
-  did_you_mean_t *const dym_array =
-    calloc( dym_size + 1, sizeof( did_you_mean_t ) );
-
+  did_you_mean_t *const dym_array = calloc( dym_size + 1, sizeof *dym_array );
   prep_all( kinds, dym_array );
 
   return dym_calc( unknown, dym_array, &is_similar_enough, &dym_cleanup ) ?

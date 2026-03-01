@@ -566,11 +566,11 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
   } // while
 
   if ( tree->dloc == RB_DINT ) {
-    z_new_node = malloc( sizeof( rb_node_t ) + data_size );
+    z_new_node = malloc( sizeof *z_new_node + data_size );
     memcpy( RB_DINT( z_new_node ), data, data_size );
   }
   else {
-    z_new_node = malloc( sizeof( rb_node_t ) + sizeof( void* ) );
+    z_new_node = malloc( sizeof *z_new_node + sizeof( void* ) );
     RB_DPTR( z_new_node ) = data;
   }
 
