@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.7.2
+
+** Fixed a similar macro empty character literal crash
+The following:
+
+    cdecl> #define EMPTY_CHAR ''
+
+no longer crashes and now works as expected.
+
+
 * Changes in Cdecl 18.7.1
 
 ** Fixed macro empty string literal crash

@@ -5,6 +5,10 @@ AVOID_PASTE_1 => -EMPTY-
 | EMPTY =>
 AVOID_PASTE_1 => - -
 cdecl> 
+cdecl> #define EMPTY_CHAR                ''
+cdecl> show EMPTY_CHAR
+#define EMPTY_CHAR ''
+cdecl> 
 cdecl> #define EMPTY_STRING              ""
 cdecl> show EMPTY_STRING
 #define EMPTY_STRING ""
@@ -51,12 +55,12 @@ EMPTY_MIDDLE(x,, y) => x- -y
 cdecl> 
 cdecl> #define FILE                      "file.c"
                ^
-27,9: warning: "FILE" is a predefined type since K&RC
+30,9: warning: "FILE" is a predefined type since K&RC
 cdecl> #undef FILE
 cdecl> typedef FILE *FILE_PTR
 cdecl> #define FILE_PTR                  FILE*
                ^
-30,9: warning: "FILE_PTR" previously defined as type ("typedef FILE *FILE_PTR")
+33,9: warning: "FILE_PTR" previously defined as type ("typedef FILE *FILE_PTR")
 cdecl> 
 cdecl> #define INTEGER                   int
 cdecl> expand INTEGER
@@ -82,7 +86,7 @@ cdecl>
 cdecl> #define DEFINED                   1
 cdecl> #define DEFINED                   2
                ^
-46,9: warning: "DEFINED" already exists; redefined
+49,9: warning: "DEFINED" already exists; redefined
 cdecl> expand DEFINED
 DEFINED => 2
 cdecl> 
@@ -114,13 +118,13 @@ cdecl> expand PASTE_WRONG(__LINE__,x)
 PASTE_WRONG(__LINE__, x) => A ## B
 PASTE_WRONG(__LINE__, x) => __LINE__ ## x
                             ^
-59,29: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
+62,29: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
 PASTE_WRONG(__LINE__, x) => __LINE__x
 cdecl> expand PASTE_WRONG(x,__LINE__)
 PASTE_WRONG(x, __LINE__) => A ## B
 PASTE_WRONG(x, __LINE__) => x ## __LINE__
                                  ^
-60,34: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
+63,34: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
 PASTE_WRONG(x, __LINE__) => x__LINE__
 cdecl> 
 cdecl> #define PASTE_HELPER(A,B)         A ## B
@@ -305,7 +309,7 @@ cdecl>
 cdecl> #define QUOTE(X)                  #X
 cdecl> expand QUOTE
               ^
-91,8: warning: "QUOTE": function-like macro without arguments will not expand
+94,8: warning: "QUOTE": function-like macro without arguments will not expand
 cdecl> expand QUOTE(a)
 QUOTE(a) => #X
 QUOTE(a) => "a"
@@ -331,7 +335,7 @@ cdecl> #define NOT_EXPANDED              expanded
 cdecl> expand QUOTE(NOT_EXPANDED)
 QUOTE(NOT_EXPANDED) => #X
                         ^
-100,25: warning: '#' doesn't expand macro arguments; "NOT_EXPANDED" will not expand
+103,25: warning: '#' doesn't expand macro arguments; "NOT_EXPANDED" will not expand
 QUOTE(NOT_EXPANDED) => "NOT_EXPANDED"
 cdecl> 
 cdecl> #define QUOTE_VA_ARGS(...)        #__VA_ARGS__
@@ -354,7 +358,7 @@ cdecl> expand RECURSIVE_1
 RECURSIVE_1 => RECURSIVE_2
 | RECURSIVE_2 => RECURSIVE_1
                  ^
-109,18: warning: recursive macro "RECURSIVE_1" will not expand
+112,18: warning: recursive macro "RECURSIVE_1" will not expand
 RECURSIVE_1 => RECURSIVE_1
 cdecl> 
 cdecl> #undef RECURSIVE_1
@@ -363,7 +367,7 @@ cdecl> expand RECURSIVE_1
 RECURSIVE_1 => f(RECURSIVE_2)
 | RECURSIVE_2 => RECURSIVE_1
                  ^
-113,18: warning: recursive macro "RECURSIVE_1" will not expand
+116,18: warning: recursive macro "RECURSIVE_1" will not expand
 RECURSIVE_1 => f(RECURSIVE_1)
 cdecl> 
 cdecl> #define UNIQUE_NAME(PREFIX)       PASTE(PASTE(PREFIX,_),__LINE__)
@@ -437,12 +441,12 @@ cdecl>
 cdecl> set c99
 cdecl> #define VA_OPT_NOT_SUPPORTED(...) __VA_OPT__(,)
                                          ^
-136,35: warning: "__VA_OPT__" not supported until C23; treated as text
+139,35: warning: "__VA_OPT__" not supported until C23; treated as text
 cdecl> #undef VA_OPT_NOT_SUPPORTED
 cdecl> set c++17
 c++decl> #define VA_OPT_NOT_SUPPORTED(...) __VA_OPT__(,)
                                            ^
-139,35: warning: "__VA_OPT__" not supported until C++20; treated as text
+142,35: warning: "__VA_OPT__" not supported until C++20; treated as text
 c++decl> #undef VA_OPT_NOT_SUPPORTED
 c++decl> set c
 cdecl> #define VA_OPT_NOT_SUPPORTED(...) __VA_OPT__(,) __VA_ARGS__
@@ -450,42 +454,42 @@ cdecl> set c99
 cdecl> expand VA_OPT_NOT_SUPPORTED(X)
 VA_OPT_NOT_SUPPORTED(X) => __VA_OPT__(,) __VA_ARGS__
                            ^
-144,28: warning: "__VA_OPT__" not supported until C23; will not expand
+147,28: warning: "__VA_OPT__" not supported until C23; will not expand
 | __VA_ARGS__ => X
 VA_OPT_NOT_SUPPORTED(X) => __VA_OPT__(,) X
 cdecl> 
 cdecl> set c78
 cdecl> #define OLD_PASTE(A,B)            A ## B
                                            ^
-147,37: warning: "##" not supported until C89; treated as text
+150,37: warning: "##" not supported until C89; treated as text
 cdecl> expand OLD_PASTE(x, y)
 OLD_PASTE(x, y) => A ## B
                      ^
-148,22: warning: "##" not supported until C89; treated as text
+151,22: warning: "##" not supported until C89; treated as text
 OLD_PASTE(x, y) => x ## y
 cdecl> 
 cdecl> #define OLD_VA_ARGS(...)          __VA_ARGS__
                            ^
-150,21: error: variadic macros not supported until C99
+153,21: error: variadic macros not supported until C99
 cdecl> set c
 cdecl> #define OLD_VA_ARGS(...)          __VA_ARGS__
 cdecl> set c78
 cdecl> expand OLD_VA_ARGS(x,y)
 #define OLD_VA_ARGS(...) __VA_ARGS__
                     ^
-152,21: error: variadic macros not supported until C99
+155,21: error: variadic macros not supported until C99
 cdecl> 
 cdecl> #define OLD_USE_VA_ARGS           __VA_ARGS__
                                          ^
-156,35: warning: "__VA_ARGS__" not supported until C99; treated as text
+159,35: warning: "__VA_ARGS__" not supported until C99; treated as text
 cdecl> 
 cdecl> #define OLD_QUOTE(X)              #X
                                          ^
-158,35: warning: '#' not supported until C89; treated as text
+161,35: warning: '#' not supported until C89; treated as text
 cdecl> expand OLD_QUOTE(a)
 OLD_QUOTE(a) => #X
                 ^
-159,17: warning: '#' not supported until C89; treated as text
+162,17: warning: '#' not supported until C89; treated as text
 OLD_QUOTE(a) => #a
 cdecl> 
 cdecl> set c17
@@ -606,7 +610,7 @@ NARG(x) => NARG_HELPER1( HAS_COMMA( __VA_ARGS__ ), HAS_COMMA( NARG_COMMA __VA_AR
 | __VA_ARGS__ => x
 NARG(x) => NARG_HELPER1( HAS_COMMA( x ), HAS_COMMA( NARG_COMMA x () ), NARG_( x, REV_SEQ_N ) )
                                                     ^
-208,53: warning: "NARG_COMMA": function-like macro without arguments will not expand
+211,53: warning: "NARG_COMMA": function-like macro without arguments will not expand
 | NARG_HELPER1(HAS_COMMA( x ), HAS_COMMA( NARG_COMMA x () ), NARG_( x, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
 | | A => HAS_COMMA( x )
 | | | HAS_COMMA(x) => NARG_( __VA_ARGS__, HAS_COMMA_N )
@@ -663,7 +667,7 @@ NARG(x, y) => NARG_HELPER1( HAS_COMMA( __VA_ARGS__ ), HAS_COMMA( NARG_COMMA __VA
 | __VA_ARGS__ => x, y
 NARG(x, y) => NARG_HELPER1( HAS_COMMA( x, y ), HAS_COMMA( NARG_COMMA x, y () ), NARG_( x, y, REV_SEQ_N ) )
                                                           ^
-209,59: warning: "NARG_COMMA": function-like macro without arguments will not expand
+212,59: warning: "NARG_COMMA": function-like macro without arguments will not expand
 | NARG_HELPER1(HAS_COMMA( x, y ), HAS_COMMA( NARG_COMMA x, y () ), NARG_( x, y, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
 | | A => HAS_COMMA( x, y )
 | | | HAS_COMMA(x, y) => NARG_( __VA_ARGS__, HAS_COMMA_N )
@@ -802,10 +806,10 @@ cx_throw() => DEF_ARGS(THROW_, )
 | | | PASTE_HELPER(THROW_, 0) => THROW_ ## 0
 | | | PASTE_HELPER(THROW_, 0) => THROW_0
                                  ^
-223,34: warning: "THROW_0": function-like macro without arguments will not expand
+226,34: warning: "THROW_0": function-like macro without arguments will not expand
 | | PASTE(THROW_, 0) => THROW_0
                         ^
-223,25: warning: "THROW_0": function-like macro without arguments will not expand
+226,25: warning: "THROW_0": function-like macro without arguments will not expand
 | DEF_ARGS(THROW_,) => THROW_0()
 | | THROW_0() => THROW_1( cx_tb.thrown_xid )
 | | | THROW_1(cx_tb.thrown_xid) => THROW_2( (XID), cx_user_data() )
@@ -838,7 +842,7 @@ cx_throw(123) => DEF_ARGS(THROW_, 123)
 | | | | | __VA_ARGS__ => 123
 | | | | NARG(123) => NARG_HELPER1( HAS_COMMA( 123 ), HAS_COMMA( NARG_COMMA 123 () ), NARG_( 123, REV_SEQ_N ) )
                                                                 ^
-224,65: warning: "NARG_COMMA": function-like macro without arguments will not expand
+227,65: warning: "NARG_COMMA": function-like macro without arguments will not expand
 | | | | | NARG_HELPER1(HAS_COMMA( 123 ), HAS_COMMA( NARG_COMMA 123 () ), NARG_( 123, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
 | | | | | | A => HAS_COMMA( 123 )
 | | | | | | | HAS_COMMA(123) => NARG_( __VA_ARGS__, HAS_COMMA_N )
@@ -896,10 +900,10 @@ cx_throw(123) => DEF_ARGS(THROW_, 123)
 | | | PASTE_HELPER(THROW_, 1) => THROW_ ## 1
 | | | PASTE_HELPER(THROW_, 1) => THROW_1
                                  ^
-224,34: warning: "THROW_1": function-like macro without arguments will not expand
+227,34: warning: "THROW_1": function-like macro without arguments will not expand
 | | PASTE(THROW_, 1) => THROW_1
                         ^
-224,25: warning: "THROW_1": function-like macro without arguments will not expand
+227,25: warning: "THROW_1": function-like macro without arguments will not expand
 | DEF_ARGS(THROW_, 123) => THROW_1( 123)
 | | THROW_1(123) => THROW_2( (XID), cx_user_data() )
 | | | XID => 123
@@ -930,7 +934,7 @@ cx_throw(123, ptr) => DEF_ARGS(THROW_, 123, ptr)
 | | | | | __VA_ARGS__ => 123, ptr
 | | | | NARG(123, ptr) => NARG_HELPER1( HAS_COMMA( 123, ptr ), HAS_COMMA( NARG_COMMA 123, ptr () ), NARG_( 123, ptr, REV_SEQ_N ) )
                                                                           ^
-225,75: warning: "NARG_COMMA": function-like macro without arguments will not expand
+228,75: warning: "NARG_COMMA": function-like macro without arguments will not expand
 | | | | | NARG_HELPER1(HAS_COMMA( 123, ptr ), HAS_COMMA( NARG_COMMA 123, ptr () ), NARG_( 123, ptr, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
 | | | | | | A => HAS_COMMA( 123, ptr )
 | | | | | | | HAS_COMMA(123, ptr) => NARG_( __VA_ARGS__, HAS_COMMA_N )
@@ -990,10 +994,10 @@ cx_throw(123, ptr) => DEF_ARGS(THROW_, 123, ptr)
 | | | PASTE_HELPER(THROW_, 2) => THROW_ ## 2
 | | | PASTE_HELPER(THROW_, 2) => THROW_2
                                  ^
-225,34: warning: "THROW_2": function-like macro without arguments will not expand
+228,34: warning: "THROW_2": function-like macro without arguments will not expand
 | | PASTE(THROW_, 2) => THROW_2
                         ^
-225,25: warning: "THROW_2": function-like macro without arguments will not expand
+228,25: warning: "THROW_2": function-like macro without arguments will not expand
 | DEF_ARGS(THROW_, 123, ptr) => THROW_2( 123, ptr)
 | | THROW_2(123, ptr) => cx_impl_throw( __FILE__, __LINE__, (XID), (void*)(DATA) )
 | | | XID => 123
@@ -1011,19 +1015,19 @@ cdecl> set knr
 cdecl> 
 cdecl> #define OLD_DATE                  __DATE__
                                          ^
-231,35: warning: "__DATE__" not supported until C89; will not expand
+234,35: warning: "__DATE__" not supported until C89; will not expand
 cdecl> expand OLD_DATE
 OLD_DATE => __DATE__
             ^
-232,13: warning: "__DATE__" not supported until C89; will not expand
+235,13: warning: "__DATE__" not supported until C89; will not expand
 cdecl> 
 cdecl> #define OLD_TIME                  __TIME__
                                          ^
-234,35: warning: "__TIME__" not supported until C89; will not expand
+237,35: warning: "__TIME__" not supported until C89; will not expand
 cdecl> expand OLD_TIME
 OLD_TIME => __TIME__
             ^
-235,13: warning: "__TIME__" not supported until C89; will not expand
+238,13: warning: "__TIME__" not supported until C89; will not expand
 cdecl> 
 cdecl> set c
 cdecl> 

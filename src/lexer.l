@@ -1479,7 +1479,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   \'          {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;
-                yylval.str_val = strbuf_take( &str_lit_buf );
+                yylval.str_val =
+                  empty_dup_if_null( strbuf_take( &str_lit_buf ) );
                 BEGIN_RETURN;
                 return Y_CHAR_LIT;
               }
