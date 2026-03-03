@@ -1017,10 +1017,10 @@ static bool mex_check___VA_OPT__( mex_state_t const *mex,
   if ( token_node == NULL ) {
     print_error(
       &(c_loc_t){
-        .first_line = __VA_OPT___token->loc.first_line,
+        .first_line   = __VA_OPT___token->loc.first_line,
         .first_column = __VA_OPT___token->loc.last_column + 1,
-        .last_line = __VA_OPT___token->loc.last_line,
-        .last_column = __VA_OPT___token->loc.last_column + 1
+        .last_line    = __VA_OPT___token->loc.last_line,
+        .last_column  = __VA_OPT___token->loc.last_column + 1
       },
       "'(' expected\n"
     );
