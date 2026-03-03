@@ -247,7 +247,7 @@ static void         print_version( bool );
 static void check_opt_exclusive( char opt ) {
   if ( !is_opt_given[ STATIC_CAST( unsigned, opt ) ] )
     return;
-  for ( size_t i = '0'; i < ARRAY_SIZE( is_opt_given ); ++i ) {
+  for ( unsigned i = '0'; i < ARRAY_SIZE( is_opt_given ); ++i ) {
     char const curr_opt = STATIC_CAST( char, i );
     if ( curr_opt == opt )
       continue;
@@ -408,10 +408,10 @@ static char const* get_opt_long( char short_opt ) {
 NODISCARD
 static char const* make_short_opts( struct option const opts[static const 2] ) {
   // pre-flight to calculate string length
-  size_t len = 1;                       // for leading ':'
+  unsigned len = 1;                     // for leading ':'
   for ( struct option const *opt = opts; opt->name != NULL; ++opt ) {
     assert( opt->has_arg >= 0 && opt->has_arg <= 2 );
-    len += 1 + STATIC_CAST( size_t, opt->has_arg );
+    len += 1 + STATIC_CAST( unsigned, opt->has_arg );
   } // for
 
   char *const short_opts = MALLOC( char, len + 1/*\0*/ );
