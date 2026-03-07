@@ -1,3 +1,9 @@
+2026-03-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Upped version.
+   * lexer.l: No longer relying on implementation-defined behavior of
+     realpath(3).
+
 2026-03-02  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: s/size_t/unsigned/
