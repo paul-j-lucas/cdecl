@@ -486,8 +486,6 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   wordexp_t we;
   int const rv_we = wordexp( path, &we, /*flags=*/0 );
 
-  char const *real_path = NULL;
-
   switch ( rv_we ) {
     case 0:                             // success
       if ( we.we_wordc != 1 ) {
@@ -514,7 +512,9 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
     // LCOV_EXCL_STOP
   } // switch
 
-  real_path = realpath( we.we_wordv[0], /*real_buf=*/NULL );
+  char real_path_buf[ PATH_MAX ];
+  char *real_path = realpath( we.we_wordv[0], real_path_buf );
+
   if ( real_path == NULL ) {
     print_error( path_loc, "\"%s\": could not resolve path\n", path );
     goto done;
@@ -551,9 +551,8 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   // Now that we know the path resolves, it wasn't previously included, it's a
   // plain file, and we can open it, we can insert it into include_set.
   //
-  PJL_DISCARD_RV(
-    rb_tree_insert( &include_set, CONST_CAST( char*, real_path ), 0 )
-  );
+  real_path = check_strdup( real_path );
+  PJL_DISCARD_RV( rb_tree_insert( &include_set, real_path, 0 ) );
 
   include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );
   *ifi = (include_file_info_t){
@@ -563,7 +562,6 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
     .prev_lineno = yylineno
   };
   slist_push_front( &include_stack, ifi );
-  real_path = NULL;                     // now owned by ifi above
   opt_lineno = 0;                       // applies only to original file
 
   yyin = include_file;
@@ -573,7 +571,6 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   newline();
 
 done:
-  FREE( real_path );
   wordfree( &we );                      // call only if rv_we == 0
 }
 
