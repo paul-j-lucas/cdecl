@@ -54,41 +54,41 @@
 #include <sysexits.h>
 
 // in ascending option character ASCII order
-#define OPT_DIGRAPHS          2
-#define OPT_TRIGRAPHS         3
-#define OPT_ALT_TOKENS        a
-#define OPT_NO_BUFFER_STDOUT  b
+#define OPT_DIGRAPHS              2
+#define OPT_TRIGRAPHS             3
+#define OPT_ALT_TOKENS            a
+#define OPT_NO_BUFFER_STDOUT      b
 #ifdef ENABLE_BISON_DEBUG
-#define OPT_BISON_DEBUG       B
+#define OPT_BISON_DEBUG           B
 #endif /* ENABLE_BISON_DEBUG */
-#define OPT_CONFIG            c
-#define OPT_NO_CONFIG         C
-#define OPT_CDECL_DEBUG       d
-#define OPT_EAST_CONST        e
-#define OPT_ECHO_COMMANDS     E
-#define OPT_FILE              f
+#define OPT_CONFIG                c
+#define OPT_NO_CONFIG             C
+#define OPT_CDECL_DEBUG           d
+#define OPT_EAST_CONST            e
+#define OPT_ECHO_COMMANDS         E
+#define OPT_FILE                  f
 #ifdef ENABLE_FLEX_DEBUG
-#define OPT_FLEX_DEBUG        F
+#define OPT_FLEX_DEBUG            F
 #endif /* ENABLE_FLEX_DEBUG */
-#define OPT_HELP              h
-#define OPT_EXPLICIT_INT      i
-#define OPT_INFER_COMMAND     I
-#define OPT_COLOR             k
-#define OPT_COMMANDS          K
-#define OPT_LINENO            L
-#define OPT_PERMISSIVE_TYPES  p
-#define OPT_OUTPUT            o
-#define OPT_OPTIONS           O
-#define OPT_NO_PROMPT         P
-#define OPT_TRAILING_RETURN   r
-#define OPT_NO_SEMICOLON      s
-#define OPT_EXPLICIT_ECSU     S
-#define OPT_NO_TYPEDEFS       t
-#define OPT_NO_ENGLISH_TYPES  T
-#define OPT_NO_USING          u
-#define OPT_VERSION           v
-#define OPT_WEST_DECL         w
-#define OPT_LANGUAGE          x
+#define OPT_HELP                  h
+#define OPT_EXPLICIT_INT          i
+#define OPT_INFER_COMMAND         I
+#define OPT_COLOR                 k
+#define OPT_COMMANDS              K
+#define OPT_LINENO                L
+#define OPT_PERMISSIVE_TYPES      p
+#define OPT_OUTPUT                o
+#define OPT_OPTIONS               O
+#define OPT_NO_PROMPT             P
+#define OPT_TRAILING_RETURN       r
+#define OPT_NO_SEMICOLON          s
+#define OPT_EXPLICIT_ECSU         S
+#define OPT_NO_TYPEDEFS           t
+#define OPT_NO_ENGLISH_TYPES      T
+#define OPT_NO_USING              u
+#define OPT_VERSION               v
+#define OPT_WEST_DECL             w
+#define OPT_LANGUAGE              x
 
 /// Command-line short option as a character literal.
 #define COPT(X)                   CHARIFY(OPT_##X)
