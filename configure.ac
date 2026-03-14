@@ -189,7 +189,6 @@ AS_IF([test "x$enable_term_size" != xno], [
 
 # Checks for library functions.
 AC_REPLACE_FNMATCH
-AC_FUNC_REALLOC
 AC_CHECK_FUNCS([geteuid getpwuid strsep])
 AS_IF([test "x$with_readline" != xno], [
   AC_CHECK_DECLS([rl_completion_matches], [], [],
