@@ -473,7 +473,7 @@ static void rb_tree_reset( rb_tree_t *tree ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void rb_iterator_init( rb_tree_t *tree, rb_iterator_t *iter ) {
+void rb_iterator_init( rb_tree_t const *tree, rb_iterator_t *iter ) {
   assert( tree != NULL );
   assert( iter != NULL );
 

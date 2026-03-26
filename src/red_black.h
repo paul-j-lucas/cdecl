@@ -206,10 +206,10 @@ typedef bool (*rb_visit_fn_t)( void *node_data, void *visit_data );
  * @sa rb_iterator_init()
  */
 struct rb_iterator {
-  rb_tree_t  *tree;                     ///< The tree we're iterating over.
-  rb_node_t  *curr;                     ///< Current node.
-  rb_node_t  *stack[ RB_ITERATOR_DEPTH_MAX ]; ///< Stack of nodes.
-  unsigned    stack_top;                ///< Index of stack top.
+  rb_tree_t const  *tree;               ///< The tree we're iterating over.
+  rb_node_t        *curr;               ///< Current node.
+  rb_node_t        *stack[ RB_ITERATOR_DEPTH_MAX ]; ///< Stack of nodes.
+  unsigned          stack_top;          ///< Index of stack top.
 };
 
 /**
@@ -316,7 +316,7 @@ struct rb_insert_rv {
  * @sa rb_iterator_next()
  * @sa rb_tree_visit()
  */
-void rb_iterator_init( rb_tree_t *tree, rb_iterator_t *iter );
+void rb_iterator_init( rb_tree_t const *tree, rb_iterator_t *iter );
 
 /**
  * Iterates to the next in-order node in the tree, if any.
