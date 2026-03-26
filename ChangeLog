@@ -1,3 +1,7 @@
+2026-03-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c, red_black.h: Made "tree" const.
+
 2026-03-25  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl_dym.c, p_macro.c, p_macro.h, red_black.c, red_black.h,
