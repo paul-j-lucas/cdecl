@@ -28,6 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "red_black.h"
 #include "slist.h"
 #include "types.h"
 
@@ -57,15 +58,11 @@
 typedef c_lang_id_t (*p_macro_dyn_fn_t)( p_token_t **ptoken );
 
 /**
- * The signature for a function passed to p_macro_visit().
+ * A macro iterator.
  *
- * @param macro The \ref p_macro to visit.
- * @param visit_data Optional data passed to the visitor.
- * @return Returning `true` will cause traversal to stop and a pointer to the
- * \ref p_macro the visitor stopped on to be returned to the caller of
- * p_macro_visit().
+ * @sa p_macro_iterator_init()
  */
-typedef bool (*p_macro_visit_fn_t)( p_macro_t const *macro, void *visit_data );
+typedef rb_iterator_t p_macro_iterator_t;
 
 ////////// structs ////////////////////////////////////////////////////////////
 
@@ -193,6 +190,29 @@ inline bool p_macro_is_func_like( p_macro_t const *macro ) {
 }
 
 /**
+ * Initializes a p_macro_iterator_t.
+ *
+ * @param iter The p_macro_iterator_t to initialize.
+ *
+ * @sa p_macro_iterator_next()
+ */
+void p_macro_iterator_init( p_macro_iterator_t *iter );
+
+/**
+ * Iterates to the next in-order p_macro_t, if any.
+ *
+ * @param iter The p_macro_iterator_t.
+ * @return Returns a pointer to the next p_macro_t or NULL if all of the macros
+ * were visited.
+ *
+ * @sa p_macro_iterator_init()
+ */
+NODISCARD
+inline p_macro_t const* p_macro_iterator_next( p_macro_iterator_t *iter ) {
+  return rb_iterator_next( iter );
+}
+
+/**
  * Undefines a macro having \a name.
  *
  * @param name The name of the macro to undefine.
@@ -203,14 +223,6 @@ inline bool p_macro_is_func_like( p_macro_t const *macro ) {
  */
 NODISCARD
 bool p_macro_undef( char const *name, c_loc_t const *name_loc );
-
-/**
- * Does an in-order traversal of all \ref p_macro.
- *
- * @param visit_fn The visitor function to use.
- * @param visit_data Optional data passed to \a visit_fn.
- */
-void p_macro_visit( p_macro_visit_fn_t visit_fn, void *visit_data );
 
 /**
  * Initializes all C preprocessor macro data.

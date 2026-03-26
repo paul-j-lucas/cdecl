@@ -179,10 +179,9 @@ enum mex_rv {
 
 ////////// typedefs ///////////////////////////////////////////////////////////
 
-typedef struct macro_rb_visit_data  macro_rb_visit_data_t;
-typedef enum   mex_rv               mex_rv_t;
-typedef struct mex_state            mex_state_t;
-typedef struct param_expand         param_expand_t;
+typedef enum   mex_rv       mex_rv_t;
+typedef struct mex_state    mex_state_t;
+typedef struct param_expand param_expand_t;
 
 /**
  * The signature for functions passed to mex_expand_all_fns().
@@ -193,14 +192,6 @@ typedef struct param_expand         param_expand_t;
 typedef mex_rv_t (*mex_expand_all_fn_t)( mex_state_t *mex );
 
 ////////// structs ////////////////////////////////////////////////////////////
-
-/**
- * Data passed to our red-black tree visitor function.
- */
-struct macro_rb_visit_data {
-  p_macro_visit_fn_t  visit_fn;         ///< Caller's visitor function.
-  void               *visit_data;       ///< Caller's optional data.
-};
 
 /**
  * State maintained during Macro EXpansion.
@@ -2889,26 +2880,6 @@ static p_token_node_t* push_back_dup_tokens( p_token_list_t *dst_list,
 }
 
 /**
- * Red-black tree visitor function that forwards to the \ref p_macro_visit_fn_t
- * function.
- *
- * @param node_data A pointer to the node's data.
- * @param visit_data Data passed to to the visitor.
- * @return Returning `true` will cause traversal to stop and the current node
- * to be returned to the caller of rb_tree_visit().
- */
-NODISCARD
-static bool rb_visitor( void *node_data, void *visit_data ) {
-  assert( node_data != NULL );
-  assert( visit_data != NULL );
-
-  p_macro_t const *const macro = node_data;
-  macro_rb_visit_data_t const *const mrvd = visit_data;
-
-  return (*mrvd->visit_fn)( macro, mrvd->visit_data );
-}
-
-/**
  * Sets \ref p_token::is_substituted "is_substituted" of all the tokens
  * starting with \a token_node to `true`.
  *
@@ -3131,6 +3102,11 @@ p_macro_t const* p_macro_find( char const *name ) {
   return found_rb != NULL ? RB_DINT( found_rb ) : NULL;
 }
 
+void p_macro_iterator_init( p_macro_iterator_t *iter ) {
+  assert( iter != NULL );
+  rb_iterator_init( &macro_set, iter );
+}
+
 bool p_macro_undef( char const *name, c_loc_t const *name_loc ) {
   assert( name != NULL );
   assert( name_loc != NULL );
@@ -3158,12 +3134,6 @@ predef_macro:
     "\"%s\": predefined macro may not be undefined\n", name
   );
   return false;
-}
-
-void p_macro_visit( p_macro_visit_fn_t visit_fn, void *visit_data ) {
-  assert( visit_fn != NULL );
-  macro_rb_visit_data_t mrvd = { visit_fn, visit_data };
-  rb_tree_visit( &macro_set, &rb_visitor, &mrvd );
 }
 
 void p_macros_init( void ) {
@@ -3194,5 +3164,6 @@ void p_param_list_cleanup( p_param_list_t *list ) {
 /** @} */
 
 extern inline bool p_macro_is_func_like( p_macro_t const* );
+extern inline p_macro_t const* p_macro_iterator_next( p_macro_iterator_t* );
 
 /* vim:set et sw=2 ts=2: */

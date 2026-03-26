@@ -308,32 +308,6 @@ static size_t prep_help_options( did_you_mean_t **pdym ) {
 }
 
 /**
- * A \ref p_macro visitor function that either counts a macro suggestion or
- * sets a \ref did_you_mean::known "known" to a suggestion.
- *
- * @param macro The \ref p_macro to visit.
- * @param visit_data A pointer to a \ref dym_rb_visit_data.
- * @return Always returns `false`.
- */
-PJL_DISCARD
-static bool prep_macro_vistor( p_macro_t const *macro, void *visit_data ) {
-  assert( macro != NULL );
-  assert( visit_data != NULL );
-
-  if ( macro->is_dynamic &&
-       !opt_lang_is_any( (*macro->dyn_fn)( /*ptoken=*/NULL ) ) ) {
-    return false;
-  }
-
-  dym_rb_visit_data_t *const drvd = visit_data;
-  if ( drvd->pdym == NULL )
-    ++drvd->count;
-  else
-    (*drvd->pdym)++->known = macro->name;
-  return false;
-}
-
-/**
  * Either determines the number of macro suggestions or sets \ref
  * did_you_mean::known "known" of every element to a suggestion.
  *
@@ -346,9 +320,23 @@ static bool prep_macro_vistor( p_macro_t const *macro, void *visit_data ) {
  */
 PJL_DISCARD
 static size_t prep_macros( did_you_mean_t **pdym ) {
-  dym_rb_visit_data_t drvd = { pdym, 0 };
-  p_macro_visit( &prep_macro_vistor, &drvd );
-  return drvd.count;
+  p_macro_iterator_t iter;
+  p_macro_iterator_init( &iter );
+
+  size_t count = 0;
+  for ( p_macro_t const *macro;
+        (macro = p_macro_iterator_next( &iter )) != NULL; ) {
+    if ( macro->is_dynamic &&
+         !opt_lang_is_any( (*macro->dyn_fn)( /*ptoken=*/NULL ) ) ) {
+      continue;
+    }
+
+    if ( pdym == NULL )
+      ++count;
+    else
+      (*pdym)++->known = macro->name;
+  } // for
+  return count;
 }
 
 /**

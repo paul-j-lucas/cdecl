@@ -242,8 +242,18 @@ static bool test_various( rb_dloc_t dloc ) {
   if ( TEST( !rv_rbi.inserted ) )
     TEST( strcmp( rb_node_data( &tree, rv_rbi.node ), "A" ) == 0 );
 
-  // test visitor
+  // test iterator
+  rb_iterator_t iter;
+  rb_iterator_init( &tree, &iter );
   unsigned letter_offset = 0;
+  for ( char const *str; (str = rb_iterator_next( &iter )) != NULL; ) {
+    TEST( str[0] == STATIC_CAST( char, 'A' + letter_offset ) );
+    ++letter_offset;
+  }
+  TEST( letter_offset == 4 );
+
+  // test visitor
+  letter_offset = 0;
   TEST( rb_tree_visit( &tree, &test_rb_visitor, &letter_offset ) == NULL );
 
   // test find

@@ -58,15 +58,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Information for show_macro_visitor().
- */
-struct show_macros_info {
-  cdecl_show_t  show;                   ///< Which macros to show.
-  FILE         *fout;                   ///< Where to print the macros.
-};
-typedef struct show_macros_info show_macros_info_t;
-
-/**
  * Information for show_type_visitor().
  */
 struct show_types_info {
@@ -100,37 +91,6 @@ static void print_param_list( p_param_list_t const *param_list, FILE *fout ) {
       FPUTS( ", ", fout );
   } // for
   FPUTC( ')', fout );
-}
-
-/**
- * A visitor function to show (print) \a macro.
- *
- * @param macro The \ref p_macro to show.
- * @param visit_data Optional data passed to the visitor: in this case, a \ref
- * show_macros_info.
- * @return Always returns `false`.
- */
-NODISCARD
-static bool show_macro_visitor( p_macro_t const *macro, void *visit_data ) {
-  assert( macro != NULL );
-  assert( visit_data != NULL );
-
-  show_macros_info_t const *const smi = visit_data;
-
-  if ( macro->is_dynamic ) {
-    if ( (smi->show & CDECL_SHOW_PREDEFINED) == 0 )
-      goto no_show;
-    if ( !opt_lang_is_any( (*macro->dyn_fn)( /*ptoken=*/NULL ) ) )
-      goto no_show;
-  } else {
-    if ( (smi->show & CDECL_SHOW_USER_DEFINED) == 0 )
-      goto no_show;
-  }
-
-  show_macro( macro, smi->fout );
-
-no_show:
-  return /*stop=*/false;
 }
 
 /**
@@ -206,8 +166,23 @@ bool show_macro( p_macro_t const *macro, FILE *fout ) {
 
 void show_macros( cdecl_show_t show, FILE *fout ) {
   assert( fout != NULL );
-  show_macros_info_t smi = { show, fout };
-  p_macro_visit( &show_macro_visitor, &smi );
+
+  p_macro_iterator_t iter;
+  p_macro_iterator_init( &iter );
+
+  for ( p_macro_t const *macro;
+        (macro = p_macro_iterator_next( &iter )) != NULL; ) {
+    if ( macro->is_dynamic ) {
+      if ( (show & CDECL_SHOW_PREDEFINED) == 0 )
+        continue;
+      if ( !opt_lang_is_any( (*macro->dyn_fn)( /*ptoken=*/NULL ) ) )
+        continue;
+    } else {
+      if ( (show & CDECL_SHOW_USER_DEFINED) == 0 )
+        continue;
+    }
+    show_macro( macro, fout );
+  } // for
 }
 
 void show_type( c_typedef_t const *tdef, decl_flags_t decl_flags, FILE *fout ) {

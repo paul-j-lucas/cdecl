@@ -473,6 +473,32 @@ static void rb_tree_reset( rb_tree_t *tree ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+void rb_iterator_init( rb_tree_t *tree, rb_iterator_t *iter ) {
+  assert( tree != NULL );
+  assert( iter != NULL );
+
+  iter->curr = tree->root;
+  iter->stack_top = 0;
+  iter->tree = tree;
+}
+
+void* rb_iterator_next( rb_iterator_t *iter ) {
+  assert( iter != NULL );
+
+  while ( iter->curr != &iter->tree->nil ) {
+    assert( iter->stack_top < RB_ITERATOR_DEPTH_MAX );
+    iter->stack[ iter->stack_top++ ] = iter->curr;
+    iter->curr = iter->curr->child[RB_L];
+  } // while
+
+  if ( iter->stack_top == 0 )
+    return NULL;
+
+  rb_node_t *const node = iter->stack[ --iter->stack_top ];
+  iter->curr = node->child[RB_R];
+  return rb_node_data( iter->tree, node );
+}
+
 void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn ) {
   if ( tree != NULL ) {
     rb_node_free( tree, tree->root, free_fn );

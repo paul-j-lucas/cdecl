@@ -97,6 +97,22 @@
  */
 #define RB_DPTR(NODE)             ( *(void**)RB_DINT( (NODE) ) )
 
+/**
+ * The maximum depth for an rb_iterator's \ref rb_iterator::stack "stack".
+ *
+ * @remarks
+ * @parblock
+ * The minimum number of nodes required to reach this depth (tree height, _h_)
+ * is given by:
+ *
+ *      n_min = 2^{h/2} - 1
+ *
+ * So for a maximum depth of 64, that allows for 4,294,967,295 nodes.  That
+ * ought to be enough.
+ * @endparblock
+ */
+#define RB_ITERATOR_DEPTH_MAX     64
+
 ////////// enumerations ///////////////////////////////////////////////////////
 
 /**
@@ -148,6 +164,7 @@ enum rb_dloc {
 typedef enum   rb_color     rb_color_t;
 typedef enum   rb_dloc      rb_dloc_t;
 typedef struct rb_insert_rv rb_insert_rv_t;
+typedef struct rb_iterator  rb_iterator_t;
 typedef struct rb_node      rb_node_t;
 typedef struct rb_tree      rb_tree_t;
 
@@ -182,6 +199,18 @@ typedef void (*rb_free_fn_t)( void *data );
 typedef bool (*rb_visit_fn_t)( void *node_data, void *visit_data );
 
 ////////// structs ////////////////////////////////////////////////////////////
+
+/**
+ * A red-black tree iterator.
+ *
+ * @sa rb_iterator_init()
+ */
+struct rb_iterator {
+  rb_tree_t  *tree;                     ///< The tree we're iterating over.
+  rb_node_t  *curr;                     ///< Current node.
+  rb_node_t  *stack[ RB_ITERATOR_DEPTH_MAX ]; ///< Stack of nodes.
+  unsigned    stack_top;                ///< Index of stack top.
+};
 
 /**
  * A red-black tree node.
@@ -277,6 +306,34 @@ struct rb_insert_rv {
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Initializes an rb_iterator.
+ *
+ * @param tree A pointer to the rb_tree to iterate over.
+ * @param iter A pointer to the rb_iterator to initialize.
+ *
+ * @sa rb_iterator_next()
+ * @sa rb_tree_visit()
+ */
+void rb_iterator_init( rb_tree_t *tree, rb_iterator_t *iter );
+
+/**
+ * Iterates to the next in-order node in the tree, if any.
+ *
+ * @param iter A pointer to the rb_iterator.
+ * @return Returns a pointer to the next rb_node or NULL if the entire tree was
+ * visited.
+ *
+ * @warning Even though this function returns a pointer to a non-`const` \ref
+ * rb_node, the node's \ref rb_node::data "data" _must not_ be modified if that
+ * would change the node's position within the tree according to its \ref
+ * rb_tree::cmp_fn "cmp_fn".
+ *
+ * @sa rb_iterator_init()
+ */
+NODISCARD
+void* rb_iterator_next( rb_iterator_t *iter );
 
 /**
  * Gets a pointer to \a node's data.
@@ -398,6 +455,8 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size );
  * rb_node, the node's \ref rb_node::data "data" _must not_ be modified if that
  * would change the node's position within the tree according to its \ref
  * rb_tree::cmp_fn "cmp_fn".
+ *
+ * @sa rb_iterator_next()
  */
 PJL_DISCARD
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
