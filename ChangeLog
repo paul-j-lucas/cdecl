@@ -1,3 +1,9 @@
+2026-03-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_dym.c, p_macro.c, p_macro.h, red_black.c, red_black.h,
+     red_black_test.c, show.c: Replaced p_macro_visit() with
+     p_macro_iterator_next().
+
 2026-03-13  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Removed AC_FUNC_REALLOC.
