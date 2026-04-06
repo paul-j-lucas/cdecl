@@ -330,8 +330,6 @@ AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_FILES([
   Makefile
   lib/Makefile
-  src/Makefile
-  test/Makefile
   share/Makefile
   share/bash-completions/Makefile
   share/bash-completions/completions/Makefile
@@ -339,6 +337,8 @@ AC_CONFIG_FILES([
   share/man/man1/Makefile
   share/zsh/Makefile
   share/zsh/site-functions/Makefile
+  src/Makefile
+  test/Makefile
 ])
 AC_OUTPUT
 
