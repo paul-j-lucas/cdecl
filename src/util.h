@@ -888,19 +888,6 @@
 #define STRNCMPLIT(S,LIT)         strncmp( (S), (LIT), STRLITLEN( (LIT) ) )
 
 /**
- * Synthesises a name prefixed by \a PREFIX unique to the line on which it's
- * used.
- *
- * @param PREFIX The prefix of the synthesized name.
- *
- * @warning All uses for a given \a PREFIX that refer to the same name _must_
- * be on the same line.  This is not a problem within macro definitions, but
- * won't work outside of them since there's no way to refer to a previously
- * used unique name.
- */
-#define UNIQUE_NAME(PREFIX)       NAME2(NAME2(PREFIX,_),__LINE__)
-
-/**
  * A special-case of #INTERNAL_ERROR() that prints an unexpected integer value.
  *
  * @param EXPR The expression having the unexpected value.
@@ -916,6 +903,19 @@
     STATIC_CAST( long long, (EXPR) ),                   \
     STATIC_CAST( unsigned long long, (EXPR) )           \
   )
+
+/**
+ * Synthesises a name prefixed by \a PREFIX unique to the line on which it's
+ * used.
+ *
+ * @param PREFIX The prefix of the synthesized name.
+ *
+ * @warning All uses for a given \a PREFIX that refer to the same name _must_
+ * be on the same line.  This is not a problem within macro definitions, but
+ * won't work outside of them since there's no way to refer to a previously
+ * used unique name.
+ */
+#define UNIQUE_NAME(PREFIX)       NAME2(NAME2(PREFIX,_),__LINE__)
 
 /**
  * Pre-C23/C++20 substitution for `__VA_OPT__`, that is returns \a TOKENS only
