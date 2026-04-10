@@ -28,6 +28,7 @@
 #include "parse.h"
 #include "cdecl.h"
 #include "cdecl_command.h"
+#include "cdecl_dym.h"
 #include "cdecl_parser.h"
 #include "help.h"
 #include "lexer.h"
