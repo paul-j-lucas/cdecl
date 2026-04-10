@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "util.h"
 #include "cdecl.h"
 
@@ -34,15 +34,15 @@
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
-#include <limits.h>
 #ifndef NDEBUG
 #include <signal.h>                     /* for raise(3) */
 #endif /* NDEBUG */
 #include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>                    /* for strcasecmp(3) */
 #include <sys/stat.h>                   /* for stat() */
 #include <sysexits.h>
 #include <unistd.h>                     /* for getpid(2) */

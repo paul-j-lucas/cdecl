@@ -28,7 +28,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #ifdef WITH_READLINE
 #include "autocomplete.h"
 #endif /* WITH_READLINE */

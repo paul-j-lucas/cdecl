@@ -25,12 +25,13 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "c_keyword.h"
 #include "c_lang.h"
 #include "c_type.h"
 #include "lexer.h"
 #include "literals.h"
+#include "types.h"
 #include "util.h"
 #include "cdecl_parser.h"               /* must go last */
 
@@ -38,7 +39,6 @@
 
 // standard
 #include <assert.h>
-#include <stddef.h>                     /* for NULL */
 #include <stdlib.h>
 #include <string.h>
 

@@ -19,17 +19,20 @@
 */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "p_token.h"
 #include "c_lang.h"
+#include "cdecl_parser.h"
 #include "color.h"
 #include "gibberish.h"
 #include "lexer.h"
 #include "literals.h"
+#include "p_kind.h"
 #include "p_macro.h"
-#include "parser.h"
 #include "print.h"
+#include "slist.h"
 #include "strbuf.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

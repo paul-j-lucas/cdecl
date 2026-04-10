@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "c_type.h"
 #ifndef NDEBUG
 #include "bit_util.h"
@@ -36,12 +36,14 @@
 #include "options.h"
 #include "print.h"
 #include "strbuf.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
+#include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
 
 #define C_TYPE_CHECK(LANG_IDS) BLOCK(       \

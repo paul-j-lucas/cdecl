@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "prompt.h"
 #ifdef WITH_READLINE
 #include "autocomplete.h"
@@ -41,11 +41,10 @@
 
 // standard
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL, size_t */
+#include <stdio.h>
 
 #ifdef WITH_READLINE
 # ifdef HAVE_READLINE_READLINE_H
-#   include <stdio.h>                   /* needed by readline.h */
 #   include <readline/readline.h>       /* must go after stdio.h */
 # endif /* HAVE_READLINE_READLINE_H */
 

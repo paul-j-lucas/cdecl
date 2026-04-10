@@ -25,17 +25,18 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "cdecl_keyword.h"
+#include "cdecl_parser.h"
 #include "c_lang.h"
 #include "literals.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
-#include <stddef.h>                     /* for NULL */
 #include <stdlib.h>
 #include <string.h>
 

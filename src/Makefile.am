@@ -50,6 +50,8 @@ endif
 AM_YFLAGS =	-d -Wno-yacc
 LDADD =		$(top_builddir)/lib/libgnu.a
 
+INCLUDE_TIDY_FLAGS = -Xtidy --verbose=f -Xtidy --error=never
+
 BUILT_SOURCES =	parser.c parser.h lexer.c
 
 cdecl_SOURCES =	parser.y \
@@ -146,6 +148,10 @@ $(SYMLINKS): $(CDECL)
 	$(LN_S) $(CDECL) $@
 
 check-local: clean-coverage-local
+
+tidy:
+	@touch *.c
+	@$(MAKE) -s CC="include-tidy" CFLAGS="$(INCLUDE_TIDY_FLAGS)"
 
 clean-local:
 	rm -f $(BUILT_SOURCES) $(SYMLINKS) parser.output

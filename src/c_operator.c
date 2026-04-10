@@ -24,14 +24,16 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "c_operator.h"
 #include "c_lang.h"
 #include "literals.h"
+#include "types.h"
 #include "util.h"
 
 // standard
 #include <assert.h>
+#include <stdbool.h>
 #include <stddef.h>                     /* for NULL */
 
 /// @cond DOXYGEN_IGNORE

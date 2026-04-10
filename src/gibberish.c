@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "gibberish.h"
 #ifndef NDEBUG
 #include "bit_util.h"
@@ -41,6 +41,7 @@
 #include "options.h"
 #include "strbuf.h"
 #include "type_traits.h"
+#include "slist.h"
 #include "types.h"
 #include "util.h"
 
@@ -51,6 +52,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for unreachable(3) */
+#include <stdio.h>
 
 /// @endcond
 

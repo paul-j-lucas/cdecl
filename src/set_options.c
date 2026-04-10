@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "set_options.h"
 #ifndef NDEBUG
 #include "bit_util.h"
@@ -46,7 +46,6 @@
 #include <assert.h>
 #include <getopt.h>                     /* {no|required|optional}_argument */
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
 #include <string.h>
 #include <sysexits.h>

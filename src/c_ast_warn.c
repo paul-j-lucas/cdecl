@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "c_ast_warn.h"
 #ifndef NDEBUG
 #include "bit_util.h"
@@ -36,7 +36,7 @@
 #include "c_sname.h"
 #include "c_type.h"
 #include "print.h"
-#include "slist.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

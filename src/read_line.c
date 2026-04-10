@@ -25,11 +25,12 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "read_line.h"
 #ifdef WITH_READLINE
 #include "autocomplete.h"
 #endif /* WITH_READLINE */
+#include "strbuf.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -47,7 +48,7 @@
 #   include <readline/readline.h>
 # endif /* HAVE_READLINE_READLINE_H */
 # ifdef HAVE_READLINE_HISTORY_H
-#   include <readline/history.h>        /* IWYU pragma: keep */
+#   include <readline/history.h>
 # endif /* HAVE_READLINE_HISTORY_H */
 #endif /* WITH_READLINE */
 

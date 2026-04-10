@@ -24,14 +24,16 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "help.h"
 #include "c_lang.h"
 #include "cdecl_command.h"
+#include "cdecl_dym.h"
 #include "color.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

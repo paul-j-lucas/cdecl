@@ -19,7 +19,7 @@
 */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "slist.h"
 #include "util.h"
 #include "unit_test.h"

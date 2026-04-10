@@ -24,11 +24,12 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "cli_options.h"
 #include "c_lang.h"
 #include "cdecl.h"
 #include "cdecl_command.h"
+#include "cdecl_dym.h"
 #include "color.h"
 #include "help.h"
 #include "literals.h"
@@ -44,13 +45,9 @@
 #include <assert.h>
 #include <ctype.h>
 #include <getopt.h>
-#include <limits.h>
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL, size_t */
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <strings.h>                    /* for strcasecmp(3) */
 #include <sysexits.h>
 
 // in ascending option character ASCII order

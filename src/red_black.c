@@ -29,7 +29,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "red_black.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -37,7 +37,6 @@
 // standard
 #include <assert.h>
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL */
 #include <stdlib.h>                     /* or free(3) */
 #include <string.h>                     /* for memcpy */
 

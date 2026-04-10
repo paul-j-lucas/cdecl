@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "autocomplete.h"
 #include "c_keyword.h"
 #include "c_lang.h"

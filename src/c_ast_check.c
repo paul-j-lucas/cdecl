@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "c_ast_check.h"
 #include "bit_util.h"
 #include "c_ast.h"
@@ -42,12 +42,14 @@
 #include "literals.h"
 #include "print.h"
 #include "slist.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
+#include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
 #include <stdint.h>
 #include <stdio.h>

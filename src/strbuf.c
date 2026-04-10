@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "strbuf.h"
 #include "util.h"
 
@@ -33,8 +33,10 @@
 // standard
 #include <assert.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>                     /* for free(3) */
+#include <string.h>
 #include <sysexits.h>
 
 /// @endcond

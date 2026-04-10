@@ -27,7 +27,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 
 /**
  * @defgroup p-token-kinds-group C Preprocessor Token Kinds

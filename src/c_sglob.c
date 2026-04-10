@@ -25,13 +25,14 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "c_sglob.h"
+#include "types.h"
 #include "util.h"
 
 // standard
 #include <assert.h>
-#include <stddef.h>                     /* for NULL, size_t */
+#include <stdbool.h>
 #include <stdlib.h>                     /* for free(3) */
 
 ////////// extern functions ///////////////////////////////////////////////////

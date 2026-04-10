@@ -27,7 +27,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 
 // standard
 #include <stddef.h>                     /* for size_t */

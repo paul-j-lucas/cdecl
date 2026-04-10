@@ -28,7 +28,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "types.h"
 #include "cdecl_parser.h"               /* must go last */
 

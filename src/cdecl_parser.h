@@ -29,9 +29,9 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"
 #include "c_type.h"
-#include "parser.h"                     /* IWYU pragma: export */
+#include "parser.h"
 
 // standard
 #include <stdbool.h>

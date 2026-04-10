@@ -19,7 +19,7 @@
 */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "p_macro.h"
 #include "cdecl.h"
 #include "c_lang.h"
@@ -33,7 +33,9 @@
 #include "print.h"
 #include "red_black.h"
 #include "show.h"
+#include "slist.h"
 #include "strbuf.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

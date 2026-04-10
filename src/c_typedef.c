@@ -25,7 +25,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "c_typedef.h"
 #ifndef NDEBUG
 #include "bit_util.h"
@@ -37,6 +37,7 @@
 #include "lexer.h"
 #include "options.h"
 #include "parse.h"
+#include "red_black.h"
 #include "slist.h"
 #include "types.h"
 #include "util.h"
@@ -45,6 +46,7 @@
 
 // standard
 #include <assert.h>
+#include <stdbool.h>
 #include <string.h>                     /* for strlen(3) */
 #include <sysexits.h>
 

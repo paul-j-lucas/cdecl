@@ -33,7 +33,7 @@
 /** @endcond */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #ifndef NDEBUG
 #include "bit_util.h"
 #endif /* NDEBUG */
@@ -48,7 +48,7 @@
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
-#include "cdecl_dym.h"                  /* IWYU pragma: keep */
+#include "cdecl_dym.h"
 #include "cdecl_parser.h"
 #include "color.h"
 #include "dump.h"

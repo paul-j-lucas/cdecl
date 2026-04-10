@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "english.h"
 #ifndef NDEBUG
 #include "bit_util.h"
@@ -50,6 +50,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for unreachable(3) */
+#include <stdio.h>
 #include <stdlib.h>                     /* for free(3) */
 
 /// @endcond

@@ -24,7 +24,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "dump.h"
 #ifndef NDEBUG
 #include "bit_util.h"
@@ -44,13 +44,15 @@
 #include "p_macro.h"
 #include "p_token.h"
 #include "slist.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
-#include <stddef.h>                     /* for NULL */
+#include <stdbool.h>
+#include <stdio.h>
 
 #define DUMP_AST(DUMP,KEY,AST) BLOCK( \
   DUMP_KEY( (DUMP), KEY ": " ); c_ast_dump_impl( (AST), (DUMP) ); )

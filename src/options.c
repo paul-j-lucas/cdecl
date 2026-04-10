@@ -24,15 +24,18 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "options.h"
 #ifndef NDEBUG
 #include "bit_util.h"
 #endif /* NDEBUG */
+#include "c_kind.h"
 #include "c_lang.h"
 #include "c_type.h"
+#include "color.h"
 #include "prompt.h"
 #include "strbuf.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -40,7 +43,9 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
+#include <stdbool.h>
 #include <string.h>
+#include <sysexits.h>
 
 /// @endcond
 

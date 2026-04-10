@@ -28,7 +28,7 @@
  */
 
 // local
-#include "pjl_config.h"                 /* IWYU pragma: keep */
+#include "pjl_config.h"                 /* must go first */
 #include "bit_util.h"
 #include "options.h"                    /* for opt_lang_id */
 #include "types.h"
