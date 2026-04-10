@@ -59,6 +59,7 @@
 #include <assert.h>
 #include <ctype.h>                      /* for isspace(3) */
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
