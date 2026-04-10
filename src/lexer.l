@@ -52,6 +52,7 @@
 #include "red_black.h"
 #include "slist.h"
 #include "strbuf.h"
+#include "types.h"
 #include "util.h"
 #include "cdecl_parser.h"               /* must go last */
 
