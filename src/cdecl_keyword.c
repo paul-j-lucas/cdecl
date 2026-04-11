@@ -27,6 +27,9 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "cdecl_keyword.h"
+#ifdef WITH_READLINE
+#include "autocomplete.h"
+#endif /* WITH_READLINE */
 #include "cdecl_parser.h"
 #include "c_lang.h"
 #include "literals.h"
