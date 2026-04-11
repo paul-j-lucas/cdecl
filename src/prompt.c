@@ -26,9 +26,6 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "prompt.h"
-#ifdef WITH_READLINE
-#include "autocomplete.h"
-#endif /* WITH_READLINE */
 #include "c_lang.h"
 #include "cdecl.h"
 #include "color.h"
@@ -44,11 +41,9 @@
 #include <stdio.h>
 
 #ifdef WITH_READLINE
-# ifdef HAVE_READLINE_READLINE_H
+# if HAVE_DECL_RL_PROMPT_START_IGNORE
 #   include <readline/readline.h>       /* must go after stdio.h */
-# endif /* HAVE_READLINE_READLINE_H */
-
-# if !HAVE_DECL_RL_PROMPT_START_IGNORE
+# else
 #   define RL_PROMPT_START_IGNORE   '\1'
 #   define RL_PROMPT_END_IGNORE     '\2'
 # endif /* !HAVE_DECL_RL_PROMPT_START_IGNORE */
