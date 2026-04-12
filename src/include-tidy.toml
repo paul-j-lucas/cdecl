@@ -29,7 +29,4 @@ proxy = [
 [cdecl_parser.h]
 proxy = "parser.h"
 
-[p_macro.h]
-proxy = "red_black.h"
-
 # vim:se et sw=4 ts=4:
