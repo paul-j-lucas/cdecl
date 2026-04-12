@@ -41,6 +41,7 @@
 // standard
 #include <assert.h>
 #include <stdbool.h>
+#include <stddef.h>                     /* for offsetof */
 #include <stdlib.h>                     /* for free(3) */
 #include <string.h>
 
