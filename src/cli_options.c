@@ -45,8 +45,10 @@
 #include <assert.h>
 #include <ctype.h>
 #include <getopt.h>
+#include <limits.h>                     /* for ULLONG_MAX, USHRT_MAX */
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sysexits.h>
 

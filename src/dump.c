@@ -52,6 +52,7 @@
 // standard
 #include <assert.h>
 #include <stdbool.h>
+#include <stddef.h>                     /* for unreachable */
 #include <stdio.h>
 
 #define DUMP_AST(DUMP,KEY,AST) BLOCK( \

@@ -34,12 +34,12 @@
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
+#include <limits.h>                     /* for UCHAR_MAX, ULLONG_MAX */
 #ifndef NDEBUG
 #include <signal.h>                     /* for raise(3) */
 #endif /* NDEBUG */
 #include <stdarg.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
