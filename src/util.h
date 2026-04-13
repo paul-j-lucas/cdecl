@@ -759,7 +759,7 @@
  * @sa #MALLOC()
  */
 #define REALLOC(PTR,N) \
-  ((PTR) = check_realloc( (PTR), sizeof *(PTR) * (N) ))
+  ((PTR) = check_realloc( (PTR), sizeof *(PTR) * STATIC_CAST( size_t, (N) ) ))
 
 /**
  * Runs a statement at most once even if control passes through it more than
