@@ -38,7 +38,6 @@
 #include "options.h"
 #include "parse.h"
 #include "red_black.h"
-#include "slist.h"
 #include "types.h"
 #include "util.h"
 
