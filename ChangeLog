@@ -1,5 +1,25 @@
+2026-04-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Removed unnecessary #include <stddef.h>.
+   * c_typedef.c: Removed unnecessary #include "slist.h".
+   * util.h: Added STATIC_CAST.
+
+2026-04-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c, dump.c, util.c: Include fixes.
+   * include-tidy.toml: Removed p_macro.h proxy for red_black.h.
+   * c_ast.c: Added missing #include <stddef.h>.
+
+2026-04-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_keyword.c: Added missing #include.
+   * prompt.c: Don't need autocomplete.h.
+
 2026-04-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl_command.c, cdecl_keyword.c, print.c: #include fixes.
+   * lexer.l: Added missing #include "types.h".
+   * parse.c: Fixed #include.
    * src/Makefile.am, autocomplete.c, autocomplete.h, bit_util.c, bit_util.h,
      c_ast.c, c_ast.h, c_ast_check.c, c_ast_check.h, c_ast_util.c,
      c_ast_util.h, c_ast_warn.c, c_ast_warn.h, c_keyword.c, c_keyword.h,
