@@ -48,6 +48,7 @@
 
 // standard
 #include <assert.h>
+#include <getopt.h>
 #include <stdbool.h>
 #include <stdlib.h>                     /* for calloc(3), NULL, size_t */
 
