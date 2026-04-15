@@ -1,3 +1,11 @@
+2026-04-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * prompt.c: Reworked IGNORE macro to make it include-tidy friendly.
+
+2026-04-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_dym.c: Added #include <getopt.h>.
+
 2026-04-13  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: Removed unnecessary #include <stddef.h>.
