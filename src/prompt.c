@@ -62,12 +62,12 @@
    * for length calculation by **readline**(3).
    *
    * @param SBUF A pointer to the \ref strbuf to use.
-   * @param WHEN Either the literal `START` or `END`.
+   * @param CHAR The character to put.
    */
-# define RL_PROMPT_IGNORE(SBUF,WHEN) \
-    strbuf_putc( (SBUF), RL_PROMPT_##WHEN##_IGNORE )
+# define SBUF_PUTC_IGNORE(SBUF,CHAR) \
+    strbuf_putc( (SBUF), (CHAR) )
 #else
-# define RL_PROMPT_IGNORE(SBUF,WHEN) NO_OP
+# define SBUF_PUTC_IGNORE(SBUF,WHEN) NO_OP
 #endif /* WITH_READLINE */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -128,9 +128,9 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
 
   if ( color_prompt() ) {
     // LCOV_EXCL_START -- test output is not in color
-    RL_PROMPT_IGNORE( sbuf, START );
+    SBUF_PUTC_IGNORE( sbuf, RL_PROMPT_START_IGNORE );
     color_strbuf_start( sbuf, sgr_prompt );
-    RL_PROMPT_IGNORE( sbuf, END );
+    SBUF_PUTC_IGNORE( sbuf, RL_PROMPT_END_IGNORE );
     // LCOV_EXCL_STOP
   }
 
@@ -138,9 +138,9 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
 
   if ( color_prompt() ) {
     // LCOV_EXCL_START
-    RL_PROMPT_IGNORE( sbuf, START );
+    SBUF_PUTC_IGNORE( sbuf, RL_PROMPT_START_IGNORE );
     color_strbuf_end( sbuf, sgr_prompt );
-    RL_PROMPT_IGNORE( sbuf, END );
+    SBUF_PUTC_IGNORE( sbuf, RL_PROMPT_END_IGNORE );
     // LCOV_EXCL_STOP
   }
 
