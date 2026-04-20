@@ -71,7 +71,8 @@ This codebase fixes virtually all the deficiencies in earlier versions
 as well as adds many new features,
 most notably:
 
-* Using GNU Autotools for building.
+* Using GNU [Autotools](https://en.wikipedia.org/wiki/GNU_Autotools)
+  for building.
 * Command-line long-options.
 * Distinguishes among
   K&R C,
@@ -223,6 +224,20 @@ you will also need
 then do:
 
     make doc                            # or: make docs
+
+Since **cdecl** uses [Autotools](https://en.wikipedia.org/wiki/GNU_Autotools)
+that is exclusively for Unix-like environments,
+**cdecl**
+(or any other software that uses Autotools)
+will not compile
+nor run
+on native Windows.
+If you're determined to run **cdecl** on Windows,
+you might try one of
+[Cygwin](https://www.cygwin.com),
+[MinGW-64](https://www.mingw-w64.org),
+or
+[WSL](https://learn.microsoft.com/en-us/windows/wsl/).
 
 ## Licensing
 
