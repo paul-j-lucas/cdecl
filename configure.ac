@@ -49,6 +49,7 @@ AS_IF([test "x$enable_coverage" = xyes],
 
 # Checks for programs.
 AC_LANG(C)
+ac_cv_prog_cc_c23=no                    # We don't want C23.
 AC_PROG_CC
 AS_IF([test "x$ac_cv_prog_cc_c11" = xno], [
   AC_MSG_ERROR([a C11 compiler is required to compile $PACKAGE_NAME])
