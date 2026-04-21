@@ -29,4 +29,7 @@ proxy = [
 [cdecl_parser.h]
 proxy = "parser.h"
 
+[parser.h]
+keep = true
+
 # vim:se et sw=4 ts=4:
