@@ -1,5 +1,7 @@
 2026-04-21  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Now requiring Autconf 2.70.
+   * configure.ac: Poisoning cache since we don't want C23.
    * cli_options.c: Consolidated missing_arg code.
    * util.c, util.h: Added non-const versions of empty_if_null() and
      null_if_empty().
