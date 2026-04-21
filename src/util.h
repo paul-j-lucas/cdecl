@@ -1120,6 +1120,15 @@ inline char const* empty_if_null( char const *s ) {
   return s == NULL ? "" : s;
 }
 
+/// @cond DOXYGEN_IGNORE
+NODISCARD
+inline char* nonconst_empty_if_null( char *s ) {
+  return CONST_CAST( char*, empty_if_null( s ) );
+}
+
+#define empty_if_null(S)          NONCONST_OVERLOAD( empty_if_null, (S) )
+/// @endcond
+
 /**
  * Checks \a flag: if `false`, sets it to `true`.
  *
@@ -1275,6 +1284,15 @@ NODISCARD
 inline char const* null_if_empty( char const *s ) {
   return s != NULL && *SKIP_WS( s ) == '\0' ? NULL : s;
 }
+
+/// @cond DOXYGEN_IGNORE
+NODISCARD
+inline char* nonconst_null_if_empty( char *s ) {
+  return CONST_CAST( char*, null_if_empty( s ) );
+}
+
+#define null_if_empty(S)          NONCONST_OVERLOAD( null_if_empty, (S) )
+/// @endcond
 
 /**
  * Parses a C/C++ identifier.

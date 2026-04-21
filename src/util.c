@@ -472,11 +472,18 @@ void wait_for_debugger_attach( void ) {
 
 /** @} */
 
-extern inline char const* empty_if_null( char const* );
+// See comment for NONCONST_OVERLOAD regarding ().
+extern inline char const* (empty_if_null)( char const* );
+
 extern inline bool false_set( bool* );
 extern inline bool is_ident( char );
 extern inline bool is_ident_first( char );
-extern inline char const* null_if_empty( char const* );
+extern inline char* nonconst_null_if_empty( char* );
+extern inline char* nonconst_empty_if_null( char* );
+
+// See comment for NONCONST_OVERLOAD regarding ().
+extern inline char const* (null_if_empty)( char const* );
+
 extern inline size_t round_up_pow_2( size_t, size_t );
 extern inline bool str_is_empty( char const* );
 extern inline bool true_or_set( bool* );
