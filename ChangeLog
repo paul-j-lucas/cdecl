@@ -1,3 +1,11 @@
+2026-04-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Consolidated missing_arg code.
+   * util.c, util.h: Added non-const versions of empty_if_null() and
+     null_if_empty().
+   * debug.out: Forgot to update tests after switching to include-tidy.
+   * include-tidy.toml: Now keeping parser.h.
+
 2026-04-15  Paul J. Lucas <paul@lucasmail.org>
 
    * prompt.c: Reworked IGNORE macro to make it include-tidy friendly.
