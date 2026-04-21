@@ -222,16 +222,18 @@ static bool         is_opt_given[128];  ///< Table of options that were given.
 
 // local functions
 NODISCARD
-static char const*  get_opt_format( char ),
-                 *  get_opt_long( char );
+static char const*          get_opt_format( char );
 
-static void         print_commands( void );
-static void         print_options( void );
+NODISCARD
+static struct option const* get_option( int );
+
+static void                 print_commands( void );
+static void                 print_options( void );
 
 _Noreturn
-static void         print_usage( int );
+static void                 print_usage( int );
 
-static void         print_version( bool );
+static void                 print_version( bool );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -355,7 +357,8 @@ static char const* get_opt_format( char short_opt ) {
   strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
   strbuf_reset( sbuf );
 
-  char const *const long_opt = get_opt_long( short_opt );
+  struct option const *const option = get_option( short_opt );
+  char const *const long_opt = option != NULL ? option->name : "";
   return strbuf_printf(
     sbuf, "%s%s%s-%c",
     long_opt[0] != '\0' ? "--" : "",
@@ -381,18 +384,18 @@ static char const* get_opt_help( int opt ) {
 }
 
 /**
- * Gets the corresponding name of the long option for \a short_opt.
+ * Gets the `option` corresponding to \a short_opt.
  *
- * @param short_opt The short option to get the corresponding long option for.
- * @return Returns said name or the empty string if none.
+ * @param short_opt The short option to get the option for.
+ * @return Returns the corresponding `option` or NULL if not found.
  */
 NODISCARD
-static char const* get_opt_long( char short_opt ) {
+static struct option const* get_option( int short_opt ) {
   FOREACH_CLI_OPTION( opt ) {
     if ( opt->val == short_opt )
-      return opt->name;
+      return opt;
   } // for
-  return "";                            // LCOV_EXCL_LINE
+  return NULL;                          // LCOV_EXCL_LINE
 }
 
 /**
@@ -524,6 +527,15 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
     );
     if ( opt == -1 )
       break;
+    struct option const *const option = get_option( opt );
+    if ( option != NULL && option->has_arg != no_argument ) {
+      if ( optarg != NULL )
+        SKIP_WS( optarg );
+      if ( option->has_arg == required_argument &&
+           empty_if_null( optarg )[0] == '\0' ) {
+        goto missing_arg;
+      }
+    }
     switch ( opt ) {
       case COPT(ALT_TOKENS):
         opt_alt_tokens = true;
@@ -547,8 +559,6 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
         opt_commands = true;
         break;
       case COPT(CONFIG):
-        if ( *SKIP_WS( optarg ) == '\0' )
-          goto missing_arg;
         opt_config_path = optarg;
         break;
       case COPT(DIGRAPHS):
@@ -572,8 +582,6 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
         }
         break;
       case COPT(FILE):
-        if ( *SKIP_WS( optarg ) == '\0' )
-          goto missing_arg;
         opt_file = optarg;
         break;
 #ifdef ENABLE_FLEX_DEBUG
@@ -636,8 +644,6 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
         opt_options = true;
         break;
       case COPT(OUTPUT):
-        if ( *SKIP_WS( optarg ) == '\0' )
-          goto missing_arg;
         fout_path = optarg;
         break;
       case COPT(VERSION):
