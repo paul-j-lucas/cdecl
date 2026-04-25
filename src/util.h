@@ -1141,7 +1141,10 @@ inline char* nonconst_empty_if_null( char *s ) {
  */
 NODISCARD
 inline bool false_set( bool *flag ) {
-  return !*flag && (*flag = true);
+  if ( *flag )
+    return false;
+  *flag = true;
+  return true;
 }
 
 /**
@@ -1495,7 +1498,10 @@ size_t strnspn( char const *s, char const *charset, size_t n );
  */
 NODISCARD
 inline bool true_or_set( bool *flag ) {
-  return *flag || !(*flag = true);
+  if ( *flag )
+    return true;
+  *flag = true;
+  return false;
 }
 
 /**
@@ -1510,7 +1516,10 @@ inline bool true_or_set( bool *flag ) {
  */
 NODISCARD
 inline bool true_clear( bool *flag ) {
-  return *flag && !(*flag = false);
+  if ( !*flag )
+    return false;
+  *flag = false;
+  return true;
 }
 
 #ifndef NDEBUG
