@@ -18,6 +18,15 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+[cdecl_parser.h]
+proxy = "parser.h"
+
+[config.h]
+ignore-as-argument = true
+
+[parser.h]
+keep = true
+
 [pjl_config.h]
 first = true
 keep = true
@@ -25,11 +34,5 @@ proxy = [
     "attribute.h",
     "config.h",
 ]
-
-[cdecl_parser.h]
-proxy = "parser.h"
-
-[parser.h]
-keep = true
 
 # vim:se et sw=4 ts=4:
