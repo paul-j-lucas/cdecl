@@ -29,7 +29,6 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "red_black.h"
-#include "slist.h"
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
