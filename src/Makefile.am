@@ -21,125 +21,125 @@
 # Suppress printing of "--- target ---" when -j is given to BSD's make.
 .MAKE.JOB.PREFIX=
 
-bin_PROGRAMS =	cdecl
-check_PROGRAMS=	red_black_test slist_test strbuf_test util_test
+bin_PROGRAMS =		cdecl
+check_PROGRAMS =	red_black_test slist_test strbuf_test util_test
 
-AM_CFLAGS =	$(CDECL_CFLAGS)
+AM_CFLAGS =		$(CDECL_CFLAGS)
 
 if ENABLE_ASAN
-AM_CFLAGS +=	-fsanitize=address -fno-omit-frame-pointer
+AM_CFLAGS +=		-fsanitize=address -fno-omit-frame-pointer
 endif
 
 if ENABLE_MSAN
-AM_CFLAGS +=	-fsanitize=memory -fno-omit-frame-pointer
+AM_CFLAGS +=		-fsanitize=memory -fno-omit-frame-pointer
 endif
 
 if ENABLE_UBSAN
-AM_CFLAGS +=	-fsanitize=undefined
+AM_CFLAGS +=		-fsanitize=undefined
 endif
 
 if ENABLE_COVERAGE
-AM_CFLAGS +=	--coverage -g -O0
-AM_LDFLAGS =	--coverage
+AM_CFLAGS +=		--coverage -g -O0
+AM_LDFLAGS =		--coverage
 endif
 
-AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib
+AM_CPPFLAGS =		-I$(top_srcdir)/lib -I$(top_builddir)/lib
 if ENABLE_FLEX_DEBUG
-AM_LFLAGS =	-d
+AM_LFLAGS =		-d
 endif
-AM_YFLAGS =	-d -Wno-yacc
-LDADD =		$(top_builddir)/lib/libgnu.a
+AM_YFLAGS =		-d -Wno-yacc
+LDADD =			$(top_builddir)/lib/libgnu.a
 
-INCLUDE_TIDY_FLAGS = -Xtidy --verbose=f -Xtidy --error=never
+INVOKE_TIDY_FLAGS =	-Xtidy --verbose=f -Xtidy --error=never
+INVOKE_TIDY_CFLAGS =	$(CFLAGS) $(AM_CFLAGS) $(CPPFLAGS) $(AM_CPPFLAGS)
 
-BUILT_SOURCES =	parser.c parser.h lexer.c
+BUILT_SOURCES =		parser.c parser.h lexer.c
 
-cdecl_SOURCES =	parser.y \
-		lexer.l lexer.h \
-		bit_util.c bit_util.h \
-		c_ast.c c_ast.h \
-		c_ast_check.c c_ast_check.h \
-		c_ast_util.c c_ast_util.h \
-		c_ast_warn.c c_ast_warn.h \
-		c_keyword.c c_keyword.h \
-		c_kind.c c_kind.h \
-		c_lang.c c_lang.h \
-		c_operator.c c_operator.h \
-		c_sglob.c c_sglob.h \
-		c_sname.c c_sname.h \
-		c_type.c c_type.h \
-		c_typedef.c c_typedef.h \
-		cdecl.c cdecl.h \
-		cdecl_command.c cdecl_command.h \
-		cdecl_dym.c cdecl_dym.h \
-		cdecl_keyword.c cdecl_keyword.h \
-		cdecl_parser.h \
-		cdecl_term.c cdecl_term.h \
-		cli_options.c cli_options.h \
-		color.c color.h \
-		config_file.c \
-		dam_lev.c dam_lev.h \
-		did_you_mean.c did_you_mean.h \
-		dump.c dump.h \
-		english.c english.h \
-		gibberish.c gibberish.h \
-		help.c help.h \
-		literals.c literals.h \
-		options.c options.h \
-		p_keyword.c p_keyword.h \
-		p_kind.c p_kind.h \
-		p_macro.c p_macro.h \
-		p_predefine.c \
-		p_token.c p_token.h \
-		parse.c parse.h \
-		pjl_config.h config.h \
-		print.c print.h \
-		prompt.c prompt.h \
-		read_line.c read_line.h \
-		red_black.c red_black.h \
-		set_options.c set_options.h \
-		show.c show.h \
-		slist.c slist.h \
-		strbuf.c strbuf.h \
-		type_traits.h \
-		types.h \
-		util.c util.h
+cdecl_SOURCES =		parser.y \
+			lexer.l lexer.h \
+			bit_util.c bit_util.h \
+			c_ast.c c_ast.h \
+			c_ast_check.c c_ast_check.h \
+			c_ast_util.c c_ast_util.h \
+			c_ast_warn.c c_ast_warn.h \
+			c_keyword.c c_keyword.h \
+			c_kind.c c_kind.h \
+			c_lang.c c_lang.h \
+			c_operator.c c_operator.h \
+			c_sglob.c c_sglob.h \
+			c_sname.c c_sname.h \
+			c_type.c c_type.h \
+			c_typedef.c c_typedef.h \
+			cdecl.c cdecl.h \
+			cdecl_command.c cdecl_command.h \
+			cdecl_dym.c cdecl_dym.h \
+			cdecl_keyword.c cdecl_keyword.h \
+			cdecl_parser.h \
+			cdecl_term.c cdecl_term.h \
+			cli_options.c cli_options.h \
+			color.c color.h \
+			config_file.c \
+			dam_lev.c dam_lev.h \
+			did_you_mean.c did_you_mean.h \
+			dump.c dump.h \
+			english.c english.h \
+			gibberish.c gibberish.h \
+			help.c help.h \
+			literals.c literals.h \
+			options.c options.h \
+			p_keyword.c p_keyword.h \
+			p_kind.c p_kind.h \
+			p_macro.c p_macro.h \
+			p_predefine.c \
+			p_token.c p_token.h \
+			parse.c parse.h \
+			pjl_config.h config.h \
+			print.c print.h \
+			prompt.c prompt.h \
+			read_line.c read_line.h \
+			red_black.c red_black.h \
+			set_options.c set_options.h \
+			show.c show.h \
+			slist.c slist.h \
+			strbuf.c strbuf.h \
+			type_traits.h \
+			types.h \
+			util.c util.h
 
 if WITH_READLINE
-cdecl_SOURCES += autocomplete.c autocomplete.h
+cdecl_SOURCES +=	autocomplete.c autocomplete.h
 endif
 
-BASE_TEST_SOURCES = \
-		bit_util.c bit_util.h \
-		cdecl.h \
-		pjl_config.h config.h \
-		type_traits.h \
-		util.c util.h \
-		unit_test.c unit_test.h
+BASE_TEST_SOURCES =	bit_util.c bit_util.h \
+			cdecl.h \
+			pjl_config.h config.h \
+			type_traits.h \
+			util.c util.h \
+			unit_test.c unit_test.h
 
 red_black_test_SOURCES = $(BASE_TEST_SOURCES) \
-		red_black.c red_black.h \
-		red_black_test.c
+			red_black.c red_black.h \
+			red_black_test.c
 
-slist_test_SOURCES = $(BASE_TEST_SOURCES) \
-		slist.c slist.h \
-		slist_test.c
+slist_test_SOURCES =	$(BASE_TEST_SOURCES) \
+			slist.c slist.h \
+			slist_test.c
 
-strbuf_test_SOURCES  = $(BASE_TEST_SOURCES) \
-		strbuf.c strbuf.h \
-		strbuf_test.c
+strbuf_test_SOURCES =	$(BASE_TEST_SOURCES) \
+			strbuf.c strbuf.h \
+			strbuf_test.c
 
-util_test_SOURCES = $(BASE_TEST_SOURCES) \
-		util_test.c
+util_test_SOURCES =	$(BASE_TEST_SOURCES) \
+			util_test.c
 
-CDECL =		cdecl$(EXEEXT)
-CPPDECL =	c++decl$(EXEEXT)
+CDECL =			cdecl$(EXEEXT)
+CPPDECL =		c++decl$(EXEEXT)
 
-EXPLAIN =	explain$(EXEEXT)
-SYMLINKS =	$(CPPDECL) $(EXPLAIN)
+EXPLAIN =		explain$(EXEEXT)
+SYMLINKS =		$(CPPDECL) $(EXPLAIN)
 
-INSTALL_CPPDECL= $(DESTDIR)$(bindir)/$(CPPDECL)
-TESTS =		$(check_PROGRAMS)
+INSTALL_CPPDECL =	$(DESTDIR)$(bindir)/$(CPPDECL)
+TESTS =			$(check_PROGRAMS)
 
 all-local: $(SYMLINKS)
 
@@ -150,8 +150,9 @@ $(SYMLINKS): $(CDECL)
 check-local: clean-coverage-local
 
 tidy:
-	@touch *.c
-	@$(MAKE) -s CC="include-tidy" CFLAGS="$(INCLUDE_TIDY_FLAGS)"
+	@for file in *.h *.c; \
+	do include-tidy $(INVOKE_TIDY_FLAGS) $(INVOKE_TIDY_CFLAGS) $$file; \
+	done
 
 clean-local:
 	rm -f $(BUILT_SOURCES) $(SYMLINKS) parser.output
