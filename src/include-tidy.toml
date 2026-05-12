@@ -25,6 +25,7 @@ proxy = "parser.h"
 ignore-as-argument = true
 
 [parser.h]
+ignore-as-argument = true
 keep = true
 
 [pjl_config.h]
