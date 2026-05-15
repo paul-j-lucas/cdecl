@@ -19,6 +19,7 @@
 ##
 
 [cdecl_parser.h]
+keep-includes = "c_type.h"
 proxy = "parser.h"
 
 [config.h]
