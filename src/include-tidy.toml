@@ -26,6 +26,9 @@ proxy = "parser.h"
 ignore-as-argument = true
 
 [lexer.c]
+elide-includes = [
+    "stdint.h"
+]
 keep-includes = [
     "errno.h",
     "inttypes.h",
