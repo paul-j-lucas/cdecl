@@ -25,6 +25,15 @@ proxy = "parser.h"
 [config.h]
 ignore-as-argument = true
 
+[lexer.c]
+keep-includes = [
+    "errno.h",
+    "inttypes.h",
+    "stdio.h",
+    "stdlib.h",
+    "string.h"
+]
+
 [parser.h]
 ignore-as-argument = true
 keep = true
