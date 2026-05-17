@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/bit_util.c
 **
 **      Copyright (C) 2017-2026  Paul J. Lucas

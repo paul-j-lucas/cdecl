@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/bit_util.h
 **
 **      Copyright (C) 2017-2026  Paul J. Lucas
@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_bit_util_H
-#define cdecl_bit_util_H
+#ifndef pjl_bit_util_H
+#define pjl_bit_util_H
 
 /**
  * @file
@@ -243,5 +243,5 @@ uint32_t ms_bit1_32( uint32_t n );
 
 /** @} */
 
-#endif /* cdecl_bit_util_H */
+#endif /* pjl_bit_util_H */
 /* vim:set et sw=2 ts=2: */
