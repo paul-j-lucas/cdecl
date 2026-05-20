@@ -461,13 +461,14 @@ static rb_node_t* rb_tree_minimum( rb_tree_t const *tree, rb_node_t *x_node ) {
 static void rb_tree_reset( rb_tree_t *tree ) {
   assert( tree != NULL );
 
-  tree->root = &tree->nil;
   tree->cmp_fn = NULL;
   tree->nil = (rb_node_t){
     .child = { &tree->nil, &tree->nil },
     .parent = &tree->nil,
     .color = RB_BLACK
   };
+  tree->root = &tree->nil;
+  tree->size = 0;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -477,6 +478,7 @@ void rb_iterator_init( rb_tree_t const *tree, rb_iterator_t *iter ) {
   assert( iter != NULL );
 
   iter->curr = tree->root;
+  //    stack                           // intentionally not initialized
   iter->stack_top = 0;
   iter->tree = tree;
 }
@@ -546,6 +548,7 @@ void rb_tree_delete( rb_tree_t *tree, rb_node_t *z_delete ) {
   rb_tree_check( tree );
 
   free( z_delete );
+  --tree->size;
 }
 
 rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
@@ -614,6 +617,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
     y_parent->child[dir] = z_new_node;
   }
 
+  ++tree->size;
   rb_insert_fixup( tree, z_new_node );
   rb_tree_check( tree );
 
@@ -631,7 +635,11 @@ rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
 
 /** @} */
 
+/// @cond DOXYGEN_IGNORE
+
 extern inline void* rb_node_data( rb_tree_t const*, rb_node_t const* );
 extern inline bool rb_tree_empty( rb_tree_t const* );
+
+/// @endcond
 
 /* vim:set et sw=2 ts=2: */

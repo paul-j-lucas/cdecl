@@ -266,6 +266,11 @@ struct rb_tree {
   rb_dloc_t   dloc;
 
   /**
+   * The number of nodes.
+   */
+  unsigned    size;
+
+  /**
    * A convenience sentinel for all leaf nodes.
    *
    * @remarks
