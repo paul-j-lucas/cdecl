@@ -1,3 +1,31 @@
+2026-05-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * bit_util.c, bit_util.h: Now PJL Library.
+   * include-tidy.toml: Added lexer.c / elide-includes.
+   * include-tidy.toml: Added lexer.c / keep-includes.
+
+2026-05-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * include-tidy.toml: Added keep-includes = "c_type.h".
+
+2026-05-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * include-tidy.toml: Added ignore-as-argument for parser.h.
+
+2026-05-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.h, dump.h, gibberish.h, p_macro.h: Include fixes.
+   * slist.h: Fixed #include.
+   * src/Makefile.am: Now tidying *.h and *.c.
+
+2026-05-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * include-tidy.toml: Added [config.h] ignore-as-argument = true.
+
+2026-04-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Eliminiated test/modify same variable in same expression .
+
 2026-04-21  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Now requiring Autconf 2.70.
