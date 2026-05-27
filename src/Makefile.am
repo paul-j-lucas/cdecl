@@ -50,8 +50,8 @@ endif
 AM_YFLAGS =		-d -Wno-yacc
 LDADD =			$(top_builddir)/lib/libgnu.a
 
-INVOKE_TIDY_FLAGS =	-Xtidy --verbose=f -Xtidy --error=never
-INVOKE_TIDY_CFLAGS =	$(CFLAGS) $(AM_CFLAGS) $(CPPFLAGS) $(AM_CPPFLAGS)
+TIDY_FLAGS =		-Xtidy --verbose=f -Xtidy --error=never
+TIDY_CFLAGS =		$(CFLAGS) $(AM_CFLAGS) $(CPPFLAGS) $(AM_CPPFLAGS)
 
 BUILT_SOURCES =		parser.c parser.h lexer.c
 
@@ -150,8 +150,9 @@ $(SYMLINKS): $(CDECL)
 check-local: clean-coverage-local
 
 tidy:
-	@for file in *.h *.c; \
-	do include-tidy $(INVOKE_TIDY_FLAGS) $(INVOKE_TIDY_CFLAGS) $$file; \
+	@for file in *.h *.c; do \
+	  [ ! -f "$$file" ] || \
+	    include-tidy $(TIDY_FLAGS) $(TIDY_CFLAGS) "$$file" || exit $$?; \
 	done
 
 clean-local:
