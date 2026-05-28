@@ -1,3 +1,11 @@
+2026-05-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * share/man/man1/cdecl.1: Code blocks are now smaller.
+
+2026-05-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Better way to invoke include-tidy from a Makefile.
+
 2026-05-16  Paul J. Lucas <paul@lucasmail.org>
 
    * bit_util.c, bit_util.h: Now PJL Library.
