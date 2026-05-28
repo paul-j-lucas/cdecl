@@ -21,19 +21,21 @@
 .\" define code-start macro
 .de cS
 .sp
+.ps -2                                  \" shrink it
 .nf
 .RS 5
 .ft CW
 ..
 .\" define code-end macro
 .de cE
-.ft 1
+.ft
 .RE
 .fi
+.ps                                     \" restore original size
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "February 20, 2026" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 28, 2026" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
