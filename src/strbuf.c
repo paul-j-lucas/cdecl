@@ -46,6 +46,8 @@
  * @{
  */
 
+#define STRBUF_CAP_MIN            4     /**< Minimum buffer capacity. */
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void strbuf_cleanup( strbuf_t *sbuf ) {
@@ -175,10 +177,23 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
   if ( res_len < sbuf->cap - sbuf->len )
     return false;
   if ( sbuf->cap == 0 )
-    sbuf->cap = 2;
-  size_t const new_len = sbuf->len + res_len;
-  while ( sbuf->cap <= new_len )
-    sbuf->cap <<= 1;
+    sbuf->cap = STRBUF_CAP_MIN;
+  size_t const min_cap = sbuf->len + res_len;
+  //
+  // Why not grow by 2x?  The problem is that the size of each new allocation
+  // is always > the sum of all previous allocations combined, which means
+  // malloc can't reuse even a block coalesced from previous allocations.
+  //
+  // For example, given the previous allocations of 4, 8, and 16 (summing to
+  // 28), the next allocation will be 32, but 32 > 28, so malloc can't reuse
+  // that block.
+  //
+  // In contrast, growing by 1.5x yields allocations 4, 6, and 9 (summing to
+  // 19), and the next allocation will be 13, and 13 <= 19, so malloc can reuse
+  // that block.
+  //
+  while ( sbuf->cap <= min_cap )
+    sbuf->cap += sbuf->cap >> 1;        // grow by ~1.5x
   REALLOC( sbuf->str, sbuf->cap );
   return true;
 }
