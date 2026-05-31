@@ -12,7 +12,7 @@ AC_DEFUN_ONCE([gl_FUNC_SETLOCALE_NULL],
   AC_REQUIRE([gl_PTHREADLIB])
   AC_CHECK_HEADERS_ONCE([threads.h])
 
-  AC_CACHE_CHECK([whether setlocale (LC_ALL, NULL) is multithread-safe],
+  AC_CACHE_CHECK([whether setlocale (LC_ALL, NULL) is thread-safe],
     [gl_cv_func_setlocale_null_all_mtsafe],
     [case "$host_os" in
        # Guess no on musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku.
@@ -54,10 +54,10 @@ AC_DEFUN_ONCE([gl_FUNC_SETLOCALE_NULL],
     *)    SETLOCALE_NULL_ALL_MTSAFE=0 ;;
   esac
   AC_DEFINE_UNQUOTED([SETLOCALE_NULL_ALL_MTSAFE], [$SETLOCALE_NULL_ALL_MTSAFE],
-    [Define to 1 if setlocale (LC_ALL, NULL) is multithread-safe.])
+    [Define to 1 if setlocale (LC_ALL, NULL) is thread-safe.])
 
   dnl This is about a single category (not LC_ALL).
-  AC_CACHE_CHECK([whether setlocale (category, NULL) is multithread-safe],
+  AC_CACHE_CHECK([whether setlocale (category, NULL) is thread-safe],
     [gl_cv_func_setlocale_null_one_mtsafe],
     [case "$host_os" in
        # Guess no on OpenBSD, AIX.
@@ -85,7 +85,7 @@ AC_DEFUN_ONCE([gl_FUNC_SETLOCALE_NULL],
     *)    SETLOCALE_NULL_ONE_MTSAFE=0 ;;
   esac
   AC_DEFINE_UNQUOTED([SETLOCALE_NULL_ONE_MTSAFE], [$SETLOCALE_NULL_ONE_MTSAFE],
-    [Define to 1 if setlocale (category, NULL) is multithread-safe.])
+    [Define to 1 if setlocale (category, NULL) is thread-safe.])
 
   dnl Determine link dependencies of lib/setlocale_null.c and lib/setlocale-lock.c.
   if test $SETLOCALE_NULL_ALL_MTSAFE = 0 || test $SETLOCALE_NULL_ONE_MTSAFE = 0; then

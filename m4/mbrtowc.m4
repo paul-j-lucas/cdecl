@@ -1,5 +1,5 @@
 # mbrtowc.m4
-# serial 47
+# serial 49
 dnl Copyright (C) 2001-2002, 2004-2005, 2008-2026 Free Software Foundation,
 dnl Inc.
 dnl This file is free software; the Free Software Foundation
@@ -315,7 +315,7 @@ int main ()
       size_t ret;
 
       memset (&state, '\0', sizeof (mbstate_t));
-      wc = (wchar_t) 0xBADFACE;
+      wc = (wchar_t) {0xBADFACE};
       ret = mbrtowc (&wc, input, 5, &state);
       if (ret != 2)
         result |= 1;
@@ -546,42 +546,42 @@ int main ()
   int result = 0;
   if (setlocale (LC_ALL, "French_France.65001") != NULL)
     {
-      wchar_t wc = (wchar_t) 0xBADFACE;
+      wchar_t wc = (wchar_t) {0xBADFACE};
       mbstate_t state;
 
       memset (&state, '\0', sizeof (mbstate_t));
       if (mbrtowc (&wc, "\303", 1, &state) == (size_t)(-2)
-          && wc != (wchar_t) 0xBADFACE)
+          && wc != (wchar_t) {0xBADFACE})
         result |= 1;
     }
   if (setlocale (LC_ALL, "Japanese_Japan.932") != NULL)
     {
-      wchar_t wc = (wchar_t) 0xBADFACE;
+      wchar_t wc = (wchar_t) {0xBADFACE};
       mbstate_t state;
 
       memset (&state, '\0', sizeof (mbstate_t));
       if (mbrtowc (&wc, "\226", 1, &state) == (size_t)(-2)
-          && wc != (wchar_t) 0xBADFACE)
+          && wc != (wchar_t) {0xBADFACE})
         result |= 2;
     }
   if (setlocale (LC_ALL, "Chinese_Taiwan.950") != NULL)
     {
-      wchar_t wc = (wchar_t) 0xBADFACE;
+      wchar_t wc = (wchar_t) {0xBADFACE};
       mbstate_t state;
 
       memset (&state, '\0', sizeof (mbstate_t));
       if (mbrtowc (&wc, "\245", 1, &state) == (size_t)(-2)
-          && wc != (wchar_t) 0xBADFACE)
+          && wc != (wchar_t) {0xBADFACE})
         result |= 4;
     }
   if (setlocale (LC_ALL, "Chinese_China.936") != NULL)
     {
-      wchar_t wc = (wchar_t) 0xBADFACE;
+      wchar_t wc = (wchar_t) {0xBADFACE};
       mbstate_t state;
 
       memset (&state, '\0', sizeof (mbstate_t));
       if (mbrtowc (&wc, "\261", 1, &state) == (size_t)(-2)
-          && wc != (wchar_t) 0xBADFACE)
+          && wc != (wchar_t) {0xBADFACE})
         result |= 8;
     }
   return result;
@@ -602,12 +602,12 @@ int main ()
 {
   if (setlocale (LC_ALL, "$LOCALE_EN_UTF8") != NULL)
     {
-      wchar_t wc = (wchar_t) 0xBADFACE;
+      wchar_t wc = (wchar_t) {0xBADFACE};
       mbstate_t state;
 
       memset (&state, '\0', sizeof (mbstate_t));
       if (mbrtowc (&wc, "\303", 1, &state) == (size_t)(-2)
-          && wc != (wchar_t) 0xBADFACE)
+          && wc != (wchar_t) {0xBADFACE})
         return 1;
     }
   return 0;

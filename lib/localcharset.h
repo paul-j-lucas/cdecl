@@ -29,7 +29,7 @@ extern "C" {
    The result must not be freed; it is statically allocated.  The result
    becomes invalid when setlocale() is used to change the global locale, or
    when the value of one of the environment variables LC_ALL, LC_CTYPE, LANG
-   is changed; threads in multithreaded programs should not do this.
+   is changed; threads in multithreaded processes should not do this.
    If the canonical name cannot be determined, the result is a non-canonical
    name.  */
 extern const char * locale_charset (void);

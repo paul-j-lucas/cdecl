@@ -79,7 +79,7 @@
     if (enc == enc_utf8) /* UTF-8 */
       {
         /* Achieve
-             - multi-thread safety and
+             - thread safety and
              - the ability to produce wide character values > WCHAR_MAX
            by not calling mbtowc() at all.  */
 #include "mbrtowc-impl-utf8.h"
@@ -87,7 +87,7 @@
     else
       {
         /* The hidden internal state of mbtowc would make this function not
-           multi-thread safe.  Achieve multi-thread safety through a lock.  */
+           thread-safe.  Achieve thread safety through a lock.  */
         {
           wchar_t wc;
           res = mbtowc_with_lock (&wc, p, m);

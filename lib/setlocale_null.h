@@ -55,7 +55,7 @@ extern "C" {
    CATEGORY is invalid, or ERANGE if BUFSIZE is smaller than the length needed
    size (including the trailing NUL byte).  In the latter case, a truncated
    result is returned in BUF, but still NUL-terminated if BUFSIZE > 0.
-   This call is guaranteed to be multithread-safe only if
+   This call is guaranteed to be thread-safe only if
      - CATEGORY != LC_ALL and SETLOCALE_NULL_ONE_MTSAFE is true, or
      - CATEGORY == LC_ALL and SETLOCALE_NULL_ALL_MTSAFE is true,
    and the other threads must not make other setlocale invocations (since
@@ -65,7 +65,7 @@ extern int setlocale_null_r_unlocked (int category, char *buf, size_t bufsize)
 
 /* setlocale_null_unlocked (CATEGORY) is like setlocale (CATEGORY, NULL).
    The return value is NULL if CATEGORY is invalid.
-   This call is guaranteed to be multithread-safe only if
+   This call is guaranteed to be thread-safe only if
      - CATEGORY != LC_ALL and SETLOCALE_NULL_ONE_MTSAFE is true, or
      - CATEGORY == LC_ALL and SETLOCALE_NULL_ALL_MTSAFE is true,
    and the other threads must not make other setlocale invocations (since
@@ -74,7 +74,7 @@ extern const char *setlocale_null_unlocked (int category);
 
 /* setlocale_null_r (CATEGORY, BUF, BUFSIZE) is like setlocale (CATEGORY, NULL),
    except that
-     - it is guaranteed to be multithread-safe,
+     - it is guaranteed to be thread-safe,
      - it returns the resulting locale category name or locale name in the
        user-supplied buffer BUF, which must be BUFSIZE bytes long.
    The recommended minimum buffer size is
@@ -84,7 +84,7 @@ extern const char *setlocale_null_unlocked (int category);
    CATEGORY is invalid, or ERANGE if BUFSIZE is smaller than the length needed
    size (including the trailing NUL byte).  In the latter case, a truncated
    result is returned in BUF, but still NUL-terminated if BUFSIZE > 0.
-   For this call to be multithread-safe, *all* calls to
+   For this call to be thread-safe, *all* calls to
    setlocale (CATEGORY, NULL) in all other threads must have been converted
    to use setlocale_null_r or setlocale_null as well, and the other threads
    must not make other setlocale invocations (since changing the global locale
@@ -93,9 +93,9 @@ extern int setlocale_null_r (int category, char *buf, size_t bufsize)
   _GL_ARG_NONNULL ((2));
 
 /* setlocale_null (CATEGORY) is like setlocale (CATEGORY, NULL), except that
-   it is guaranteed to be multithread-safe.
+   it is guaranteed to be thread-safe.
    The return value is NULL if CATEGORY is invalid.
-   For this call to be multithread-safe, *all* calls to
+   For this call to be thread-safe, *all* calls to
    setlocale (CATEGORY, NULL) in all other threads must have been converted
    to use setlocale_null_r or setlocale_null as well, and the other threads
    must not make other setlocale invocations (since changing the global locale

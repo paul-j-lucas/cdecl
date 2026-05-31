@@ -1,5 +1,5 @@
 # mbrtoc32.m4
-# serial 21
+# serial 24
 dnl Copyright (C) 2014-2026 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -51,6 +51,36 @@ AC_DEFUN([gl_FUNC_MBRTOC32],
            dnl Our replacement mbrtoc32 can handle UTF-8, but not GB18030.
            LOCALE_ZH_CN=none
            ;;
+      esac
+      m4_ifdef([gl_FUNC_MBRTOC32_REGULAR], [
+        dnl The package requests a regular mbrtoc32 function.
+        dnl glibc's mbrtoc32 function is not regular,
+        dnl due to the zh_HK.BIG5-HKSCS locale, see
+        dnl https://sourceware.org/bugzilla/show_bug.cgi?id=25734
+        dnl https://sourceware.org/bugzilla/show_bug.cgi?id=30611
+        AC_CACHE_CHECK([whether mbrtoc32 is regular],
+          [gl_cv_func_mbrtoc32_regular],
+          [AC_REQUIRE([AC_CANONICAL_HOST])
+           gl_cv_func_mbrtoc32_regular="guessing yes"
+           case "$host_os" in
+             *-gnu* | gnu*)
+               AC_EGREP_CPP([Unlucky], [
+                 #include <features.h>
+                 #if defined __GNU_LIBRARY__ && __GLIBC__ >= 2
+                   Unlucky GNU user
+                 #endif
+                 ],
+                 [gl_cv_func_mbrtoc32_regular="guessing no"],
+                 [])
+               ;;
+           esac
+          ])
+      ], [
+        dnl The package does not request a regular mbrtoc32 function.
+        gl_cv_func_mbrtoc32_regular=irrelevant
+      ])
+      case "$gl_cv_func_mbrtoc32_regular" in
+        *no) REPLACE_MBRTOC32=1 ;;
       esac
     fi
     if test $HAVE_WORKING_MBRTOC32 = 0; then
@@ -273,11 +303,11 @@ int main ()
       && setlocale (LC_ALL, "$LOCALE_FR") != NULL)
     {
       mbstate_t state;
-      wchar_t wc = (wchar_t) 0xBADFACE;
+      wchar_t wc = (wchar_t) {0xBADFACE};
       memset (&state, '\0', sizeof (mbstate_t));
       if (mbrtowc (&wc, "\374", 1, &state) == 1)
         {
-          char32_t c32 = (wchar_t) 0xBADFACE;
+          char32_t c32 = (wchar_t) {0xBADFACE};
           memset (&state, '\0', sizeof (mbstate_t));
           if (mbrtoc32 (&c32, "\374", 1, &state) != 1)
             result |= 1;
@@ -290,11 +320,11 @@ int main ()
       && setlocale (LC_ALL, "$LOCALE_ZH_CN") != NULL)
     {
       mbstate_t state;
-      wchar_t wc = (wchar_t) 0xBADFACE;
+      wchar_t wc = (wchar_t) {0xBADFACE};
       memset (&state, '\0', sizeof (mbstate_t));
       if (mbrtowc (&wc, "\224\071\375\067", 4, &state) == 4)
         {
-          char32_t c32 = (wchar_t) 0xBADFACE;
+          char32_t c32 = (wchar_t) {0xBADFACE};
           memset (&state, '\0', sizeof (mbstate_t));
           if (mbrtoc32 (&c32, "\224\071\375\067", 4, &state) != 4)
             result |= 2;

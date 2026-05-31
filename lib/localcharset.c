@@ -781,7 +781,7 @@ static const struct table_entry locale_table[] =
    The result must not be freed; it is statically allocated.  The result
    becomes invalid when setlocale() is used to change the global locale, or
    when the value of one of the environment variables LC_ALL, LC_CTYPE, LANG
-   is changed; threads in multithreaded programs should not do this.
+   is changed; threads in multithreaded processes should not do this.
    If the canonical name cannot be determined, the result is a non-canonical
    name.  */
 
@@ -793,7 +793,7 @@ locale_charset (void)
 {
   const char *codeset;
 
-  /* This function must be multithread-safe.  To achieve this without using
+  /* This function must be thread-safe.  To achieve this without using
      thread-local storage, we use a simple strcpy or memcpy to fill this static
      buffer.  Filling it through, for example, strcpy + strcat would not be
      guaranteed to leave the buffer's contents intact if another thread is
@@ -839,7 +839,7 @@ locale_charset (void)
                 return dot;
               if (modifier - dot < sizeof (resultbuf))
                 {
-                  /* This way of filling resultbuf is multithread-safe.  */
+                  /* This way of filling resultbuf is thread-safe.  */
                   memcpy (resultbuf, dot, modifier - dot);
                   resultbuf [modifier - dot] = '\0';
                   return resultbuf;
@@ -940,7 +940,7 @@ locale_charset (void)
             return dot;
           if (modifier - dot < sizeof (resultbuf))
             {
-              /* This way of filling resultbuf is multithread-safe.  */
+              /* This way of filling resultbuf is thread-safe.  */
               memcpy (resultbuf, dot, modifier - dot);
               resultbuf [modifier - dot] = '\0';
               return resultbuf;

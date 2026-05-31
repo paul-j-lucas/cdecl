@@ -88,38 +88,38 @@
    category            1        2           6         3            4        5
    log2(LC_*_MASK)     0        1           2         3            4        5
  */
-#   define gl_log2_lc_mask(category) ((0x2543100 >> (4 * (category))) & 0xf)
+#   define _gl_log2_lc_mask(category) ((0x2543100 >> (4 * (category))) & 0xf)
 #  elif defined __FreeBSD__ || defined __DragonFly__ /* FreeBSD */
 /*                LC_COLLATE LC_CTYPE LC_MESSAGES LC_MONETARY LC_NUMERIC LC_TIME
 
    category            1        2           6         3            4        5
    log2(LC_*_MASK)     0        1           5         2            3        4
  */
-#   define gl_log2_lc_mask(category) ((category) - 1)
+#   define _gl_log2_lc_mask(category) ((category) - 1)
 #  elif defined _WIN32 && !defined __CYGWIN__        /* native Windows */
-#   define gl_log2_lc_mask(category) \
+#   define _gl_log2_lc_mask(category) \
       ((category) == LC_MESSAGES ? 0 : (category))
 #  else                           /* glibc, Solaris, Android, NetBSD, OpenBSD */
-#   define gl_log2_lc_mask(category) (category)
+#   define _gl_log2_lc_mask(category) (category)
 #  endif
 /* From there we map them to array indices 0..5.  */
-#  if (gl_log2_lc_mask (LC_COLLATE) == 0 || gl_log2_lc_mask (LC_CTYPE) == 0 \
-       || gl_log2_lc_mask (LC_MESSAGES) == 0)
+#  if (_gl_log2_lc_mask (LC_COLLATE) == 0 || _gl_log2_lc_mask (LC_CTYPE) == 0 \
+       || _gl_log2_lc_mask (LC_MESSAGES) == 0)
   /* glibc, Solaris, Android, macOS, FreeBSD, native Windows */
-#   define gl_log2_lcmask_to_index(c) (c)
-#   define gl_index_to_log2_lcmask(i) (i)
+#   define _gl_log2_lcmask_to_index(c) (c)
+#   define _gl_index_to_log2_lcmask(i) (i)
 #  else
   /* NetBSD, OpenBSD */
-#   define gl_log2_lcmask_to_index(c) ((c) - 1)
-#   define gl_index_to_log2_lcmask(i) ((i) + 1)
+#   define _gl_log2_lcmask_to_index(c) ((c) - 1)
+#   define _gl_index_to_log2_lcmask(i) ((i) + 1)
 #  endif
 /* Define the LC_*_MASK macros.  */
-#  define LC_COLLATE_MASK  (1 << gl_log2_lc_mask (LC_COLLATE))
-#  define LC_CTYPE_MASK    (1 << gl_log2_lc_mask (LC_CTYPE))
-#  define LC_MESSAGES_MASK (1 << gl_log2_lc_mask (LC_MESSAGES))
-#  define LC_MONETARY_MASK (1 << gl_log2_lc_mask (LC_MONETARY))
-#  define LC_NUMERIC_MASK  (1 << gl_log2_lc_mask (LC_NUMERIC))
-#  define LC_TIME_MASK     (1 << gl_log2_lc_mask (LC_TIME))
+#  define LC_COLLATE_MASK  (1 << _gl_log2_lc_mask (LC_COLLATE))
+#  define LC_CTYPE_MASK    (1 << _gl_log2_lc_mask (LC_CTYPE))
+#  define LC_MESSAGES_MASK (1 << _gl_log2_lc_mask (LC_MESSAGES))
+#  define LC_MONETARY_MASK (1 << _gl_log2_lc_mask (LC_MONETARY))
+#  define LC_NUMERIC_MASK  (1 << _gl_log2_lc_mask (LC_NUMERIC))
+#  define LC_TIME_MASK     (1 << _gl_log2_lc_mask (LC_TIME))
 #  define LC_ALL_MASK \
      (LC_COLLATE_MASK | LC_CTYPE_MASK | LC_MESSAGES_MASK | LC_MONETARY_MASK \
       | LC_NUMERIC_MASK | LC_TIME_MASK)

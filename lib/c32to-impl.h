@@ -53,22 +53,6 @@ FUNC (wint_t wc)
   else
     return wc;
 
-#elif HAVE_WORKING_MBRTOC32 && HAVE_WORKING_C32RTOMB /* glibc, Android */
-  /* mbrtoc32() is essentially defined by the system libc.  */
-
-# if _GL_WCHAR_T_IS_UCS4
-  /* The char32_t encoding of a multibyte character is known to be the same as
-     the wchar_t encoding.  */
-  return WCHAR_FUNC (wc);
-# else
-  /* The char32_t encoding of a multibyte character is known to be UCS-4,
-     different from the wchar_t encoding.  */
-  if (wc != WEOF)
-    return UCS_FUNC (wc);
-  else
-    return wc;
-# endif
-
 #elif _GL_SMALL_WCHAR_T                 /* Cygwin, mingw, MSVC */
   /* The wchar_t encoding is UTF-16.
      The char32_t encoding is UCS-4.  */
@@ -88,6 +72,22 @@ FUNC (wint_t wc)
     return WCHAR_FUNC (wc);
   else
     return UCS_FUNC (wc);
+# endif
+
+#elif HAVE_WORKING_MBRTOC32 && HAVE_WORKING_C32RTOMB /* glibc, Android */
+  /* mbrtoc32() is essentially defined by the system libc.  */
+
+# if _GL_WCHAR_T_IS_UCS4
+  /* The char32_t encoding of a multibyte character is known to be the same as
+     the wchar_t encoding.  */
+  return WCHAR_FUNC (wc);
+# else
+  /* The char32_t encoding of a multibyte character is known to be UCS-4,
+     different from the wchar_t encoding.  */
+  if (wc != WEOF)
+    return UCS_FUNC (wc);
+  else
+    return wc;
 # endif
 
 #else /* macOS, FreeBSD, NetBSD, OpenBSD, HP-UX, Solaris, Minix, Android */

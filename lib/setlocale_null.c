@@ -189,7 +189,7 @@ setlocale_null (int category)
   return setlocale_null_unlocked (category);
 #else
 
-  /* This call must be multithread-safe.  To achieve this without using
+  /* This call must be thread-safe.  To achieve this without using
      thread-local storage:
        1. We use a specific static buffer for each possible CATEGORY
           argument.  So that different threads can call setlocale_mtsafe

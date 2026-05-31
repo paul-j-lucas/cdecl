@@ -84,14 +84,39 @@ mbrtoc32 (char32_t *pwc, const char *s, size_t n, mbstate_t *ps)
 
 /* Implement mbrtoc32() based on the original mbrtoc32() or on mbrtowc().  */
 
+# include <errno.h>
+# include <stdlib.h>
 # include <wchar.h>
 
+# include "attribute.h"
 # include "localcharset.h"
 # include "streq-opt.h"
 
 # if MBRTOC32_IN_C_LOCALE_MAYBE_EILSEQ
 #  include "hard-locale.h"
 #  include <locale.h>
+# endif
+
+# if (GNULIB_WCHAR_SINGLE_LOCALE && __GLIBC__ >= 2 && !__UCLIBC__)
+
+/* Returns 1 if the current locale is an UTF-8 locale, 0 otherwise.  */
+static inline int
+is_locale_utf8 (void)
+{
+  const char *encoding = locale_charset ();
+  return STREQ_OPT (encoding, "UTF-8", 'U', 'T', 'F', '-', '8', 0, 0, 0, 0);
+}
+
+/* Provide a speedup by caching the value of is_locale_utf8.  */
+static int cached_is_locale_utf8 = -1;
+static inline int
+is_locale_utf8_cached (void)
+{
+  if (cached_is_locale_utf8 < 0)
+    cached_is_locale_utf8 = is_locale_utf8 ();
+  return cached_is_locale_utf8;
+}
+
 # endif
 
 static mbstate_t internal_state;
@@ -109,13 +134,129 @@ mbrtoc32 (char32_t *pwc, const char *s, size_t n, mbstate_t *ps)
       n = 1;
     }
 
-# if MBRTOC32_EMPTY_INPUT_BUG || _GL_SMALL_WCHAR_T
+# if (MBRTOC32_EMPTY_INPUT_BUG || _GL_SMALL_WCHAR_T \
+      || (GNULIB_WCHAR_SINGLE_LOCALE && __GLIBC__ >= 2 && !__UCLIBC__))
   if (n == 0)
     return (size_t) -2;
 # endif
 
   if (ps == NULL)
     ps = &internal_state;
+
+# if (GNULIB_WCHAR_SINGLE_LOCALE && __GLIBC__ >= 2 && !__UCLIBC__)
+  /* Optimize the frequent case of an UTF-8 locale.
+     Since here we are in the !GNULIB_defined_mbstate_t case, i.e. we use
+     the system's mbstate_t type and have to provide interoperability with
+     the system's mbsinit() function, this requires knowledge about how the
+     system's UTF-8 mbrtoc32() function stores the state.  This knowledge is
+     platform-specific.  For simplicity, we handle only glibc systems.  */
+  if (is_locale_utf8_cached ())
+    {
+      /* Structure of mbstate_t =
+         { int __count; union { wint_t __wch; char __wchb[4]; } __value; }
+         (see glibc/iconv/gconv_simple.c function utf8_internal_loop):
+         Bits 2..0 of __count is the number of input bytes already consumed.
+         Bits 31..8 of __count is the number of input bytes expected for the
+         entire byte sequence.
+         __value.__wch is the already inferrable bits of the character, of
+         the form (x << (r*6)) when r bytes are still expected.  */
+
+      /* Here n > 0.  */
+
+      size_t nstate = ps->__count & 7;
+      char buf[4];
+      const char *p;
+      size_t m;
+
+      if (nstate == 0)
+        {
+          p = s;
+          m = n;
+        }
+      else
+        {
+          size_t t = ps->__count >> 8; /* total expected number of bytes */
+          if (t > nstate && t <= 4)
+            {
+              buf[0] =
+                (0x100 - (0x100 >> t)) | (ps->__value.__wch >> ((t - 1) * 6));
+              if (nstate >= 2)
+                {
+                  buf[1] =
+                    0x80 | ((ps->__value.__wch >> ((t - 2) * 6)) & 0x3F);
+                  if (nstate >= 3)
+                    {
+                      buf[2] =
+                        0x80 | ((ps->__value.__wch >> ((t - 3) * 6)) & 0x3F);
+                    }
+                }
+            }
+          else
+            {
+              errno = EINVAL;
+              return (size_t)(-1);
+            }
+          p = buf;
+          m = nstate;
+          buf[m++] = s[0];
+          if (n >= 2 && m < 4)
+            {
+              buf[m++] = s[1];
+              if (n >= 3 && m < 4)
+                buf[m++] = s[2];
+            }
+        }
+
+      /* Here m > 0.  */
+
+      int res;
+      {
+#  define FITS_IN_CHAR_TYPE(wc)  1
+#  include "mbrtowc-impl-utf8.h"
+      }
+
+     success:
+      /* res >= 0 is the corrected return value of
+         mbtowc_with_lock (&wc, p, m).  */
+      if (nstate >= (res > 0 ? res : 1))
+        abort ();
+      res -= nstate;
+      ps->__count = 0;
+      return res;
+
+     incomplete:
+      /* Here 0 < m < 4.  */
+      {
+        unsigned char c = (unsigned char) p[0];
+        if (c < 0xE0)
+          {
+            ps->__count = (2 << 8) | m;
+            ps->__value.__wch = (c & 0x1F) << 6;
+          }
+        else if (c < 0xF0)
+          {
+            ps->__count = (3 << 8) | m;
+            ps->__value.__wch =
+              ((c & 0x0F) << 12)
+              | (m > 1 ? ((unsigned char) p[1] & 0x3F) << 6 : 0);
+          }
+        else
+          {
+            ps->__count = (4 << 8) | m;
+            ps->__value.__wch =
+              ((c & 0x07) << 18)
+              | (m > 1 ? ((unsigned char) p[1] & 0x3F) << 12 : 0)
+              | (m > 2 ? ((unsigned char) p[2] & 0x3F) << 6 : 0);
+          }
+      }
+      return (size_t)(-2);
+
+     invalid:
+      errno = EILSEQ;
+      /* The conversion state is undefined, says POSIX.  */
+      return (size_t)(-1);
+    }
+# endif
 
 # if HAVE_WORKING_MBRTOC32 && HAVE_WORKING_C32RTOMB && !MBRTOC32_MULTIBYTE_LOCALE_BUG
   /* mbrtoc32() may produce different values for wc than mbrtowc().  Therefore

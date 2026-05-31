@@ -161,13 +161,13 @@ dnl -------------
 dnl Tests for the libraries needs for using the POSIX threads API.
 dnl Sets the variable LIBPTHREAD to the linker options for use in a Makefile.
 dnl Sets the variable LIBPMULTITHREAD, for programs that really need
-dnl multithread functionality. The difference between LIBPTHREAD and
+dnl multithreading.  The difference between LIBPTHREAD and
 dnl LIBPMULTITHREAD is that on platforms supporting weak symbols, typically
 dnl LIBPTHREAD is empty whereas LIBPMULTITHREAD is not.
 dnl Sets the variable SCHED_YIELD_LIB to the linker options needed to use the
 dnl sched_yield() function.
 dnl Adds to CPPFLAGS the flag -D_REENTRANT or -D_THREAD_SAFE if needed for
-dnl multithread-safe programs.
+dnl thread-safe programs.
 dnl Defines the C macro HAVE_PTHREAD_API if (at least parts of) the POSIX
 dnl threads API is available.
 
@@ -321,7 +321,7 @@ dnl ---------------
 dnl Tests for the libraries needs for using the ISO C threads API.
 dnl Sets the variable LIBSTDTHREAD to the linker options for use in a Makefile.
 dnl Adds to CPPFLAGS the flag -D_REENTRANT or -D_THREAD_SAFE if needed for
-dnl multithread-safe programs.
+dnl thread-safe programs.
 dnl Defines the C macro HAVE_THREADS_H if (at least parts of) the ISO C threads
 dnl API is available.
 
@@ -400,11 +400,11 @@ dnl Sets the variables LIBTHREAD and LTLIBTHREAD to the linker options for use
 dnl in a Makefile (LIBTHREAD for use without libtool, LTLIBTHREAD for use with
 dnl libtool).
 dnl Sets the variables LIBMULTITHREAD and LTLIBMULTITHREAD similarly, for
-dnl programs that really need multithread functionality. The difference
+dnl programs that really need multithreading.  The difference
 dnl between LIBTHREAD and LIBMULTITHREAD is that on platforms supporting weak
 dnl symbols, typically LIBTHREAD is empty whereas LIBMULTITHREAD is not.
 dnl Adds to CPPFLAGS the flag -D_REENTRANT or -D_THREAD_SAFE if needed for
-dnl multithread-safe programs.
+dnl thread-safe programs.
 dnl Since support for GNU pth was removed, $LTLIBTHREAD and $LIBTHREAD have the
 dnl same value, and similarly $LTLIBMULTITHREAD and $LIBMULTITHREAD have the
 dnl same value. Only system libraries are needed.
@@ -436,12 +436,12 @@ AC_DEFUN([gl_THREADLIB_EARLY_BODY],
   m4_divert_text([DEFAULTS], [gl_use_winpthreads_default=no])
   dnl Don't display the --disable-threads option
   dnl   - if the package builds one or more libraries, because libraries must
-  dnl     always be multithread-safe (as far as possible),
+  dnl     always be thread-safe (as far as possible),
   dnl   - if the package defines gl_THREADLIB_DEFAULT_NO, because the option
   dnl     would then be a no-op.
   AC_ARG_ENABLE([threads],
 AS_HELP_STRING([[--enable-threads={isoc|posix|isoc+posix|windows}]], [specify multithreading API])m4_ifdef([LT_INIT], [], [m4_ifdef([gl_THREADLIB_DEFAULT_NO], [], [
-AS_HELP_STRING([[--disable-threads]], [build without multithread safety])])]),
+AS_HELP_STRING([[--disable-threads]], [build without thread safety])])]),
     [gl_use_threads=$enableval],
     [if test -n "$gl_use_threads_default"; then
        gl_use_threads="$gl_use_threads_default"
@@ -485,7 +485,7 @@ AC_DEFUN([gl_THREADLIB_BODY],
   LTLIBMULTITHREAD=
   AS_IF([test "$gl_use_threads" = no],
    [AC_DEFINE([AVOID_ANY_THREADS], [1],
-      [Define if no multithread safety and no multithreading is desired.])],
+      [Define if neither thread safety nor multithreading is desired.])],
    [
     dnl Check whether the compiler and linker support weak declarations.
     gl_WEAK_SYMBOLS
@@ -572,7 +572,7 @@ AC_DEFUN([gl_THREADLIB_BODY],
          ])
     ])
    ])
-  AC_MSG_CHECKING([for multithread API to use])
+  AC_MSG_CHECKING([for multithreading API to use])
   AC_MSG_RESULT([$gl_threads_api])
   AC_SUBST([LIBTHREAD])
   AC_SUBST([LTLIBTHREAD])

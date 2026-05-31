@@ -1,5 +1,5 @@
 # uchar_h.m4
-# serial 32
+# serial 33
 dnl Copyright (C) 2019-2026 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -27,7 +27,7 @@ AC_DEFUN_ONCE([gl_UCHAR_H],
   dnl  header."
   m4_ifdef([gl_ANSI_CXX], [AC_REQUIRE([gl_ANSI_CXX])])
   CXX_HAVE_UCHAR_H=0
-  if test "$CXX" != no; then
+  if test -n "$CXX" && test "$CXX" != no; then
     AC_CACHE_CHECK([whether the C++ compiler has <uchar.h>],
       [gl_cv_cxx_have_uchar_h],
       [dnl We can't use AC_LANG_PUSH([C++]) and AC_LANG_POP([C++]) here, due to
@@ -61,7 +61,7 @@ EOF
   m4_ifdef([gl_ANSI_CXX], [AC_REQUIRE([gl_ANSI_CXX])])
   CXX_HAS_UCHAR_TYPES=0
   if test $HAVE_UCHAR_H = 0; then
-    if test "$CXX" != no; then
+    if test -n "$CXX" && test "$CXX" != no; then
       AC_CACHE_CHECK([whether the C++ compiler predefines the <uchar.h> types],
         [gl_cv_cxx_has_uchar_types],
         [dnl We can't use AC_LANG_PUSH([C++]) and AC_LANG_POP([C++]) here, due to
@@ -87,7 +87,7 @@ EOF
   AC_SUBST([CXX_HAS_UCHAR_TYPES])
   CXX_HAS_CHAR8_TYPE=0
   if test $HAVE_UCHAR_H = 0; then
-    if test "$CXX" != no; then
+    if test -n "$CXX" && test "$CXX" != no; then
       AC_CACHE_CHECK([whether the C++ compiler predefines the char8_t type],
         [gl_cv_cxx_has_char8_type],
         [dnl We can't use AC_LANG_PUSH([C++]) and AC_LANG_POP([C++]) here, due to

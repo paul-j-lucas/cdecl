@@ -1,5 +1,5 @@
 # c32rtomb.m4
-# serial 8
+# serial 10
 dnl Copyright (C) 2020-2026 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -153,14 +153,14 @@ int main ()
       && setlocale (LC_ALL, "$LOCALE_ZH_CN") != NULL)
     {
       mbstate_t state;
-      wchar_t wc = (wchar_t) 0xBADFACE;
+      wchar_t wc = (wchar_t) {0xBADFACE};
       char buf[16];
       memset (&state, '\0', sizeof (mbstate_t));
       if (mbrtowc (&wc, "\201\060\211\070", 4, &state) == 4
           && wcrtomb (buf, wc, NULL) == 4
           && memcmp (buf, "\201\060\211\070", 4) == 0)
         {
-          char32_t c32 = (wchar_t) 0xBADFACE;
+          char32_t c32 = (wchar_t) {0xBADFACE};
           memset (&state, '\0', sizeof (mbstate_t));
           if (mbrtoc32 (&c32, "\201\060\211\070", 4, &state) == 4
               && c32rtomb (buf, c32, NULL) != 4)
