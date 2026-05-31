@@ -1,5 +1,6 @@
 2026-05-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c: Added "const".
    * cdecl.c, p_predefine.c, unit_test.c, util.c, util.h:
      s/base_name/path_basename/
    * strbuf.c: Now growing by 1.5x.
