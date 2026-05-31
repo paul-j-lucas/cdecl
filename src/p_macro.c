@@ -2613,7 +2613,7 @@ static size_t p_arg_list_count( p_arg_list_t const *arg_list ) {
   if ( n_args != 1 )
     return n_args;
 
-  p_token_list_t *const arg_tokens = slist_front( arg_list );
+  p_token_list_t const *const arg_tokens = slist_front( arg_list );
   return slist_empty( arg_tokens ) ? 0 : 1;
 }
 
@@ -2629,7 +2629,7 @@ static void p_arg_list_trim( p_arg_list_t *arg_list ) {
   p_token_list_t *const first_arg_tokens = slist_front( arg_list );
   if ( first_arg_tokens != NULL ) {
     while ( !slist_empty( first_arg_tokens ) ) {
-      p_token_t *const token = slist_front( first_arg_tokens );
+      p_token_t const *const token = slist_front( first_arg_tokens );
       if ( token->kind != P_SPACE )
         break;
       p_token_free( slist_pop_front( first_arg_tokens ) );
@@ -2639,7 +2639,7 @@ static void p_arg_list_trim( p_arg_list_t *arg_list ) {
   p_token_list_t *const last_arg_tokens = slist_back( arg_list );
   if ( last_arg_tokens != NULL ) {
     while ( !slist_empty( last_arg_tokens ) ) {
-      p_token_t *const token = slist_back( last_arg_tokens );
+      p_token_t const *const token = slist_back( last_arg_tokens );
       if ( token->kind != P_SPACE )
         break;
       p_token_free( slist_pop_back( last_arg_tokens ) );
