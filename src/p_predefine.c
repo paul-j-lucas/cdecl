@@ -82,7 +82,7 @@ static char const* get___FILE___str( void ) {
     return VALUE[ OPT_LANG_IS( CPP_ANY ) ];
   }
   // LCOV_EXCL_START
-  return cdecl_input_path != NULL ? base_name( cdecl_input_path ) : "stdin";
+  return cdecl_input_path != NULL ? path_basename( cdecl_input_path ) : "stdin";
   // LCOV_EXCL_STOP
 }
 

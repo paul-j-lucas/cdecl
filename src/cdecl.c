@@ -107,7 +107,7 @@ bool is_cppdecl( void ) {
  * @return Returns 0 on success, non-zero on failure.
  */
 int main( int argc, char const *const argv[] ) {
-  prog_name = base_name( argv[0] );
+  prog_name = path_basename( argv[0] );
   ATEXIT( &cdecl_cleanup );
   cdecl_test = parse_cdecl_test( getenv( "CDECL_TEST" ) );
   if ( str_is_affirmative( getenv( "CDECL_DEBUG" ) ) )

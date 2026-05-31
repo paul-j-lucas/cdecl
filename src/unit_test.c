@@ -89,7 +89,7 @@ bool test_expr( bool expr_is_true, char const *expr, int line ) {
 
 void test_prog_init( int argc, char const *const argv[] ) {
   ASSERT_RUN_ONCE();
-  prog_name = base_name( argv[0] );
+  prog_name = path_basename( argv[0] );
   if ( --argc != 0 )
     test_prog_usage();                  // LCOV_EXCL_LINE
   ATEXIT( &test_prog_exit );

@@ -110,14 +110,6 @@ static bool str_is_any( char const *s, char const *const matches[static 2] ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-char const* base_name( char const *path_name ) {
-  assert( path_name != NULL );
-  char const *const slash = strrchr( path_name, '/' );
-  if ( slash != NULL )
-    return slash[1] != '\0' ? slash + 1 : path_name;
-  return path_name;
-}
-
 char* check_prefix_strdup( char const *prefix, size_t prefix_len,
                            char const *s ) {
   assert( prefix != NULL );
@@ -319,6 +311,14 @@ char const* parse_identifier( char const *s ) {
   while ( is_ident( *++s ) )
     ;
   return s;
+}
+
+char const* path_basename( char const *path_name ) {
+  assert( path_name != NULL );
+  char const *const slash = strrchr( path_name, '/' );
+  if ( slash != NULL )
+    return slash[1] != '\0' ? slash + 1 : path_name;
+  return path_name;
 }
 
 // LCOV_EXCL_START
