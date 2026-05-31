@@ -1,3 +1,9 @@
+2026-05-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, p_predefine.c, unit_test.c, util.c, util.h:
+     s/base_name/path_basename/
+   * strbuf.c: Now growing by 1.5x.
+
 2026-05-28  Paul J. Lucas <paul@lucasmail.org>
 
    * share/man/man1/cdecl.1: Code blocks are now smaller.
