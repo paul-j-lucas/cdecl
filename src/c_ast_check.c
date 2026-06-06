@@ -1688,7 +1688,6 @@ static bool c_ast_check_lambda_captures( c_ast_t const *ast ) {
           );
           return false;
         }
-        assert( default_capture_ast == NULL );
         default_capture_ast = capture_ast;
         break;
 
