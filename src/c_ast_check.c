@@ -1700,6 +1700,7 @@ static bool c_ast_check_lambda_captures( c_ast_t const *ast ) {
           return false;
         }
         FALLTHROUGH;
+
       case C_CAPTURE_THIS:
         assert( c_sname_empty( &capture_ast->sname ) );
         break;
