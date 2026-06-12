@@ -1,5 +1,10 @@
+2026-06-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Removed redundant "if".
+
 2026-06-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * cli_options.c: Clearer required_argument handling.
    * c_ast_check.c: Eliminated pointless assert().
    * c_ast_check.c: Eliminated goto.
 
