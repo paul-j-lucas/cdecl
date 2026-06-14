@@ -278,7 +278,6 @@ AM_CONDITIONAL([WITH_READLINE],       [test "x$with_readline"      != xno ])
 AX_C___ATTRIBUTE__
 
 # Compiler warnings.
-AC_SUBST([CDECL_CFLAGS])
 CDECL_CFLAGS="-D_ISOC11_SOURCE"
 AX_CFLAGS_WARN_ALL([CDECL_CFLAGS])
 PJL_CHECK_COMPILE_FLAG([-fstrict-flex-arrays], [CDECL_CFLAGS])
@@ -324,6 +323,7 @@ PJL_CHECK_COMPILE_FLAG([-Wunused], [CDECL_CFLAGS])
 PJL_CHECK_COMPILE_FLAG([-Wwrite-strings], [CDECL_CFLAGS])
 
 # Generate files.
+AC_SUBST([CDECL_CFLAGS])
 AH_TOP([#ifndef cdecl_config_H
 #define cdecl_config_H])
 AH_BOTTOM([#endif /* cdecl_config_H */])
