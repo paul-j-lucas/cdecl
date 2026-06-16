@@ -123,7 +123,7 @@ char* check_prefix_strdup( char const *prefix, size_t prefix_len,
 
 void* check_realloc( void *p, size_t size ) {
   assert( size > 0 );
-  p = p != NULL ? realloc( p, size ) : malloc( size );
+  p = realloc( p, size );
   PERROR_EXIT_IF( p == NULL, EX_OSERR );
   return p;
 }
