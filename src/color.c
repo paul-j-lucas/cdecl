@@ -250,9 +250,7 @@ static bool file_in_color( FILE *file ) {
   switch ( fd ) {
     case STDOUT_FILENO:
     case STDERR_FILENO:
-      if ( STATIC_CAST( size_t, fd ) < ARRAY_SIZE( fd_in_color ) )
-        return fd_in_color[ fd ];
-      break;
+      return fd_in_color[ fd ];
   } // switch
   return false;
 }
