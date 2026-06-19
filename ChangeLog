@@ -1,3 +1,9 @@
+2026-06-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c: Don't need STATIC_CAST or ARRAY_SIZE check.
+   * color.c, color.h, util.c, util.h: Now doing color seperately for stdout
+     and stderr. (Change ported from include-tidy.)
+
 2026-06-16  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c: Removed old p != NULL.
