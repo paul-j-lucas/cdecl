@@ -40,6 +40,7 @@
 #include <stdio.h>
 #include <stdlib.h>                     /* for getenv() */
 #include <string.h>                     /* for str...() */
+#include <sys/stat.h>                   /* for stat() */
 #include <unistd.h>                     /* for isatty() */
 
 //
@@ -66,14 +67,15 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// local functions ////////////////////////////////////////////////////
 
-// local functions
 NODISCARD
 static char const** sgr_var_find( char const* );
 
 NODISCARD
 static bool         sgr_var_set( char const**, char const* );
+
+////////// extern variables ///////////////////////////////////////////////////
 
 /// @cond DOXYGEN_IGNORE
 /// Otherwise Doxygen generates two entries.
@@ -94,8 +96,16 @@ char const *sgr_warning;
 
 /// @endcond
 
-// local variables
+////////// local variables ////////////////////////////////////////////////////
+
 static char const *color_capabilities;  ///< Parsed color capabilities.
+
+/**
+ * Indexed by a file decriptor, whether we should emit color on it.
+ *
+ * @note Element 0 for `stdin` is not used.
+ */
+static bool fd_in_color[3];
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -172,6 +182,79 @@ static char const* colors_parse( char const *capabilities ) {
 
   free( capabilities_dup );
   return NULL;
+}
+
+/**
+ * Checks whether \a fd refers to a regular file.
+ *
+ * @param fd The file descriptor to check.
+ * @return Returns `true` only if \a fd refers to a regular file.
+ */
+NODISCARD
+static bool fd_is_file( int fd ) {
+  struct stat fd_stat;
+  if ( fstat( fd, &fd_stat ) == -1 )
+    return false;
+  return S_ISREG( fd_stat.st_mode );
+}
+
+/**
+ * Determines whether we should emit escape sequences for color for \a fd.
+ *
+ * @param fd The file desciptor to check.
+ * @param when The \ref color_when value.
+ * @return Returns `true` only if we should do color for \a fd.
+ */
+NODISCARD
+static bool fd_should_color( int fd, color_when_t when ) {
+  switch ( when ) {
+    case COLOR_ALWAYS:
+      return true;
+    case COLOR_ISATTY:
+      return isatty( fd );              // emulate gcc's --color=auto
+    case COLOR_NEVER:
+      return false;
+    case COLOR_NOT_FILE:
+      //
+      // Do color only we're writing either to a TTY or to a pipe (so the
+      // common case of piping to less(1) will still show color) but NOT when
+      // writing to a file because we don't want the escape sequences polluting
+      // it.
+      //
+      // Results from testing using isatty(3) and fstat(3) are given in the
+      // following table:
+      //
+      //      COMMAND             Should? isatty ISCHR ISFIFO ISREG
+      //      =================== ======= ====== ===== ====== =====
+      //      include-tidy           T      T      T     F      F
+      //      include-tidy > file    F      F      F     F    >>T<<
+      //      include-tidy | less    T      F      F     T      F
+      //
+      // Hence, we want to do color _except_ when ISREG=T.
+      //
+      return !fd_is_file( fd );
+  } // switch
+  UNEXPECTED_INT_VALUE( when );
+}
+
+/**
+ * Gets whether we should emit color to \a file.
+ *
+ * @param file The `FILE` to check.
+ * @return Returns `true` only if we should emit color to \a file.
+ */
+NODISCARD
+static bool file_in_color( FILE *file ) {
+  assert( file != NULL );
+  int const fd = fileno( file );
+  switch ( fd ) {
+    case STDOUT_FILENO:
+    case STDERR_FILENO:
+      if ( STATIC_CAST( size_t, fd ) < ARRAY_SIZE( fd_in_color ) )
+        return fd_in_color[ fd ];
+      break;
+  } // switch
+  return false;
 }
 
 /**
@@ -265,50 +348,15 @@ static bool sgr_var_set( char const **sgr_var, char const *sgr_color ) {
   return true;
 }
 
-/**
- * Determines whether we should emit escape sequences for color.
- *
- * @param when The \ref color_when value.
- * @return Returns `true` only if we should do color.
- */
-NODISCARD
-static bool should_colorize( color_when_t when ) {
-  switch ( when ) {
-    case COLOR_ALWAYS:
-      return true;
-    case COLOR_ISATTY:
-      return isatty( STDOUT_FILENO );   // emulate gcc's --color=auto
-    case COLOR_NEVER:
-      return false;
-    case COLOR_NOT_FILE:
-      //
-      // Do color only we're writing either to a TTY or to a pipe (so the
-      // common case of piping to less(1) will still show color) but NOT when
-      // writing to a file because we don't want the escape sequences polluting
-      // it.
-      //
-      // Results from testing using isatty(3) and fstat(3) are given in the
-      // following table:
-      //
-      //      COMMAND      Should? isatty ISCHR ISFIFO ISREG
-      //      ============ ======= ====== ===== ====== =====
-      //      cdecl           T      T      T     F      F
-      //      cdecl > file    F      F      F     F    >>T<<
-      //      cdecl | less    T      F      F     T      F
-      //
-      // Hence, we want to do color _except_ when ISREG=T.
-      //
-      return !fd_is_file( STDOUT_FILENO );
-  } // switch
-  UNEXPECTED_INT_VALUE( when );
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 void colors_init( void ) {
   ASSERT_RUN_ONCE();
 
-  if ( !should_colorize( opt_color_when ) )
+  for ( int fd = STDOUT_FILENO; fd <= STDERR_FILENO; ++fd )
+    fd_in_color[ fd ] = fd_should_color( fd, opt_color_when );
+
+  if ( !fd_in_color[ STDOUT_FILENO ] && !fd_in_color[ STDERR_FILENO ] )
     return;
 
   color_capabilities = colors_parse( getenv( "CDECL_COLORS" ) );
@@ -334,12 +382,19 @@ void colors_init( void ) {
   ATEXIT( &colors_cleanup );
 }
 
+void color_end( FILE *file, char const *sgr_color ) {
+  if ( sgr_color != NULL && file_in_color( file ) )
+    FPUTS( SGR_END SGR_EL, file );
+}
+
+void color_start( FILE *file, char const *sgr_color ) {
+  if ( sgr_color != NULL && file_in_color( file ) )
+    FPRINTF( file, SGR_START SGR_EL, sgr_color );
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
 
-extern inline void color_end( FILE*, char const* );
-extern inline void color_start( FILE*, char const* );
 extern inline void color_strbuf_end( strbuf_t*, char const* );
 extern inline void color_strbuf_start( strbuf_t*, char const* );
 

@@ -43,7 +43,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>                   /* for stat() */
 #include <sysexits.h>
 #include <unistd.h>                     /* for getpid(2) */
 
@@ -214,12 +213,6 @@ void fatal_error( int status, char const *format, ... ) {
 
   va_end( args );
   exit( status );
-}
-
-bool fd_is_file( int fd ) {
-  struct stat fd_stat;
-  FSTAT( fd, &fd_stat );
-  return S_ISREG( fd_stat.st_mode );
 }
 
 void fput_list( FILE *out, void const *elt,

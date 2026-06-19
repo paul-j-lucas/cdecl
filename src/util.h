@@ -470,15 +470,6 @@
 #define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
 
 /**
- * Calls **fstat**(2), checks for an error, and exits if there was one.
- *
- * @param FD The file descriptor to stat.
- * @param PSTAT A pointer to a `struct stat` to receive the result.
- */
-#define FSTAT(FD,PSTAT) \
-  PERROR_EXIT_IF( fstat( (FD), (PSTAT) ) < 0, EX_IOERR )
-
-/**
  * Shorthand for
  * <code>((</code><i>EXPR1</i><code>)</code> <code>?</code>
  * <code>(</code><i>EXPR1</i><code>)</code> <code>:</code>
@@ -1145,15 +1136,6 @@ inline bool false_set( bool *flag ) {
  */
 PJL_PRINTF_LIKE_FUNC(2)
 _Noreturn void fatal_error( int status, char const *format, ... );
-
-/**
- * Checks whether \a fd refers to a regular file.
- *
- * @param fd The file descriptor to check.
- * @return Returns `true` only if \a fd refers to a regular file.
- */
-NODISCARD
-bool fd_is_file( int fd );
 
 /**
  * Prints a zero-or-more element list of strings where for:
