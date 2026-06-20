@@ -12,6 +12,11 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 18.8
 
+** Color per stdout, stderr
+When the value of the `--color` or `-k` option is either `not_isref` or
+`not_file` (the default), stdout and stderr are now considered seperately since
+only one could be redirected.
+
 ** XDG Base Directory Specification change
 The configuration file paths used to implement the XDG Base Directory
 Specification have changed.  Specifically, `cdecl` is now a subdirectory and
