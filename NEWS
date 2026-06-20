@@ -10,6 +10,19 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 18.8
+
+** XDG Base Directory Specification change
+The configuration file paths used to implement the XDG Base Directory
+Specification have changed.  Specifically, `cdecl` is now a subdirectory and
+`cdeclrc` is the configuration file in it.  This is more inline with the XDG
+Base Directory Specification.
+
+    $XDG_CONFIG_HOME/cdecl -> $XDG_CONFIG_HOME/cdecl/cdeclrc
+    ~/.config/cdecl        -> ~/.config/cdecl/cdeclrc
+    /etc/xdg/cdecl         -> /etc/xdg/cdecl/cdeclrc
+
+
 * Changes in Cdecl 18.7.2
 
 ** Fixed a similar macro empty character literal crash

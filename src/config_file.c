@@ -99,72 +99,88 @@ NODISCARD
 static FILE* config_find( char const *config_path, strbuf_t *sbuf ) {
   assert( sbuf != NULL );
 
+  FILE *config_file;
   char const *home = NULL;
 
-  // 1. Try --config/-c command-line option.
-  FILE *config_file = config_open( config_path, CONFIG_OPT_ERROR_IS_FATAL );
-  if ( config_file != NULL )
-    strbuf_puts( sbuf, config_path );
+  switch ( 1 ) {
+    case 1:
+      // Try --config/-c command-line option.
+      config_file = config_open( config_path, CONFIG_OPT_ERROR_IS_FATAL );
+      if ( config_file != NULL ) {
+        strbuf_puts( sbuf, config_path );
+        break;
+      }
+      FALLTHROUGH;
 
-  // 2. Try $CDECLRC.
-  if ( config_file == NULL ) {
-    char const *const cdeclrc_path = null_if_empty( getenv( "CDECLRC" ) );
-    config_file = config_open( cdeclrc_path, CONFIG_OPT_NONE );
-    if ( config_file != NULL )
-      strbuf_puts( sbuf, cdeclrc_path );
-  }
+    case 2:;
+      // 2. Try $CDECLRC.
+      char const *const cdeclrc_path = null_if_empty( getenv( "CDECLRC" ) );
+      config_file = config_open( cdeclrc_path, CONFIG_OPT_NONE );
+      if ( config_file != NULL ) {
+        strbuf_puts( sbuf, cdeclrc_path );
+        break;
+      }
+      FALLTHROUGH;
 
-  // 3. Try $HOME/.cdeclrc.
-  if ( config_file == NULL && (home = home_dir()) != NULL ) {
-    // LCOV_EXCL_START
-    strbuf_puts( sbuf, home );
-    strbuf_paths( sbuf, "." CDECL "rc" );
-    config_file = config_open( sbuf->str, CONFIG_OPT_IGNORE_NOT_FOUND );
-    // LCOV_EXCL_STOP
-  }
+    case 3:
+      // Try $HOME/.cdeclrc.
+      if ( (home = home_dir()) != NULL ) {
+        // LCOV_EXCL_START
+        strbuf_puts( sbuf, home );
+        strbuf_paths( sbuf, "." CDECL "rc" );
+        config_file = config_open( sbuf->str, CONFIG_OPT_IGNORE_NOT_FOUND );
+        // LCOV_EXCL_STOP
+      }
+      FALLTHROUGH;
 
-  // 4. Try $XDG_CONFIG_HOME/cdecl and $HOME/.config/cdecl.
-  if ( config_file == NULL ) {
-    char const *const config_dir = null_if_empty( getenv( "XDG_CONFIG_HOME" ) );
-    strbuf_reset( sbuf );
-    if ( config_dir != NULL ) {
-      strbuf_puts( sbuf, config_dir );
-    }
-    else if ( home != NULL ) {
-      // LCOV_EXCL_START
-      strbuf_puts( sbuf, home );
-      strbuf_paths( sbuf, ".config" );
-      // LCOV_EXCL_STOP
-    }
-    if ( sbuf->len > 0 ) {
-      strbuf_paths( sbuf, CDECL );
-      config_file = config_open( sbuf->str, CONFIG_OPT_IGNORE_NOT_FOUND );
-    }
-  }
-
-  // 5. Try $XDG_CONFIG_DIRS/cdecl and /etc/xdg/cdecl.
-  if ( config_file == NULL ) {
-    char const *config_dirs = null_if_empty( getenv( "XDG_CONFIG_DIRS" ) );
-    if ( config_dirs == NULL )
-      config_dirs = "/etc/xdg";         // LCOV_EXCL_LINE
-    strbuf_reset( sbuf );
-    for (;;) {
-      char const *const next_sep = strchr( config_dirs, ':' );
-      size_t const dir_len = next_sep != NULL ?
-        STATIC_CAST( size_t, next_sep - config_dirs ) : strlen( config_dirs );
-      if ( dir_len > 0 ) {
-        strbuf_putsn( sbuf, config_dirs, dir_len );
+    case 4:;
+      // Try $XDG_CONFIG_HOME/cdecl/cdeclrc or
+      // $HOME/.config/cdecl/cdeclrc.
+      char const *const config_dir
+        = null_if_empty( getenv( "XDG_CONFIG_HOME" ) );
+      strbuf_reset( sbuf );
+      if ( config_dir != NULL ) {
+        strbuf_puts( sbuf, config_dir );
+      }
+      else if ( home != NULL ) {
+        // LCOV_EXCL_START
+        strbuf_puts( sbuf, home );
+        strbuf_paths( sbuf, ".config" );
+        // LCOV_EXCL_STOP
+      }
+      if ( sbuf->len > 0 ) {
         strbuf_paths( sbuf, CDECL );
+        strbuf_paths( sbuf, CDECL "rc" );
         config_file = config_open( sbuf->str, CONFIG_OPT_IGNORE_NOT_FOUND );
         if ( config_file != NULL )
           break;
-        strbuf_reset( sbuf );
       }
-      if ( next_sep == NULL )
-        break;
-      config_dirs = next_sep + 1;
-    } // for
-  }
+      FALLTHROUGH;
+
+    case 5:;
+      // Try $XDG_CONFIG_DIRS/cdecl or /etc/xdg/cdecl.
+      char const *config_dirs = null_if_empty( getenv( "XDG_CONFIG_DIRS" ) );
+      if ( config_dirs == NULL )
+        config_dirs = "/etc/xdg";       // LCOV_EXCL_LINE
+      strbuf_reset( sbuf );
+      for (;;) {
+        char const *const next_sep = strchr( config_dirs, ':' );
+        size_t const dir_len = next_sep != NULL ?
+          STATIC_CAST( size_t, next_sep - config_dirs ) : strlen( config_dirs );
+        if ( dir_len > 0 ) {
+          strbuf_putsn( sbuf, config_dirs, dir_len );
+          strbuf_paths( sbuf, CDECL );
+          strbuf_paths( sbuf, CDECL "rc" );
+          config_file = config_open( sbuf->str, CONFIG_OPT_IGNORE_NOT_FOUND );
+          if ( config_file != NULL )
+            break;
+          strbuf_reset( sbuf );
+        }
+        if ( next_sep == NULL )
+          break;
+        config_dirs = next_sep + 1;
+      } // for
+  } // switch
 
   return config_file;
 }

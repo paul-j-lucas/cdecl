@@ -35,7 +35,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 28, 2026" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 20, 2026" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2962,9 +2962,9 @@ The first of these files:
 .PD 0
 .B ~/.cdeclrc
 .TP
-.B $XDG_CONFIG_HOME/cdecl
+.B $XDG_CONFIG_HOME/cdecl/cdeclrc
 .TP
-.B ~/.config/cdecl
+.B ~/.config/cdecl/cdeclrc
 .RE
 .PD
 .IP \n+[step].
@@ -2976,9 +2976,9 @@ then for each
 .I path
 in it,
 the first of
-.IB path /cdecl \f1.\fP
+.IB path /cdecl/cdeclrc \f1.\fP
 .IP \n+[step].
-.B /etc/xdg/cdecl
+.B /etc/xdg/cdecl/cdeclrc
 .PP
 The commands useful within a configuration file are:
 .TP 9
@@ -3360,7 +3360,7 @@ then for each
 .I path
 in it,
 the first of
-.IB path /cdecl
+.IB path /cdecl/cdeclrc
 to exist
 and be readable
 is used as the configuration file
@@ -3371,7 +3371,7 @@ is used as the configuration file
 If set to a path
 of a directory
 and
-.B $XDG_CONFIG_HOME/cdecl
+.B $XDG_CONFIG_HOME/cdecl/cdeclrc
 exists and is readable,
 then that used as the configuration file
 (see
@@ -3381,11 +3381,11 @@ then that used as the configuration file
 .B ~/.cdeclrc
 .PD 0
 .TP
-.B $XDG_CONFIG_HOME/cdecl
+.B $XDG_CONFIG_HOME/cdecl/cdeclrc
 .TP
-.B ~/.config/cdecl
+.B ~/.config/cdecl/cdeclrc
 .TP
-.B /etc/xdg/cdecl
+.B /etc/xdg/cdecl/cdeclrc
 .PD
 The default configuration file
 (see
