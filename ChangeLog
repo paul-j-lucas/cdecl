@@ -1,3 +1,8 @@
+2026-06-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, share/man/man1/cdecl.1, config_file.c: Now more inline with
+     XDG Base Directory Specification.
+
 2026-06-19  Paul J. Lucas <paul@lucasmail.org>
 
    * color.c: Don't need STATIC_CAST or ARRAY_SIZE check.
