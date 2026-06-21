@@ -51,20 +51,20 @@
 
 /// @endcond
 
-// local constants
-
-/// Default number of terminal columns.
-static unsigned const COLUMNS_DEFAULT = 80;
-
-// local variables
-
-/// Columns-getting function.
-static unsigned (*get_columns_fn)( void );
-
 /**
  * @addtogroup terminal-group
  * @{
  */
+
+////////// local constants ////////////////////////////////////////////////////
+
+/// Default number of terminal columns.
+static unsigned const COLUMNS_DEFAULT = 80;
+
+////////// local variables ////////////////////////////////////////////////////
+
+/// Columns-getting function.
+static unsigned (*get_columns_fn)( void );
 
 ////////// local functions ////////////////////////////////////////////////////
 

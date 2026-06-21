@@ -46,6 +46,13 @@
 #include <sysexits.h>
 #include <unistd.h>                     /* for getpid(2) */
 
+/// @endcond
+
+////////// extern constants ///////////////////////////////////////////////////
+
+/// @cond DOXYGEN_IGNORE
+/// Otherwise Doxygen generates two entries.
+
 char const IDENT_CHARS[] =        "ABCDEFGHIJKLMNOPQRSTUVWXYZ_" \
                                   "abcdefghijklmnopqrstuvwxyz" \
                                   "0123456789";

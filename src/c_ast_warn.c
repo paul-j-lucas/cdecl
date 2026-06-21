@@ -49,9 +49,8 @@
 
 /// @endcond
 
-///////////////////////////////////////////////////////////////////////////////
+////////// local functions ////////////////////////////////////////////////////
 
-// local functions
 static void c_ast_warn_name( c_ast_t const* );
 static void c_ast_warn_func_params( c_ast_t const* );
 static void c_ast_warn_func_ret_type( c_ast_t const* );

@@ -59,7 +59,8 @@
 /// @cond DOXYGEN_IGNORE
 /// Otherwise Doxygen generates two entries.
 
-// extern option variables
+////////// extern variables ///////////////////////////////////////////////////
+
 bool                opt_alt_tokens;
 cdecl_debug_t       opt_cdecl_debug;
 color_when_t        opt_color_when = COLOR_NOT_FILE;
@@ -82,13 +83,16 @@ bool                opt_trailing_ret;
 bool                opt_using = true;
 c_ast_kind_t        opt_west_decl_kinds = K_ANY_FUNCTION_RETURN;
 
-// extern constants
+////////// extern constants ///////////////////////////////////////////////////
+
 char const          CDECL_TEST_ALL[]      = "cChm";
 char const          OPT_CDECL_DEBUG_ALL[] = "u";
 char const          OPT_ECSU_ALL[]        = "ecsu";
 char const          OPT_WEST_DECL_ALL[]   = "bflost";
 
 /// @endcond
+
+////////// local variables ////////////////////////////////////////////////////
 
 /**
  * The integer type(s) that `int` shall be printed explicitly for in C/C++

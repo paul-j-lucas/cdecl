@@ -64,7 +64,12 @@
  */
 #define PT(S)                     { (S), __LINE__ }
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct predef_type        predef_type_t;
+typedef struct tdef_rb_visit_data tdef_rb_visit_data_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * Contains a **cdecl** command defining a type and the source line number it's
@@ -75,7 +80,6 @@ struct predef_type {
   char const *str;                      ///< **Cdecl** command defining a type.
   unsigned    line;                     ///< Source line number.
 };
-typedef struct predef_type predef_type_t;
 
 /**
  * Data passed to our red-black tree visitor function.
@@ -84,13 +88,13 @@ struct tdef_rb_visit_data {
   c_typedef_visit_fn_t  visit_fn;       ///< Caller's visitor function.
   void                 *visit_data;     ///< Caller's optional data.
 };
-typedef struct tdef_rb_visit_data tdef_rb_visit_data_t;
 
-// local variables
+////////// local variables ////////////////////////////////////////////////////
+
 static c_lang_id_t  predef_lang_ids;    ///< Languages when predefining types.
 static rb_tree_t    typedef_set;        ///< Global set of `typedef`s.
 
-///////////////////////////////////////////////////////////////////////////////
+////////// local constants ////////////////////////////////////////////////////
 
 /**
  * Predefined types for K&R C.

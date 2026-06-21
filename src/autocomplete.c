@@ -60,7 +60,13 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct ac_keyword ac_keyword_t;
+typedef struct cg_state   cg_state_t;
+typedef struct kg_state   kg_state_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * Either a C/C++ or **cdecl** keyword that is autocompletable.
@@ -72,7 +78,6 @@ struct ac_keyword {
   ac_policy_t         ac_policy;        ///< See \ref cdecl_keyword::ac_policy.
   c_lang_lit_t const *lang_syn;         ///< See \ref cdecl_keyword::lang_syn.
 };
-typedef struct ac_keyword ac_keyword_t;
 
 /**
  * Command generator state.
@@ -82,7 +87,6 @@ struct cg_state {
   bool                    returned_any; ///< Returned at least one match?
   size_t                  text_len;     ///< Length of text read (so far).
 };
-typedef struct cg_state cg_state_t;
 
 /**
  * Keyword generator state.
@@ -96,9 +100,9 @@ struct kg_state {
   char const *const  *specific_ac_keywords; ///< Specific keywords to match?
   size_t              text_len;         ///< Length of text read (so far).
 };
-typedef struct kg_state kg_state_t;
 
-// local functions
+////////// local functions ////////////////////////////////////////////////////
+
 static void               ac_set_keywords_free( void );
 static char*              command_generator( char const*, int );
 static char*              keyword_generator( char const*, int );
@@ -112,7 +116,7 @@ static char const* const* prev_keyword_ac_next( char const*, size_t );
 NODISCARD
 static char const*        str_prev_token( char const*, size_t, size_t* );
 
-// local variables
+////////// local variables ////////////////////////////////////////////////////
 
 /// Autocomplete keywords only for `help` command.
 static char const *const  *ac_help_keywords;

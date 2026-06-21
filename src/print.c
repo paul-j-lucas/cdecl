@@ -65,9 +65,10 @@
 
 /// @endcond
 
+////////// local constants/////////////////////////////////////////////////////
+
 /// @cond DOXYGEN_IGNORE
 
-// local constants
 static char const *const  MORE[]     = { "...", "..." };
 static size_t const       MORE_LEN[] = { 3,     3     };
 
@@ -78,19 +79,21 @@ static size_t const       MORE_LEN[] = { 3,     3     };
  * @{
  */
 
-// local functions
-static void               print_input_line( size_t*, size_t );
-
-NODISCARD
-static size_t             token_len( char const*, size_t, size_t );
+////////// extern variables ///////////////////////////////////////////////////
 
 /// @cond DOXYGEN_IGNORE
 /// Otherwise Doxygen generates two entries.
 
-// extern variables
 print_params_t            print_params;
 
 /// @endcond
+
+////////// local functions ////////////////////////////////////////////////////
+
+static void               print_input_line( size_t*, size_t );
+
+NODISCARD
+static size_t             token_len( char const*, size_t, size_t );
 
 ////////// local functions ////////////////////////////////////////////////////
 

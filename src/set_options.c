@@ -72,7 +72,7 @@
     (ARGS)->opt_value VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__    \
   )
 
-///////////////////////////////////////////////////////////////////////////////
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * Convenience `struct` for passing arguments to a `set_*()` function.
@@ -84,7 +84,8 @@ struct set_option_fn_args {
   c_loc_t const *opt_value_loc;         ///< The location of \a opt_value.
 };
 
-// local functions
+////////// local functions ////////////////////////////////////////////////////
+
 NODISCARD
 static bool         is_no_option( char const* ),
                     set_alt_tokens( set_option_fn_args_t const* ),
@@ -113,16 +114,13 @@ static bool         is_no_option( char const* ),
 
 static void         set_lang_impl( c_lang_id_t );
 
-NODISCARD
-static char const*  slist_set_option_gets( void const** );
+////////// local constants ////////////////////////////////////////////////////
 
 /**
  * The column at which to print `(Not supported ...)` when an option is not
  * supported in the current language.
  */
 static unsigned const OPTION_NOT_SUPPORTED_COLUMN = 30u;
-
-///////////////////////////////////////////////////////////////////////////////
 
 /**
  * **Cdecl** `set` options.
@@ -274,6 +272,11 @@ static set_option_t const SET_OPTIONS[] = {
     &set_west_decl
   },
 };
+
+////////// local functions ////////////////////////////////////////////////////
+
+NODISCARD
+static char const*  slist_set_option_gets( void const** );
 
 ////////// local functions ////////////////////////////////////////////////////
 

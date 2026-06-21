@@ -88,7 +88,7 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// enums //////////////////////////////////////////////////////////////
 
 /**
  * JSON object state.
@@ -98,18 +98,25 @@ enum json_state {
   JSON_COMMA     = 1 << 0,              ///< Previous "print a comma?" state.
   JSON_OBJ_BEGUN = 1 << 1               ///< Has a JSON object already begun?
 };
+
+////////// typedefs ///////////////////////////////////////////////////////////
+
 typedef enum json_state json_state_t;
 
-// local functions
+////////// local functions ////////////////////////////////////////////////////
+
 static void c_ast_dump_impl( c_ast_t const*, dump_state_t* );
 static void c_ast_list_dump_impl( c_ast_list_t const*, dump_state_t const* );
 static void c_func_ast_param_ret_dump( c_ast_t const*, dump_state_t* );
 static void c_loc_dump( c_loc_t const*, FILE* );
+
 NODISCARD
 static char const* c_tpid_name( c_tpid_t );
+
 NODISCARD
 static json_state_t json_object_begin( json_state_t, char const*,
                                        dump_state_t* );
+
 static void json_object_end( json_state_t, dump_state_t* );
 static void p_param_list_dump_impl( p_param_list_t const*, dump_state_t* );
 static void p_token_list_dump_impl( p_token_list_t const*, dump_state_t* );

@@ -61,7 +61,11 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct gib_state gib_state_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * State maintained by c_ast_gibberish() (because there'd be too many function
@@ -75,9 +79,9 @@ struct gib_state {
   bool          printed_space;          ///< Printed a space yet?
   bool          printed_typedef;        ///< Printed `typedef`?
 };
-typedef struct gib_state gib_state_t;
 
-// local functions
+////////// local functions ////////////////////////////////////////////////////
+
 static void c_ast_list_gibberish( c_ast_list_t const*, gib_state_t const* );
 static void c_ast_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_postfix_gibberish( c_ast_t const*, gib_state_t* );

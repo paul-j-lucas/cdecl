@@ -59,6 +59,12 @@
  * @{
  */
 
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct dym_rb_visit_data dym_rb_visit_data_t;
+
+////////// structs ////////////////////////////////////////////////////////////
+
 /**
  * Used by visitor functions to pass and return data.
  */
@@ -68,7 +74,8 @@ struct dym_rb_visit_data {
 
   size_t            count;              ///< The count.
 };
-typedef struct dym_rb_visit_data dym_rb_visit_data_t;
+
+////////// local constants ////////////////////////////////////////////////////
 
 /**
  * The edit distance must be less than or equal to this percent of a target
@@ -77,7 +84,8 @@ typedef struct dym_rb_visit_data dym_rb_visit_data_t;
  */
 static double const SIMILAR_ENOUGH_PERCENT = .37;
 
-// local functions
+////////// local functions ////////////////////////////////////////////////////
+
 PJL_DISCARD
 static size_t prep_c_keywords( did_you_mean_t**, c_tpid_t ),
               prep_cdecl_keywords( did_you_mean_t** ),

@@ -116,7 +116,11 @@
     c_kind_name( (AST)->kind ), c_tid_error( (TID) )  \
   )
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct c_ast_check_state c_ast_check_state_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * State maintained by c_ast_check_visitor().
@@ -145,9 +149,8 @@ struct c_ast_check_state {
    */
   c_ast_t const  *tdef_ast;
 };
-typedef struct c_ast_check_state c_ast_check_state_t;
 
-// local constants
+////////// local constants ////////////////////////////////////////////////////
 
 /// Convenience return value for \ref c_ast_visit_fn_t functions.
 static bool const VISITOR_ERROR_FOUND     = true;
@@ -155,7 +158,8 @@ static bool const VISITOR_ERROR_FOUND     = true;
 /// Convenience return value for \ref c_ast_visit_fn_t functions.
 static bool const VISITOR_ERROR_NOT_FOUND = false;
 
-// local functions
+////////// local functions ////////////////////////////////////////////////////
+
 NODISCARD
 static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_func_default_delete( c_ast_t const* ),

@@ -56,6 +56,8 @@
  */
 #define RB_PARENT_PTR_TO(NODE)    ((NODE)->parent->child[ child_dir( (NODE) ) ])
 
+////////// enums //////////////////////////////////////////////////////////////
+
 /**
  * Red-black tree child direction.
  */
@@ -63,7 +65,12 @@ enum rb_dir {
   RB_L,                                 ///< Left child direction.
   RB_R                                  ///< Right child direction.
 };
+
+////////// typedefs ///////////////////////////////////////////////////////////
+
 typedef enum rb_dir rb_dir_t;
+
+////////// local functions ////////////////////////////////////////////////////
 
 static void rb_node_rotate( rb_tree_t*, rb_node_t*, rb_dir_t );
 

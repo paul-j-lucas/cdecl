@@ -60,7 +60,8 @@
 
 #define TRI_BS  "?\?/"                  /**< Trigraph <code>"\\"</code>. */
 
-// local functions
+////////// local functions ////////////////////////////////////////////////////
+
 NODISCARD
 static int cdecl_parse_stdin( void );
 

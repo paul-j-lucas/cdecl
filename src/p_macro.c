@@ -143,7 +143,7 @@
     (PARENT_MEX)->fout                                  \
   )
 
-////////// enumerations ///////////////////////////////////////////////////////
+////////// enums //////////////////////////////////////////////////////////////
 
 /**
  * Macro EXpansion function Return Value.
@@ -404,10 +404,12 @@ static p_token_node_t*  push_back_dup_tokens( p_token_list_t*,
 static void             set_substituted( p_token_node_t* );
 static void             va_args_mex_print_macro( mex_state_t* );
 
-// local constants
+////////// local constants ////////////////////////////////////////////////////
+
 static char const ARROW[] = "=>";       ///< Separates macro name from tokens.
 
-// local variables
+////////// local variables ////////////////////////////////////////////////////
+
 static rb_tree_t  macro_set;            ///< Global set of macros.
 
 ////////// inline functions ///////////////////////////////////////////////////

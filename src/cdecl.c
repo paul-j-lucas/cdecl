@@ -54,10 +54,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+////////// extern variables ///////////////////////////////////////////////////
+
 /// @cond DOXYGEN_IGNORE
 /// Otherwise Doxygen generates two entries.
 
-// extern variable definitions
 bool          cdecl_is_initialized;
 char const   *cdecl_input_path;
 bool          cdecl_is_interactive;

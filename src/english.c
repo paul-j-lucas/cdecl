@@ -60,7 +60,11 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct eng_state eng_state_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * State maintained by c_ast_visit_english().
@@ -69,9 +73,9 @@ struct eng_state {
   FILE           *fout;                 ///< Where to print the English.
   c_ast_t const  *func_ast;             ///< The current function AST, if any.
 };
-typedef struct eng_state eng_state_t;
 
-// local functions
+////////// local functions ////////////////////////////////////////////////////
+
 NODISCARD
 static bool c_ast_is_likely_vla( c_ast_t const*, eng_state_t const* ),
             c_ast_visitor_english( c_ast_t const*, user_data_t );

@@ -47,14 +47,15 @@
 
 /// @endcond
 
-// local functions
-NODISCARD
-static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t*, c_ast_t* );
-
 /**
  * @addtogroup ast-functions-group
  * @{
  */
+
+////////// local functions ////////////////////////////////////////////////////
+
+NODISCARD
+static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t*, c_ast_t* );
 
 ////////// local functions ////////////////////////////////////////////////////
 

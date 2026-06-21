@@ -56,7 +56,11 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct show_types_info show_types_info_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * Information for show_type_visitor().
@@ -68,7 +72,6 @@ struct show_types_info {
   FILE         *fout;                   ///< Where to print the types.
   bool          showed_any;             ///< Did we actually show any?
 };
-typedef struct show_types_info show_types_info_t;
 
 ////////// local functions ////////////////////////////////////////////////////
 

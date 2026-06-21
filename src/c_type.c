@@ -68,10 +68,11 @@
  * @{
  */
 
+////////// extern constants ///////////////////////////////////////////////////
+
 /// @cond DOXYGEN_IGNORE
 /// Otherwise Doxygen generates two entries.
 
-// extern constants
 c_type_t const T_NONE             = { TB_NONE,      TS_NONE,    TA_NONE };
 c_type_t const T_ANY              = { TB_ANY,       TS_ANY,     TA_ANY  };
 c_type_t const T_ANY_const_CLASS  = { TB_ANY_CLASS, TS_const,   TA_NONE };
@@ -80,7 +81,11 @@ c_type_t const T_TS_typedef       = { TB_NONE,      TS_typedef, TA_NONE };
 
 /// @endcond
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct c_type_info c_type_info_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * Mapping between C type bits, valid language(s), and literals.
@@ -100,13 +105,13 @@ struct c_type_info {
    */
   c_lang_lit_t const *lang_lit;
 };
-typedef struct c_type_info c_type_info_t;
 
-// local functions
+////////// local functions ////////////////////////////////////////////////////
+
 NODISCARD
 static char const*  c_type_literal( c_type_info_t const*, bool, bool );
 
-///////////////////////////////////////////////////////////////////////////////
+////////// local constants ////////////////////////////////////////////////////
 
 /**
  * Literal for `long long`.

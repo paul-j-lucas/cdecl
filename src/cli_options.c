@@ -118,7 +118,7 @@
     VA_OPT( (,), __VA_ARGS__ ) __VA_ARGS__                \
   )
 
-///////////////////////////////////////////////////////////////////////////////
+////////// local constants ////////////////////////////////////////////////////
 
 /**
  * Long command-line options.
@@ -217,10 +217,12 @@ static char const *const CLI_OPTIONS_HELP[] = {
   [ COPT(WEST_DECL) ] = "Print *, &, and && next to type",
 };
 
-// local variables
-static bool         is_opt_given[128];  ///< Table of options that were given.
+////////// local variables ////////////////////////////////////////////////////
 
-// local functions
+static bool is_opt_given[128];          ///< Table of options that were given.
+
+////////// local functions ////////////////////////////////////////////////////
+
 NODISCARD
 static char const*          get_opt_format( char );
 
