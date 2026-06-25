@@ -882,8 +882,8 @@ locale_charset (void)
      'setlocale' call specified.  So we use it as a last resort, in
      case the string returned by 'setlocale' doesn't specify the
      codepage.  */
-  char *current_locale = setlocale (LC_CTYPE, NULL);
-  char *pdot = strrchr (current_locale, '.');
+  const char *current_locale = setlocale (LC_CTYPE, NULL);
+  const char *pdot = strrchr (current_locale, '.');
 
   if (pdot && 2 + strlen (pdot + 1) + 1 <= sizeof (buf))
     sprintf (buf, "CP%s", pdot + 1);

@@ -72,6 +72,9 @@
         defined __cplusplus ? @CXX_HAVE_UCHAR_H@ : @HAVE_UCHAR_H@) \
      || (/* These need wint_t and maybe WEOF and a <wchar.h> function.  */ \
          @GNULIB_BTOC32@ || @GNULIB_C32TOB@) \
+     || (/* These need a <wchar.h> function.  */ \
+         @GNULIB_C32WIDTH@ || @GNULIB_C32SNRTOMBS@ || @GNULIB_C32SRTOMBS@ \
+         || @GNULIB_C32SWIDTH@ || @GNULIB_MBSNRTOC32S@ || @GNULIB_MBSRTOC32S@) \
      || (/* These need mbszero.  */ \
          (@GNULIB_C32STOMBS@ || @GNULIB_MBSTOC32S@)))
 # include <wchar.h>
@@ -91,8 +94,8 @@
      || @GNULIB_C32ISLOWER@ || @GNULIB_C32ISPRINT@ || @GNULIB_C32ISPUNCT@ \
      || @GNULIB_C32ISSPACE@ || @GNULIB_C32ISUPPER@ || @GNULIB_C32ISXDIGIT@ \
      || @GNULIB_C32TOLOWER@ || @GNULIB_C32TOUPPER@ \
-     || @GNULIB_C32_APPLY_MAPPING@ || @GNULIB_C32_APPLY_TYPE_TEST@ \
-     || @GNULIB_C32_GET_MAPPING@ || @GNULIB_C32_GET_TYPE_TEST@)
+     || @GNULIB_C32_GET_TYPE_TEST@ || @GNULIB_C32_APPLY_TYPE_TEST@ \
+     || @GNULIB_C32_GET_MAPPING@ || @GNULIB_C32_APPLY_MAPPING@)
 # include <wctype.h>
 #endif
 

@@ -83,7 +83,7 @@ mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
 #  include <locale.h>
 # endif
 
-# if (GNULIB_WCHAR_SINGLE_LOCALE && __GLIBC__ >= 2 && !__UCLIBC__)
+# if MBRTOWC_INVALID_UTF8_BUG || (GNULIB_WCHAR_SINGLE_LOCALE && __GLIBC__ >= 2 && !__UCLIBC__)
 
 /* Returns 1 if the current locale is an UTF-8 locale, 0 otherwise.  */
 static inline int
@@ -110,33 +110,35 @@ is_locale_utf8_cached (void)
 size_t
 rpl_mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
 {
-# if MBRTOWC_RETVAL_BUG || MBRTOWC_EMPTY_INPUT_BUG || (GNULIB_WCHAR_SINGLE_LOCALE && __GLIBC__ >= 2)
+  /* It's simpler to handle the case s == NULL upfront, than to worry about
+     this case later, before every test of pwc and n.  */
   if (s == NULL)
     {
       pwc = NULL;
       s = "";
       n = 1;
     }
-# endif
 
-# if (MBRTOC32_EMPTY_INPUT_BUG || _GL_SMALL_WCHAR_T \
+# if (MBRTOWC_EMPTY_INPUT_BUG || MBRTOWC_INVALID_UTF8_BUG \
       || (GNULIB_WCHAR_SINGLE_LOCALE && __GLIBC__ >= 2 && !__UCLIBC__))
   if (n == 0)
     return (size_t) -2;
 # endif
 
-# if (GNULIB_WCHAR_SINGLE_LOCALE && __GLIBC__ >= 2 && !__UCLIBC__)
+# if MBRTOWC_INVALID_UTF8_BUG || (GNULIB_WCHAR_SINGLE_LOCALE && __GLIBC__ >= 2 && !__UCLIBC__)
   /* Optimize the frequent case of an UTF-8 locale.
      Since here we are in the !GNULIB_defined_mbstate_t case, i.e. we use
      the system's mbstate_t type and have to provide interoperability with
      the system's mbsinit() function, this requires knowledge about how the
      system's UTF-8 mbrtowc() function stores the state.  This knowledge is
-     platform-specific.  For simplicity, we handle only glibc systems.  */
+     platform-specific.  For simplicity, we handle only glibc and NetBSD
+     systems.  */
   if (is_locale_utf8_cached ())
     {
       static mbstate_t internal_state;
       if (ps == NULL)
         ps = &internal_state;
+      #if __GLIBC__ >= 2
       /* Structure of mbstate_t =
          { int __count; union { wint_t __wch; char __wchb[4]; } __value; }
          (see glibc/iconv/gconv_simple.c function utf8_internal_loop):
@@ -145,10 +147,25 @@ rpl_mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
          entire byte sequence.
          __value.__wch is the already inferrable bits of the character, of
          the form (x << (r*6)) when r bytes are still expected.  */
+      #endif
+      #ifdef __NetBSD__
+      /* Structure of mbstate_t =
+         union { int64_t __mbstateL; char __mbstate8[128]; }
+         (see src/lib/libc/citrus/modules/citrus_utf8.c):
+         { void *header; char ch[6]; int chlen; },
+         i.e. ch[0..5] is __mbstate8[sizeof(void*)+0..sizeof(void*)+5],
+              chlen is __mbstate8[sizeof(void*)+8..sizeof(void*)+11].  */
+      #endif
 
       /* Here n > 0.  */
 
-      size_t nstate = ps->__count & 7;
+      size_t nstate;
+      #if __GLIBC__ >= 2
+      nstate = ps->__count & 7;
+      #endif
+      #ifdef __NetBSD__
+      nstate = *(int *) &ps->__mbstate8[sizeof (void *) + 8];
+      #endif
       char buf[4];
       const char *p;
       size_t m;
@@ -160,6 +177,7 @@ rpl_mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
         }
       else
         {
+          #if __GLIBC__ >= 2
           size_t t = ps->__count >> 8; /* total expected number of bytes */
           if (t > nstate && t <= 4)
             {
@@ -181,6 +199,18 @@ rpl_mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
               errno = EINVAL;
               return (size_t)(-1);
             }
+          #endif
+          #ifdef __NetBSD__
+          buf[0] = ps->__mbstate8[sizeof (void *) + 0];
+          if (nstate >= 2)
+            {
+              buf[1] = ps->__mbstate8[sizeof (void *) + 1];
+              if (nstate >= 3)
+                {
+                  buf[2] = ps->__mbstate8[sizeof (void *) + 2];
+                }
+            }
+          #endif
           p = buf;
           m = nstate;
           buf[m++] = s[0];
@@ -206,12 +236,18 @@ rpl_mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
       if (nstate >= (res > 0 ? res : 1))
         abort ();
       res -= nstate;
+      #if __GLIBC__ >= 2
       ps->__count = 0;
+      #endif
+      #ifdef __NetBSD__
+      *(int *) &ps->__mbstate8[sizeof (void *) + 8] = 0;
+      #endif
       return res;
 
      incomplete:
       /* Here 0 < m < 4.  */
       {
+        #if __GLIBC__ >= 2
         unsigned char c = (unsigned char) p[0];
         if (c < 0xE0)
           {
@@ -233,6 +269,19 @@ rpl_mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
               | (m > 1 ? ((unsigned char) p[1] & 0x3F) << 12 : 0)
               | (m > 2 ? ((unsigned char) p[2] & 0x3F) << 6 : 0);
           }
+        #endif
+        #ifdef __NetBSD__
+        *(int *) &ps->__mbstate8[sizeof (void *) + 8] = m;
+        ps->__mbstate8[sizeof (void *) + 0] = p[0];
+        if (m > 1)
+          {
+            ps->__mbstate8[sizeof (void *) + 1] = p[1];
+            if (m > 2)
+              {
+                ps->__mbstate8[sizeof (void *) + 2] = p[2];
+              }
+          }
+        #endif
       }
       return (size_t)(-2);
 

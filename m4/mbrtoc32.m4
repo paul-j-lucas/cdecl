@@ -1,5 +1,5 @@
 # mbrtoc32.m4
-# serial 24
+# serial 25
 dnl Copyright (C) 2014-2026 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -179,7 +179,7 @@ AC_DEFUN([gl_MBRTOC32_C_LOCALE],
             #include <uchar.h>
           ]], [[
             int i;
-            char *locale = setlocale (LC_ALL, "C");
+            const char *locale = setlocale (LC_ALL, "C");
             if (! locale)
               return 2;
             for (i = CHAR_MIN; i <= CHAR_MAX; i++)
@@ -220,7 +220,7 @@ AC_DEFUN([gl_MBRTOC32_UTF8_LOCALE],
             #endif
             #include <uchar.h>
           ]], [[
-            char *locale = setlocale (LC_ALL, "en_US.UTF-8");
+            const char *locale = setlocale (LC_ALL, "en_US.UTF-8");
             if (locale)
               {
                 /* This test fails on Cygwin 3.5.3.  */

@@ -245,15 +245,21 @@ struct lconv
 #endif
 
 #if @GNULIB_LOCALECONV@
+/* The return type 'const struct lconv *' serves the purpose of producing
+   warnings for invalid uses of the value returned from this function.  */
 # if @REPLACE_LOCALECONV@
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   undef localeconv
 #   define localeconv rpl_localeconv
+#   define GNULIB_defined_localeconv 1
 #  endif
-_GL_FUNCDECL_RPL (localeconv, struct lconv *, (void), );
-_GL_CXXALIAS_RPL (localeconv, struct lconv *, (void));
+_GL_FUNCDECL_RPL (localeconv, const struct lconv *, (void), );
+_GL_CXXALIAS_RPL (localeconv, const struct lconv *, (void));
 # else
-_GL_CXXALIAS_SYS (localeconv, struct lconv *, (void));
+_GL_CXXALIAS_SYS_CAST (localeconv, const struct lconv *, (void));
+#  if !defined localeconv && !defined __cplusplus
+#   define localeconv() ((const struct lconv *) localeconv ())
+#  endif
 # endif
 # if __GLIBC__ >= 2
 _GL_CXXALIASWARN (localeconv);
@@ -272,16 +278,24 @@ _GL_WARN_ON_USE (localeconv,
 #endif
 
 #if @GNULIB_SETLOCALE@
+/* The return type 'const char *' serves the purpose of producing warnings
+   for invalid uses of the value returned from this function.  */
 # if @REPLACE_SETLOCALE@
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   undef setlocale
 #   define setlocale rpl_setlocale
 #   define GNULIB_defined_setlocale 1
 #  endif
-_GL_FUNCDECL_RPL (setlocale, char *, (int category, const char *locale), );
-_GL_CXXALIAS_RPL (setlocale, char *, (int category, const char *locale));
+_GL_FUNCDECL_RPL (setlocale, const char *,
+                  (int category, const char *locale), );
+_GL_CXXALIAS_RPL (setlocale, const char *,
+                  (int category, const char *locale));
 # else
-_GL_CXXALIAS_SYS (setlocale, char *, (int category, const char *locale));
+_GL_CXXALIAS_SYS_CAST (setlocale, const char *,
+                       (int category, const char *locale));
+#  if !defined setlocale && !defined __cplusplus
+#   define setlocale(...) ((const char *) setlocale (__VA_ARGS__))
+#  endif
 # endif
 # if __GLIBC__ >= 2
 _GL_CXXALIASWARN (setlocale);

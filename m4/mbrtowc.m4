@@ -1,5 +1,5 @@
 # mbrtowc.m4
-# serial 49
+# serial 51
 dnl Copyright (C) 2001-2002, 2004-2005, 2008-2026 Free Software Foundation,
 dnl Inc.
 dnl This file is free software; the Free Software Foundation
@@ -38,6 +38,7 @@ AC_DEFUN([gl_FUNC_MBRTOWC],
       gl_MBRTOWC_STORES_INCOMPLETE
       gl_MBRTOWC_EMPTY_INPUT
       gl_MBRTOWC_C_LOCALE
+      gl_MBRTOWC_INVALID_UTF8
       case "$gl_cv_func_mbrtowc_null_arg1" in
         *yes) ;;
         *) AC_DEFINE([MBRTOWC_NULL_ARG1_BUG], [1],
@@ -78,6 +79,13 @@ AC_DEFUN([gl_FUNC_MBRTOWC],
         *yes) ;;
         *) AC_DEFINE([MBRTOWC_IN_C_LOCALE_MAYBE_EILSEQ], [1],
              [Define if the mbrtowc function may signal encoding errors in the C locale.])
+           REPLACE_MBRTOWC=1
+           ;;
+      esac
+      case "$gl_cv_func_mbrtowc_invalid_UTF8" in
+        *yes) ;;
+        *) AC_DEFINE([MBRTOWC_INVALID_UTF8_BUG], [1],
+             [Define if the mbrtowc function does not recognize some invalid UTF-8 byte sequences.])
            REPLACE_MBRTOWC=1
            ;;
       esac
@@ -675,7 +683,7 @@ AC_DEFUN([gl_MBRTOWC_C_LOCALE],
             #include <wchar.h>
           ]], [[
             int i;
-            char *locale = setlocale (LC_ALL, "C");
+            const char *locale = setlocale (LC_ALL, "C");
             if (! locale)
               return 2;
             for (i = CHAR_MIN; i <= CHAR_MAX; i++)
@@ -697,6 +705,65 @@ AC_DEFUN([gl_MBRTOWC_C_LOCALE],
           *)                 gl_cv_func_mbrtowc_C_locale_sans_EILSEQ="$gl_cross_guess_normal" ;;
         esac
        ])
+    ])
+])
+
+dnl Test whether mbrtowc recognizes invalid UTF-8 byte sequences.
+
+AC_DEFUN([gl_MBRTOWC_INVALID_UTF8],
+[
+  AC_REQUIRE([gt_LOCALE_EN_UTF8])
+  AC_REQUIRE([AC_CANONICAL_HOST]) dnl for cross-compiles
+  AC_CACHE_CHECK([whether mbrtowc recognizes invalid UTF-8],
+    [gl_cv_func_mbrtowc_invalid_UTF8],
+    [
+      dnl Initial guess, used when cross-compiling or when no suitable locale
+      dnl is present.
+changequote(,)dnl
+      case "$host_os" in
+                 # Guess no on NetBSD.
+        netbsd*) gl_cv_func_mbrtowc_invalid_UTF8="guessing no" ;;
+                 # Guess yes otherwise.
+        *)       gl_cv_func_mbrtowc_invalid_UTF8="guessing yes" ;;
+      esac
+changequote([,])dnl
+      if test "$LOCALE_EN_UTF8" != none; then
+        AC_RUN_IFELSE(
+          [AC_LANG_SOURCE([[
+#include <locale.h>
+#include <string.h>
+#include <wchar.h>
+int main ()
+{
+  if (setlocale (LC_ALL, "$LOCALE_EN_UTF8") != NULL)
+    {
+      int result = 0;
+      /* This test fails on NetBSD 10.  */
+      {
+        mbstate_t state;
+        wchar_t wc;
+
+        memset (&state, '\0', sizeof (mbstate_t));
+        if (mbrtowc (&wc, "\340x", 2, &state) != (size_t)(-1))
+          result |= 1;
+      }
+      /* This test fails on NetBSD 10.  */
+      {
+        mbstate_t state;
+        wchar_t wc;
+
+        memset (&state, '\0', sizeof (mbstate_t));
+        if (mbrtowc (&wc, "\360x\360", 3, &state) != (size_t)(-1))
+          result |= 2;
+      }
+      return result;
+    }
+  return 0;
+}]])],
+          [gl_cv_func_mbrtowc_invalid_UTF8=yes],
+          [gl_cv_func_mbrtowc_invalid_UTF8=no],
+          [:])
+      fi
     ])
 ])
 
