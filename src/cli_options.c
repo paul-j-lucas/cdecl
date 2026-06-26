@@ -123,9 +123,9 @@
 /**
  * Long command-line options.
  *
- * @sa CLI_OPTIONS_HELP
+ * @sa OPTIONS_HELP
  */
-static struct option const CLI_OPTIONS[] = {
+static struct option const OPTIONS[] = {
   //
   // If this is updated, ensure the following are updated to match:
   //
@@ -176,10 +176,10 @@ static struct option const CLI_OPTIONS[] = {
  *
  * @note It is indexed by short option characters.
  *
- * @sa CLI_OPTIONS
+ * @sa OPTIONS
  * @sa get_opt_help()
  */
-static char const *const CLI_OPTIONS_HELP[] = {
+static char const *const OPTIONS_HELP[] = {
   [ COPT(ALT_TOKENS) ] = "Print alternative tokens",
 #ifdef ENABLE_BISON_DEBUG
   [ COPT(BISON_DEBUG) ] = "Print Bison debug output",
@@ -219,12 +219,12 @@ static char const *const CLI_OPTIONS_HELP[] = {
 
 ////////// local variables ////////////////////////////////////////////////////
 
-static bool is_opt_given[128];          ///< Table of options that were given.
+static bool opt_is_set_impl[ 128 ];     ///< Table of options that were given.
 
 ////////// local functions ////////////////////////////////////////////////////
 
 NODISCARD
-static char const*          get_opt_format( char );
+static char const*          get_opt_format( int );
 
 NODISCARD
 static struct option const* get_option( int );
@@ -240,48 +240,48 @@ static void                 print_version( bool );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * If \a opt was given, checks that _only_ it was given and, if not, prints an
- * error message and exits; if \a opt was not given, does nothing.
+ * If \a short_opt was given, checks that _only_ it was given and, if not,
+ * prints an error message and exits; if \a short_opt was not given, does
+ * nothing.
  *
- * @param opt The option to check for.
+ * @param short_opt The option to check for.
  *
  * @sa check_opt_mutually_exclusive()
  */
-static void check_opt_exclusive( char opt ) {
-  if ( !is_opt_given[ STATIC_CAST( unsigned, opt ) ] )
+static void check_opt_exclusive( int short_opt ) {
+  if ( !opt_is_set_impl[ STATIC_CAST( unsigned, short_opt ) ] )
     return;
-  for ( unsigned i = '0'; i < ARRAY_SIZE( is_opt_given ); ++i ) {
-    char const curr_opt = STATIC_CAST( char, i );
-    if ( curr_opt == opt )
+  for ( int curr_opt = '0'; curr_opt < 128; ++curr_opt ) {
+    if ( curr_opt == short_opt )
       continue;
-    if ( is_opt_given[ STATIC_CAST( unsigned, curr_opt ) ] ) {
+    if ( opt_is_set_impl[ STATIC_CAST( unsigned, curr_opt ) ] ) {
       fatal_error( EX_USAGE,
         "%s can be given only by itself\n",
-        get_opt_format( opt )
+        get_opt_format( short_opt )
       );
     }
   } // for
 }
 
 /**
- * If \a opt was given, checks that no option in \a opts was also given.  If it
- * was, prints an error message and exits; if it wasn't, does nothing.
+ * If \a short_opt was given, checks that no option in \a opts was also given.
+ * If it was, prints an error message and exits; if it wasn't, does nothing.
  *
- * @param opt The option.
+ * @param short_opt The option.
  * @param opts The set of options.
  *
  * @sa check_opt_exclusive()
  */
-static void check_opt_mutually_exclusive( char opt, char const *opts ) {
+static void check_opt_mutually_exclusive( int short_opt, char const *opts ) {
   assert( opts != NULL );
-  if ( !is_opt_given[ STATIC_CAST( unsigned, opt ) ] )
+  if ( !opt_is_set_impl[ STATIC_CAST( unsigned, short_opt ) ] )
     return;
   for ( ; *opts != '\0'; ++opts ) {
-    assert( *opts != opt );
-    if ( is_opt_given[ STATIC_CAST( unsigned, *opts ) ] ) {
+    assert( *opts != short_opt );
+    if ( opt_is_set_impl[ STATIC_CAST( unsigned, *opts ) ] ) {
       fatal_error( EX_USAGE,
         "%s and %s are mutually exclusive\n",
-        get_opt_format( opt ),
+        get_opt_format( short_opt ),
         get_opt_format( *opts )
       );
     }
@@ -352,7 +352,7 @@ static void check_options( void ) {
  * `printf()` statement.
  */
 NODISCARD
-static char const* get_opt_format( char short_opt ) {
+static char const* get_opt_format( int short_opt ) {
   static strbuf_t sbufs[2];
   static unsigned buf_index;
 
@@ -371,16 +371,16 @@ static char const* get_opt_format( char short_opt ) {
 }
 
 /**
- * Gets the help message for \a opt.
+ * Gets the help message for \a short_opt.
  *
- * @param opt The option to get the help for.
+ * @param short_opt The option to get the help for.
  * @return Returns said help message.
  */
 NODISCARD
-static char const* get_opt_help( int opt ) {
-  assert( opt > 0 );
-  assert( (unsigned)opt < ARRAY_SIZE( CLI_OPTIONS_HELP ) );
-  char const *const help = CLI_OPTIONS_HELP[ opt ];
+static char const* get_opt_help( int short_opt ) {
+  assert( short_opt > 0 );
+  assert( STATIC_CAST( unsigned, short_opt ) < ARRAY_SIZE( OPTIONS_HELP ) );
+  char const *const help = OPTIONS_HELP[ short_opt ];
   assert( help != NULL );
   return help;
 }
@@ -393,9 +393,9 @@ static char const* get_opt_help( int opt ) {
  */
 NODISCARD
 static struct option const* get_option( int short_opt ) {
-  FOREACH_CLI_OPTION( opt ) {
-    if ( opt->val == short_opt )
-      return opt;
+  FOREACH_CLI_OPTION( option ) {
+    if ( option->val == short_opt )
+      return option;
   } // for
   return NULL;                          // LCOV_EXCL_LINE
 }
@@ -413,19 +413,19 @@ NODISCARD
 static char const* make_short_opts( struct option const opts[static const 2] ) {
   // pre-flight to calculate string length
   unsigned len = 1;                     // for leading ':'
-  for ( struct option const *opt = opts; opt->name != NULL; ++opt ) {
-    assert( opt->has_arg >= 0 && opt->has_arg <= 2 );
-    len += 1 + STATIC_CAST( unsigned, opt->has_arg );
+  for ( struct option const *option = opts; option->name != NULL; ++option ) {
+    assert( option->has_arg >= 0 && option->has_arg <= 2 );
+    len += 1 + STATIC_CAST( unsigned, option->has_arg );
   } // for
 
   char *const short_opts = MALLOC( char, len + 1/*\0*/ );
   char *s = short_opts;
 
   *s++ = ':';                           // return missing argument as ':'
-  for ( struct option const *opt = opts; opt->name != NULL; ++opt ) {
-    assert( opt->val > 0 && opt->val < 128 );
-    *s++ = STATIC_CAST( char, opt->val );
-    switch ( opt->has_arg ) {
+  for ( struct option const *option = opts; option->name != NULL; ++option ) {
+    assert( option->val > 0 && option->val < 128 );
+    *s++ = STATIC_CAST( char, option->val );
+    switch ( option->has_arg ) {
       case optional_argument:
         *s++ = ':';
         FALLTHROUGH;
@@ -513,23 +513,23 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
   opterr = 0;                           // suppress default error message
 
   char const *      fout_path = "-";
-  int               opt;
   bool              opt_buffer_stdout = true;
   bool              opt_commands = false;
   bool              opt_help = false;
   bool              opt_no_config = false;
   bool              opt_options = false;
   unsigned          opt_version = 0;
-  char const *const short_opts = make_short_opts( CLI_OPTIONS );
+  int               short_opt;
+  char const *const short_opts = make_short_opts( OPTIONS );
 
   for (;;) {
-    opt = getopt_long(
-      *pargc, CONST_CAST( char**, *pargv ), short_opts, CLI_OPTIONS,
+    short_opt = getopt_long(
+      *pargc, CONST_CAST( char**, *pargv ), short_opts, OPTIONS,
       /*longindex=*/NULL
     );
-    if ( opt == -1 )
+    if ( short_opt == -1 )
       break;
-    struct option const *const option = get_option( opt );
+    struct option const *const option = get_option( short_opt );
     if ( option != NULL && option->has_arg == required_argument ) {
       if ( optarg == NULL )
         goto missing_arg;
@@ -537,7 +537,7 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
       if ( optarg[0] == '\0' )
         goto missing_arg;
     }
-    switch ( opt ) {
+    switch ( short_opt ) {
       case COPT(ALT_TOKENS):
         opt_alt_tokens = true;
         break;
@@ -665,16 +665,16 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
 
       default:
         // LCOV_EXCL_START
-        if ( isprint( opt ) )
+        if ( isprint( short_opt ) )
           INTERNAL_ERROR(
-            "'%c': unaccounted-for getopt_long() return value\n", opt
+            "'%c': unaccounted-for getopt_long() return value\n", short_opt
           );
         INTERNAL_ERROR(
-          "%d: unaccounted-for getopt_long() return value\n", opt
+          "%d: unaccounted-for getopt_long() return value\n", short_opt
         );
         // LCOV_EXCL_STOP
     } // switch
-    is_opt_given[ opt ] = true;
+    opt_is_set_impl[ short_opt ] = true;
   } // for
 
   FREE( short_opts );
@@ -737,7 +737,7 @@ invalid_opt:;
     EPUTC( '\n' );
     exit( EX_USAGE );
   }
-  EPRINTF( "%s: '%c': invalid option", prog_name, STATIC_CAST( char, optopt ) );
+  EPRINTF( "%s: '%c': invalid option", prog_name, optopt );
 
 use_help:
   print_use_help();
@@ -746,7 +746,7 @@ use_help:
 missing_arg:
   fatal_error( EX_USAGE,
     "\"%s\" requires an argument\n",
-    get_opt_format( STATIC_CAST( char, opt == ':' ? optopt : opt ) )
+    get_opt_format( STATIC_CAST( char, short_opt == ':' ? optopt : short_opt ) )
   );
 }
 
@@ -778,8 +778,12 @@ static void print_commands( void ) {
  * @sa print_commands()
  */
 static void print_options( void ) {
-  FOREACH_CLI_OPTION( opt )
-    PRINTF( "--%s -%c %s\n", opt->name, opt->val, get_opt_help( opt->val ) );
+  FOREACH_CLI_OPTION( option ) {
+    PRINTF(
+      "--%s -%c %s\n",
+      option->name, option->val, get_opt_help( option->val )
+    );
+  }
 }
 
 /**
@@ -792,41 +796,41 @@ _Noreturn
 static void print_usage( int status ) {
   // pre-flight to calculate longest long option length
   size_t longest_opt_len = 0;
-  FOREACH_CLI_OPTION( opt ) {
-    size_t opt_len = strlen( opt->name );
-    switch ( opt->has_arg ) {
+  FOREACH_CLI_OPTION( option ) {
+    size_t long_opt_len = strlen( option->name );
+    switch ( option->has_arg ) {
       case no_argument:
         break;
       case optional_argument:
-        opt_len += STRLITLEN( "[=ARG]" );
+        long_opt_len += STRLITLEN( "[=ARG]" );
         break;
       case required_argument:
-        opt_len += STRLITLEN( "=ARG" );
+        long_opt_len += STRLITLEN( "=ARG" );
         break;
     } // switch
-    if ( opt_len > longest_opt_len )
-      longest_opt_len = opt_len;
+    if ( long_opt_len > longest_opt_len )
+      longest_opt_len = long_opt_len;
   } // for
 
   FILE *const fout = status == EX_OK ? stdout : stderr;
   FPRINTF( fout, "usage: %s [options] [command...]\noptions:\n", prog_name );
 
-  FOREACH_CLI_OPTION( opt ) {
-    FPRINTF( fout, "  --%s", opt->name );
-    size_t opt_len = strlen( opt->name );
-    switch ( opt->has_arg ) {
+  FOREACH_CLI_OPTION( option ) {
+    FPRINTF( fout, "  --%s", option->name );
+    size_t long_opt_len = strlen( option->name );
+    switch ( option->has_arg ) {
       case no_argument:
         break;
       case optional_argument:
-        opt_len += STATIC_CAST( size_t, fprintf( fout, "[=ARG]" ) );
+        long_opt_len += STATIC_CAST( size_t, fprintf( fout, "[=ARG]" ) );
         break;
       case required_argument:
-        opt_len += STATIC_CAST( size_t, fprintf( fout, "=ARG" ) );
+        long_opt_len += STATIC_CAST( size_t, fprintf( fout, "=ARG" ) );
         break;
     } // switch
-    assert( opt_len <= longest_opt_len );
-    FPUTNSP( longest_opt_len - opt_len, fout );
-    FPRINTF( fout, " (-%c) %s.\n", opt->val, get_opt_help( opt->val ) );
+    assert( long_opt_len <= longest_opt_len );
+    FPUTNSP( longest_opt_len - long_opt_len, fout );
+    FPRINTF( fout, " (-%c) %s.\n", option->val, get_opt_help( option->val ) );
   } // for
 
   FPUTS(
@@ -906,8 +910,8 @@ static void print_version( bool verbose ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-struct option const* cli_option_next( struct option const *opt ) {
-  return opt == NULL ? CLI_OPTIONS : (++opt)->name == NULL ? NULL : opt;
+struct option const* cli_option_next( struct option const *option ) {
+  return option == NULL ? OPTIONS : (++option)->name == NULL ? NULL : option;
 }
 
 void cli_options_init( int *const pargc, char const *const *pargv[] ) {

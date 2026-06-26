@@ -68,8 +68,8 @@
 /**
  * Iterates to the next **cdecl** command-line option.
  *
- * @param opt A pointer to the previous option. For the first iteration, NULL
- * should be passed.
+ * @param option A pointer to the previous option. For the first iteration,
+ * NULL should be passed.
  * @return Returns the next command-line option or NULL for none.
  *
  * @note This function isn't normally called directly; use the
@@ -78,7 +78,7 @@
  * @sa #FOREACH_CLI_OPTION()
  */
 NODISCARD
-struct option const* cli_option_next( struct option const *opt );
+struct option const* cli_option_next( struct option const *option );
 
 /**
  * Initializes **cdecl** options from the command-line.
