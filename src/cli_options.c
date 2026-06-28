@@ -662,17 +662,8 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
         goto missing_arg;
       case '?':
         goto invalid_opt;
-
       default:
-        // LCOV_EXCL_START
-        if ( isprint( short_opt ) )
-          INTERNAL_ERROR(
-            "'%c': unaccounted-for getopt_long() return value\n", short_opt
-          );
-        INTERNAL_ERROR(
-          "%d: unaccounted-for getopt_long() return value\n", short_opt
-        );
-        // LCOV_EXCL_STOP
+        goto unhandled_opt;             // LCOV_EXCL_LINE
     } // switch
     opt_is_set_impl[ short_opt ] = true;
   } // for
@@ -748,6 +739,13 @@ missing_arg:
     "\"%s\" requires an argument\n",
     get_opt_format( STATIC_CAST( char, short_opt == ':' ? optopt : short_opt ) )
   );
+
+unhandled_opt:
+  // LCOV_EXCL_START
+  if ( isprint( short_opt ) )
+    INTERNAL_ERROR( "'%c': unhandled getopt_long() return value\n", short_opt );
+  INTERNAL_ERROR( "%d: unhandled getopt_long() return value\n", short_opt );
+  // LCOV_EXCL_STOP
 }
 
 /**
