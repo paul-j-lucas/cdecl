@@ -1,3 +1,7 @@
+2026-07-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * dam_lev.c, util.h: Added MIN().
+
 2026-06-20  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, share/man/man1/cdecl.1, config_file.c: Now more inline with
