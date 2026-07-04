@@ -582,6 +582,38 @@
     + IS_SIGNED_TYPE(TYPE))
 
 /**
+ * Gets the minimum of \a I and \a J for any combination of numeric types.
+ *
+ * @param I The first numeric value.
+ * @param J The second numeric value.
+ * @return Returns the minimum of \a I and \a J.
+ */
+#define MIN(I,J)                  \
+  _Generic( (I) + (J),            \
+    int               : min_ll,   \
+    long              : min_ll,   \
+    long long         : min_ll,   \
+    unsigned int      : min_ull,  \
+    unsigned long     : min_ull,  \
+    unsigned long long: min_ull,  \
+    float             : min_d,    \
+    double            : min_d,    \
+    long double       : min_ld    \
+  )( (I), (J) )
+
+/// @cond DOXYGEN_IGNORE
+#define MIN_IMPL(T,SUFFIX) \
+  NODISCARD static inline T min_##SUFFIX( T i, T j ) { return i < j ? i : j; }
+
+MIN_IMPL(long long, ll)
+MIN_IMPL(unsigned long long, ull)
+MIN_IMPL(double, d)
+MIN_IMPL(long double, ld)
+
+#undef MIN_IMPL
+/// @endcond
+
+/**
  * Concatenate \a A and \a B together to form a single token.
  *
  * @remarks This macro is needed instead of simply using `##` when either

@@ -34,20 +34,6 @@
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
 
-////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Gets the minimum of \a i or \a j.
- *
- * @param i The first number.
- * @param j The second number
- * @return Returns the minimum of \a i or \a j.
- */
-NODISCARD
-static inline size_t min_size( size_t i, size_t j ) {
-  return i < j ? i : j;
-}
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -162,9 +148,9 @@ size_t dam_lev_dist( void *working_mem, char const *source, size_t slen,
         + 1;
 
       // Use the minimum distance.
-      size_t dist_min = min_size( ins_dist, del_dist );
-             dist_min = min_size( dist_min, sub_dist );
-             dist_min = min_size( dist_min, xpos_dist );
+      size_t dist_min = MIN( ins_dist, del_dist );
+             dist_min = MIN( dist_min, sub_dist );
+             dist_min = MIN( dist_min, xpos_dist );
       dist_matrix[ row+1 ][ col+1 ] = dist_min;
 
       if ( match )
