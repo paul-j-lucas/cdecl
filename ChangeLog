@@ -1,3 +1,12 @@
+2026-07-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl_compile.m4: Replaced "if" with "AS_IF".
+   * configure.ac, pjl_compile.m4, util.h: PJL_COMPILE now accepts 1st arg with
+     whitespace (that's converted to _); no longer defines any macro in failure
+     case.
+   * configure.ac, c_ast.c, c_type.c, prompt.c, util.h: Added better C23 1-arg
+     static_assert.
+
 2026-07-04  Paul J. Lucas <paul@lucasmail.org>
 
    * dam_lev.c, util.h: Added MIN().
