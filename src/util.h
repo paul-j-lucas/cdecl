@@ -835,12 +835,28 @@ MIN_IMPL(long double, ld)
  */
 #define SKIP_WS(S)                SKIP_CHARS( (S), WS_CHARS )
 
+#if !HAVE_1_ARG_STATIC_ASSERT
+/// @cond DOXYGEN_IGNORE
+# define STATIC_ASSERT_1(EXPR)          _Static_assert( (EXPR), #EXPR )
+# define STATIC_ASSERT_2(EXPR,MSG)      _Static_assert( (EXPR), (MSG) )
+# define STATIC_ASSERT_3(_1,_2,_3,...)  _3
+# define STATIC_ASSERT_N(...)           STATIC_ASSERT_3(__VA_ARGS__, 2, 1, 0)
+/// @endcond
+# ifdef static_assert
+#   undef static_assert
+# endif /* static_assert */
 /**
- * C23-like version of single-argument form of `static_assert`.
+ * C23-like version of `static_assert` that accepts either 1 or 2 arguments.
  *
- * @param EXPR The expression to use.
+ * @param ...
+ * @parblock
+ * + `EXPR` The expression to use.
+ * + `MSG` Optionally, the message to print only if \a EXPR is false.
+ * @endparblock
  */
-#define STATIC_ASSERT(EXPR)       static_assert( (EXPR), #EXPR )
+# define static_assert(...) \
+    NAME2( STATIC_ASSERT_, STATIC_ASSERT_N( __VA_ARGS__ ) )( __VA_ARGS__ )
+#endif /* HAVE_1_ARG_STATIC_ASSERT */
 
 /**
  * C version of C++'s `static_cast`.

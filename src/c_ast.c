@@ -47,63 +47,63 @@
 
 /// @endcond
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_builtin_ast_t, bit_width ) ==
   offsetof( c_bit_field_ast_t, bit_width )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_enum_ast_t, bit_width ) ==
   offsetof( c_bit_field_ast_t, bit_width )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_typedef_ast_t, bit_width ) ==
   offsetof( c_bit_field_ast_t, bit_width )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_apple_block_ast_t, param_ast_list ) ==
   offsetof( c_function_ast_t, param_ast_list )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_concept_ast_t, concept_sname ) == offsetof( c_name_ast_t, sname )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_constructor_ast_t, param_ast_list ) ==
   offsetof( c_function_ast_t, param_ast_list )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_csu_ast_t, csu_sname ) == offsetof( c_name_ast_t, sname )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_enum_ast_t, enum_sname ) == offsetof( c_name_ast_t, sname )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_lambda_ast_t, param_ast_list ) ==
   offsetof( c_function_ast_t, param_ast_list )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_operator_ast_t, param_ast_list ) ==
   offsetof( c_function_ast_t, param_ast_list )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_ptr_mbr_ast_t, class_sname ) == offsetof( c_name_ast_t, sname )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_udef_lit_ast_t, param_ast_list ) ==
   offsetof( c_function_ast_t, param_ast_list )
 );
 
-STATIC_ASSERT(
+static_assert(
   offsetof( c_operator_ast_t, member ) == offsetof( c_function_ast_t, member )
 );
 
