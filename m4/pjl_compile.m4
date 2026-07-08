@@ -10,7 +10,7 @@
 #
 # PARAMETERS
 #
-#     $1  Label; will define HAVE_{toupper($1)}.
+#     $1  Label; will define HAVE_{m4_toupper($1)} with spaces replaced by '_'.
 #     $2  #include(s), if any.
 #     $3  Code snippet to compile.
 #
@@ -32,21 +32,21 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-#serial 4
+#serial 5
 
 AC_DEFUN([PJL_COMPILE], [
-  AC_CACHE_CHECK([for $1], [pjl_cv_$1],
+  m4_pushdef([PJL_WHAT], m4_translit(m4_toupper([$1]), [ ], [_]))dnl
+  AC_CACHE_CHECK([for $1], [pjl_cv_]PJL_WHAT,
     [AC_COMPILE_IFELSE(
       [AC_LANG_PROGRAM([$2], [$3])],
-      [pjl_cv_$1=yes],
-      [pjl_cv_$1=no]
+      [pjl_cv_]PJL_WHAT[=yes],
+      [pjl_cv_]PJL_WHAT[=no]
     )
   ])
-  if test "$pjl_cv_$1" = "yes"; then
-    AC_DEFINE(HAVE_[]m4_toupper($1), [1], [Define to 1 if you have `$1'.])
-  else
-    AC_DEFINE(HAVE_[]m4_toupper($1), [0], [Define to 1 if you have `$1'.])
+  if test "$pjl_cv_[]PJL_WHAT" = "yes"; then
+    AC_DEFINE([HAVE_]PJL_WHAT, [1], [Define to 1 if you have `$1'.])
   fi
+  m4_popdef([PJL_WHAT])dnl
 ])
 
 dnl vim:set et sw=2 ts=2:

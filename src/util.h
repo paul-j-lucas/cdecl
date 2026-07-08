@@ -835,7 +835,7 @@ MIN_IMPL(long double, ld)
  */
 #define SKIP_WS(S)                SKIP_CHARS( (S), WS_CHARS )
 
-#if !HAVE_1_ARG_STATIC_ASSERT
+#ifndef HAVE_1_ARG_STATIC_ASSERT
 /// @cond DOXYGEN_IGNORE
 # define STATIC_ASSERT_1(EXPR)          _Static_assert( (EXPR), #EXPR )
 # define STATIC_ASSERT_2(EXPR,MSG)      _Static_assert( (EXPR), (MSG) )

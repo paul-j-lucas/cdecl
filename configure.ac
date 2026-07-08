@@ -166,7 +166,7 @@ AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
 AC_CHECK_MEMBERS([struct passwd.pw_dir], [], [], [#include <pwd.h>])
 PJL_COMPILE([__builtin_expect], [], [(void)__builtin_expect(1,1);])
-PJL_COMPILE([1_arg_static_assert], [], [static_assert(1);])
+PJL_COMPILE([1 arg static_assert], [], [static_assert(1);])
 PJL_COMPILE([__VA_OPT__],
   [#define VA_OPT_TEST(...) __VA_OPT__(int) __VA_ARGS__
   ],
