@@ -32,7 +32,7 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-#serial 5
+#serial 6
 
 AC_DEFUN([PJL_COMPILE], [
   m4_pushdef([PJL_WHAT], m4_translit(m4_toupper([$1]), [ ], [_]))dnl
@@ -43,9 +43,9 @@ AC_DEFUN([PJL_COMPILE], [
       [pjl_cv_]PJL_WHAT[=no]
     )
   ])
-  if test "$pjl_cv_[]PJL_WHAT" = "yes"; then
+  AS_IF([test "x$pjl_cv_[]PJL_WHAT" = xyes], [
     AC_DEFINE([HAVE_]PJL_WHAT, [1], [Define to 1 if you have `$1'.])
-  fi
+  ])
   m4_popdef([PJL_WHAT])dnl
 ])
 
