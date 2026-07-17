@@ -1,3 +1,8 @@
+2026-07-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c, red_black.c, red_black.h, red_black_test.c: Swapped
+     rb_iterator_init() parameter order.
+
 2026-07-08  Paul J. Lucas <paul@lucasmail.org>
 
    * pjl_compile.m4: Replaced "if" with "AS_IF".
