@@ -244,7 +244,7 @@ static bool test_various( rb_dloc_t dloc ) {
 
   // test iterator
   rb_iterator_t iter;
-  rb_iterator_init( &tree, &iter );
+  rb_iterator_init( &iter, &tree );
   unsigned letter_offset = 0;
   for ( char const *str; (str = rb_iterator_next( &iter )) != NULL; ) {
     TEST( str[0] == STATIC_CAST( char, 'A' + letter_offset ) );

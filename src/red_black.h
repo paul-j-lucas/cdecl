@@ -315,13 +315,13 @@ struct rb_insert_rv {
 /**
  * Initializes an rb_iterator.
  *
- * @param tree A pointer to the rb_tree to iterate over.
  * @param iter A pointer to the rb_iterator to initialize.
+ * @param tree A pointer to the rb_tree to iterate over.
  *
  * @sa rb_iterator_next()
  * @sa rb_tree_visit()
  */
-void rb_iterator_init( rb_tree_t const *tree, rb_iterator_t *iter );
+void rb_iterator_init( rb_iterator_t *iter, rb_tree_t const *tree );
 
 /**
  * Iterates to the next in-order node in the tree, if any.

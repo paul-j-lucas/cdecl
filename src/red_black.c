@@ -480,9 +480,9 @@ static void rb_tree_reset( rb_tree_t *tree ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void rb_iterator_init( rb_tree_t const *tree, rb_iterator_t *iter ) {
-  assert( tree != NULL );
+void rb_iterator_init( rb_iterator_t *iter, rb_tree_t const *tree ) {
   assert( iter != NULL );
+  assert( tree != NULL );
 
   iter->curr = tree->root;
   //    stack                           // intentionally not initialized

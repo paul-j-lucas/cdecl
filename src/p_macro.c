@@ -3107,8 +3107,7 @@ p_macro_t const* p_macro_find( char const *name ) {
 }
 
 void p_macro_iterator_init( p_macro_iterator_t *iter ) {
-  assert( iter != NULL );
-  rb_iterator_init( &macro_set, iter );
+  rb_iterator_init( iter, &macro_set );
 }
 
 bool p_macro_undef( char const *name, c_loc_t const *name_loc ) {
