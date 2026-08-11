@@ -48,6 +48,20 @@
 
 #define STRBUF_CAP_MIN            4     /**< Minimum buffer capacity. */
 
+/**
+ * Directly appends \a N bytes from \a S onto \a SBUF, no questions asked.
+ *
+ * @param SBUF A pointer to the \ref strbuf to append onto.
+ * @param S The string to append.
+ * @param N The number of bytes of \a s to append.
+ */
+#define STRBUF_DIRECT_PUTSN(SBUF,S,N)               \
+  do {                                              \
+    memcpy( (SBUF)->str + (SBUF)->len, (S), (N) );  \
+    (SBUF)->len += (N);                             \
+    (SBUF)->str[ (SBUF)->len ] = '\0';              \
+  } while (0)
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void strbuf_cleanup( strbuf_t *sbuf ) {
@@ -70,10 +84,13 @@ char* strbuf_paths( strbuf_t *sbuf, char const *component ) {
         ++component;
         --comp_len;
       }
-    } else {
+    }
+    else {
       if ( component[0] != '/' ) {
         strbuf_reserve( sbuf, comp_len + 1 );
-        strbuf_putc( sbuf, '/' );
+        sbuf->str[ sbuf->len++ ] = '/';
+        STRBUF_DIRECT_PUTSN( sbuf, component, comp_len );
+        return sbuf->str;
       }
     }
   }
@@ -123,9 +140,7 @@ char* strbuf_putsn( strbuf_t *sbuf, char const *s, size_t n ) {
 
   n = strnlen( s, n );
   strbuf_reserve( sbuf, n );
-  memcpy( sbuf->str + sbuf->len, s, n );
-  sbuf->len += n;
-  sbuf->str[ sbuf->len ] = '\0';
+  STRBUF_DIRECT_PUTSN( sbuf, s, n );
   return sbuf->str;
 }
 
