@@ -32,7 +32,6 @@
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_kind.h"
-#include "c_operator.h"
 #include "c_sname.h"
 #include "c_type.h"
 #include "cdecl.h"
