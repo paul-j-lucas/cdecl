@@ -1,5 +1,6 @@
 2026-08-16  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c, p_token.h: Revert "#include fixes."
    * dump.c, p_token.h: #include fixes.
 
 2026-08-10  Paul J. Lucas <paul@lucasmail.org>
