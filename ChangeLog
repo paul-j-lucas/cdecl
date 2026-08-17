@@ -1,3 +1,11 @@
+2026-08-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, p_token.h: #include fixes.
+
+2026-08-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * strbuf.c: Added STRBUF_DIRECT_PUTSN().
+
 2026-07-17  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c, red_black.c, red_black.h, red_black_test.c: Swapped
