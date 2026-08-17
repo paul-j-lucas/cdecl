@@ -29,6 +29,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "p_kind.h"
+#include "slist.h"
 #include "strbuf.h"
 #include "types.h"
 #include "util.h"
