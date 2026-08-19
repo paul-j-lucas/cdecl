@@ -35,7 +35,7 @@
  * @{
  */
 
-////////// enumerations ///////////////////////////////////////////////////////
+////////// enums //////////////////////////////////////////////////////////////
 
 /**
  * Kinds of C preprocessor tokens.
@@ -127,7 +127,6 @@ enum p_token_kind {
   P___VA_ARGS__ = 1 << 10,              ///< `__VA_ARGS__`.
   P___VA_OPT__  = 1 << 11,              ///< `__VA_OPT__`.
 };
-typedef enum p_token_kind p_token_kind_t;
 
 /**
  * Shorthand for any "opaque" \ref p_token_kind --- all kinds _except_ either
@@ -149,6 +148,10 @@ typedef enum p_token_kind p_token_kind_t;
  * @sa #P_ANY_OPAQUE
  */
 #define P_ANY_TRANSPARENT         ( P_PLACEMARKER | P_SPACE )
+
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef enum p_token_kind p_token_kind_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

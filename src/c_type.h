@@ -53,39 +53,7 @@
  */
 #define C_BITINT_MAXWIDTH         128u
 
-////////// types //////////////////////////////////////////////////////////////
-
-/**
- * The C/C++ type of an identifier (variable, function, etc.). A type is split
- * into parts because the number of distinct bits needed in total exceeds 64.
- */
-struct c_type {
-  /**
-   * The base types (`int`, `double`, etc.) including user-defined types
-   * (`enum`, `struct`, etc.), modifiers (`short`, `unsigned`, etc.), and also
-   * `namespace` and the generic `scope` since it makes sense to store those
-   * with other scope-types (like `struct`).
-   *
-   * Constants for base types begin with `TB_`.
-   */
-  c_tid_t btids;
-
-  /**
-   * The storage classes (`extern`, `static`, etc., including `typedef`),
-   * storage-class-like things (`default`, `friend`, `inline`, etc.), and also
-   * qualifiers (`_Atomic`, `const`, etc.) and ref-qualifiers (`&`, `&&`).
-   *
-   * Constants for storage-class-like things begin with `TS_`.
-   */
-  c_tid_t stids;
-
-  /**
-   * Attributes.
-   *
-   * Constants for attributes begin with `TA_`.
-   */
-  c_tid_t atids;
-};
+////////// enums //////////////////////////////////////////////////////////////
 
 /**
  * For \ref c_tid_t values, the low-order 4 bits specify the "type part ID"
@@ -132,7 +100,44 @@ enum c_tpid {
    */
   C_TPID_ATTR   = 1 << 2
 };
+
+////////// typedefs ///////////////////////////////////////////////////////////
+
 typedef enum c_tpid c_tpid_t;
+
+////////// structs ////////////////////////////////////////////////////////////
+
+/**
+ * The C/C++ type of an identifier (variable, function, etc.). A type is split
+ * into parts because the number of distinct bits needed in total exceeds 64.
+ */
+struct c_type {
+  /**
+   * The base types (`int`, `double`, etc.) including user-defined types
+   * (`enum`, `struct`, etc.), modifiers (`short`, `unsigned`, etc.), and also
+   * `namespace` and the generic `scope` since it makes sense to store those
+   * with other scope-types (like `struct`).
+   *
+   * Constants for base types begin with `TB_`.
+   */
+  c_tid_t btids;
+
+  /**
+   * The storage classes (`extern`, `static`, etc., including `typedef`),
+   * storage-class-like things (`default`, `friend`, `inline`, etc.), and also
+   * qualifiers (`_Atomic`, `const`, etc.) and ref-qualifiers (`&`, `&&`).
+   *
+   * Constants for storage-class-like things begin with `TS_`.
+   */
+  c_tid_t stids;
+
+  /**
+   * Attributes.
+   *
+   * Constants for attributes begin with `TA_`.
+   */
+  c_tid_t atids;
+};
 
 /**
  * Convenience macro for specifying a type ID literal.

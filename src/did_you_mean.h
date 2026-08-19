@@ -41,17 +41,8 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
 
-/**
- * Data structure to hold a "Did you mean ...?" suggestion.
- */
-struct did_you_mean {
-  char const *known;                    ///< Known candidate.
-  size_t      known_len;                ///< Length of \ref known.
-  size_t      dam_lev_dist;             ///< Damerau-Levenshtein edit distance.
-  void       *user_data;                ///< Optional user data.
-};
 typedef struct did_you_mean did_you_mean_t;
 
 /**
@@ -72,6 +63,18 @@ typedef void (*dym_cleanup_fn_t)( did_you_mean_t const *dym );
  * literal.
  */
 typedef bool (*dym_similar_fn_t)( did_you_mean_t const *dym );
+
+////////// structs ////////////////////////////////////////////////////////////
+
+/**
+ * Data structure to hold a "Did you mean ...?" suggestion.
+ */
+struct did_you_mean {
+  char const *known;                    ///< Known candidate.
+  size_t      known_len;                ///< Length of \ref known.
+  size_t      dam_lev_dist;             ///< Damerau-Levenshtein edit distance.
+  void       *user_data;                ///< Optional user data.
+};
 
 ////////// extern functions ///////////////////////////////////////////////////
 

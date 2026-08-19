@@ -56,7 +56,11 @@
 #define FOREACH_CDECL_KEYWORD(VAR) \
   for ( cdecl_keyword_t const *VAR = NULL; (VAR = cdecl_keyword_next( VAR )) != NULL; )
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct cdecl_keyword cdecl_keyword_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * **Cdecl** keyword info.
@@ -99,7 +103,6 @@ struct cdecl_keyword {
   char const *const  *ac_next_keywords;
 #endif /* WITH_READLINE */
 };
-typedef struct cdecl_keyword cdecl_keyword_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

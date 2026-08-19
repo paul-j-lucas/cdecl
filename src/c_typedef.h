@@ -57,15 +57,7 @@
  * @{
  */
 
-/**
- * C/C++ `typedef` or `using` information.
- */
-struct c_typedef {
-  c_ast_t const  *ast;                  ///< AST representing the type.
-  c_lang_id_t     lang_ids;             ///< Language(s) available in.
-  decl_flags_t    decl_flags;           ///< How was the type defined?
-  bool            is_predefined;        ///< Was the type predefined?
-};
+////////// typedefs ///////////////////////////////////////////////////////////
 
 /**
  * The signature for a function passed to c_typedef_visit().
@@ -78,6 +70,18 @@ struct c_typedef {
  */
 typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef,
                                       void *visit_data );
+
+////////// structs ////////////////////////////////////////////////////////////
+
+/**
+ * C/C++ `typedef` or `using` information.
+ */
+struct c_typedef {
+  c_ast_t const  *ast;                  ///< AST representing the type.
+  c_lang_id_t     lang_ids;             ///< Language(s) available in.
+  decl_flags_t    decl_flags;           ///< How was the type defined?
+  bool            is_predefined;        ///< Was the type predefined?
+};
 
 ////////// extern functions ///////////////////////////////////////////////////
 

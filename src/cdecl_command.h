@@ -43,7 +43,7 @@
 #define FOREACH_CDECL_COMMAND(VAR) \
   for ( cdecl_command_t const *VAR = NULL; (VAR = cdecl_command_next( VAR )) != NULL; )
 
-///////////////////////////////////////////////////////////////////////////////
+////////// enums //////////////////////////////////////////////////////////////
 
 /**
  * The kind of **cdecl** command.
@@ -76,7 +76,13 @@ enum cdecl_command_kind {
    */
   CDECL_COMMAND_PROG_NAME,
 };
-typedef enum cdecl_command_kind cdecl_command_kind_t;
+
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct  cdecl_command       cdecl_command_t;
+typedef enum    cdecl_command_kind  cdecl_command_kind_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * A **cdecl** command.
@@ -89,7 +95,6 @@ struct cdecl_command {
   c_lang_id_t           ac_lang_ids;    ///< Language(s) autocompletable in.
 #endif /* WITH_READLINE */
 };
-typedef struct cdecl_command cdecl_command_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

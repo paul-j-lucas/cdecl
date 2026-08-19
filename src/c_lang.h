@@ -1411,7 +1411,12 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct  c_lang      c_lang_t;
+typedef struct  c_lang_lit  c_lang_lit_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * A mapping between a language name and its corresponding \ref c_lang_id_t.
@@ -1421,7 +1426,6 @@ struct c_lang {
   bool          is_alias;               ///< Alias for another language name?
   c_lang_id_t   lang_id;                ///< Language bit.
 };
-typedef struct c_lang c_lang_t;
 
 /**
  * C/C++ language(s)/literal pairs: for the given language(s) only, use the
@@ -1436,7 +1440,6 @@ struct c_lang_lit {
   c_lang_id_t   lang_ids;               ///< Language(s) literal is in.
   char const   *literal;                ///< The literal.
 };
-typedef struct c_lang_lit c_lang_lit_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

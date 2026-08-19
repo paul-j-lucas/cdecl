@@ -35,7 +35,7 @@
 #include <stdbool.h>
 #include <stdio.h>                      /* for FILE */
 
-////////// extern functions ///////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
 
 /**
  * The signature for functions passed to strbuf_read_line() that check whether
@@ -59,6 +59,8 @@ typedef bool (*sbrl_is_cont_line_fn_t)( char const *s, size_t *ps_len );
  * none.
  */
 typedef char const* (*sbrl_prompt_fn_t)( bool is_cont_line );
+
+////////// extern functions ///////////////////////////////////////////////////
 
 /**
  * Reads a line from \a fin, perhaps interactively with editing and

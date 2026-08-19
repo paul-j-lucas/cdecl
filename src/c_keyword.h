@@ -55,7 +55,7 @@
 #define FOREACH_C_KEYWORD(VAR) \
   for ( c_keyword_t const *VAR = NULL; (VAR = c_keyword_next( VAR )) != NULL; )
 
-///////////////////////////////////////////////////////////////////////////////
+////////// enums //////////////////////////////////////////////////////////////
 
 /**
  * C++ keyword contexts.
@@ -71,7 +71,13 @@ enum c_keyword_ctx {
   C_KW_CTX_ATTRIBUTE,                   ///< Attribute declaration.
   C_KW_CTX_MBR_FUNC                     ///< Member function declaration.
 };
-typedef enum c_keyword_ctx c_keyword_ctx_t;
+
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct  c_keyword     c_keyword_t;
+typedef enum    c_keyword_ctx c_keyword_ctx_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * C/C++ language keyword or C23/C++11 (or later) attribute information.
@@ -107,7 +113,6 @@ struct c_keyword {
   c_lang_id_t     ac_lang_ids;
 #endif /* WITH_READLINE */
 };
-typedef struct c_keyword c_keyword_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

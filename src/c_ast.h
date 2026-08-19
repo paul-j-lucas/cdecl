@@ -106,14 +106,7 @@
 #define FOREACH_AST_FUNC_PARAM_UNTIL(VAR,AST,END) \
   FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->func.param_ast_list, (END) )
 
-///////////////////////////////////////////////////////////////////////////////
-
-/**
- * Unique AST node ID (used only for debugging).
- *
- * @sa #PRId_C_AST_ID_T
- */
-typedef unsigned c_ast_id_t;
+////////// enums //////////////////////////////////////////////////////////////
 
 /**
  * Decimal print conversion specifier for \ref c_ast_id_t.
@@ -127,6 +120,16 @@ enum c_ast_visit_dir {
   C_VISIT_DOWN,                         ///< Root to leaves.
   C_VISIT_UP                            ///< Leaf to root.
 };
+
+////////// typedefs ///////////////////////////////////////////////////////////
+
+/**
+ * Unique AST node ID (used only for debugging).
+ *
+ * @sa #PRId_C_AST_ID_T
+ */
+typedef unsigned c_ast_id_t;
+
 typedef enum c_ast_visit_dir c_ast_visit_dir_t;
 
 /**

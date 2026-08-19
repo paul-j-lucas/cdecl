@@ -91,6 +91,12 @@
 #define print_warning(...) \
   fl_print_warning( __FILE__, __LINE__, __VA_ARGS__ )
 
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct print_params print_params_t;
+
+////////// structs ////////////////////////////////////////////////////////////
+
 /**
  * Parameters for the `print_*()` functions that would be too burdonsome to
  * pass to every function call.
@@ -101,7 +107,8 @@ struct print_params {
   size_t      inserted_len;             ///< Length of inserted string, if any.
   bool        opt_no_print_input_line;  ///< Don't print input line before `^`.
 };
-typedef struct print_params print_params_t;
+
+////////// extern variables ///////////////////////////////////////////////////
 
 extern print_params_t print_params;     ///< Print parameters.
 
