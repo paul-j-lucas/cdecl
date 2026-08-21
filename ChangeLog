@@ -1,3 +1,15 @@
+2026-08-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, autocomplete.h, bit_util.h, c_ast.h, c_ast_check.h,
+     c_ast_util.h, c_ast_warn.h, c_keyword.h, c_kind.h, c_lang.h, c_operator.h,
+     c_sglob.h, c_sname.h, c_type.h, c_typedef.h, cdecl.h, cdecl_command.h,
+     cdecl_dym.h, cdecl_keyword.h, cdecl_parser.h, cdecl_term.h, cli_options.h,
+     color.h, dam_lev.h, did_you_mean.h, dump.h, english.h, gibberish.h,
+     help.h, lexer.h, literals.h, options.h, p_keyword.h, p_kind.h, p_macro.h,
+     p_token.h, parse.h, pjl_config.h, print.h, prompt.h, read_line.h,
+     red_black.h, set_options.h, show.h, slist.h, strbuf.h, type_traits.h,
+     types.h, unit_test.h, util.h: s/_H/_h/ for include guards.
+
 2026-08-18  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c: #include fix.
