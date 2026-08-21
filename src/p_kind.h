@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_p_kind_H
-#define cdecl_p_kind_H
+#ifndef cdecl_p_kind_h
+#define cdecl_p_kind_h
 
 /**
  * @file
@@ -168,5 +168,5 @@ char const* p_kind_name( p_token_kind_t kind );
 
 /** @} */
 
-#endif /* cdecl_p_kind_H */
+#endif /* cdecl_p_kind_h */
 /* vim:set et sw=2 ts=2: */

@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_type_H
-#define cdecl_c_type_H
+#ifndef cdecl_c_type_h
+#define cdecl_c_type_h
 
 /**
  * @file
@@ -1612,5 +1612,5 @@ inline bool c_type_is_none( c_type_t const *type ) {
 
 /** @} */
 
-#endif /* cdecl_c_type_H */
+#endif /* cdecl_c_type_h */
 /* vim:set et sw=2 ts=2: */

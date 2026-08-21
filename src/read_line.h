@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_read_line_H
-#define cdecl_read_line_H
+#ifndef cdecl_read_line_h
+#define cdecl_read_line_h
 
 /**
  * @file
@@ -97,5 +97,5 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, sbrl_prompt_fn_t prompt_fn,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* cdecl_read_line_H */
+#endif /* cdecl_read_line_h */
 /* vim:set et sw=2 ts=2: */

@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_types_H
-#define cdecl_types_H
+#ifndef cdecl_types_h
+#define cdecl_types_h
 
 /**
  * @file
@@ -703,5 +703,5 @@ union user_data {
 
 /** @} */
 
-#endif /* cdecl_types_H */
+#endif /* cdecl_types_h */
 /* vim:set et sw=2 ts=2: */

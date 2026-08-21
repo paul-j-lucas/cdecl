@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_ast_warn_H
-#define cdecl_c_ast_warn_H
+#ifndef cdecl_c_ast_warn_h
+#define cdecl_c_ast_warn_h
 
 /**
  * @file
@@ -65,5 +65,5 @@ void c_type_ast_warn( c_ast_t const *type_ast );
 
 /** @} */
 
-#endif /* cdecl_c_ast_warn_H */
+#endif /* cdecl_c_ast_warn_h */
 /* vim:set et sw=2 ts=2: */

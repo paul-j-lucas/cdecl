@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_p_macro_H
-#define cdecl_p_macro_H
+#ifndef cdecl_p_macro_h
+#define cdecl_p_macro_h
 
 /**
  * @file
@@ -253,5 +253,5 @@ void p_param_list_cleanup( p_param_list_t *param_list );
 
 /** @} */
 
-#endif /* cdecl_p_macro_H */
+#endif /* cdecl_p_macro_h */
 /* vim:set et sw=2 ts=2: */

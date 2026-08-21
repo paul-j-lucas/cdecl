@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_kind_H
-#define cdecl_c_kind_H
+#ifndef cdecl_c_kind_h
+#define cdecl_c_kind_h
 
 /**
  * @file
@@ -413,5 +413,5 @@ char const* c_kind_name( c_ast_kind_t kind );
 
 /** @} */
 
-#endif /* cdecl_c_kind_H */
+#endif /* cdecl_c_kind_h */
 /* vim:set et sw=2 ts=2: */

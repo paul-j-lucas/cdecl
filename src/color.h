@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_color_H
-#define cdecl_color_H
+#ifndef cdecl_color_h
+#define cdecl_color_h
 
 /**
  * @file
@@ -186,5 +186,5 @@ void colors_init( void );
 
 /** @} */
 
-#endif /* cdecl_color_H */
+#endif /* cdecl_color_h */
 /* vim:set et sw=2 ts=2: */

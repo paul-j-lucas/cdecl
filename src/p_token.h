@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_p_token_H
-#define cdecl_p_token_H
+#ifndef cdecl_p_token_h
+#define cdecl_p_token_h
 
 /**
  * @file
@@ -518,5 +518,5 @@ inline bool p_token_list_emptyish( p_token_list_t const *token_list ) {
 
 /** @} */
 
-#endif /* cdecl_p_token_H */
+#endif /* cdecl_p_token_h */
 /* vim:set et sw=2 ts=2: */

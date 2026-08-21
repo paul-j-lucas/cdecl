@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_ast_check_H
-#define cdecl_c_ast_check_H
+#ifndef cdecl_c_ast_check_h
+#define cdecl_c_ast_check_h
 
 /**
  * @file
@@ -88,5 +88,5 @@ bool c_type_ast_check( c_ast_t const *type_ast );
 
 /** @} */
 
-#endif /* cdecl_c_ast_check_H */
+#endif /* cdecl_c_ast_check_h */
 /* vim:set et sw=2 ts=2: */

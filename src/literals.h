@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_literals_H
-#define cdecl_literals_H
+#ifndef cdecl_literals_h
+#define cdecl_literals_h
 
 /**
  * @file
@@ -480,5 +480,5 @@ inline char const* alignas_name( void ) {
 
 /** @} */
 
-#endif /* cdecl_literals_H */
+#endif /* cdecl_literals_h */
 /* vim:set et sw=2 ts=2: */

@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_parser_H
-#define cdecl_parser_H
+#ifndef cdecl_parser_h
+#define cdecl_parser_h
 
 /**
  * @file
@@ -65,5 +65,5 @@ bool yyparse_sn( char const *s, size_t s_len );
 
 /** @} */
 
-#endif /* cdecl_parser_H */
+#endif /* cdecl_parser_h */
 /* vim:set et sw=2 ts=2: */

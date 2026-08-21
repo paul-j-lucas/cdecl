@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_prompt_H
-#define cdecl_prompt_H
+#ifndef cdecl_prompt_h
+#define cdecl_prompt_h
 
 /**
  * @file
@@ -82,5 +82,5 @@ size_t cdecl_prompt_len( void );
 
 /** @} */
 
-#endif /* cdecl_prompt_H */
+#endif /* cdecl_prompt_h */
 /* vim:set et sw=2 ts=2: */

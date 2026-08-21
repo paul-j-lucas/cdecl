@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_sname_H
-#define cdecl_c_sname_H
+#ifndef cdecl_c_sname_h
+#define cdecl_c_sname_h
 
 /**
  * @file
@@ -670,5 +670,5 @@ inline void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
 
 /** @} */
 
-#endif /* cdecl_c_sname_H */
+#endif /* cdecl_c_sname_h */
 /* vim:set et sw=2 ts=2: */

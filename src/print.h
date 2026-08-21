@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_print_H
-#define cdecl_print_H
+#ifndef cdecl_print_h
+#define cdecl_print_h
 
 /**
  * @file
@@ -400,5 +400,5 @@ void print_type_decl( c_typedef_t const *tdef, decl_flags_t decl_flags,
 
 /** @} */
 
-#endif /* cdecl_print_H */
+#endif /* cdecl_print_h */
 /* vim:set et sw=2 ts=2: */

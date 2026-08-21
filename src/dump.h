@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_dump_H
-#define cdecl_dump_H
+#ifndef cdecl_dump_h
+#define cdecl_dump_h
 
 /**
  * @file
@@ -208,5 +208,5 @@ void p_token_list_dump( p_token_list_t const *list, unsigned indent,
 
 /** @} */
 
-#endif /* cdecl_dump_H */
+#endif /* cdecl_dump_h */
 /* vim:set et sw=2 ts=2: */

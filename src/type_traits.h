@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef pjl_type_traits_H
-#define pjl_type_traits_H
+#ifndef pjl_type_traits_h
+#define pjl_type_traits_h
 
 /**
  * @file
@@ -236,5 +236,5 @@
 
 /** @} */
 
-#endif /* pjl_type_traits_H */
+#endif /* pjl_type_traits_h */
 /* vim:set et sw=2 ts=2: */

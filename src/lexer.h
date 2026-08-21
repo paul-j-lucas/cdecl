@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_lexer_H
-#define cdecl_lexer_H
+#ifndef cdecl_lexer_h
+#define cdecl_lexer_h
 
 /**
  * @file
@@ -284,5 +284,5 @@ void yyrestart( FILE *in_file );
 
 /** @} */
 
-#endif /* cdecl_lexer_H */
+#endif /* cdecl_lexer_h */
 /* vim:set et sw=2 ts=2: */

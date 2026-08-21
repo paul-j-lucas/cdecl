@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_term_H
-#define cdecl_term_H
+#ifndef cdecl_term_h
+#define cdecl_term_h
 
 /**
  * @file
@@ -56,5 +56,5 @@ unsigned term_get_columns( void );
 
 /** @} */
 
-#endif /* cdecl_term_H */
+#endif /* cdecl_term_h */
 /* vim:set et sw=2 ts=2: */

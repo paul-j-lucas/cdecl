@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_autocomplete_H
-#define cdecl_autocomplete_H
+#ifndef cdecl_autocomplete_h
+#define cdecl_autocomplete_h
 
 /**
  * @file
@@ -111,5 +111,5 @@ void autocomplete_init( void );
 
 /** @} */
 
-#endif /* cdecl_autocomplete_H */
+#endif /* cdecl_autocomplete_h */
 /* vim:set et sw=2 ts=2: */

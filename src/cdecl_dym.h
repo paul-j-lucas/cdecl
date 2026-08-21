@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_dym_H
-#define cdecl_dym_H
+#ifndef cdecl_dym_h
+#define cdecl_dym_h
 
 /**
  * @file
@@ -88,5 +88,5 @@ did_you_mean_t const* cdecl_dym_new( dym_kind_t kinds, char const *unknown );
 
 /** @} */
 
-#endif /* cdecl_dym_H */
+#endif /* cdecl_dym_h */
 /* vim:set et sw=2 ts=2: */

@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_help_H
-#define cdecl_help_H
+#ifndef cdecl_help_h
+#define cdecl_help_h
 
 /**
  * @file
@@ -97,5 +97,5 @@ void print_use_help( void );
 
 /** @} */
 
-#endif /* cdecl_help_H */
+#endif /* cdecl_help_h */
 /* vim:set et sw=2 ts=2: */

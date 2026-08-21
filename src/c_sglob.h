@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_sglob_H
-#define cdecl_c_sglob_H
+#ifndef cdecl_c_sglob_h
+#define cdecl_c_sglob_h
 
 /**
  * @file
@@ -121,5 +121,5 @@ void c_sglob_parse( char const *s, c_sglob_t *rv_sglob );
 
 /** @} */
 
-#endif /* cdecl_c_sglob_H */
+#endif /* cdecl_c_sglob_h */
 /* vim:set et sw=2 ts=2: */

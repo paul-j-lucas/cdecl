@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_parse_H
-#define cdecl_parse_H
+#ifndef cdecl_parse_h
+#define cdecl_parse_h
 
 /**
  * @file
@@ -87,5 +87,5 @@ int cdecl_parse_string( char const *s, size_t s_len );
 
 /** @} */
 
-#endif /* cdecl_parse_H */
+#endif /* cdecl_parse_h */
 /* vim:set et sw=2 ts=2: */

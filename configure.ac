@@ -325,9 +325,9 @@ PJL_CHECK_COMPILE_FLAG([-Wwrite-strings], [CDECL_CFLAGS])
 
 # Generate files.
 AC_SUBST([CDECL_CFLAGS])
-AH_TOP([#ifndef cdecl_config_H
-#define cdecl_config_H])
-AH_BOTTOM([#endif /* cdecl_config_H */])
+AH_TOP([#ifndef cdecl_config_h
+#define cdecl_config_h])
+AH_BOTTOM([#endif /* cdecl_config_h */])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_FILES([
   Makefile

@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef pjl_strbuf_H
-#define pjl_strbuf_H
+#ifndef pjl_strbuf_h
+#define pjl_strbuf_h
 
 /**
  * @file
@@ -290,5 +290,5 @@ inline char* strbuf_take( strbuf_t *sbuf ) {
 
 /** @} */
 
-#endif /* pjl_strbuf_H */
+#endif /* pjl_strbuf_h */
 /* vim:set et sw=2 ts=2: */

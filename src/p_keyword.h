@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_p_keyword_H
-#define cdecl_p_keyword_H
+#ifndef cdecl_p_keyword_h
+#define cdecl_p_keyword_h
 
 /**
  * @file
@@ -75,5 +75,5 @@ void p_keywords_init( void );
 
 /** @} */
 
-#endif /* cdecl_p_keyword_H */
+#endif /* cdecl_p_keyword_h */
 /* vim:set et sw=2 ts=2: */

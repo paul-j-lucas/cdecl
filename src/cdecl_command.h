@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_command_H
-#define cdecl_command_H
+#ifndef cdecl_command_h
+#define cdecl_command_h
 
 /**
  * @file
@@ -125,5 +125,5 @@ cdecl_command_t const* cdecl_command_next( cdecl_command_t const *command );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* cdecl_command */
+#endif /* cdecl_command_h */
 /* vim:set et sw=2 ts=2: */

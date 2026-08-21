@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_show_H
-#define cdecl_show_H
+#ifndef cdecl_show_h
+#define cdecl_show_h
 
 /**
  * @file
@@ -104,5 +104,5 @@ bool show_types( cdecl_show_t show, char const *glob, decl_flags_t decl_flags,
 
 /** @} */
 
-#endif /* cdecl_show_H */
+#endif /* cdecl_show_h */
 /* vim:set et sw=2 ts=2: */

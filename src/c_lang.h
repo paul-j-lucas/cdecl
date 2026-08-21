@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_lang_H
-#define cdecl_c_lang_H
+#ifndef cdecl_c_lang_h
+#define cdecl_c_lang_h
 
 /**
  * @file
@@ -1727,5 +1727,5 @@ inline bool opt_lang_is_any( c_lang_id_t lang_ids ) {
 
 /** @} */
 
-#endif /* cdecl_c_lang_H */
+#endif /* cdecl_c_lang_h */
 /* vim:set et sw=2 ts=2: */

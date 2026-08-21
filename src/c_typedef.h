@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_typedef_H
-#define cdecl_c_typedef_H
+#ifndef cdecl_c_typedef_h
+#define cdecl_c_typedef_h
 
 /**
  * @file
@@ -155,5 +155,5 @@ void c_typedefs_init( void );
 
 /** @} */
 
-#endif /* cdecl_c_typedef_H */
+#endif /* cdecl_c_typedef_h */
 /* vim:set et sw=2 ts=2: */

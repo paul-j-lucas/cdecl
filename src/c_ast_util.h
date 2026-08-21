@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_ast_util_H
-#define cdecl_c_ast_util_H
+#ifndef cdecl_c_ast_util_h
+#define cdecl_c_ast_util_h
 
 /**
  * @file
@@ -782,5 +782,5 @@ c_ast_t c_ast_sub_typedef( c_ast_t const *ast );
 
 /** @} */
 
-#endif /* cdecl_c_ast_util_H */
+#endif /* cdecl_c_ast_util_h */
 /* vim:set et sw=2 ts=2: */

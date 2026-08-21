@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_options_H
-#define cdecl_options_H
+#ifndef cdecl_options_h
+#define cdecl_options_h
 
 /**
  * @file
@@ -336,5 +336,5 @@ char const* west_decl_str( void );
 
 /** @} */
 
-#endif /* cdecl_options_H */
+#endif /* cdecl_options_h */
 /* vim:set et sw=2 ts=2: */

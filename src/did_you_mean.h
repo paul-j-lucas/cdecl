@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef pjl_did_you_mean_H
-#define pjl_did_you_mean_H
+#ifndef pjl_did_you_mean_h
+#define pjl_did_you_mean_h
 
 /**
  * @file
@@ -117,5 +117,5 @@ void dym_free( did_you_mean_t const *dym_array, dym_cleanup_fn_t cleanup_fn );
 
 /** @} */
 
-#endif /* pjl_did_you_mean_H */
+#endif /* pjl_did_you_mean_h */
 /* vim:set et sw=2 ts=2: */

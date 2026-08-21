@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef pjl_slist_H
-#define pjl_slist_H
+#ifndef pjl_slist_h
+#define pjl_slist_h
 
 /**
  * @file
@@ -500,5 +500,5 @@ slist_t slist_move( slist_t *list );
 
 /** @} */
 
-#endif /* pjl_slist_H */
+#endif /* pjl_slist_h */
 /* vim:set et sw=2 ts=2: */

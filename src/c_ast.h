@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_ast_H
-#define cdecl_c_ast_H
+#ifndef cdecl_c_ast_h
+#define cdecl_c_ast_h
 
 /**
  * @file
@@ -816,5 +816,5 @@ inline c_ast_t const* c_param_ast( c_param_t const *param ) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* cdecl_c_ast_H */
+#endif /* cdecl_c_ast_h */
 /* vim:set et sw=2 ts=2: */

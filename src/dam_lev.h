@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef pjl_dam_lev_H
-#define pjl_dam_lev_H
+#ifndef pjl_dam_lev_h
+#define pjl_dam_lev_h
 
 /**
  * @file
@@ -74,5 +74,5 @@ void* dam_lev_new( size_t source_len, size_t max_target_len );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* pjl_dam_lev_H */
+#endif /* pjl_dam_lev_h */
 /* vim:set et sw=2 ts=2: */

@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_english_H
-#define cdecl_english_H
+#ifndef cdecl_english_h
+#define cdecl_english_h
 
 /**
  * @file
@@ -104,5 +104,5 @@ void c_typedef_english( c_typedef_t const *tdef, FILE *fout );
 
 /** @} */
 
-#endif /* cdecl_english_H */
+#endif /* cdecl_english_h */
 /* vim:set et sw=2 ts=2: */

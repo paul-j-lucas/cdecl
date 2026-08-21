@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_cli_options_H
-#define cdecl_cli_options_H
+#ifndef cdecl_cli_options_h
+#define cdecl_cli_options_h
 
 /**
  * @file
@@ -96,5 +96,5 @@ void cli_options_init( int *const pargc, char const *const *pargv[] );
 
 /** @} */
 
-#endif /* cdecl_cli_options_H */
+#endif /* cdecl_cli_options_h */
 /* vim:set et sw=2 ts=2: */

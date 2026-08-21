@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef pjl_unit_test_H
-#define pjl_unit_test_H
+#ifndef pjl_unit_test_h
+#define pjl_unit_test_h
 
 /// @cond DOXYGEN_IGNORE
 
@@ -101,5 +101,5 @@ void test_prog_init( int argc, char const *const argv[] );
 
 /** @} */
 
-#endif /* pjl_unit_test_H */
+#endif /* pjl_unit_test_h */
 /* vim:set et sw=2 ts=2: */

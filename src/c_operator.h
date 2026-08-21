@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_c_operator_H
-#define cdecl_c_operator_H
+#ifndef cdecl_c_operator_h
+#define cdecl_c_operator_h
 
 /**
  * @file
@@ -169,5 +169,5 @@ inline char const* c_op_token_c( c_op_id_t op_id ) {
 
 /** @} */
 
-#endif /* cdecl_c_operator_H */
+#endif /* cdecl_c_operator_h */
 /* vim:set et sw=2 ts=2: */

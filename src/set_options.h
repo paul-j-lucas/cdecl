@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_set_options_H
-#define cdecl_set_options_H
+#ifndef cdecl_set_options_h
+#define cdecl_set_options_h
 
 /**
  * @file
@@ -141,5 +141,5 @@ set_option_t const* set_option_next( set_option_t const *opt );
 
 /** @} */
 
-#endif /* cdecl_set_options_H */
+#endif /* cdecl_set_options_h */
 /* vim:set et sw=2 ts=2: */
