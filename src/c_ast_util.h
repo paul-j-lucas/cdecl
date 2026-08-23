@@ -275,8 +275,10 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
  * Checks whether \a ast is an AST for a #K_POINTER to another AST having \a
- * type; or a `typedef` thereof.  For example:
+ * type; or a `typedef` thereof.
  *
+ * @par Examples
+ * @parblock
  *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT_B(TB_char) )`
  *    @par
  *    Returns `true` only if \a ast is a pointer to `char` (`char*`) _exactly_.
@@ -291,8 +293,8 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  *    @par
  *    Returns `true` only if \a ast is a pointer to `char` regardless of
  *    `const` (`char*` or `char const*`).
+ * @endparblock
  *
- * <p>
  * @param ast The AST to check.
  * @param mask_type The type mask to apply to the type of \a ast before
  * equality comparison with \a type.
@@ -389,8 +391,10 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
 
 /**
  * Checks whether one of the type IDs of the type of \a ast is any one of \a
- * tids.  This function is a variant of c_ast_is_tid_any() that also returns
- * the qualifier(s) of \a ast.
+ * tids.
+ *
+ * @note This function is a variant of c_ast_is_tid_any() that also returns the
+ * qualifier(s) of \a ast.
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
@@ -477,8 +481,10 @@ NODISCARD
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
- * Creates a #K_POINTER AST to \a ast.  The name of \a ast (or one of its child
- * nodes), if any, is moved to the new pointer AST.
+ * Creates a #K_POINTER AST to \a ast.
+ *
+ * @note The name of \a ast (or one of its child nodes), if any, is moved to
+ * the new pointer AST.
  *
  * @param ast The AST to create a pointer to.
  * @param ast_list The list to append the new pointer AST node onto.
@@ -513,7 +519,9 @@ inline c_ast_t* nonconst_c_ast_root( c_ast_t *ast ) {
  * Checks \a ast to see if it contains one or more of \a type: if so, removes
  * them.
  *
- * @remarks This is used in cases like:
+ * @remarks
+ * @parblock
+ * This is used in cases like:
  *
  *      explain typedef int *p
  *
@@ -524,6 +532,7 @@ inline c_ast_t* nonconst_c_ast_root( c_ast_t *ast ) {
  * and _not_:
  *
  *      declare p as pointer to typedef integer
+ * @endparblock
  *
  * @param ast The AST to check.
  * @param type A type where each type ID is the bitwise-or of type IDs to find.
@@ -754,7 +763,9 @@ inline bool c_ast_print_as_using( c_ast_t const *ast ) {
  * if it's an integral type), source location, and qualifiers bitwise-or'd in,
  * effectively substituting the `typedef`'d type.
  *
- * For example, given:
+ * @par Example
+ * @parblock
+ * Given:
  *
  *      cdecl> typedef enum E T
  *      cdecl> explain T x : 4
@@ -766,6 +777,7 @@ inline bool c_ast_print_as_using( c_ast_t const *ast ) {
  *
  * so that we can check _that_ for errors.  (In this case, it's an error since
  * enumerations can't be bit-fields in C.)
+ * @endparblock
  *
  * @param ast The AST to get what it's a `typedef` for .  It _must_ be of kind
  * #K_TYPEDEF.

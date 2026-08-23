@@ -153,13 +153,19 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
 
 /**
  * Helper function for c_ast_add_array_impl().
+ *
+ * @remarks
+ * @parblock
  * If \a ast is:
  *  + Not of \ref c_ast::kind "kind" #K_ARRAY, makes \a array_ast an array of
  *    \a ast.
  *  + Of \ref c_ast::kind "kind" #K_ARRAY, appends \a array_ast to the end of
  *    the array AST chain.
+ * @endparblock
  *
- * For example, given:
+ * @par Example
+ * @parblock
+ * Given:
  *
  *  + \a ast = `array 3 of array 5 of int`
  *  + \a array_ast = `array 7 of NULL`
@@ -167,6 +173,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
  * this function returns:
  *
  *  + `array 3 of array 5 of array 7 of int`
+ * @endparblock
  *
  * @param ast The AST to append to.
  * @param array_ast The #K_ARRAY AST to append.  Its \a ref c_array_ast::of_ast
@@ -350,7 +357,9 @@ static c_ast_t const* c_ast_is_tid_any_qual_impl( c_ast_t const *ast,
  * Takes the storage (and attributes), if any, away from \a ast
  * (with the intent of giving them to another AST).
  *
- * @remarks This is used is cases like:
+ * @remarks
+ * @parblock
+ * This is used is cases like:
  *
  *      explain static int f()
  *
@@ -364,6 +373,7 @@ static c_ast_t const* c_ast_is_tid_any_qual_impl( c_ast_t const *ast,
  *
  * i.e., the `static` has to be taken away from `int` and given to the function
  * because it's the function that's `static`, not the `int`.
+ * @endparblock
  *
  * @param ast The AST to take from.
  * @return Returns said storage (and attributes) or #T_NONE.

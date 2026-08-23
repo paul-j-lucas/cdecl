@@ -427,7 +427,9 @@ struct c_operator_ast {
 /**
  * AST node for a #K_POINTER_TO_MEMBER.
  *
- * For example, a declaration like:
+ * @par Example
+ * @parblock
+ * A declaration like:
  *
  *      c++decl> explain int C::*p
  *      declare p as pointer to member of class C int
@@ -450,6 +452,7 @@ struct c_operator_ast {
  *          }
  *        }
  *      }
+ * @endparblock
  *
  * @note Members are laid out in the same order as c_csu_ast and c_enum_ast:
  * this is taken advantage of.
