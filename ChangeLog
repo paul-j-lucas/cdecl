@@ -1,3 +1,13 @@
+2026-08-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Added -fno-sanitize-recover=all.
+   * cli_options.c: Sorted features.
+
+2026-08-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * SECURITY.md: Fix URL.
+   * SECURITY.md: Placate pedantic repository-scanning-and-reporting tools.
+
 2026-08-21  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, autocomplete.h, bit_util.h, c_ast.h, c_ast_check.h,
