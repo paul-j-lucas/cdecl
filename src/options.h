@@ -217,7 +217,7 @@ bool parse_cdecl_debug( char const *debug_format );
  * @param test_format
  * @parblock
  * The null-terminated **cdecl** test format string (case sensitive) to parse.
- * Value format are:
+ * Valid formats are:
  *
  * Format | Meaning
  * -------|-----------------------------------------------------------------
