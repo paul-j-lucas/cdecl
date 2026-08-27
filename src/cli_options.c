@@ -870,12 +870,15 @@ static void print_version( bool verbose ) {
 
   PUTS( "\nconfigure feature & package options:" );
   bool printed_opt = false;
-#ifdef ENABLE_ASAN
-  PUT_CONFIG_OPT( "enable-asan" );
-#endif /* ENABLE_ASAN */
 #ifdef NDEBUG
   PUT_CONFIG_OPT( "disable-assert" );
 #endif /* NDEBUG */
+#ifndef ENABLE_TERM_SIZE
+  PUT_CONFIG_OPT( "disable-term-size" );
+#endif /* ENABLE_TERM_SIZE */
+#ifdef ENABLE_ASAN
+  PUT_CONFIG_OPT( "enable-asan" );
+#endif /* ENABLE_ASAN */
 #ifdef ENABLE_BISON_DEBUG
   PUT_CONFIG_OPT( "enable-bison-debug" );
 #endif /* ENABLE_BISON_DEBUG */
@@ -888,15 +891,12 @@ static void print_version( bool verbose ) {
 #ifdef ENABLE_MSAN
   PUT_CONFIG_OPT( "enable-msan" );
 #endif /* ENABLE_MSAN */
-#ifndef WITH_READLINE
-  PUT_CONFIG_OPT( "without-readline" );
-#endif /* WITH_READLINE */
-#ifndef ENABLE_TERM_SIZE
-  PUT_CONFIG_OPT( "disable-term-size" );
-#endif /* ENABLE_TERM_SIZE */
 #ifdef ENABLE_UBSAN
   PUT_CONFIG_OPT( "enable-ubsan" );
 #endif /* ENABLE_UBSAN */
+#ifndef WITH_READLINE
+  PUT_CONFIG_OPT( "without-readline" );
+#endif /* WITH_READLINE */
   if ( !printed_opt )
     PUTS( " none" );
   putchar( '\n' );
