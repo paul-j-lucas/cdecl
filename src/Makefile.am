@@ -27,15 +27,15 @@ check_PROGRAMS =	red_black_test slist_test strbuf_test util_test
 AM_CFLAGS =		$(CDECL_CFLAGS)
 
 if ENABLE_ASAN
-AM_CFLAGS +=		-fsanitize=address -fno-omit-frame-pointer
+AM_CFLAGS +=		-fsanitize=address -fno-sanitize-recover=all
 endif
 
 if ENABLE_MSAN
-AM_CFLAGS +=		-fsanitize=memory -fno-omit-frame-pointer
+AM_CFLAGS +=		-fsanitize=memory -fno-sanitize-recover=all
 endif
 
 if ENABLE_UBSAN
-AM_CFLAGS +=		-fsanitize=undefined
+AM_CFLAGS +=		-fsanitize=undefined -fno-sanitize-recover=all
 endif
 
 if ENABLE_COVERAGE
