@@ -147,8 +147,6 @@ $(SYMLINKS): $(CDECL)
 	rm -f $@
 	$(LN_S) $(CDECL) $@
 
-check-local: clean-coverage-local
-
 tidy:
 	@for file in *.h *.c; do \
 	  [ ! -f "$$file" ] || \
