@@ -1,3 +1,7 @@
+2026-09-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * Makefile.am, src/Makefile.am: Code coverage fixes.
+
 2026-08-26  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am: Added -fno-sanitize-recover=all.
