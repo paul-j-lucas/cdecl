@@ -65,10 +65,12 @@
 #define TEST_FUNC_END() \
   return test_failures == test_failures_start
 
-///////////////////////////////////////////////////////////////////////////////
+////////// extern variables ///////////////////////////////////////////////////
 
-// extern variables
-extern unsigned     test_failures;      ///< Test failure count.
+extern int      test_exit_status;       ///< The test's exit status.
+extern unsigned test_failures;          ///< Test failure count.
+
+////////// extern functions ///////////////////////////////////////////////////
 
 /**
  * Helper function for the #TEST() macro that, if \a expr_is_true is `false`,

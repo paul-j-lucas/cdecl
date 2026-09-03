@@ -191,6 +191,8 @@ int main( int argc, char const *const argv[] ) {
   test_strncmp_in_set();
   test_strnspn();
   test_str_realloc_pcat();
+
+  return test_exit_status;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

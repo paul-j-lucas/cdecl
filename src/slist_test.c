@@ -646,6 +646,8 @@ int main( int argc, char const *const argv[] ) {
     test_slist_push_list_back();
     test_slist_pop_front();
   }
+
+  return test_exit_status;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -84,6 +84,8 @@ int main( int argc, char const *const argv[] ) {
 
   test_strbuf_paths();
   test_strbuf_put_quoted();
+
+  return test_exit_status;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

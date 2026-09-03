@@ -292,6 +292,8 @@ int main( int argc, char const *const argv[] ) {
 
   test_script( RB_DINT );
   test_script( RB_DPTR );
+
+  return test_exit_status;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
