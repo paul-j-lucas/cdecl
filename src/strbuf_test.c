@@ -38,6 +38,8 @@ static bool test_strbuf_paths( void ) {
   TEST( strcmp( sbuf.str, "a" ) == 0 );
   strbuf_paths( &sbuf, "b" );
   TEST( strcmp( sbuf.str, "a/b" ) == 0 );
+  strbuf_paths( &sbuf, "" );
+  TEST( strcmp( sbuf.str, "a/b" ) == 0 );
 
   strbuf_reset( &sbuf );
   strbuf_puts( &sbuf, "a/" );
@@ -45,9 +47,35 @@ static bool test_strbuf_paths( void ) {
   TEST( strcmp( sbuf.str, "a/b" ) == 0 );
 
   strbuf_reset( &sbuf );
+  strbuf_puts( &sbuf, "a/" );
+  strbuf_paths( &sbuf, "/b" );
+  TEST( strcmp( sbuf.str, "a/b" ) == 0 );
+
+  strbuf_reset( &sbuf );
   strbuf_paths( &sbuf, "a" );
   strbuf_paths( &sbuf, "/b" );
   TEST( strcmp( sbuf.str, "a/b" ) == 0 );
+
+  strbuf_cleanup( &sbuf );
+  TEST_FUNC_END();
+}
+
+static bool test_strbuf_printf( void ) {
+  TEST_FUNC_BEGIN();
+  strbuf_t sbuf;
+
+  strbuf_init( &sbuf );
+  strbuf_printf( &sbuf, "he" );
+  TEST( sbuf.len == 2 );
+  TEST( sbuf.cap >= sbuf.len );
+  if ( TEST( sbuf.str != NULL ) )
+    TEST( strcmp( sbuf.str, "he" ) == 0 );
+
+  strbuf_printf( &sbuf, "llo" );
+  TEST( sbuf.len == 5 );
+  TEST( sbuf.cap >= sbuf.len );
+  if ( TEST( sbuf.str != NULL ) )
+    TEST( strcmp( sbuf.str, "hello" ) == 0 );
 
   strbuf_cleanup( &sbuf );
   TEST_FUNC_END();
@@ -73,6 +101,10 @@ static bool test_strbuf_put_quoted( void ) {
   strbuf_puts_quoted( &sbuf, '"', "a \"b\" c" );
   TEST( strcmp( sbuf.str, "\"a \\\"b\\\" c\"" ) == 0 );
 
+  strbuf_reset( &sbuf );
+  strbuf_puts_quoted( &sbuf, '"', "\b\f\n\r\t\v" );
+  TEST( strcmp( sbuf.str, "\"\\b\\f\\n\\r\\t\\v\"" ) == 0 );
+
   strbuf_cleanup( &sbuf );
   TEST_FUNC_END();
 }
@@ -83,6 +115,7 @@ int main( int argc, char const *const argv[] ) {
   test_prog_init( argc, argv );
 
   test_strbuf_paths();
+  test_strbuf_printf();
   test_strbuf_put_quoted();
 
   return test_exit_status;
