@@ -90,9 +90,8 @@
  */
 #define CPPDECL                   "c++decl"
 
-///////////////////////////////////////////////////////////////////////////////
+////////// extern variables ///////////////////////////////////////////////////
 
-// extern variables
 extern bool         cdecl_is_initialized; ///< Initialized (read config. file)?
 extern char const  *cdecl_input_path;     ///< Current input file path, if any.
 extern bool         cdecl_is_interactive; ///< Interactive (connected to a tty)?
