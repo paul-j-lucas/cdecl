@@ -36,10 +36,11 @@ EXTRA_DIST =	bootstrap \
 		README-blocks.txt \
 		README.md
 
+DOCS_DIR = 	docs
+
+if ENABLE_COVERAGE
 COVERAGE_INFO =	$(top_builddir)/coverage.info
 COVERAGE_DIR =	coverage
-
-DOCS_DIR = 	docs
 
 LCOV_FLAGS =	--capture \
 		--config-file "$(top_srcdir)/lcovrc" \
@@ -50,11 +51,13 @@ LCOV_FLAGS =	--capture \
 		--exclude "*/lexer.c" \
 		--exclude "*/parser.c" \
 		--gcov-tool "$(GCOV)" \
+		--ignore-errors unused \
 		--output-file $(COVERAGE_INFO)
 
 GENHTML_FLAGS =	--legend \
 		--title "$(PACKAGE_NAME)-$(PACKAGE_VERSION) Code Coverage" \
 		--output-directory $(top_builddir)/$(COVERAGE_DIR)
+endif
 
 .PHONY:	clean-coverage clean-coverage-local \
 	distclean-coverage distclean-coverage-local \
@@ -74,16 +77,22 @@ else
 	@echo "    ./configure --enable-coverage"
 endif
 
+check-recursive: clean-coverage
+
 clean-local: clean-coverage-local
 	rm -fr $(DOCS_DIR)
 
 clean-coverage-local:
+if ENABLE_COVERAGE
 	rm -f $(COVERAGE_INFO)
+endif
 
 distclean-local: distclean-coverage-local
 
 distclean-coverage-local:
+if ENABLE_COVERAGE
 	rm -fr $(COVERAGE_DIR)
+endif
 
 dist-hook:
 	find $(distdir) -name .DS_Store -exec rm -f {} \;

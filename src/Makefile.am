@@ -158,11 +158,13 @@ clean-local:
 
 distclean-local: distclean-coverage-local
 
+if ENABLE_COVERAGE
 clean-coverage-local:
 	rm -f *.gcda
 
 distclean-coverage-local: clean-coverage-local
 	rm -f *.gcno
+endif
 
 parser.output: parser.y
 	bison -v --report=all $<
