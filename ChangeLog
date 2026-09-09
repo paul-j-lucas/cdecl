@@ -1,3 +1,7 @@
+2026-09-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Fixed MAX_DEC_INT_DIGITS.
+
 2026-09-07  Paul J. Lucas <paul@lucasmail.org>
 
    * Makefile.am, src/Makefile.am, test/Makefile.am: Better cleaning of
