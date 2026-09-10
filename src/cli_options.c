@@ -471,8 +471,7 @@ static color_when_t parse_color_when( char const *when ) {
   } // for
 
   // name not found: construct valid name list for an error message
-  strbuf_t when_sbuf;
-  strbuf_init( &when_sbuf );
+  strbuf_t when_sbuf = STRBUF_INIT();
   bool comma = false;
   FOREACH_ARRAY_ELEMENT( colorize_map_t, m, COLORIZE_MAP )
     strbuf_sepsn_puts( &when_sbuf, ", ", 2, &comma, m->map_when );
@@ -493,8 +492,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
   if ( lang_id != LANG_NONE )
     return lang_id;
 
-  strbuf_t langs_sbuf;
-  strbuf_init( &langs_sbuf );
+  strbuf_t langs_sbuf = STRBUF_INIT();
   bool comma = false;
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )

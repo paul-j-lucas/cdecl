@@ -270,11 +270,8 @@ static char const* home_dir( void ) {
 void config_init( char const *config_path ) {
   ASSERT_RUN_ONCE();
 
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
-
+  strbuf_t sbuf = STRBUF_INIT();
   FILE *const config_file = config_find( config_path, &sbuf );
-
   int rv_parse = EX_OK;
 
   if ( config_file != NULL ) {

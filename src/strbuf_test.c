@@ -31,9 +31,8 @@
 
 static bool test_strbuf_paths( void ) {
   TEST_FUNC_BEGIN();
-  strbuf_t sbuf;
+  strbuf_t sbuf = STRBUF_INIT();
 
-  strbuf_init( &sbuf );
   strbuf_paths( &sbuf, "a" );
   TEST( strcmp( sbuf.str, "a" ) == 0 );
   strbuf_paths( &sbuf, "b" );
@@ -62,9 +61,8 @@ static bool test_strbuf_paths( void ) {
 
 static bool test_strbuf_printf( void ) {
   TEST_FUNC_BEGIN();
-  strbuf_t sbuf;
+  strbuf_t sbuf = STRBUF_INIT();
 
-  strbuf_init( &sbuf );
   strbuf_printf( &sbuf, "he" );
   TEST( sbuf.len == 2 );
   TEST( sbuf.cap >= sbuf.len );
@@ -83,9 +81,8 @@ static bool test_strbuf_printf( void ) {
 
 static bool test_strbuf_put_quoted( void ) {
   TEST_FUNC_BEGIN();
-  strbuf_t sbuf;
+  strbuf_t sbuf = STRBUF_INIT();
 
-  strbuf_init( &sbuf );
   strbuf_puts_quoted( &sbuf, '\'', "a" );
   TEST( strcmp( sbuf.str, "'a'" ) == 0 );
 
@@ -102,8 +99,8 @@ static bool test_strbuf_put_quoted( void ) {
   TEST( strcmp( sbuf.str, "\"a \\\"b\\\" c\"" ) == 0 );
 
   strbuf_reset( &sbuf );
-  strbuf_puts_quoted( &sbuf, '"', "\b\f\n\r\t\v" );
-  TEST( strcmp( sbuf.str, "\"\\b\\f\\n\\r\\t\\v\"" ) == 0 );
+  strbuf_puts_quoted( &sbuf, '"', "\b\f\n\r\t\v\\" );
+  TEST( strcmp( sbuf.str, "\"\\b\\f\\n\\r\\t\\v\\\\\"" ) == 0 );
 
   strbuf_cleanup( &sbuf );
   TEST_FUNC_END();

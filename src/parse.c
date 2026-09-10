@@ -166,10 +166,9 @@ static int cdecl_parse_command( char const *command, size_t cli_count,
   if ( command == NULL && cli_count == 0 )
     return cdecl_parse_stdin();         // invoked as just cdecl, no arguments
 
-  strbuf_t sbuf;
+  strbuf_t sbuf = STRBUF_INIT();
   bool space;
 
-  strbuf_init( &sbuf );
   // If command wasn't cdecl or c++decl, start the command string with it.
   if ( (space = command != NULL) )
     strbuf_puts( &sbuf, command );      // LCOV_EXCL_LINE
@@ -206,8 +205,7 @@ NODISCARD
 static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
   assert( fin != NULL );
 
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
+  strbuf_t sbuf = STRBUF_INIT();
   int rv_parse = EX_OK;
 
   yylineno = 1;                         // reset before reading any file
@@ -243,8 +241,7 @@ static bool cdecl_parse_macro( char const *s ) {
   SKIP_CHARS( s, IDENT_CHARS );
   size_t const ident_len = STATIC_CAST( size_t, s - ident );
 
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
+  strbuf_t sbuf = STRBUF_INIT();
   strbuf_putsn( &sbuf, ident, ident_len );
   p_macro_t const *const macro = p_macro_find( sbuf.str );
   strbuf_cleanup( &sbuf );

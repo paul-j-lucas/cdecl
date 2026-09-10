@@ -65,9 +65,10 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 void strbuf_cleanup( strbuf_t *sbuf ) {
-  assert( sbuf != NULL );
-  free( sbuf->str );
-  strbuf_init( sbuf );
+  if ( sbuf != NULL ) {
+    free( sbuf->str );
+    strbuf_init( sbuf );
+  }
 }
 
 char* strbuf_paths( strbuf_t *sbuf, char const *component ) {
@@ -102,37 +103,11 @@ char* strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   assert( sbuf != NULL );
   assert( format != NULL );
 
-  char *buf = sbuf->str == NULL ? NULL: sbuf->str + sbuf->len;
-
-  //
-  // Attempt to concatenate onto the existing buffer: vsnprintf() returns the
-  // number of characters that _would_ have been printed if the buffer were
-  // unlimited.
-  //
   va_list args;
   va_start( args, format );
-  int raw_len = vsnprintf( buf, sbuf->cap - sbuf->len, format, args );
+  char *const rv = strbuf_vprintf( sbuf, format, args );
   va_end( args );
-  PERROR_EXIT_IF( raw_len < 0, EX_IOERR );
-
-  //
-  // Then reserve that number of characters: if strbuf_reserve() returns false,
-  // it means the buffer was already big enough and so all the characters were
-  // put into it by vsnprintf() which means we're done; otherwise, it means the
-  // buffer wasn't big enough so all the characters didn't fit, but the buffer
-  // was grown so they _will_ fit if we vsnprintf() again.
-  //
-  size_t const args_len = STATIC_CAST( size_t, raw_len );
-  if ( strbuf_reserve( sbuf, args_len ) ) {
-    buf = sbuf->str + sbuf->len;
-    va_start( args, format );
-    raw_len = vsnprintf( buf, args_len + 1/*'\0'*/, format, args );
-    va_end( args );
-    PERROR_EXIT_IF( raw_len < 0, EX_IOERR );
-  }
-
-  sbuf->len += args_len;
-  return sbuf->str;
+  return rv;
 }
 
 char* strbuf_putsn( strbuf_t *sbuf, char const *s, size_t n ) {
@@ -213,6 +188,46 @@ void strbuf_sepsn_putsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
   }
 
   strbuf_putsn( sbuf, s, s_len );
+}
+
+char* strbuf_vprintf( strbuf_t *sbuf, char const *format, va_list args ) {
+  assert( sbuf != NULL );
+  assert( format != NULL );
+
+  char *buf = sbuf->str == NULL ? NULL: sbuf->str + sbuf->len;
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
+  //
+  // Attempt to concatenate onto the existing buffer: vsnprintf() returns the
+  // number of characters that _would_ have been printed if the buffer were
+  // unlimited.
+  //
+  va_list args_copy;
+  va_copy( args_copy, args );
+  int raw_len = vsnprintf( buf, sbuf->cap - sbuf->len, format, args_copy );
+  va_end( args_copy );
+  PERROR_EXIT_IF( raw_len < 0, EX_IOERR );
+
+  //
+  // Then reserve that number of characters: if strbuf_reserve() returns false,
+  // it means the buffer was already big enough and so all the characters were
+  // put into it by vsnprintf() which means we're done; otherwise, it means the
+  // buffer wasn't big enough so all the characters didn't fit, but the buffer
+  // was grown so they _will_ fit if we vsnprintf() again.
+  //
+  size_t const args_len = STATIC_CAST( size_t, raw_len );
+  if ( strbuf_reserve( sbuf, args_len ) ) {
+    buf = sbuf->str + sbuf->len;
+    raw_len = vsnprintf( buf, args_len + 1/*'\0'*/, format, args );
+    PERROR_EXIT_IF( raw_len < 0, EX_IOERR );
+  }
+
+#pragma GCC diagnostic pop
+
+  sbuf->len += args_len;
+  return sbuf->str;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

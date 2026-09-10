@@ -1138,8 +1138,7 @@ static mex_rv_t mex_concat_string_literals( mex_state_t *mex ) {
     if ( token->kind != P_STR_LIT )
       goto skip;
 
-    strbuf_t sbuf;
-    strbuf_init( &sbuf );
+    strbuf_t sbuf = STRBUF_INIT();
 
     while ( token_node->next != NULL ) {
       p_token_node_t *const next_node =
@@ -1444,8 +1443,7 @@ static mex_rv_t mex_expand_all_concat( mex_state_t *mex ) {
       );
     }
 
-    strbuf_t sbuf;
-    strbuf_init( &sbuf );
+    strbuf_t sbuf = STRBUF_INIT();
     strbuf_puts( &sbuf, p_token_str( token ) );
 
     do {
