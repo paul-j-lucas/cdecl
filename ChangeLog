@@ -1,3 +1,10 @@
+2026-09-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c, config_file.c, p_macro.c, parse.c, strbuf.c, strbuf.h,
+     strbuf_test.c: Updated strbuf from include-tidy.
+   * util.c: Fixed fputs_quoted().
+   * strbuf.c, expand-C23_std-6.10.4.5-ex-4.out: Fixed strbuf_puts_quoted().
+
 2026-09-09  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Fixed MAX_DEC_INT_DIGITS.
