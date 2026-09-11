@@ -179,14 +179,14 @@ endif
 
 ###############################################################################
 
-BUILD_SRC =		$(abs_top_builddir)/src
+ABS_TOP_BUILDDIR =	$(abs_top_builddir)
 EXP_LOG_DRIVER =	$(srcdir)/bin/run_test.sh
 EXTRA_DIST =		bin data expected tests
 TEST_EXTENSIONS =	.exp .test
 TEST_LOG_DRIVER =	$(srcdir)/bin/run_test.sh
 UPDATE_TEST =		$(srcdir)/bin/update_test.sh
 
-AM_TESTS_ENVIRONMENT = BUILD_SRC=$(BUILD_SRC) ; export BUILD_SRC ;
+AM_TESTS_ENVIRONMENT = ABS_TOP_BUILDDIR=$(ABS_TOP_BUILDDIR) ; export ABS_TOP_BUILDDIR ;
 
 .PHONY: top-clean-coverage
 
@@ -200,6 +200,6 @@ dist-hook:
 
 update: top-clean-coverage
 	@ls $(TESTS) | xargs -n255 -r \
-	$(UPDATE_TEST) -s "$(BUILD_SRC)"
+	$(UPDATE_TEST) -B "$(ABS_TOP_BUILDDIR)"
 
 # vim:set noet sw=8 ts=8:

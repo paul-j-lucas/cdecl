@@ -105,11 +105,6 @@ END
 
 ME=$(local_basename "$0")
 
-[ "$BUILD_SRC" ] || {
-  echo "$ME: \$BUILD_SRC not set" >&2
-  exit 2
-}
-
 [ "$LINENO" ] || {
   echo "$ME: shell's \$LINENO not set" >&2
   exit 3
@@ -176,6 +171,7 @@ TEST_NAME=$(local_basename "$TEST_NAME")
 
 ########## Initialize #########################################################
 
+[ "$ABS_TOP_BUILDDIR" ] || error 78 '$ABS_TOP_BUILDDIR not set'
 if [ "$COLOR_TESTS" = yes -a -t 1 ]
 then
   COLOR_BLUE="[1;34m"
@@ -206,9 +202,10 @@ DATA_DIR="$srcdir/data"
 EXPECTED_DIR="$srcdir/expected"
 
 ##
-# Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
+# Must put $ABS_TOP_BUILDDIR/src first in PATH so we get the correct version of
+# include-tidy.
 ##
-PATH="$BUILD_SRC:$PATH"
+PATH="$ABS_TOP_BUILDDIR/src:$PATH"
 
 ##
 # Disable core dumps so we won't fill up the disk with them if a bunch of tests

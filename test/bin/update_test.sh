@@ -24,6 +24,12 @@
 
 ########## Functions ##########################################################
 
+error() {
+  exit_status=$1; shift
+  echo $ME: $*
+  exit $exit_status
+}
+
 local_basename() {
   ##
   # Autoconf, 11.15:
@@ -56,10 +62,10 @@ ME=$(local_basename "$0")
 
 ########## Process command-line ###############################################
 
-while getopts s: opt
+while getopts B:s: opt
 do
   case $opt in
-  s) BUILD_SRC="$OPTARG" ;;
+  B) ABS_TOP_BUILDDIR="$OPTARG" ;;
   ?) usage ;;
   esac
 done
@@ -69,10 +75,7 @@ shift $(( OPTIND - 1 ))
 
 ########## Initialize #########################################################
 
-[ "$BUILD_SRC" ] || {
-  echo "$ME: \$BUILD_SRC not set" >&2
-  exit 2
-}
+[ "$ABS_TOP_BUILDDIR" ] || error 78 '$ABS_TOP_BUILDDIR not set'
 
 [ "$TMPDIR" ] || TMPDIR=/tmp
 trap "x=$?; rm -f $TMPDIR/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
@@ -88,9 +91,10 @@ EXPECTED_DIR="$srcdir/expected"
 ACTUAL_OUTPUT="$TMPDIR/cdecl_test_output_$$_"
 
 ##
-# Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
+# Must put $ABS_TOP_BUILDDIR/src first in PATH so we get the correct version of
+# include-tidy.
 ##
-PATH=$BUILD_SRC:$PATH
+PATH="$ABS_TOP_BUILDDIR/src:$PATH"
 
 ##
 # Disable core dumps so we won't fill up the disk with them if a bunch of tests
