@@ -180,11 +180,11 @@ endif
 ###############################################################################
 
 BUILD_SRC =		$(abs_top_builddir)/src
-EXP_LOG_DRIVER =	$(srcdir)/run_test.sh
-EXTRA_DIST =		run_test.sh tests data expected
+EXP_LOG_DRIVER =	$(srcdir)/bin/run_test.sh
+EXTRA_DIST =		bin data expected tests
 TEST_EXTENSIONS =	.exp .test
-TEST_LOG_DRIVER =	$(srcdir)/run_test.sh
-UPDATE_TEST =		$(srcdir)/update_test.sh
+TEST_LOG_DRIVER =	$(srcdir)/bin/run_test.sh
+UPDATE_TEST =		$(srcdir)/bin/update_test.sh
 
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(BUILD_SRC) ; export BUILD_SRC ;
 
@@ -199,6 +199,7 @@ dist-hook:
 	cd $(distdir)/tests && rm -f *.log *.trs
 
 update: top-clean-coverage
-	@ls $(TESTS) | xargs -n255 -r $(UPDATE_TEST) -s $(BUILD_SRC)
+	@ls $(TESTS) | xargs -n255 -r \
+	$(UPDATE_TEST) -s "$(BUILD_SRC)"
 
 # vim:set noet sw=8 ts=8:

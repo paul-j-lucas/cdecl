@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 ##
 #       cdecl -- C gibberish translator
-#       test/run_test.sh
+#       test/bin/run_test.sh
 #
 #       Copyright (C) 2017-2026  Paul J. Lucas
 #
