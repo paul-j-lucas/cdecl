@@ -1,5 +1,12 @@
+2026-09-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Now running clean-coverage for $(bin_PROGRAMS).
+
 2026-09-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * test/Makefile.am, run_test.sh, update_test.sh: More inline with
+     include-tidy.
+   * test/Makefile.am: Make closer to include-tidy.
    * cli_options.c, config_file.c, p_macro.c, parse.c, strbuf.c, strbuf.h,
      strbuf_test.c: Updated strbuf from include-tidy.
    * util.c: Fixed fputs_quoted().
