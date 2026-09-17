@@ -105,7 +105,7 @@
  * @param STR The C string to dump.
  */
 #define DUMP_STR(KEY,STR) BLOCK( \
-  DUMP_KEY( KEY ": " ); fputs_quoted( (STR), '"', dump.fout ); )
+  DUMP_KEY( KEY ": " ); fputs_quoted( (STR), dump.fout ); )
 
 /**
  * The maximum indentation for printing macros.

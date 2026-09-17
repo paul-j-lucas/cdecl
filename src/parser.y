@@ -492,7 +492,7 @@
  * @sa #DUMP_SNAME()
  */
 #define DUMP_STR(KEY,STR) IF_CDECL_DEBUG( \
-  DUMP_KEY( KEY ": " ); fputs_quoted( (STR), '"', dump.fout ); )
+  DUMP_KEY( KEY ": " ); fputs_quoted( (STR), dump.fout ); )
 
 /**
  * Dumps a \ref c_tid_t.

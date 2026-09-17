@@ -245,8 +245,7 @@ void fput_sep( char const *sep, bool *sep_flag, FILE *fout ) {
     FPUTS( sep, fout );
 }
 
-void fputs_quoted( char const *s, char quote, FILE *fout ) {
-  assert( quote == '\'' || quote == '"' );
+void fputs_quoted( char const *s, FILE *fout ) {
   assert( fout != NULL );
 
   if ( s == NULL ) {
@@ -254,7 +253,7 @@ void fputs_quoted( char const *s, char quote, FILE *fout ) {
     return;
   }
 
-  fputc( quote, fout );
+  fputc( '"', fout );
   for ( ; *s != '\0'; ++s ) {
     switch ( *s ) {
       case '\b': fputs( "\\b",  fout ); break;
@@ -264,13 +263,13 @@ void fputs_quoted( char const *s, char quote, FILE *fout ) {
       case '\t': fputs( "\\t",  fout ); break;
       case '\v': fputs( "\\v",  fout ); break;
       default:
-        if ( *s == quote )
+        if ( *s == '"' )
           fputc( '\\', fout );
         fputc( *s, fout );
         break;
     } // switch
   } // for
-  fputc( quote, fout );
+  fputc( '"', fout );
 }
 
 void fputs_sp( char const *s, FILE *out ) {

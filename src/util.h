@@ -1239,12 +1239,11 @@ void fput_sep( char const *sep, bool *sep_flag, FILE *fout );
  * Prints \a s as a quoted string with escaped characters.
  *
  * @param s The string to put.  If NULL, prints `null` (unquoted).
- * @param quote The quote character to use, either <tt>'</tt> or <tt>"</tt>.
  * @param fout The `FILE` to print to.
  *
  * @sa strbuf_puts_quoted()
  */
-void fputs_quoted( char const *s, char quote, FILE *fout );
+void fputs_quoted( char const *s, FILE *fout );
 
 /**
  * If \a s is not empty, prints \a s followed by a space to \a out; otherwise

@@ -78,7 +78,7 @@
   DUMP_KEY( (DUMP), KEY ": " ); c_sname_dump( (SNAME), (DUMP)->fout ); )
 
 #define DUMP_STR(DUMP,KEY,STR) BLOCK( \
-  DUMP_KEY( (DUMP), KEY ": " ); fputs_quoted( (STR), '"', (DUMP)->fout ); )
+  DUMP_KEY( (DUMP), KEY ": " ); fputs_quoted( (STR), (DUMP)->fout ); )
 
 /// @endcond
 
@@ -641,20 +641,20 @@ static void p_token_dump_impl( p_token_t const *token, dump_state_t *dump ) {
     case P_NUM_LIT:
     case P_STR_LIT:
       FPUTS( ", string: ", dump->fout );
-      fputs_quoted( token->lit.value, '"', dump->fout );
+      fputs_quoted( token->lit.value, dump->fout );
       break;
     case P_IDENTIFIER:
       FPUTS( ", string: ", dump->fout );
-      fputs_quoted( token->ident.name, '"', dump->fout );
+      fputs_quoted( token->ident.name, dump->fout );
       break;
     case P_OTHER:
       FPUTS( ", string: ", dump->fout );
       char const other_str[] = { token->other.value, '\0' };
-      fputs_quoted( other_str, '"', dump->fout );
+      fputs_quoted( other_str, dump->fout );
       break;
     case P_PUNCTUATOR:
       FPUTS( ", string: ", dump->fout );
-      fputs_quoted( token->punct.value, '"', dump->fout );
+      fputs_quoted( token->punct.value, dump->fout );
       break;
     case P_CONCAT:
     case P_PLACEMARKER:
