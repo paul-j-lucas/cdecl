@@ -255,17 +255,23 @@ void fputs_quoted( char const *s, FILE *fout ) {
 
   fputc( '"', fout );
   for ( ; *s != '\0'; ++s ) {
-    switch ( *s ) {
+    unsigned char c = STATIC_CAST( unsigned char, *s );
+    switch ( c ) {
+      case '"' : fputs( "\\\"", fout ); break;
+      case '\\': fputs( "\\\\", fout ); break;
+      case '\a': fputs( "\\a",  fout ); break;
       case '\b': fputs( "\\b",  fout ); break;
       case '\f': fputs( "\\f",  fout ); break;
       case '\n': fputs( "\\n",  fout ); break;
       case '\r': fputs( "\\r",  fout ); break;
       case '\t': fputs( "\\t",  fout ); break;
       case '\v': fputs( "\\v",  fout ); break;
+
       default:
-        if ( *s == '"' )
-          fputc( '\\', fout );
-        fputc( *s, fout );
+        if ( likely( c >= 0x20 && c < 0x7F ) )
+          fputc( c, fout );
+        else
+          fprintf( fout, "\\x%02x", c );
         break;
     } // switch
   } // for
