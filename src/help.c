@@ -110,7 +110,9 @@ static bool command_is_any( cdecl_command_t const *command,
  * Convenience macro for calling the function of the same name constructing the
  * compound literal and ensuring it always end with NULL.
  *
- * @param ... The function's arguments.
+ * @param COMMAND The **cdecl** command to check.
+ * @param ... The strings to compare against.
+ * @return Returns `true` only if \a COMMAND is either NULL or among ...
  */
 #define command_is_any(COMMAND,...)                                       \
   command_is_any( (COMMAND),                                              \
