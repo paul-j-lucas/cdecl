@@ -1,3 +1,13 @@
+2026-09-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * lcovrc: Removed STRERROR; added }$ and } //.
+
+2026-09-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Copied more of fputs_escaped() from include-tidy over.
+   * dump.c, p_macro.c, parser.y, util.c, util.h: Eliminated "quote" parameter
+     from fputs_quoted().
+
 2026-09-14  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am: Now running clean-coverage for $(bin_PROGRAMS).
