@@ -21,38 +21,39 @@
 # Suppress printing of "--- target ---" when -j is given to BSD's make.
 .MAKE.JOB.PREFIX=
 
-ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = lib share src test
+ACLOCAL_AMFLAGS =	-I m4
+SUBDIRS =		lib share src test
 
-EXTRA_DIST =	bootstrap \
-		cdecl.css \
-		Doxygen.sed \
-		Doxyfile \
-		lcovrc \
-		m4/gnulib-cache.m4 \
-		m4/update_m4.sh \
-		makedoc.sh \
-		README-2.5.txt \
-		README-blocks.txt \
-		README.md
+EXTRA_DIST =		bootstrap \
+			cdecl.css \
+			Doxygen.sed \
+			Doxyfile \
+			lcovrc \
+			m4/gnulib-cache.m4 \
+			m4/update_m4.sh \
+			makedoc.sh \
+			README-2.5.txt \
+			README-blocks.txt \
+			README.md
 
-DOCS_DIR = 	docs
+DOCS_DIR = 		docs
 
 if ENABLE_COVERAGE
-COVERAGE_INFO =	$(top_builddir)/coverage.info
-COVERAGE_DIR =	coverage
+COVERAGE_INFO =		$(top_builddir)/coverage.info
+COVERAGE_DIR =		coverage
 
-LCOV_FLAGS =	--capture \
-		--config-file "$(top_srcdir)/lcovrc" \
-		--directory "$(abs_top_builddir)" \
-		--exclude "*/autocomplete.c" \
-		--exclude "*/color.c" \
-		--exclude "*/color.h" \
-		--exclude "*/lexer.c" \
-		--exclude "*/parser.c" \
-		--gcov-tool "$(GCOV)" \
-		--ignore-errors unused \
-		--output-file $(COVERAGE_INFO)
+LCOV_FLAGS =		--capture \
+			--config-file "$(top_srcdir)/lcovrc" \
+			--directory "$(abs_top_builddir)" \
+			--exclude "src/autocomplete.c" \
+			--exclude "src/color.c" \
+			--exclude "src/color.h" \
+			--exclude "src/lexer.c" \
+			--exclude "src/parser.c" \
+			--exclude "src/unit_test.c" \
+			--gcov-tool "$(GCOV)" \
+			--ignore-errors unused \
+			--output-file $(COVERAGE_INFO)
 
 GENHTML_FLAGS =	--legend \
 		--title "$(PACKAGE_NAME)-$(PACKAGE_VERSION) Code Coverage" \
@@ -98,7 +99,7 @@ dist-hook:
 	find $(distdir) -name .DS_Store -exec rm -f {} \;
 
 doc docs:
-	./makedoc.sh $(PACKAGE) $(DOCS_DIR)
+	@./makedoc.sh $(PACKAGE) $(DOCS_DIR)
 
 update-gnulib:
 	gnulib-tool --add-import --no-vc-files
