@@ -532,7 +532,8 @@ void print_error_token_is_a( char const *error_token ) {
         error_token,
         c_lang_name( oldest_lang_id )
       );
-    } else {
+    }
+    else {
       EPRINTF( " (\"%s\" is a keyword", error_token );
       if ( lang_ids != ck->lang_ids )
         EPRINTF( " in %s", c_lang_name( c_lang_oldest( ck->lang_ids ) ) );

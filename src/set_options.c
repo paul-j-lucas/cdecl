@@ -905,7 +905,8 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
       );
       return false;
     }
-  } else {
+  }
+  else {
     if ( is_no ) {
       print_error( opt_value_loc, "\"no\" set options take no value\n" );
       return false;

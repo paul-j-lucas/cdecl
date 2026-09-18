@@ -389,7 +389,8 @@ static void print_help_command( cdecl_command_t const *command ) {
     PUTS( "  " );
     if ( command == NULL ) {
       print_h( "<scope-c>" );
-    } else {
+    }
+    else {
       PUTS( command->literal );
       if ( command->literal == L_inline )
         PUTS( " namespace" );
@@ -462,7 +463,8 @@ static void print_help_english( void ) {
     if ( OPT_LANG_IS( VLAS ) ) {
       print_h( " array [<number>|<name>|\\*] of <english>\n" );
       print_h( "  <store>* <ar-qual>* variable [length] array of <english>\n" );
-    } else {
+    }
+    else {
       print_h( " array [<number>|<name>] of <english>\n" );
     }
     print_h( "  <store>* function [([<args>])] [returning <english>]\n" );

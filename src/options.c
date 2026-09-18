@@ -341,7 +341,8 @@ bool parse_explicit_int( char const *ei_format ) {
         if ( s[1] == 'l' || s[1] == 'L' ) {
           btids |= TB_long_long;
           ++s;
-        } else {
+        }
+        else {
           btids |= TB_long;
         }
         break;

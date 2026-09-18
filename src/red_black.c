@@ -541,7 +541,8 @@ void rb_tree_delete( rb_tree_t *tree, rb_node_t *z_delete ) {
       rb_transplant( tree, y_node, y_node->child[RB_R] );
       y_node->child[RB_R] = z_delete->child[RB_R];
       y_node->child[RB_R]->parent = y_node;
-    } else {
+    }
+    else {
       x_node->parent = y_node;
     }
     rb_transplant( tree, z_delete, y_node );
@@ -617,7 +618,8 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
 
   if ( y_parent == &tree->nil ) {
     tree->root = z_new_node;            // tree was empty
-  } else {
+  }
+  else {
     // Determine which child of the parent the new node should be.
     rb_dir_t const dir = (rb_dir_t)(rb_tree_cmp( tree, y_parent, data ) >= 0);
     assert( y_parent->child[dir] == &tree->nil );

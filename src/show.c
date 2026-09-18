@@ -120,7 +120,8 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *visit_data ) {
   if ( tdef->is_predefined ) {
     if ( (sti->show & CDECL_SHOW_PREDEFINED) == 0 )
       goto no_show;
-  } else {
+  }
+  else {
     if ( (sti->show & CDECL_SHOW_USER_DEFINED) == 0 )
       goto no_show;
   }
@@ -181,7 +182,8 @@ void show_macros( cdecl_show_t show, FILE *fout ) {
         continue;
       if ( !opt_lang_is_any( (*macro->dyn_fn)( /*ptoken=*/NULL ) ) )
         continue;
-    } else {
+    }
+    else {
       if ( (show & CDECL_SHOW_USER_DEFINED) == 0 )
         continue;
     }

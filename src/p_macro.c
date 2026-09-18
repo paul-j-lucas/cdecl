@@ -853,7 +853,8 @@ static bool mex_check_num_args( mex_state_t const *mex ) {
   c_loc_t loc;
   if ( mex->indent == 0 ) {
     loc = mex->name_loc;
-  } else {
+  }
+  else {
     mex_print_macro( mex, mex->replace_list );
     loc = (c_loc_t){ .first_column = C_LOC_NUM_T( mex->indent * 2 ) };
   }

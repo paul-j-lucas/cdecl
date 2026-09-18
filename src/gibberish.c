@@ -672,7 +672,8 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       case K_PLACEHOLDER:
         unreachable();
     } // switch
-  } else {
+  }
+  else {
     //
     // We've reached the root of the AST that has the name of the thing we're
     // printing the gibberish for.
@@ -798,7 +799,8 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       if ( opt_alt_tokens ) {
         gib_print_space_once( gib );
         FPUTS( "bitand ", gib->fout );
-      } else {
+      }
+      else {
         if ( ast->is_param_pack )
           gib_print_space_once( gib );
         FPUTC( '&', gib->fout );
@@ -809,7 +811,8 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       if ( opt_alt_tokens ) {
         gib_print_space_once( gib );
         FPUTS( "and ", gib->fout );
-      } else {
+      }
+      else {
         FPUTS( "&&", gib->fout );
       }
       break;
@@ -1082,7 +1085,8 @@ static void c_cast_ast_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     FPUTC( '(', gib->fout );
     c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
     FPRINTF( gib->fout, ")%s\n", c_sname_gibberish( &ast->sname ) );
-  } else {
+  }
+  else {
     FPRINTF( gib->fout, "%s<", c_cast_gibberish( ast->cast.kind ) );
     c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
     FPRINTF( gib->fout, ">(%s)\n", c_sname_gibberish( &ast->sname ) );

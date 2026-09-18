@@ -210,7 +210,8 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
     which_lang_id = c_lang_oldest( lang_ids );
     if ( opt_lang_id < which_lang_id ) {
       strbuf_putsn( &sbuf, " until ", 7 );
-    } else {
+    }
+    else {
       strbuf_putsn( &sbuf, " since ", 7 );
       //
       // The newest language of langs_ids is the last language in which the

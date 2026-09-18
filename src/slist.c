@@ -46,7 +46,8 @@ void* slist_at_nocheck( slist_t const *list, size_t offset ) {
 
   if ( offset == list->len - 1 ) {
     p = list->tail;
-  } else {
+  }
+  else {
     for ( p = list->head; offset-- > 0; p = p->next )
       ;
   }
@@ -180,7 +181,8 @@ slist_t slist_move( slist_t *list ) {
   if ( list != NULL ) {
     rv_list = *list;
     slist_init( list );
-  } else {
+  }
+  else {
     slist_init( &rv_list );
   }
   return rv_list;
@@ -225,7 +227,8 @@ void slist_push_back( slist_t *list, void *data ) {
   if ( list->head == NULL ) {
     assert( list->tail == NULL );
     list->head = new_tail;
-  } else {
+  }
+  else {
     assert( list->tail != NULL );
     assert( list->tail->next == NULL );
     list->tail->next = new_tail;

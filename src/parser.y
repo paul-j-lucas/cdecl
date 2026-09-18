@@ -860,7 +860,8 @@ static bool define_type( c_ast_t const *type_ast, decl_flags_t decl_flags ) {
       c_sname_gibberish( &type_ast->sname ),
       c_lang_name( c_lang_oldest( tdef->lang_ids ) )
     );
-  } else {
+  }
+  else {
     print_error( &type_ast->loc, "type " );
     print_ast_type_aka( type_ast, stderr );
     EPUTS( " redefinition incompatible with original type \"" );
@@ -1070,7 +1071,8 @@ static bool l_c_sname_is_type( int line, c_sname_t const *sname,
       c_sname_gibberish( sname ),
       c_lang_name( c_lang_oldest( tdef->lang_ids ) )
     );
-  } else {
+  }
+  else {
     fl_print_error( __FILE__, line, loc,
       "\"%s\": previously declared as type \"",
       c_sname_gibberish( sname )
@@ -2401,7 +2403,8 @@ alignas_specifier_english
       if ( $decl_ast->kind == K_NAME ) {
         $$.kind = C_ALIGNAS_SNAME;
         $$.sname = c_sname_move( &$decl_ast->sname );
-      } else {
+      }
+      else {
         $$.kind = C_ALIGNAS_TYPE;
         $$.type_ast = $decl_ast;
       }
@@ -6197,7 +6200,8 @@ array_cast_c_astp
           $cast_astp.ast,
           c_ast_add_array( $cast_astp.target_ast, $array_ast, of_ast )
         };
-      } else {
+      }
+      else {
         c_ast_t *const ast = IF_ELSE_EXPR( $cast_astp.ast, of_ast );
         $$ = (c_ast_pair_t){
           c_ast_add_array( ast, $array_ast, of_ast ),
@@ -6372,7 +6376,8 @@ nested_cast_c_astp
         //
         $$.ast = c_ast_new_gc( K_FUNCTION, &@$ );
         c_ast_set_parent( type_ast, $$.ast );
-      } else {
+      }
+      else {
         $$.ast->loc = @$;
       }
 
@@ -7633,7 +7638,8 @@ array_decl_english_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       if ( $name == NULL ) {
         $$->array.kind = C_ARRAY_SIZE_VLA;
-      } else {
+      }
+      else {
         $$->array.kind = C_ARRAY_SIZE_NAME;
         $$->array.size_name = $name;
       }

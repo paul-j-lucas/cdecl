@@ -425,7 +425,8 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
       error_kind_of_kind( ast, of_ast );
       if ( is_english_to_gibberish() ) {
         print_hint( "%s to array", c_kind_name( raw_of_ast->kind ) );
-      } else {
+      }
+      else {
         print_hint( "(%s%s)[]",
           other_token_c( raw_of_ast->kind == K_REFERENCE ? "&" : "&&" ),
           c_sname_gibberish( c_ast_find_name( ast, C_VISIT_DOWN ) )
@@ -2490,7 +2491,8 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
           print_hint( "\"reference to pointer\"" );
         else
           print_hint( "\"*&\"" );
-      } else {
+      }
+      else {
         EPUTC( '\n' );
       }
       return false;
@@ -3139,7 +3141,8 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
         c_type_error( &ast->type ),
         c_lang_which( ok_lang_ids )
       );
-    } else {
+    }
+    else {
       print_error( &ast->loc,
         "\"%s\" is illegal for %s%s\n",
         c_type_error( &ast->type ),

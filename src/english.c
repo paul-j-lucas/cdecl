@@ -367,7 +367,8 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *fout ) {
       scope_name = c_sname_gibberish( found_sname );
       scope_type = c_sname_local_type( found_sname );
     }
-  } else {
+  }
+  else {
     assert( found_sname != NULL );
     assert( !c_sname_empty( found_sname ) );
     local_name = c_sname_local_name( found_sname );

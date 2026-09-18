@@ -365,7 +365,8 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *dst_list ) {
     if ( child_ast != NULL ) {
       if ( c_ast_is_parent( ast ) ) {
         c_ast_set_parent( c_ast_dup( child_ast, dst_list ), dup_ast );
-      } else {
+      }
+      else {
         //
         // A non-parent referrer (e.g., K_TYPEDEF) merely refers to another
         // AST, but is _not_ the "parent" of it and the "child" (referred to)

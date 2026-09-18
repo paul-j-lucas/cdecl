@@ -984,7 +984,8 @@ static char const* c_type_name_impl( c_type_t const *type,
 
     if ( is_explicit_int( btids ) ) {
       btids |= TB_int;
-    } else if ( c_tid_is_any( btids, TB_ANY_INT_MODIFIER ) ) {
+    }
+    else if ( c_tid_is_any( btids, TB_ANY_INT_MODIFIER ) ) {
       // In C/C++, explicit "int" isn't needed when at least one int modifier
       // is present.
       btids &= c_tid_compl( TB_int );
