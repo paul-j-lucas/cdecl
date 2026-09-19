@@ -1,3 +1,7 @@
+2026-09-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c, util.h: Now have fputs_escaped and fputs_quoted.
+
 2026-09-18  Paul J. Lucas <paul@lucasmail.org>
 
    * lcovrc: Removed STRERROR; added }$ and } //.
