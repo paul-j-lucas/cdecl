@@ -461,11 +461,11 @@ c_func_member_t c_ast_op_overload( c_ast_t const *ast );
  * can have based on whether it's a member, non-member, or unspecified.
  *
  * @param ast The AST of the operator.
- * @param params_min Receives the minimum number of parameters for \a ast.
- * @param params_max Receives the maximum number of parameters for \a ast.
+ * @param rv_params_min Receives the minimum number of parameters for \a ast.
+ * @param rv_params_max Receives the maximum number of parameters for \a ast.
  */
-void c_ast_op_params_min_max( c_ast_t const *ast, unsigned *params_min,
-                              unsigned *params_max );
+void c_ast_op_params_min_max( c_ast_t const *ast, unsigned *rv_params_min,
+                              unsigned *rv_params_max );
 /**
  * "Patches" \a type_ast into \a decl_ast only if:
  *  + \a type_ast has no \ref c_ast::parent_ast "parent_ast".
