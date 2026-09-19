@@ -1,5 +1,8 @@
 2026-09-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * strbuf.c: strbuf_puts_quoted now handles \a as well as other chars < 0x02
+     or == 0x7F.
+   * util.c: Added "const".
    * util.c, util.h: Now have fputs_escaped and fputs_quoted.
 
 2026-09-18  Paul J. Lucas <paul@lucasmail.org>
