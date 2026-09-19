@@ -1,5 +1,7 @@
 2026-09-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am: Removed $(bin_PROGRAM): clean-coverage; removed if
+     ENABLE_COVERAGE.
    * c_sglob.h: Added C_SGLOB_INIT().
    * strbuf.c: strbuf_puts_quoted now handles \a as well as other chars < 0x02
      or == 0x7F.
