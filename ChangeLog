@@ -1,5 +1,6 @@
 2026-09-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sglob.h: Added C_SGLOB_INIT().
    * strbuf.c: strbuf_puts_quoted now handles \a as well as other chars < 0x02
      or == 0x7F.
    * util.c: Added "const".
