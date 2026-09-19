@@ -254,7 +254,7 @@ void fputs_escaped( char const *s, FILE *fout ) {
   }
 
   for ( ; *s != '\0'; ++s ) {
-    unsigned char c = STATIC_CAST( unsigned char, *s );
+    unsigned char const c = STATIC_CAST( unsigned char, *s );
     switch ( c ) {
       case '"' : fputs( "\\\"", fout ); break;
       case '\\': fputs( "\\\\", fout ); break;
