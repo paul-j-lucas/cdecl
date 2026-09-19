@@ -53,7 +53,17 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// macros /////////////////////////////////////////////////////////////
+
+/**
+  * An initializer for a c_sglob.
+ *
+ * @sa c_sglob_cleanup()
+ * @sa c_sglob_init()
+ */
+#define C_SGLOB_INIT()            (c_sglob_t){ 0 }
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * C++ scoped name glob, e.g., `S::T::x*`.
@@ -73,6 +83,7 @@ struct c_sglob {
  * @param sglob The scoped glob to clean up.  If NULL, does nothing.
  *
  * @sa c_sglob_init()
+ * @sa #C_SGLOB_INIT()
  */
 void c_sglob_cleanup( c_sglob_t *sglob );
 
@@ -95,9 +106,10 @@ inline bool c_sglob_empty( c_sglob_t const *sglob ) {
  * @note This need not be called for either global or `static` scoped globs.
  *
  * @sa c_sglob_cleanup()
+ * @sa #C_SGLOB_INIT()
  */
 inline void c_sglob_init( c_sglob_t *sglob ) {
-  *sglob = (c_sglob_t){ 0 };
+  *sglob = C_SGLOB_INIT();
 }
 
 /**
