@@ -126,17 +126,25 @@ char* strbuf_puts_quoted( strbuf_t *sbuf, char quote, char const *s ) {
 
   strbuf_putc( sbuf, quote );
   for ( ; *s != '\0'; ++s ) {
-    switch ( *s ) {
+    char const c = *s;
+    switch ( c ) {
+      case '\a': strbuf_putsn( sbuf, "\\a",  2 ); break;
       case '\b': strbuf_putsn( sbuf, "\\b",  2 ); break;
       case '\f': strbuf_putsn( sbuf, "\\f",  2 ); break;
       case '\n': strbuf_putsn( sbuf, "\\n",  2 ); break;
       case '\r': strbuf_putsn( sbuf, "\\r",  2 ); break;
       case '\t': strbuf_putsn( sbuf, "\\t",  2 ); break;
       case '\v': strbuf_putsn( sbuf, "\\v",  2 ); break;
+
       default:
-        if ( *s == quote )
-          strbuf_putc( sbuf, '\\' );
-        strbuf_putc( sbuf, *s );
+        if ( unlikely( c < 0x20 || c == 0x7F ) ) {
+          strbuf_printf( sbuf, "\\x%02x", c );
+        }
+        else {
+          if ( c == quote )
+            strbuf_putc( sbuf, '\\' );
+          strbuf_putc( sbuf, c );
+        }
         break;
     } // switch
   } // for
