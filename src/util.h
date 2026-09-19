@@ -1236,12 +1236,24 @@ void fput_list( FILE *out, void const *elt,
 void fput_sep( char const *sep, bool *sep_flag, FILE *fout );
 
 /**
- * Prints \a s as a quoted string with escaped characters.
+ * Prints \a s as a string with special characters escaped with backslashes
+ * presumably to be printed within quotes.
  *
  * @param s The string to put.  If NULL, prints `null` (unquoted).
  * @param fout The `FILE` to print to.
  *
- * @sa strbuf_puts_quoted()
+ * @sa fputs_quoted()
+ */
+void fputs_escaped( char const *s, FILE *fout );
+
+/**
+ * Prints \a s as a quoted string with special characters escaped with
+ * backslashes.
+ *
+ * @param s The string to put.  If NULL, prints `null` (unquoted).
+ * @param fout The `FILE` to print to.
+ *
+ * @sa fputs_escaped()
  */
 void fputs_quoted( char const *s, FILE *fout );
 

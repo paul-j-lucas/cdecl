@@ -245,7 +245,7 @@ void fput_sep( char const *sep, bool *sep_flag, FILE *fout ) {
     FPUTS( sep, fout );
 }
 
-void fputs_quoted( char const *s, FILE *fout ) {
+void fputs_escaped( char const *s, FILE *fout ) {
   assert( fout != NULL );
 
   if ( s == NULL ) {
@@ -253,7 +253,6 @@ void fputs_quoted( char const *s, FILE *fout ) {
     return;
   }
 
-  fputc( '"', fout );
   for ( ; *s != '\0'; ++s ) {
     unsigned char c = STATIC_CAST( unsigned char, *s );
     switch ( c ) {
@@ -275,7 +274,19 @@ void fputs_quoted( char const *s, FILE *fout ) {
         break;
     } // switch
   } // for
-  fputc( '"', fout );
+}
+
+void fputs_quoted( char const *s, FILE *fout ) {
+  assert( fout != NULL );
+
+  if ( s == NULL ) {
+    fputs( "null", fout );
+  }
+  else {
+    fputc( '"', fout );
+    fputs_escaped( s, fout );
+    fputc( '"', fout );
+  }
 }
 
 void fputs_sp( char const *s, FILE *out ) {
