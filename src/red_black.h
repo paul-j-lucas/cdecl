@@ -48,14 +48,127 @@
 
 /// @endcond
 
-/**
- * @defgroup red-black-group Red-Black Tree
- * Types for defining and functions for manipulating red-black trees.
- *
- * @sa [Red-Black Tree](https://en.wikipedia.org/wiki/Red-black_tree)
- *
- * @{
- */
+///
+/// @defgroup red-black-group Red-Black Tree
+/// A type for a red-black tree and functions for manipulating said tree.
+///
+/// @remarks
+/// @parblock
+/// Unlike many red-black tree implementations that map keys to values, this
+/// one contains only nodes, hence it's more a _set_ than a _map_.  However,
+/// nodes can be of any type including structures where any member(s) can
+/// comprise the "key" and, optionally, any other member(s) can comprise the
+/// "value."  To this implementation, nodes are opaque.
+///
+/// Also unlike many red-black tree implementations, this one allows user code
+/// to choose whether nodes' data are stored "internally" with the node itself
+/// or as only a pointer to data elsewhere.  (See rb_dloc.)  Nodes can be of
+/// different sizes even when data are stored internally.
+/// @endparblock
+///
+/// @par Example
+/// @parblock
+/// A red-black tree of word counts.
+///
+///       struct word_count {
+///         char     *word;
+///         unsigned  count;
+///       };
+///
+///       int word_count_cmp( void const *p_i, void const *p_j ) {
+///         struct word_count const *const wc_i = p_i;
+///         struct word_count const *const wc_j = p_j;
+///         return strcmp( wc_i->word, wc_j->word );
+///       }
+///
+///       void word_count_cleanup( void const *p ) {
+///         if ( p != NULL ) {
+///           struct word_count const *const wc = p;
+///           free( wc->word );
+///         }
+///       }
+///
+///       void add_word( red_black_t *tree, char const *word ) {
+///         struct word_count ins_wc = { .word = word, .count = 1 };
+///         rb_insert_rv_t rbi =
+///           rb_tree_insert( tree, &ins_wc, sizeof *ins_wc );
+///         if ( rbi.inserted ) {
+///           struct word_count *const new_wc = RB_DINT( rbi.node );
+///           new_wc->word = strdup( word );
+///         }
+///       }
+///
+///       int main() {
+///         red_black_t tree;
+///         rb_tree_init( &tree, RB_DINT, &word_count_cmp );
+///         add_word( &tree, "hello" );
+///         rb_cleanup( &tree, &word_count_cleanup );
+///       }
+///
+/// **Notes**:
+///
+/// + Since this red-black tree stores data internally (\ref rb_dloc::RB_DINT
+///   "RB_DINT"), this clean-up function frees only `word` and _not_ the
+///   `word_count` structure itself.
+///
+/// + For `ins_wc` (the `word_count` potentially being inserted), its `word` is
+///   not duplicated before insertion since the duplication will be pointless
+///   if the word already exists (if `inserted` is false) and it would have to
+///   be freed.  Instead, `word` is duplicated only if `inserted` is true.
+/// @endparblock
+///
+/// @par Example
+/// @parblock
+/// For comparison, here's the same red-black tree of word counts, but now
+/// storing data via pointer (\ref rb_dloc::RB_DPTR "RB_DPTR").  Only the
+/// differences from the previous example are shown:
+///
+///       void word_count_free( void const *p ) {
+///         if ( p != NULL ) {
+///           struct word_count const *const wc = p;
+///           free( wc->word );
+///           free( wc );
+///         }
+///       }
+///
+///       void add_word( rb_tree_t *tree, char const *word ) {
+///         struct word_count ins_wc = { .word = word };
+///         rb_insert_rv_t rbi = rb_tree_insert( tree, &ins_wc, 0 );
+///         if ( rbi.inserted ) {
+///           struct word_count *const new_wc = malloc( sizeof *new_wc );
+///           new_wc->word = strdup( word );
+///           new_wc->count = 1;
+///           RB_DPTR( rbi.node ) = new_wc;
+///         }
+///       }
+///
+///       int main() {
+///         rb_tree_t tree;
+///         rb_tree_init( &tree, &word_count_cmp );
+///         add_word( &tree, "hello" );
+///         rb_tree_cleanup( &tree, &word_count_free );
+///       }
+///
+/// **Notes**:
+///
+/// + Now that the red-black tree stores a pointer to the data (\ref
+///   rb_dloc::RB_DPTR "RB_DPTR"), this free function frees both `word` _and_
+///   the `word_count` structure itself.
+///
+/// + Now `.count` of `ins_wc` no longer needs to be set explicitly to 1 since
+///   this object will not be copied, but instead `malloc`'d (see below).
+///
+/// + Now the value of the `data_size` argument doesn't matter (since it's
+///   always the size of a pointer) and so can be 0.
+///
+/// + Now an entire `word_count` structure has to be `malloc`'d and assigned
+///   via the #RB_DPTR macro.  Note that `count` must now also be initialized
+///   since it's not copied from `ins_wc`.
+/// @endparblock
+///
+/// @sa [Red-Black Tree](https://en.wikipedia.org/wiki/Red-black_tree)
+/// @{
+///
 
 ////////// macros /////////////////////////////////////////////////////////////
 
@@ -79,9 +192,10 @@
 
 /**
  * Gets an lvalue reference to a pointer to the external data of \a NODE for
- * when \ref rb_dloc::RB_DPTR "RB_DPTR" was used with rb_tree_init(). As an
- * lvalue reference, `RB_DPTR` can appear on the left-hand side of an `=` and
- * be assigned to.
+ * when \ref rb_dloc::RB_DPTR "RB_DPTR" was used with rb_tree_init().
+ *
+ * @remarks As an lvalue reference, `RB_DPTR` can appear on the left-hand side
+ * of an `=` and be assigned to.
  *
  * @param NODE The rb_node to get a pointer to the data of.
  * @return Returns a pointer to the data \a NODE points to.
@@ -327,8 +441,7 @@ void rb_iterator_init( rb_iterator_t *iter, rb_tree_t const *tree );
  * Iterates to the next in-order node in the tree, if any.
  *
  * @param iter A pointer to the rb_iterator.
- * @return Returns a pointer to the next rb_node or NULL if the entire tree was
- * visited.
+ * @return Returns a pointer to the data of the next node or NULL if none.
  *
  * @warning Even though this function returns a pointer to a non-`const` \ref
  * rb_node, the node's \ref rb_node::data "data" _must not_ be modified if that
