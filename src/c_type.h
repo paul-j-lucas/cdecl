@@ -146,7 +146,7 @@ struct c_type {
  * @param BITS The high-order 60 bits of the type ID without the last `0`.
  * @return Returns said type ID literal.
  */
-#define C_TID_LIT(TPID,BITS)      (BITS ## 0ull | C_TPID_ ## TPID)
+#define C_TID_LIT(TPID,BITS)      (UINT64_C(BITS ## 0) | C_TPID_ ## TPID)
 
 /**
  * @defgroup c-type-literal-macros-group C/C++ Type Literal Macros
