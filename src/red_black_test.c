@@ -19,10 +19,10 @@
 */
 
 // local
-#include "pjl_config.h"                 /* must go first */
+#include "pjl_config.h"
 #include "red_black.h"
-#include "util.h"
 #include "unit_test.h"
+#include "util.h"
 
 // standard
 #include <stdbool.h>
@@ -236,11 +236,11 @@ static bool test_various( rb_dloc_t dloc ) {
     goto end_test;
 
   // test insertion with existing data
-  rb_insert_rv_t rv_rbi = rb_tree_insert( &tree, (void*)"A", 2 );
+  rb_insert_rv_t rbi = rb_tree_insert( &tree, (void*)"A", 2 );
   if ( !TEST( test_check_rb_tree( &tree ) ) )
     goto end_test;
-  if ( TEST( !rv_rbi.inserted ) )
-    TEST( strcmp( rb_node_data( &tree, rv_rbi.node ), "A" ) == 0 );
+  if ( TEST( !rbi.inserted ) )
+    TEST( strcmp( rb_node_data( &tree, rbi.node ), "A" ) == 0 );
 
   // test iterator
   rb_iterator_t iter;
