@@ -32,18 +32,6 @@
 
 ////////// test functions /////////////////////////////////////////////////////
 
-static bool test_check_strdup_suffix( void ) {
-  TEST_FUNC_BEGIN();
-
-  char *const s = check_strdup_suffix( "hello", STRLIT_LEN( ", world" ) );
-  if ( TEST( s != NULL ) ) {
-    TEST( strcmp( s, "hello, world" ) == 0 );
-    free( s );
-  }
-
-  TEST_FUNC_END();
-}
-
 static bool test_is_ident_prefix( void ) {
   TEST_FUNC_BEGIN();
 
@@ -66,11 +54,23 @@ static bool test_parse_identifier( void ) {
   TEST_FUNC_END();
 }
 
-static bool test_strdup_tolower( void ) {
+static bool test_strdup_suffix_or_exit( void ) {
   TEST_FUNC_BEGIN();
 
-  TEST( check_strdup_tolower( NULL ) == NULL );
-  char *const s = check_strdup_tolower( "Hello" );
+  char *const s = strdup_suffix_or_exit( "hello", STRLIT_LEN( ", world" ) );
+  if ( TEST( s != NULL ) ) {
+    TEST( strcmp( s, "hello, world" ) == 0 );
+    free( s );
+  }
+
+  TEST_FUNC_END();
+}
+
+static bool test_strdup_tolower_or_exit( void ) {
+  TEST_FUNC_BEGIN();
+
+  TEST( strdup_tolower_or_exit( NULL ) == NULL );
+  char *const s = strdup_tolower_or_exit( "Hello" );
   if ( TEST( s != NULL ) ) {
     TEST( strcmp( s, "hello" ) == 0 );
     free( s );
@@ -183,14 +183,14 @@ static bool test_str_realloc_pcat( void ) {
 int main( int argc, char const *const argv[] ) {
   test_prog_init( argc, argv );
 
-  test_check_strdup_suffix();
   test_is_ident_prefix();
   test_parse_identifier();
-  test_strdup_tolower();
   test_str_is_prefix();
+  test_str_realloc_pcat();
+  test_strdup_suffix_or_exit();
+  test_strdup_tolower_or_exit();
   test_strncmp_in_set();
   test_strnspn();
-  test_str_realloc_pcat();
 
   return test_exit_status;
 }

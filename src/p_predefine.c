@@ -100,7 +100,7 @@ static char const* get___LINE___str( void ) {
     return "42";
   // LCOV_EXCL_START
   static char buf[ MAX_DEC_INT_DIGITS(int) + 1/*\0*/ ];
-  check_snprintf( buf, sizeof buf, "%d", yylineno );
+  snprintf_or_exit( buf, sizeof buf, "%d", yylineno );
   return buf;
   // LCOV_EXCL_STOP
 }
@@ -139,7 +139,7 @@ static c_lang_id_t macro_dyn___cplusplus( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     char const *const value = c_lang___cplusplus( opt_lang_id );
     *ptoken = value == NULL ? NULL :
-      p_token_new( P_NUM_LIT, check_strdup( value ) );
+      p_token_new( P_NUM_LIT, strdup_or_exit( value ) );
   }
   return LANG_CPP_ANY;
 }
@@ -158,7 +158,7 @@ static c_lang_id_t macro_dyn___cplusplus( p_token_t **ptoken ) {
 static c_lang_id_t macro_dyn___DATE__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     *ptoken = !OPT_LANG_IS( __DATE__ ) ? NULL :
-      p_token_new( P_STR_LIT, check_strdup( get___DATE___str() ) );
+      p_token_new( P_STR_LIT, strdup_or_exit( get___DATE___str() ) );
   }
   return LANG___DATE__;
 }
@@ -176,7 +176,7 @@ static c_lang_id_t macro_dyn___DATE__( p_token_t **ptoken ) {
 static c_lang_id_t macro_dyn___FILE__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     *ptoken = !OPT_LANG_IS( __FILE__ ) ? NULL :
-      p_token_new( P_STR_LIT, check_strdup( get___FILE___str() ) );
+      p_token_new( P_STR_LIT, strdup_or_exit( get___FILE___str() ) );
   }
   return LANG___FILE__;
 }
@@ -194,7 +194,7 @@ static c_lang_id_t macro_dyn___FILE__( p_token_t **ptoken ) {
 static c_lang_id_t macro_dyn___LINE__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     *ptoken = !OPT_LANG_IS( __LINE__ ) ? NULL :
-      p_token_new( P_NUM_LIT, check_strdup( get___LINE___str() ) );
+      p_token_new( P_NUM_LIT, strdup_or_exit( get___LINE___str() ) );
   }
   return LANG___LINE__;
 }
@@ -213,7 +213,7 @@ static c_lang_id_t macro_dyn___STDC__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     char const *const value = c_lang___STDC__( opt_lang_id );
     *ptoken = value == NULL ? NULL :
-      p_token_new( P_NUM_LIT, check_strdup( value ) );
+      p_token_new( P_NUM_LIT, strdup_or_exit( value ) );
   }
   return LANG___STDC__;
 }
@@ -233,7 +233,7 @@ static c_lang_id_t macro_dyn___STDC_VERSION__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     char const *const value = c_lang___STDC_VERSION__( opt_lang_id );
     *ptoken = value == NULL ? NULL :
-      p_token_new( P_NUM_LIT, check_strdup( value ) );
+      p_token_new( P_NUM_LIT, strdup_or_exit( value ) );
   }
   return LANG___STDC_VERSION__;
 }
@@ -252,7 +252,7 @@ static c_lang_id_t macro_dyn___STDC_VERSION__( p_token_t **ptoken ) {
 static c_lang_id_t macro_dyn___TIME__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
     *ptoken = !OPT_LANG_IS( __TIME__ ) ? NULL :
-      p_token_new( P_STR_LIT, check_strdup( get___TIME___str() ) );
+      p_token_new( P_STR_LIT, strdup_or_exit( get___TIME___str() ) );
   }
   return LANG___TIME__;
 }
@@ -268,7 +268,7 @@ static void predefine_macro( char const *name, p_macro_dyn_fn_t dyn_fn ) {
   assert( dyn_fn != NULL );
 
   p_macro_t *const macro = p_macro_define(
-    check_strdup( name ),
+    strdup_or_exit( name ),
     &(c_loc_t){
       .first_column = C_LOC_NUM_T( STRLITLEN( "#define " ) ),
       .last_column = C_LOC_NUM_T( STRLITLEN( "#define " ) + strlen( name ) - 1 )

@@ -598,7 +598,7 @@ static void parse_options( int *const pargc, char const *const *pargv[] ) {
         opt_lang_id = parse_lang( optarg );
         break;
       case COPT(LINENO):;
-        unsigned long long n = check_strtoull( optarg, 1, USHRT_MAX );
+        unsigned long long n = strtoull_or_exit( optarg, 1, USHRT_MAX );
         if ( n == ULLONG_MAX ) {
           fatal_error( EX_USAGE,
             "\"%s\": invalid value for %s; must be in range 1-%u\n",

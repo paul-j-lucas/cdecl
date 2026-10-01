@@ -163,7 +163,7 @@ static char const* colors_parse( char const *capabilities ) {
   if ( null_if_empty( capabilities ) == NULL )
     return NULL;
 
-  char *const capabilities_dup = check_strdup( capabilities );
+  char *const capabilities_dup = strdup_or_exit( capabilities );
   bool set_any = false;
 
   for ( char *next_cap = capabilities_dup, *cap_name_val;

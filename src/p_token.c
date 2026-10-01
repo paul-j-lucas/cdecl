@@ -103,7 +103,7 @@ static void avoid_paste( p_token_list_t *token_list, p_token_t const *token ) {
   //
   char paste_buf[ ARRAY_SIZE( "op1op2" ) ];
 
-  check_snprintf( paste_buf, sizeof paste_buf, "%s%s", s1, s2 );
+  snprintf_or_exit( paste_buf, sizeof paste_buf, "%s%s", s1, s2 );
   if ( is_multi_char_punctuator( paste_buf ) )
     goto append;
 
@@ -120,7 +120,7 @@ static void avoid_paste( p_token_list_t *token_list, p_token_t const *token ) {
     //
     // That would later be parsed as -- > which is wrong.
     //
-    check_snprintf( paste_buf, sizeof paste_buf, "%s%c", s1, s2[0] );
+    snprintf_or_exit( paste_buf, sizeof paste_buf, "%s%c", s1, s2[0] );
     if ( is_multi_char_punctuator( paste_buf ) )
       goto append;
   }
@@ -294,11 +294,11 @@ p_token_t* p_token_dup( p_token_t const *token ) {
     case P_CHAR_LIT:
     case P_NUM_LIT:
     case P_STR_LIT:
-      dup_token->lit.value = check_strdup( token->lit.value );
+      dup_token->lit.value = strdup_or_exit( token->lit.value );
       break;
     case P_IDENTIFIER:
       dup_token->ident.ineligible = token->ident.ineligible;
-      dup_token->ident.name = check_strdup( token->ident.name );
+      dup_token->ident.name = strdup_or_exit( token->ident.name );
       break;
     case P_OTHER:
       dup_token->other.value = token->other.value;
@@ -445,7 +445,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
 
     case Y_FLOAT_LIT:
     case Y_INT_LIT:
-      token = p_token_new_loc( P_NUM_LIT, &yylloc, check_strdup( yytext ) );
+      token = p_token_new_loc( P_NUM_LIT, &yylloc, strdup_or_exit( yytext ) );
       break;
 
     case Y_NAME:
@@ -484,7 +484,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       // token, but this new token is NOT the normal __VA_ARGS__.
       //
       token = p_token_new_loc(
-        P_IDENTIFIER, &yylloc, check_strdup( L_PRE___VA_ARGS__ )
+        P_IDENTIFIER, &yylloc, strdup_or_exit( L_PRE___VA_ARGS__ )
       );
       token->ident.ineligible = true;
       break;
@@ -501,7 +501,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       // but this new token is NOT the normal __VA_OPT__.
       //
       token = p_token_new_loc(
-        P_IDENTIFIER, &yylloc, check_strdup( L_PRE___VA_OPT__ )
+        P_IDENTIFIER, &yylloc, strdup_or_exit( L_PRE___VA_OPT__ )
       );
       token->ident.ineligible = true;
       break;

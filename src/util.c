@@ -116,95 +116,6 @@ static bool str_is_any( char const *s, char const *const matches[static 2] ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-char* check_prefix_strdup( char const *prefix, size_t prefix_len,
-                           char const *s ) {
-  assert( prefix != NULL );
-  assert( s != NULL );
-
-  char *const dup_s = MALLOC( char, prefix_len + strlen( s ) + 1/*\0*/ );
-  strncpy( dup_s, prefix, prefix_len );
-  strcpy( dup_s + prefix_len, s );
-  return dup_s;
-}
-
-void* check_realloc( void *p, size_t size ) {
-  assert( size > 0 );
-  p = realloc( p, size );
-  PERROR_EXIT_IF( p == NULL, EX_OSERR );
-  return p;
-}
-
-void check_snprintf( char *buf, size_t buf_size, char const *format, ... ) {
-  assert( buf != NULL );
-  assert( format != NULL );
-
-  va_list args;
-  va_start( args, format );
-  int const raw_len = vsnprintf( buf, buf_size, format, args );
-  va_end( args );
-
-  PERROR_EXIT_IF( raw_len < 0, EX_OSERR );
-  PERROR_EXIT_IF( STATIC_CAST( size_t, raw_len ) >= buf_size, EX_SOFTWARE );
-}
-
-char* check_strdup( char const *s ) {
-  if ( s == NULL )
-    return NULL;                        // LCOV_EXCL_LINE
-  char *const dup_s = strdup( s );
-  PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
-  return dup_s;
-}
-
-char* check_strdup_suffix( char const *s, char const *suffix,
-                           size_t suffix_len ) {
-  assert( s != NULL );
-  assert( suffix != NULL );
-
-  size_t const s_len = strlen( s );
-  size_t const dup_len = s_len + suffix_len;
-  char *const dup_s = MALLOC( char, dup_len + 1/*\0*/ );
-  strcpy( dup_s, s );
-  strncpy( dup_s + s_len, suffix, suffix_len );
-  dup_s[ dup_len ] = '\0';
-  return dup_s;
-}
-
-char* check_strdup_tolower( char const *s ) {
-  if ( s == NULL )
-    return NULL;                        // LCOV_EXCL_LINE
-  char *const dup_s = MALLOC( char, strlen( s ) + 1/*\0*/ );
-  for ( char *p = dup_s; (*p++ = STATIC_CAST( char, tolower( *s++ ) )); )
-    ;
-  return dup_s;
-}
-
-char* check_strndup( char const *s, size_t n ) {
-  if ( s == NULL )
-    return NULL;                        // LCOV_EXCL_LINE
-  char *const dup_s = strndup( s, n );
-  PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
-  return dup_s;
-}
-
-unsigned long long check_strtoull( char const *s, unsigned long long min,
-                                   unsigned long long max ) {
-  assert( s != NULL );
-
-  if ( !str_is_digits( s ) ) {
-    errno = EILSEQ;
-    return ULLONG_MAX;
-  }
-
-  errno = 0;
-  unsigned long long const rv = strtoull( s, /*endptr=*/NULL, 10 );
-  if ( errno != 0 )
-    return ULLONG_MAX;
-  if ( rv >= min && rv <= max )
-    return rv;
-  errno = ERANGE;
-  return ULLONG_MAX;
-}
-
 void fatal_error( int status, char const *format, ... ) {
   assert( status != EX_OK );
   assert( format != NULL );
@@ -327,6 +238,68 @@ void perror_exit( int status ) {
 }
 // LCOV_EXCL_STOP
 
+void* realloc_or_exit( void *p, size_t size ) {
+  assert( size > 0 );
+  p = realloc( p, size );
+  PERROR_EXIT_IF( p == NULL, EX_OSERR );
+  return p;
+}
+
+void snprintf_or_exit( char *buf, size_t buf_size, char const *format, ... ) {
+  assert( buf != NULL );
+  assert( format != NULL );
+
+  va_list args;
+  va_start( args, format );
+  int const raw_len = vsnprintf( buf, buf_size, format, args );
+  va_end( args );
+
+  PERROR_EXIT_IF( raw_len < 0, EX_OSERR );
+  PERROR_EXIT_IF( STATIC_CAST( size_t, raw_len ) >= buf_size, EX_SOFTWARE );
+}
+
+char* strdup_or_exit( char const *s ) {
+  if ( s == NULL )
+    return NULL;                        // LCOV_EXCL_LINE
+  char *const dup_s = strdup( s );
+  PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
+  return dup_s;
+}
+
+char* strdup_prefix_or_exit( char const *prefix, size_t prefix_len,
+                             char const *s ) {
+  assert( prefix != NULL );
+  assert( s != NULL );
+
+  char *const dup_s = MALLOC( char, prefix_len + strlen( s ) + 1/*\0*/ );
+  strncpy( dup_s, prefix, prefix_len );
+  strcpy( dup_s + prefix_len, s );
+  return dup_s;
+}
+
+char* strdup_suffix_or_exit( char const *s, char const *suffix,
+                             size_t suffix_len ) {
+  assert( s != NULL );
+  assert( suffix != NULL );
+
+  size_t const s_len = strlen( s );
+  size_t const dup_len = s_len + suffix_len;
+  char *const dup_s = MALLOC( char, dup_len + 1/*\0*/ );
+  strcpy( dup_s, s );
+  strncpy( dup_s + s_len, suffix, suffix_len );
+  dup_s[ dup_len ] = '\0';
+  return dup_s;
+}
+
+char* strdup_tolower_or_exit( char const *s ) {
+  if ( s == NULL )
+    return NULL;                        // LCOV_EXCL_LINE
+  char *const dup_s = MALLOC( char, strlen( s ) + 1/*\0*/ );
+  for ( char *p = dup_s; (*p++ = STATIC_CAST( char, tolower( *s++ ) )); )
+    ;
+  return dup_s;
+}
+
 bool str_equal( char const *is, char const *js ) {
   if ( is == js )
     return true;
@@ -366,6 +339,14 @@ bool str_is_prefix( char const *si, char const *sj ) {
       return false;
   } while ( *si != '\0' );
   return true;
+}
+
+char* strndup_or_exit( char const *s, size_t n ) {
+  if ( s == NULL )
+    return NULL;                        // LCOV_EXCL_LINE
+  char *const dup_s = strndup( s, n );
+  PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
+  return dup_s;
 }
 
 int str_ptr_cmp( char const **psi, char const **psj ) {
@@ -453,6 +434,25 @@ size_t strnspn( char const *s, char const *charset, size_t n ) {
   while ( n-- > 0 && strchr( charset, *s ) != NULL )
     ++s;
   return STATIC_CAST( size_t, s - s0 );
+}
+
+unsigned long long strtoull_or_exit( char const *s, unsigned long long min,
+                                     unsigned long long max ) {
+  assert( s != NULL );
+
+  if ( !str_is_digits( s ) ) {
+    errno = EILSEQ;
+    return ULLONG_MAX;
+  }
+
+  errno = 0;
+  unsigned long long const rv = strtoull( s, /*endptr=*/NULL, 10 );
+  if ( errno != 0 )
+    return ULLONG_MAX;
+  if ( rv >= min && rv <= max )
+    return rv;
+  errno = ERANGE;
+  return ULLONG_MAX;
 }
 
 #ifndef NDEBUG

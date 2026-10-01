@@ -348,28 +348,28 @@ static char const* const* ac_set_keywords_new( void ) {
   char const **const ac_set_keywords_array = MALLOC( char*, n + 1/*NULL*/ );
   char const **pk = ac_set_keywords_array;
 
-  *pk++ = check_strdup( L_options );
+  *pk++ = strdup_or_exit( L_options );
 
   FOREACH_SET_OPTION( opt ) {
     switch ( opt->kind ) {
       case SET_OPTION_AFF_ONLY:
       case SET_OPTION_TOGGLE:
         if ( opt->has_arg == required_argument )
-          *pk++ = check_strdup_suffix( opt->name, " =", 2 );
+          *pk++ = strdup_suffix_or_exit( opt->name, " =", 2 );
         else
-          *pk++ = check_strdup( opt->name );
+          *pk++ = strdup_or_exit( opt->name );
         if ( opt->kind == SET_OPTION_AFF_ONLY )
           break;
         FALLTHROUGH;
 
       case SET_OPTION_NEG_ONLY:
-        *pk++ = check_prefix_strdup( "no", 2, opt->name );
+        *pk++ = strdup_prefix_or_exit( "no", 2, opt->name );
         break;
     } // switch
   } // for
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
-      *pk++ = check_strdup_tolower( lang->name );
+      *pk++ = strdup_tolower_or_exit( lang->name );
   } // for
 
   *pk = NULL;
@@ -864,7 +864,7 @@ static char* command_generator( char const *text, int state ) {
     int const cmp = strncmp( text, curr_command->literal, cg.text_len );
     if ( cmp == 0 && opt_lang_is_any( curr_command->lang_ids ) ) {
       cg.returned_any = true;
-      return check_strdup( curr_command->literal );
+      return strdup_or_exit( curr_command->literal );
     }
     if ( cmp < 0 )                      // the array is sorted
       break;
@@ -900,7 +900,7 @@ static char* keyword_generator( char const *text, int state ) {
     //
     char const *const keyword = kg_match( &kg, text );
     if ( keyword != NULL )
-      return check_strdup( keyword );
+      return strdup_or_exit( keyword );
   }
 
   if ( !kg.returned_any )

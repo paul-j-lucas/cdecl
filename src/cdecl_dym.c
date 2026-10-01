@@ -370,7 +370,7 @@ static size_t prep_set_options( did_you_mean_t **pdym ) {
         }
         else {
           (*pdym)++->known = opt->name;
-          (*pdym)->known = check_prefix_strdup( "no", 2, opt->name );
+          (*pdym)->known = strdup_prefix_or_exit( "no", 2, opt->name );
           (*pdym)->user_data = POINTER_CAST( void*, true );
           ++*pdym;
         }
@@ -386,7 +386,7 @@ static size_t prep_set_options( did_you_mean_t **pdym ) {
           ++count;
         }
         else {
-          (*pdym)->known = check_prefix_strdup( "no", 2, opt->name );
+          (*pdym)->known = strdup_prefix_or_exit( "no", 2, opt->name );
           (*pdym)->user_data = POINTER_CAST( void*, true );
           ++*pdym;
         }
@@ -416,7 +416,7 @@ static bool prep_typedef_visitor( c_typedef_t const *tdef, void *visit_data ) {
     }
     else {
       char const *const name = c_sname_gibberish( &tdef->ast->sname );
-      (*drvd->pdym)->known = check_strdup( name );
+      (*drvd->pdym)->known = strdup_or_exit( name );
       (*drvd->pdym)->user_data = POINTER_CAST( void*, true );
       ++*drvd->pdym;
     }

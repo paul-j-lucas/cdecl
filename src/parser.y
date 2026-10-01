@@ -2931,7 +2931,7 @@ p_arg_token
     }
   | p_num_lit[num]
     {
-      $$ = p_token_new_loc( P_NUM_LIT, &@num, check_strdup( yytext ) );
+      $$ = p_token_new_loc( P_NUM_LIT, &@num, strdup_or_exit( yytext ) );
     }
   | Y_PRE_SPACE[space]
     {
@@ -3417,7 +3417,7 @@ p_param
   | Y_ELLIPSIS
     {
       $$ = MALLOC( p_param_t, 1 );
-      *$$ = (p_param_t){ .name = check_strdup( L_ELLIPSIS ), .loc = @1 };
+      *$$ = (p_param_t){ .name = strdup_or_exit( L_ELLIPSIS ), .loc = @1 };
     }
   | error
     {
@@ -3924,7 +3924,7 @@ class_struct_union_declaration_c
       csu_ast->type.btids = c_tid_check( $csu_btid, C_TPID_BASE );
       c_sname_init_name(
         &csu_ast->csu.csu_sname,
-        check_strdup( c_sname_local_name( &csu_ast->sname ) )
+        strdup_or_exit( c_sname_local_name( &csu_ast->sname ) )
       );
 
       DUMP_AST( "$$_ast", csu_ast );
@@ -3964,7 +3964,7 @@ enum_declaration_c
       c_ast_set_parent( $fixed_type_ast, enum_ast );
       c_sname_init_name(
         &enum_ast->enum_.enum_sname,
-        check_strdup( c_sname_local_name( &enum_ast->sname ) )
+        strdup_or_exit( c_sname_local_name( &enum_ast->sname ) )
       );
 
       DUMP_AST( "$$_ast", enum_ast );
@@ -5224,7 +5224,7 @@ pc99_func_or_constructor_declaration_c
         //
         c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@name );
         csu_ast->type.btids = TB_class;
-        c_sname_init_name( &csu_ast->csu.csu_sname, check_strdup( $name ) );
+        c_sname_init_name( &csu_ast->csu.csu_sname, strdup_or_exit( $name ) );
         csu_ast->sname = c_sname_dup( &csu_ast->csu.csu_sname );
 
         in_attr.tdef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
@@ -8606,7 +8606,7 @@ any_name
   | Y_TYPEDEF_NAME_TDEF[tdef]
     {
       assert( c_sname_count( &$tdef->ast->sname ) == 1 );
-      $$ = check_strdup( c_sname_local_name( &$tdef->ast->sname ) );
+      $$ = strdup_or_exit( c_sname_local_name( &$tdef->ast->sname ) );
     }
   ;
 

@@ -257,7 +257,7 @@ static void       lexer_fatal( char const* );
  */
 static char* empty_dup_if_null( char *s ) {
   if ( s == NULL )
-    s = check_strdup( "" );
+    s = strdup_or_exit( "" );
   return s;
 }
 
@@ -551,7 +551,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   // Now that we know the path resolves, it wasn't previously included, it's a
   // plain file, and we can open it, we can insert it into include_set.
   //
-  real_path = check_strdup( real_path );
+  real_path = strdup_or_exit( real_path );
   PJL_DISCARD_RV( rb_tree_insert( &include_set, real_path, 0 ) );
 
   include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );
@@ -566,7 +566,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
 
   yyin = include_file;
   yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
-  cdecl_input_path = check_strdup( we.we_wordv[0] );
+  cdecl_input_path = strdup_or_exit( we.we_wordv[0] );
   yylineno = 1;
   newline();
 
@@ -1159,14 +1159,14 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   //
                   // 4. If it's constrained auto, it's a concept name.
                   //
-                  c_sname_init_name( &yylval.sname, check_strdup( yytext ) );
+                  c_sname_init_name( &yylval.sname, strdup_or_exit( yytext ) );
                   return Y_CONCEPT_SNAME;
                 }
 
                 //
                 // 5. Otherwise, it's just an ordinary name.
                 //
-                yylval.name = check_strdup( yytext );
+                yylval.name = strdup_or_exit( yytext );
                 return Y_NAME;
               }
 
@@ -1591,7 +1591,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 p_keyword_t const *const pk = p_keyword_find( yytext );
                 if ( pk != NULL )
                   return pk->y_token_id;
-                yylval.name = check_strdup( yytext );
+                yylval.name = strdup_or_exit( yytext );
                 if ( !is_func_like_macro ) {
                   //
                   // We can switch to X_PRE_TOKENS now; otherwise we switch
@@ -1620,7 +1620,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   return Y_PRE___VA_ARGS__;
                 if ( strcmp( yytext, L_PRE___VA_OPT__ ) == 0 )
                   return Y_PRE___VA_OPT__;
-                yylval.name = check_strdup( yytext );
+                yylval.name = strdup_or_exit( yytext );
                 return Y_NAME;
               }
 
@@ -1647,12 +1647,12 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * optional whitespace before the '(' being significant.
                */
   {identifier}/{S}*\( {
-                yylval.name = check_strdup( yytext );
+                yylval.name = strdup_or_exit( yytext );
                 return Y_NAME;
               }
 
   {identifier} {                        // object-like macro
-                yylval.name = check_strdup( yytext );
+                yylval.name = strdup_or_exit( yytext );
                 lexer_begin( X_PRE_TOKENS );
                 return Y_NAME;
               }
@@ -1671,7 +1671,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 <X_SET>{
 
   {set_option} {
-                yylval.name = check_strdup( yytext );
+                yylval.name = strdup_or_exit( yytext );
                 return Y_SET_OPTION;
               }
 
@@ -1686,7 +1686,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 <S_SHOW>{
 
   {glob}      {
-                yylval.name = check_strdup( yytext );
+                yylval.name = strdup_or_exit( yytext );
                 return Y_GLOB;
               }
 

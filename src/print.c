@@ -428,7 +428,7 @@ void fl_print_error_unknown_name( char const *file, int line,
   dym_kind_t dym_kind = DYM_NONE;
 
   // Must dup this since c_sname_gibberish() returns a temporary buffer.
-  char const *const name = check_strdup( c_sname_gibberish( sname ) );
+  char const *const name = strdup_or_exit( c_sname_gibberish( sname ) );
 
   c_keyword_t const *const ck =
     c_keyword_find( name, LANG_ANY, C_KW_CTX_DEFAULT );

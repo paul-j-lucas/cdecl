@@ -286,7 +286,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *dst_list ) {
           dup_ast->array.size_int = ast->array.size_int;
           break;
         case C_ARRAY_SIZE_NAME:
-          dup_ast->array.size_name = check_strdup( ast->array.size_name );
+          dup_ast->array.size_name = strdup_or_exit( ast->array.size_name );
           break;
         case C_ARRAY_SIZE_NONE:
         case C_ARRAY_SIZE_VLA:

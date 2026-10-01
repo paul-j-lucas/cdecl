@@ -121,7 +121,7 @@ static unsigned get_columns_via_tigetnum( void ) {
         reason = "terminfo database not found";
         break;
       case 0:
-        check_snprintf(
+        snprintf_or_exit(
           reason_buf, sizeof reason_buf,
           "TERM=%s not found in database or too generic", term
         );
@@ -130,7 +130,7 @@ static unsigned get_columns_via_tigetnum( void ) {
         reason = "terminal is hardcopy";
         break;
       default:
-        check_snprintf(
+        snprintf_or_exit(
           reason_buf, sizeof reason_buf,
           "setupterm(3) returned error code %d", sut_err
         );

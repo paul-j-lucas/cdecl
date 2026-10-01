@@ -103,7 +103,7 @@ void c_sglob_parse( char const *s, c_sglob_t *rv_sglob ) {
     assert( glob_len > 0 );
     assert( rv_sglob->count < scope_count );
     rv_sglob->pattern[ rv_sglob->count++ ] =
-      check_strndup( glob_begin, glob_len );
+      strndup_or_exit( glob_begin, glob_len );
     if ( *s == '\0' )
       break;
     s += STRLITLEN( "::" );

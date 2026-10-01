@@ -86,7 +86,7 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
   char const *prev_name = "";
 
   while ( (end = parse_identifier( s )) != NULL ) {
-    char *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
+    char *const name = strndup_or_exit( s, STATIC_CAST( size_t, end - s ) );
 
     // Ensure that the name is NOT a keyword.
     c_keyword_t const *const ck =
@@ -151,7 +151,7 @@ c_scope_data_t* c_scope_data_dup( c_scope_data_t const *src ) {
     return NULL;                        // LCOV_EXCL_LINE
   c_scope_data_t *const dst = MALLOC( c_scope_data_t, 1 );
   *dst = (c_scope_data_t){
-    .name = check_strdup( src->name ),
+    .name = strdup_or_exit( src->name ),
     .type = src->type
   };
   return dst;
@@ -194,7 +194,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     // For any that does, check that the sname's scope's type matches the
     // previously declared sname's scope's type.
     //
-    c_sname_push_back_name( &partial_sname, check_strdup( name ) );
+    c_sname_push_back_name( &partial_sname, strdup_or_exit( name ) );
 
     c_type_t const scope_type = scope_data->type;
     c_typedef_t const *const tdef = c_typedef_find_sname( &partial_sname );
@@ -368,7 +368,7 @@ c_sname_t c_sname_scope_sname( c_sname_t const *sname ) {
   if ( sname != NULL ) {
     FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
       c_scope_data_t const *const scope_data = c_scope_data( scope );
-      c_sname_push_back_name( &rv_sname, check_strdup( scope_data->name ) );
+      c_sname_push_back_name( &rv_sname, strdup_or_exit( scope_data->name ) );
       c_sname_local_data( &rv_sname )->type = scope_data->type;
     } // for
   }

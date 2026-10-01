@@ -540,17 +540,17 @@
 #endif /* HAVE___BUILTIN_EXPECT */
 
 /**
- * Convenience macro for calling check_realloc().
+ * Convenience macro for calling realloc_or_exit().
  *
  * @param TYPE The type to allocate.
  * @param N The number of objects of \a TYPE to allocate.  It _must_ be &gt; 0.
  * @return Returns a pointer to \a N uninitialized objects of \a TYPE.
  *
- * @sa check_realloc()
  * @sa #REALLOC()
+ * @sa realloc_or_exit()
  */
 #define MALLOC(TYPE,N) \
-  check_realloc( /*p=*/NULL, sizeof(TYPE) * STATIC_CAST( size_t, (N) ) )
+  realloc_or_exit( /*p=*/NULL, sizeof(TYPE) * STATIC_CAST( size_t, (N) ) )
 
 /**
  * Gets the number of characters needed to represent the largest magnitide
@@ -778,17 +778,17 @@ MIN_IMPL(long double, ld)
 #define PUTS(S)                   FPUTS( (S), stdout )
 
 /**
- * Convenience macro for calling check_realloc().
+ * Convenience macro for calling realloc_or_exit().
  *
  * @param PTR The pointer to memory to reallocate.  It is set to the newly
  * reallocated memory.
  * @param N The number of objects to reallocate.
  *
- * @sa check_realloc()
+ * @sa realloc_or_exit()
  * @sa #MALLOC()
  */
 #define REALLOC(PTR,N) \
-  ((PTR) = check_realloc( (PTR), sizeof *(PTR) * STATIC_CAST( size_t, (N) ) ))
+  ((PTR) = realloc_or_exit( (PTR), sizeof *(PTR) * STATIC_CAST( size_t, (N) ) ))
 
 /**
  * Runs a statement at most once even if control passes through it more than
@@ -1025,124 +1025,6 @@ extern char const WS_CHARS[];
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Duplicates \a s prefixed by \a prefix.
- * If duplication fails, prints an error message and exits.
- *
- * @param prefix The null-terminated prefix string to duplicate.
- * @param prefix_len The length of \a prefix.
- * @param s The null-terminated string to duplicate.
- * @return Returns a copy of \a s prefixed by \a prefix.
- *
- * @sa check_strdup_suffix()
- */
-NODISCARD
-char* check_prefix_strdup( char const *prefix, size_t prefix_len,
-                           char const *s );
-
-/**
- * Calls **realloc**(3) and checks for failure.
- * If reallocation fails, prints an error message and exits.
- *
- * @param p The pointer to reallocate.  If NULL, new memory is allocated.
- * @param size The number of bytes to allocate.  It _must_ be &gt; 0.
- * @return Returns a pointer to the allocated memory.
- *
- * @sa #MALLOC()
- * @sa #REALLOC()
- */
-NODISCARD
-void* check_realloc( void *p, size_t size );
-
-/**
- * Calls **snprintf**(3) and checks for failure.
- *
- * @param buf The destination buffer to print into.
- * @param buf_size The size of \a buf.
- * @param format The `printf()` style format string.
- * @param ... The `printf()` arguments.
- */
-PJL_PRINTF_LIKE_FUNC(3)
-void check_snprintf( char *buf, size_t buf_size, char const *format, ... );
-
-/**
- * Calls **strdup**(3) and checks for failure.
- * If memory allocation fails, prints an error message and exits.
- *
- * @param s The null-terminated string to duplicate or NULL.
- * @return Returns a copy of \a s or NULL if \a s is NULL.
- *
- * @sa check_strdup_tolower()
- * @sa check_strndup()
- */
-NODISCARD
-char* check_strdup( char const *s );
-
-/**
- * Duplicates \a s suffixed by \a suffix.
- * If duplication fails, prints an error message and exits.
- *
- * @param s The null-terminated string to duplicate.
- * @param suffix The null-terminated suffix string to duplicate.
- * @param suffix_len The length of \a suffix.
- * @return Returns a copy of \a s suffixed by \a suffix.
- *
- * @sa check_prefix_strdup()
- */
-NODISCARD
-char* check_strdup_suffix( char const *s, char const *suffix,
-                           size_t suffix_len );
-
-/**
- * Duplicates \a s and checks for failure, but converts all characters to
- * lower-case.  If memory allocation fails, prints an error message and exits.
- *
- * @param s The null-terminated string to duplicate or NULL.
- * @return Returns a copy of \a s with all characters converted to lower-case
- * or NULL if \a s is NULL.
- *
- * @sa check_strdup()
- * @sa check_strndup()
- */
-NODISCARD
-char* check_strdup_tolower( char const *s );
-
-/**
- * Calls **strndup**(3) and checks for failure.
- * If memory allocation fails, prints an error message and exits.
- *
- * @param s The null-terminated string to duplicate or NULL.
- * @param n The number of characters of \a s to duplicate.
- * @return Returns a copy of \a n characters of \a s or NULL if \a s is NULL.
- *
- * @sa check_strdup()
- * @sa check_strdup_tolower()
- */
-NODISCARD
-char* check_strndup( char const *s, size_t n );
-
-/**
- * Calls **strtoull**(3) and:
- *
- *  + Ensures \a s contains only decimal digits; and:
- *  + Checks `errno` for failture; and:
- *  + Ensures the value &ge; min; and:
- *  + Ensures the value &le; max.
- *
- * @param s The null-terminated string to convert.
- * @param min The minimum allowed value.
- * @param max The maximum allowed value.
- * @return Returns \a s convervted to an unsigned integer upon success or
- * `ULLONG_MAX` upon failure.
- * @par
- * Additionally, `errno` is set to:
- *  + `EILSEQ` if \a s contains non-decimal digits; or:
- *  + `ERANGE` if the unsigned integer is &lt; \a min or &gt; \a max.
- */
-NODISCARD
-unsigned long long check_strtoull( char const *s, unsigned long long min,
-                                   unsigned long long max );
-
-/**
  * Checks whether \a s is null: if so, returns the empty string.
  *
  * @param s The pointer to check.
@@ -1374,6 +1256,21 @@ char const* path_basename( char const *path_name );
 _Noreturn void perror_exit( int status );
 
 /**
+ * Calls **realloc**(3) and checks for failure.
+ *
+ * @remarks If reallocation fails, prints an error message and exits.
+ *
+ * @param p The pointer to reallocate.  If NULL, new memory is allocated.
+ * @param size The number of bytes to allocate.  It _must_ be &gt; 0.
+ * @return Returns a pointer to the allocated memory.
+ *
+ * @sa #MALLOC()
+ * @sa #REALLOC()
+ */
+NODISCARD
+void* realloc_or_exit( void *p, size_t size );
+
+/**
  * Rounds \a n up to a multiple of \a multiple.
  *
  * @param n The number to round up.  Must be &gt; 0.
@@ -1385,6 +1282,79 @@ inline size_t round_up_pow_2( size_t n, size_t multiple ) {
   assert( is_1_bit( multiple ) );
   return (n + multiple - 1) & ~(multiple - 1);
 }
+
+/**
+ * Calls **snprintf**(3) and checks for failure.
+ *
+ * @param buf The destination buffer to print into.
+ * @param buf_size The size of \a buf.
+ * @param format The `printf()` style format string.
+ * @param ... The `printf()` arguments.
+ */
+PJL_PRINTF_LIKE_FUNC(3)
+void snprintf_or_exit( char *buf, size_t buf_size, char const *format, ... );
+
+/**
+ * Calls **strdup**(3) and checks for failure.
+ *
+ * @remarks If memory allocation fails, prints an error message and exits.
+ *
+ * @param s The null-terminated string to duplicate or NULL.
+ * @return Returns a copy of \a s or NULL if \a s is NULL.
+ *
+ * @sa strdup_tolower_or_exit()
+ * @sa strndup_or_exit()
+ */
+NODISCARD
+char* strdup_or_exit( char const *s );
+
+/**
+ * Duplicates \a s prefixed by \a prefix.
+ *
+ * @remarks If duplication fails, prints an error message and exits.
+ *
+ * @param prefix The null-terminated prefix string to duplicate.
+ * @param prefix_len The length of \a prefix.
+ * @param s The null-terminated string to duplicate.
+ * @return Returns a copy of \a s prefixed by \a prefix.
+ *
+ * @sa strdup_suffix_or_exit()
+ */
+NODISCARD
+char* strdup_prefix_or_exit( char const *prefix, size_t prefix_len,
+                           char const *s );
+
+/**
+ * Duplicates \a s suffixed by \a suffix.
+ *
+ * @remarks If duplication fails, prints an error message and exits.
+ *
+ * @param s The null-terminated string to duplicate.
+ * @param suffix The null-terminated suffix string to duplicate.
+ * @param suffix_len The length of \a suffix.
+ * @return Returns a copy of \a s suffixed by \a suffix.
+ *
+ * @sa strdup_prefix_or_exit()
+ */
+NODISCARD
+char* strdup_suffix_or_exit( char const *s, char const *suffix,
+                             size_t suffix_len );
+
+/**
+ * Duplicates \a s and checks for failure, but converts all characters to
+ * lower-case.
+ *
+ * @remarks If memory allocation fails, prints an error message and exits.
+ *
+ * @param s The null-terminated string to duplicate or NULL.
+ * @return Returns a copy of \a s with all characters converted to lower-case
+ * or NULL if \a s is NULL.
+ *
+ * @sa strdup_or_exit()
+ * @sa strndup_or_exit()
+ */
+NODISCARD
+char* strdup_tolower_or_exit( char const *s );
 
 /**
  * Compares two strings for equality.
@@ -1459,6 +1429,21 @@ bool str_is_ident_prefix( char const *ident, size_t ident_len, char const *s,
  */
 NODISCARD
 bool str_is_prefix( char const *si, char const *sj );
+
+/**
+ * Calls **strndup**(3) and checks for failure.
+ *
+ * @remarks If memory allocation fails, prints an error message and exits.
+ *
+ * @param s The null-terminated string to duplicate or NULL.
+ * @param n The number of characters of \a s to duplicate.
+ * @return Returns a copy of \a n characters of \a s or NULL if \a s is NULL.
+ *
+ * @sa strdup_or_exit()
+ * @sa strdup_tolower_or_exit()
+ */
+NODISCARD
+char* strndup_or_exit( char const *s, size_t n );
 
 /**
  * Compares two string pointers by comparing the string pointed to.
@@ -1538,6 +1523,28 @@ void strn_rtrim( char const *s, size_t *s_len );
  */
 NODISCARD
 size_t strnspn( char const *s, char const *charset, size_t n );
+
+/**
+ * Calls **strtoull**(3) and:
+ *
+ *  + Ensures \a s contains only decimal digits; and:
+ *  + Checks `errno` for failture; and:
+ *  + Ensures the value &ge; min; and:
+ *  + Ensures the value &le; max.
+ *
+ * @param s The null-terminated string to convert.
+ * @param min The minimum allowed value.
+ * @param max The maximum allowed value.
+ * @return Returns \a s convervted to an unsigned integer upon success or
+ * `ULLONG_MAX` upon failure.
+ * @par
+ * Additionally, `errno` is set to:
+ *  + `EILSEQ` if \a s contains non-decimal digits; or:
+ *  + `ERANGE` if the unsigned integer is &lt; \a min or &gt; \a max.
+ */
+NODISCARD
+unsigned long long strtoull_or_exit( char const *s, unsigned long long min,
+                                     unsigned long long max );
 
 /**
  * Checks \a flag: if `false`, sets it to `true`.
