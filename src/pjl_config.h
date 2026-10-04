@@ -77,6 +77,8 @@
 
 ////////// compiler attributes ////////////////////////////////////////////////
 
+#ifdef HAVE___BUILTIN_EXPECT
+
 /**
  * Specifies that \a EXPR is _very_ likely (as in 99.99% of the time) to be
  * non-zero (true) allowing the compiler to better order code blocks for
@@ -131,8 +133,6 @@
 #define PJL_DISCARD_RV(FN_CALL) \
   do { MAYBE_UNUSED typeof(FN_CALL) _rv = (FN_CALL); } while (0)
 #endif /* HAVE_TYPEOF */
-
-#ifdef HAVE___BUILTIN_EXPECT
 
 ///////////////////////////////////////////////////////////////////////////////
 
