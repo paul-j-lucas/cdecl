@@ -418,10 +418,10 @@ struct rb_insert_rv {
    * The \ref rb_node "node" either found or inserted.  Use \ref inserted to
    * know which.
    *
-   * @warning Even though this is a pointer to a non-`const` \ref rb_node, the
-   * node's \ref rb_node::data "data" _must not_ be modified if that would
-   * change its position within the tree according to the tree's \ref
-   * rb_tree::cmp_fn "cmp_fn".
+   * @warning Even though this is a pointer to a non-`const` \ref rb_node, its
+   * \ref rb_node::data "data" _must not_ be modified if that would change its
+   * position within the tree according to the tree's \ref rb_tree::cmp_fn
+   * "cmp_fn".
    */
   rb_node_t *node;
 
