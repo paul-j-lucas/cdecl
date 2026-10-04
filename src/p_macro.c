@@ -1574,12 +1574,12 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
       rb_tree_insert( &param_cache, &ins_pe, sizeof ins_pe );
 
     if ( !rv_rbi.inserted ) {
-      param_expand_t const *const found_pe = RB_DINT( rv_rbi.node );
+      param_expand_t const *const found_pe = rv_rbi.data;
       arg_tokens = found_pe->expand_list;
       goto append;
     }
 
-    param_expand_t *const new_pe = RB_DINT( rv_rbi.node );
+    param_expand_t *const new_pe = rv_rbi.data;
 
     mex_state_t param_mex;
     mex_init( &param_mex,
@@ -2982,14 +2982,14 @@ p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
   rb_insert_rv_t const rv_rbi =
     rb_tree_insert( &macro_set, &new_macro, sizeof new_macro );
   if ( !rv_rbi.inserted ) {
-    p_macro_t *const old_macro = RB_DINT( rv_rbi.node );
+    p_macro_t *const old_macro = rv_rbi.data;
     assert( !old_macro->is_dynamic );
     p_macro_cleanup( old_macro );
     memcpy( rv_rbi.node->data, &new_macro, sizeof new_macro );
     print_warning( name_loc, "\"%s\" already exists; redefined\n", name );
   }
 
-  return RB_DINT( rv_rbi.node );
+  return rv_rbi.data;
 
 error:
   free( name );

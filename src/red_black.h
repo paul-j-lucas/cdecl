@@ -406,12 +406,21 @@ struct rb_tree {
  */
 struct rb_insert_rv {
   /**
+   * The data of \ref node.
+   *
+   * @warning Even though this is a pointer to a non-`const`, it _must not_ be
+   * modified if that would change its node's position within the tree
+   * according to the tree's \ref rb_tree::cmp_fn "cmp_fn".
+   */
+  void *data;
+
+  /**
    * The \ref rb_node "node" either found or inserted.  Use \ref inserted to
    * know which.
    *
    * @warning Even though this is a pointer to a non-`const` \ref rb_node, the
    * node's \ref rb_node::data "data" _must not_ be modified if that would
-   * change the node's position within the tree according to its \ref
+   * change its position within the tree according to the tree's \ref
    * rb_tree::cmp_fn "cmp_fn".
    */
   rb_node_t *node;
@@ -545,15 +554,18 @@ void rb_tree_init( rb_tree_t *tree, rb_dloc_t dloc, rb_cmp_fn_t cmp_fn );
  *  + #RB_DPTR: Not used.  If a node is inserted, then the pointer value of \a
  *    data itself is copied into the new node's \ref rb_node::data "data".
  *
- * @return Returns an \ref rb_insert_rv where its \ref rb_insert_rv::node
- * "node" points to either the newly inserted node or the existing node having
- * the same \ref rb_node::data "data" and \ref rb_insert_rv::inserted
- * "inserted" is `true` only if \ref rb_node::data "data" was inserted.
+ * @return Returns an \ref rb_insert_rv where:
+ *  + \ref rb_insert_rv::node "node" points to either the newly inserted node
+ *    or the existing node having the same \ref rb_node::data "data".
+ *  + \ref rb_insert_rv::data "data" points to the data of the node.
+ *  + \ref rb_insert_rv::inserted "inserted" is `true` only if \a data was
+ *    inserted.
  *
- * @warning Even though this function returns an \ref rb_insert_rv containing a
- * pointer to a non-`const` \ref rb_insert_rv::node "node", the node's \ref
- * rb_node::data "data" _must not_ be modified if that would change the node's
- * position within the tree according its \ref rb_tree::cmp_fn "cmp_fn".
+ * @warning Even though this function returns an \ref rb_insert_rv containing
+ * pointers to non-`const` \ref rb_insert_rv::node "node" and \ref
+ * rb_insert_rv::data "data", the data _must not_ be modified if that would
+ * change the node's position within the tree according the tree's \ref
+ * rb_tree::cmp_fn "cmp_fn".
  *
  * @sa rb_tree_delete()
  */

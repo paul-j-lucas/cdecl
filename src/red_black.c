@@ -47,6 +47,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Gets an lvalue reference to the child node pointer of \a NODE's parent,
  * i.e., the parent's pointer to \a NODE.
@@ -595,8 +597,13 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
   //
   while ( x_node != &tree->nil ) {
     int const cmp = rb_tree_cmp( tree, x_node, data );
-    if ( cmp == 0 )
-      return (rb_insert_rv_t){ x_node, .inserted = false };
+    if ( cmp == 0 ) {
+      return (rb_insert_rv_t){
+        .data = rb_node_data( tree, x_node ),
+        .node = x_node,
+        .inserted = false
+      };
+    }
     y_parent = x_node;
     x_node = x_node->child[ cmp > 0 ];
   } // while
@@ -630,7 +637,11 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data, size_t data_size ) {
   rb_insert_fixup( tree, z_new_node );
   rb_tree_check( tree );
 
-  return (rb_insert_rv_t){ z_new_node, .inserted = true };
+  return (rb_insert_rv_t){
+    .data = rb_node_data( tree, z_new_node ),
+    .node = z_new_node,
+    .inserted = true
+  };
 }
 
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
