@@ -23,19 +23,31 @@
 
 /**
  * @file
- * Includes platform configuration information in the right order.  Always
- * `#include` this file rather than `config.h` directly.
+ * This file:
+ *
+ *  + Includes Autotools' `config.h` without generating warnings.
+ *  + Includes `attribute.h`.
+ *  + Defines `likely` and `unlikely`.
+ *  + Defines some additional compiler attributes.
+ *
+ * Always `#include` this file rather than `config.h` directly.
  */
 
 #ifdef cdecl_config_h
-#error "Must #include pjl_config.h instead."
-#endif /* cdecl_config_h */
+# error "Must #include pjl_config.h instead."
+#endif
 
 // local
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wundef"
 #include "config.h"
-// Undefine this since it clashes with our VERSION command-line option.  We
-// don't need this since PACKAGE_VERSION is also defined.
-#undef VERSION
+#pragma GCC diagnostic pop
+
+#ifdef VERSION
+  // Undefine this since it clashes with our VERSION command-line option.  We
+  // don't need this since PACKAGE_VERSION is also defined.
+# undef VERSION
+#endif /* VERSION */
 
 // standard
 #include <attribute.h>
@@ -66,10 +78,33 @@
 ////////// compiler attributes ////////////////////////////////////////////////
 
 /**
- * Denote that a function's return value may be discarded without warning.
+ * Specifies that \a EXPR is _very_ likely (as in 99.99% of the time) to be
+ * non-zero (true) allowing the compiler to better order code blocks for
+ * magrinally better performance.
  *
- * @note There is no compiler attribute for this.  It's just a visual cue in
- * code that `NODISCARD` wasn't forgotten.
+ * @sa #unlikely()
+ * @sa [Memory part 5: What programmers can do](http://lwn.net/Articles/255364/)
+ */
+#define likely(EXPR)              __builtin_expect( !!(EXPR), 1 )
+
+/**
+ * Specifies that \a EXPR is _very_ unlikely (as in .01% of the time) to be
+ * non-zero (true) allowing the compiler to better order code blocks for
+ * magrinally better performance.
+ *
+ * @sa #likely()
+ * @sa [Memory part 5: What programmers can do](http://lwn.net/Articles/255364/)
+ */
+#define unlikely(EXPR)            __builtin_expect( !!(EXPR), 0 )
+
+#endif /* HAVE___BUILTIN_EXPECT */
+
+/**
+ * Denote that a function's return value may be ignored without warning.
+ *
+ * @note
+ * There is no compiler attribute for this.  It's just a visual cue in code
+ * that `NODISCARD` wasn't forgotten.
  */
 #define PJL_DISCARD               /* nothing */
 
@@ -87,26 +122,31 @@
 #endif /* HAVE___ATTRIBUTE__ */
 
 #ifdef HAVE_TYPEOF
-
 /**
- * Discard the return value of a non-`void` function even if it was declared
- * with `NODISCARD`.
+ * Discard the return value of a function even if it was declared with
+ * `NODISCARD`.
  *
  * @param FN_CALL The function call.
  */
 #define PJL_DISCARD_RV(FN_CALL) \
   do { MAYBE_UNUSED typeof(FN_CALL) _rv = (FN_CALL); } while (0)
-
 #endif /* HAVE_TYPEOF */
+
+#ifdef HAVE___BUILTIN_EXPECT
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifndef likely
+# define likely(EXPR)             (EXPR)
+# define unlikely(EXPR)           (EXPR)
+#endif /* likely */
+
 #ifndef PJL_DISCARD_RV
-# define PJL_DISCARD_RV(FN_CALL)  ((void)(FN_CALL))
+#define PJL_DISCARD_RV(FN_CALL)   ((void)(FN_CALL))
 #endif /* PJL_DISCARD_RV */
 
 #ifndef PJL_PRINTF_LIKE_FUNC
-# define PJL_PRINTF_LIKE_FUNC(N)  /* nothing */
+#define PJL_PRINTF_LIKE_FUNC(N)   /* nothing */
 #endif /* PJL_PRINTF_LIKE_FUNC */
 
 ///////////////////////////////////////////////////////////////////////////////
