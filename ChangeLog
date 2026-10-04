@@ -1,5 +1,7 @@
 2026-10-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
+   * pjl_config.h: Fixed HAVE___BUILTIN_EXPECT.
+   * p_macro.c, red_black.c, red_black.h: rb_insert_rv now also contains data.
    * pjl_config.h, util.h: Moved likely and unlikely.
    * c_type.h: #include fix.
 
