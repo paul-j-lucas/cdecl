@@ -34,8 +34,9 @@
 
 // standard
 #include <assert.h>
-#include <stdbool.h>
 #include <inttypes.h>                   /* for PRIX64, etc. */
+#include <stdbool.h>
+#include <stdint.h>
 
 /// @endcond
 
