@@ -142,11 +142,11 @@
 #endif /* likely */
 
 #ifndef PJL_DISCARD_RV
-#define PJL_DISCARD_RV(FN_CALL)   ((void)(FN_CALL))
+# define PJL_DISCARD_RV(FN_CALL)  ((void)(FN_CALL))
 #endif /* PJL_DISCARD_RV */
 
 #ifndef PJL_PRINTF_LIKE_FUNC
-#define PJL_PRINTF_LIKE_FUNC(N)   /* nothing */
+# define PJL_PRINTF_LIKE_FUNC(N)  /* nothing */
 #endif /* PJL_PRINTF_LIKE_FUNC */
 
 ///////////////////////////////////////////////////////////////////////////////
