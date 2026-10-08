@@ -28,19 +28,26 @@
 #include <stdbool.h>
 #include <string.h>
 
-///////////////////////////////////////////////////////////////////////////////
+////////// enums //////////////////////////////////////////////////////////////
 
 enum rb_test_cmd {
   RB_TEST_INSERT,
   RB_TEST_DELETE
 };
-typedef enum rb_test_cmd rb_test_cmd_t;
+
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef enum    rb_test_cmd         rb_test_cmd_t;
+typedef struct  rb_test_instruction rb_test_instruction_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 struct rb_test_instruction {
   rb_test_cmd_t   cmd;
   char const     *key;
 };
-typedef struct rb_test_instruction rb_test_instruction_t;
+
+////////// local constants ////////////////////////////////////////////////////
 
 // This sequence of instructions used to cause the tree's invariants to break,
 // so it's now a test.
@@ -151,7 +158,7 @@ static bool test_insert1_find_delete( rb_dloc_t dloc ) {
 
 end_test:
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
-  TEST( rb_tree_empty( &tree ) );
+  TEST( tree.size == 0 );
   TEST_FUNC_END();
 }
 
@@ -180,7 +187,7 @@ static bool test_insert2_find_delete( rb_dloc_t dloc ) {
 
 end_test:
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
-  TEST( rb_tree_empty( &tree ) );
+  TEST( tree.size == 0 );
   TEST_FUNC_END();
 }
 
@@ -212,7 +219,7 @@ static bool test_script( rb_dloc_t dloc ) {
 
 end_test:
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
-  TEST( rb_tree_empty( &tree ) );
+  TEST( tree.size == 0 );
   TEST_FUNC_END();
 }
 
@@ -273,7 +280,7 @@ static bool test_various( rb_dloc_t dloc ) {
 
 end_test:
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
-  TEST( rb_tree_empty( &tree ) );
+  TEST( tree.size == 0 );
   TEST_FUNC_END();
 }
 

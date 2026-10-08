@@ -658,7 +658,6 @@ rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
 /// @cond DOXYGEN_IGNORE
 
 extern inline void* rb_node_data( rb_tree_t const*, rb_node_t const* );
-extern inline bool rb_tree_empty( rb_tree_t const* );
 
 /// @endcond
 
