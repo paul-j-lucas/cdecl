@@ -90,18 +90,21 @@
 ///
 ///       void add_word( red_black_t *tree, char const *word ) {
 ///         struct word_count ins_wc = { .word = word, .count = 1 };
-///         rb_insert_rv_t rbi =
+///         rb_insert_rv_t const rbi =
 ///           rb_tree_insert( tree, &ins_wc, sizeof *ins_wc );
+///         struct word_count *const wc = RB_DINT( rbi.node );
 ///         if ( rbi.inserted ) {
-///           struct word_count *const new_wc = RB_DINT( rbi.node );
-///           new_wc->word = strdup( word );
-///         }
+///           wc->word = strdup( word );
+///         else
+///           ++wc->count;
 ///       }
 ///
 ///       int main() {
 ///         red_black_t tree;
 ///         rb_tree_init( &tree, RB_DINT, &word_count_cmp );
+///
 ///         add_word( &tree, "hello" );
+///
 ///         rb_cleanup( &tree, &word_count_cleanup );
 ///       }
 ///
@@ -109,7 +112,7 @@
 ///
 /// + Since this red-black tree stores data internally (\ref rb_dloc::RB_DINT
 ///   "RB_DINT"), this clean-up function frees only `word` and _not_ the
-///   `word_count` structure itself.
+///   `word_count` object itself.
 ///
 /// + For `ins_wc` (the `word_count` potentially being inserted), its `word` is
 ///   not duplicated before insertion since the duplication will be pointless
@@ -131,39 +134,39 @@
 ///         }
 ///       }
 ///
-///       void add_word( rb_tree_t *tree, char const *word ) {
-///         struct word_count ins_wc = { .word = word };
-///         rb_insert_rv_t rbi = rb_tree_insert( tree, &ins_wc, 0 );
-///         if ( rbi.inserted ) {
-///           struct word_count *const new_wc = malloc( sizeof *new_wc );
-///           new_wc->word = strdup( word );
-///           new_wc->count = 1;
-///           RB_DPTR( rbi.node ) = new_wc;
+///       void add_word_count( rb_tree_t *tree, struct word_count *wc ) {
+///         rb_insert_rv_t const rbi = rb_tree_insert( tree, wc, 0 );
+///         if ( !rbi.inserted ) {
+///           wc = RB_DPTR( rbi.node );
+///           ++wc->count;
 ///         }
 ///       }
 ///
 ///       int main() {
 ///         rb_tree_t tree;
-///         rb_tree_init( &tree, &word_count_cmp );
-///         add_word( &tree, "hello" );
-///         rb_tree_cleanup( &tree, &word_count_free );
+///         rb_tree_init( &tree, RB_DPTR, &word_count_cmp );
+///
+///         struct word_count *const wc = malloc( sizeof *wc );
+///         *wc = (struct word_count){ .word = strdup( "hello" ), .count = 1 };
+///
+///         add_word_count( &tree, wc );
+///
+///         rb_tree_cleanup( &tree, /*free_fn=*/NULL );
+///
+///         word_count_free( wc );
 ///       }
 ///
 /// **Notes**:
 ///
-/// + Now that the red-black tree stores a pointer to the data (\ref
-///   rb_dloc::RB_DPTR "RB_DPTR"), this free function frees both `word` _and_
-///   the `word_count` structure itself.
+/// + Now, `word_count_free` frees both `word` _and_ the `word_count` object
+///   itself.
 ///
-/// + Now `.count` of `ins_wc` no longer needs to be set explicitly to 1 since
-///   this object will not be copied, but instead `malloc`'d (see below).
+/// + Now, `add_word_count` adds a pointer to an existing `word_count` so the
+///   argument of the `data_size` parameter doesn't matter (since it's always
+///   the size of a pointer) and so can be 0.
 ///
-/// + Now the value of the `data_size` argument doesn't matter (since it's
-///   always the size of a pointer) and so can be 0.
-///
-/// + Now an entire `word_count` structure has to be `malloc`'d and assigned
-///   via the #RB_DPTR macro.  Note that `count` must now also be initialized
-///   since it's not copied from `ins_wc`.
+/// + Now, `NULL` is passed to \ref rb_tree_cleanup since `word_count` objects
+///   are being managed outside the tree.
 /// @endparblock
 ///
 /// @sa [Red-Black Tree](https://en.wikipedia.org/wiki/Red-black_tree)
@@ -317,6 +320,9 @@ typedef bool (*rb_visit_fn_t)( void *node_data, void *visit_data );
 /**
  * A red-black tree iterator.
  *
+ * @warning The red-black tree _must not_ have nodes either added or removed
+ * while being iterated over.
+ *
  * @sa rb_iterator_init()
  */
 struct rb_iterator {
@@ -329,8 +335,12 @@ struct rb_iterator {
 /**
  * A red-black tree node.
  *
- * @warning Only \ref data may be accessed by client code.  All other fields
- * are for internal use only.
+ * @remarks Once created, `rb_node` objects don't move even if the tree is
+ * modified, so pointers to them remain valid until either deleted or the tree
+ * is cleaned up.
+ *
+ * @warning Only \ref data may be accessed by user code.  All other fields are
+ * for internal use only.
  */
 struct rb_node {
   rb_node_t  *child[2];                 ///< Left/right (internal use only).
@@ -345,12 +355,12 @@ struct rb_node {
    * "cmp_fn".  For example, if `data` is a `struct` like:
    *
    *      struct word_count {
-   *          char     *word;
-   *          unsigned  count;
+   *        char     *word;
+   *        unsigned  count;
    *      };
    *
-   * then, assuming the tree's \ref rb_tree::cmp_fn "cmp_fn" compares only
-   * `word`, client code may then only safely modify `count`.
+   * then, assuming \ref rb_tree::cmp_fn "cmp_fn" compares only `word`, user
+   * code may then only safely modify `count`.
    */
   alignas( max_align_t ) char data[];
 };
@@ -409,10 +419,10 @@ struct rb_insert_rv {
    * The \ref rb_node "node" either found or inserted.  Use \ref inserted to
    * know which.
    *
-   * @warning Even though this is a pointer to a non-`const` \ref rb_node, the
-   * node's \ref rb_node::data "data" _must not_ be modified if that would
-   * change the node's position within the tree according to its \ref
-   * rb_tree::cmp_fn "cmp_fn".
+   * @warning Even though this is a pointer to a non-`const` \ref rb_node, its
+   * \ref rb_node::data "data" _must not_ be modified if that would change its
+   * position within the tree according to the tree's \ref rb_tree::cmp_fn
+   * "cmp_fn".
    */
   rb_node_t *node;
 
@@ -460,9 +470,9 @@ void* rb_iterator_next( rb_iterator_t *iter );
  * @param node The rb_node to get the data of.
  * @return Returns said data.
  *
- * @note Normally, either #RB_DINT or #RB_DPTR is used to get a pointer to a
- * node's data.  This function would only be used in code that should work with
- * a tree using either data location.
+ * @note Normally, either #RB_DINT() or #RB_DPTR() is used to get a pointer to
+ * a node's data.  This function would only be used in code that should work
+ * with a tree using either data location.
  *
  * @sa #RB_DINT
  * @sa #RB_DPTR
@@ -528,11 +538,12 @@ void rb_tree_init( rb_tree_t *tree, rb_dloc_t dloc, rb_cmp_fn_t cmp_fn );
  * @param tree A pointer to the rb_tree to insert into.
  * @param data A pointer to the data to insert.
  * @param data_size If \a tree's \ref rb_tree::dloc "dloc" is:
- *  + #RB_DINT: The size of \a data.  If a node is inserted, then this number
- *    of bytes are copied from \a data into the new node's \ref rb_node::data
- *    "data".
- *  + #RB_DPTR: Not used.  If a node is inserted, then the pointer value of \a
- *    data itself is copied into the new node's \ref rb_node::data "data".
+ *  + \ref rb_dloc::RB_DINT "RB_DINT": The size of \a data.  If a node is
+ *    inserted, then this number of bytes are copied from \a data into the new
+ *    node's \ref rb_node::data "data".
+ *  + \ref rb_dloc::RB_DPTR "RB_DPTR": Not used.  If a node is inserted, then
+ *    the pointer value of \a data itself is copied into the new node's \ref
+ *    rb_node::data "data".
  *
  * @return Returns an \ref rb_insert_rv where its \ref rb_insert_rv::node
  * "node" points to either the newly inserted node or the existing node having
