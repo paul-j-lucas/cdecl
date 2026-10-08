@@ -54,7 +54,8 @@
  * @{
  */
 
-// extern option variables
+////////// extern variables ///////////////////////////////////////////////////
+
 extern bool         opt_alt_tokens;     ///< Print alternative tokens?
 
 #ifdef ENABLE_BISON_DEBUG
@@ -113,7 +114,6 @@ extern char const   OPT_ECSU_ALL[];
 /// What `*` expands into for `set west-decl=*`.
 extern char const   OPT_WEST_DECL_ALL[];
 
-// other extern variables
 #ifdef ENABLE_FLEX_DEBUG
 /// Flex variable for debugging; use #opt_flex_debug instead.
 extern int          yy_flex_debug;

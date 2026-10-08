@@ -44,6 +44,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Convenience macro for iterating over all the nodes of \a SLIST.
  *

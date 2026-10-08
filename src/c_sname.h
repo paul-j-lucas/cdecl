@@ -63,6 +63,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Gets the \ref c_scope_data associated with \a SCOPE.
  *

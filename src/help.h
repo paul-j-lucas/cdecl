@@ -40,6 +40,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Convenience macro for iterating over all **cdecl** `help` options.
  *

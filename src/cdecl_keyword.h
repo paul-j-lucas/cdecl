@@ -46,6 +46,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Convenience macro for iterating over all **cdecl** keywords.
  *

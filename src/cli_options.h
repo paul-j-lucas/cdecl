@@ -40,8 +40,6 @@
 
 /// @endcond
 
-///////////////////////////////////////////////////////////////////////////////
-
 /**
  * @defgroup cli-options-group Command-Line Options
  * Macros and functions for command-line options.
@@ -51,6 +49,8 @@
  *
  * @{
  */
+
+////////// macros /////////////////////////////////////////////////////////////
 
 /**
  * Convenience macro for iterating over all **cdecl** command-line options.

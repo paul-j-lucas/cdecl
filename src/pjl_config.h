@@ -52,6 +52,8 @@
 // standard
 #include <attribute.h>
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Defined to an expression that evaluates to `true` only if we're running
  * genuine GNU **readline**(3) and not some other library emulating it.

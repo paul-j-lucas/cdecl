@@ -33,6 +33,8 @@
 // standard
 #include <stddef.h>                     /* for NULL */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Convenience macro for iterating over all **cdecl** commands.
  *

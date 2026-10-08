@@ -40,6 +40,15 @@
 /// @endcond
 
 /**
+ * @defgroup c-typedef-group C/C++ Typedef Declarations
+ * Types and functions for adding and looking up C/C++ `typedef` or `using`
+ * declarations.
+ * @{
+ */
+
+////////// macros /////////////////////////////////////////////////////////////
+
+/**
  * Convenience macro for specifying a \ref c_typedef literal.
  *
  * @param AST The AST.
@@ -47,15 +56,6 @@
  */
 #define C_TYPEDEF_LIT(AST,DECL_FLAGS) (c_typedef_t const) \
   { .ast = (AST), .lang_ids = LANG_ANY, .decl_flags = (DECL_FLAGS) }
-
-///////////////////////////////////////////////////////////////////////////////
-
-/**
- * @defgroup c-typedef-group C/C++ Typedef Declarations
- * Types and functions for adding and looking up C/C++ `typedef` or `using`
- * declarations.
- * @{
- */
 
 ////////// typedefs ///////////////////////////////////////////////////////////
 

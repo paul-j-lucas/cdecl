@@ -46,6 +46,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * The maximum width supported in the declaration of a `_BitInt(N)`.
  *

@@ -49,6 +49,8 @@
 
 /// @endcond
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Convenience macro for iterating over all \ref c_capture_ast nodes of a \ref
  * c_lambda_ast.
@@ -143,7 +145,7 @@ typedef enum c_ast_visit_dir c_ast_visit_dir_t;
  */
 typedef bool (*c_ast_visit_fn_t)( c_ast_t const *ast, user_data_t user_data );
 
-///////////////////////////////////////////////////////////////////////////////
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * @defgroup ast-nodes-group AST Nodes

@@ -57,6 +57,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 #define SGR_BG_BLACK        "40"        /**< Background black.            */
 #define SGR_BG_RED          "41"        /**< Background red.              */
 #define SGR_BG_GREEN        "42"        /**< Background green.            */

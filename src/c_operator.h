@@ -45,6 +45,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * For c_operator::params_max of `operator()` or `operator[]` (in C++23 or
  * later), denotes an unlimited number of parameters.

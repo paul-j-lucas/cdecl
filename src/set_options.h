@@ -52,6 +52,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Convenience macro for iterating over all **cdecl** `set` command options.
  *
