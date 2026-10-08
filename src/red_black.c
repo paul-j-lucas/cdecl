@@ -47,6 +47,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Gets an lvalue reference to the child node pointer of \a NODE's parent,
  * i.e., the parent's pointer to \a NODE.
