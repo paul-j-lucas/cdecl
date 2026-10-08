@@ -54,6 +54,12 @@
 #include <stddef.h>                     /* for unreachable */
 #include <stdio.h>
 
+/// @endcond
+
+////////// macros /////////////////////////////////////////////////////////////
+
+/// @cond DOXYGEN_IGNORE
+
 #define DUMP_AST(DUMP,KEY,AST) BLOCK( \
   DUMP_KEY( (DUMP), KEY ": " ); c_ast_dump_impl( (AST), (DUMP) ); )
 

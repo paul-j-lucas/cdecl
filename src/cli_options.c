@@ -102,6 +102,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Prints that \a VALUE is an invalid value for \a OPT and what it must be
  * instead to standard error and exits.

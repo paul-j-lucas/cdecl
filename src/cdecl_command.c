@@ -37,6 +37,8 @@
 #include <stdbool.h>
 #include <string.h>
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /// @cond DOXYGEN_IGNORE
 
 // shorthands

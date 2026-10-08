@@ -56,6 +56,8 @@
  * @{
  */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Helper macro for adding a \ref predef_type to an array of them.  It includes
  * the source line number it's defined on.

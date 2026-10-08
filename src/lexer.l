@@ -86,7 +86,7 @@
 
 /// @endcond
 
-///////////////////////////////////////////////////////////////////////////////
+////////// macros /////////////////////////////////////////////////////////////
 
 /**
  * @addtogroup lexer-group
@@ -151,7 +151,11 @@
 #define YY_USER_ACTION \
   BLOCK( is_constrained_auto = false; lexer_update_loc(); );
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct include_file_info include_file_info_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * Data to keep for a file that is `include`d.
@@ -178,12 +182,12 @@ struct include_file_info {
   c_loc_num_t orig_opt_lineno;          ///< Original value of \ref opt_lineno.
   c_loc_num_t prev_lineno;              ///< The file's last line number.
 };
-typedef struct include_file_info include_file_info_t;
+
+//////// extern variables /////////////////////////////////////////////////////
 
 /// @cond DOXYGEN_IGNORE
 /// Otherwise Doxygen generates two entries.
 
-// extern variables
 lexer_find_kind_t lexer_find = LEXER_FIND_ANY;
 bool              lexer_in_c_comment;
 bool              lexer_is_param_list_decl;
@@ -191,7 +195,8 @@ c_keyword_ctx_t   lexer_keyword_ctx;
 
 /// @endcond
 
-// local variables
+////////// local variables ////////////////////////////////////////////////////
+
 static bool         digraph_warned;     ///< Printed digraph warning once?
 static rb_tree_t    include_set;        ///< Set of resolved include paths.
 static slist_t      include_stack;      ///< Stack of include paths.
@@ -665,7 +670,7 @@ static int yywrap( void ) {
   return /*done=*/1;
 }
 
-///////////////////////////////////////////////////////////////////////////////
+////////// Flex ///////////////////////////////////////////////////////////////
 
 /** @} */
 

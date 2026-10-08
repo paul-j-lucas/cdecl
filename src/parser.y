@@ -97,7 +97,7 @@
 
 /// @endcond
 
-///////////////////////////////////////////////////////////////////////////////
+////////// macros /////////////////////////////////////////////////////////////
 
 /**
  * Checks whether \a AST is a #K_NAME and therefore an error (if \ref
@@ -291,7 +291,7 @@
 
 /** @} */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// DUMP macros ////////////////////////////////////////////////////////
 
 /**
  * @defgroup parser-dump-group Debugging Macros
@@ -518,7 +518,11 @@
 
 /** @} */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
+
+typedef struct in_attr in_attr_t;
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * @addtogroup parser-group
@@ -578,9 +582,9 @@ struct in_attr {
    */
   rb_node_t      *tdef_rb;
 };
-typedef struct in_attr in_attr_t;
 
-// local functions
+////////// local functions ////////////////////////////////////////////////////
+
 NODISCARD
 static bool l_c_sname_is_type( int, c_sname_t const*, c_loc_t const* );
 
@@ -590,7 +594,8 @@ static void l_elaborate_error( int, dym_kind_t, char const*, ... );
 PJL_DISCARD
 static bool print_error_token( char const* );
 
-// local variables
+////////// local variables ////////////////////////////////////////////////////
+
 static c_ast_list_t   gc_ast_list;      ///< c_ast nodes freed after parse.
 static in_attr_t      in_attr;          ///< Inherited attributes.
 static c_ast_list_t   typedef_ast_list; ///< List of ASTs for `typedef`s.
@@ -1296,7 +1301,7 @@ static void yyerror( char const *msg ) {
 
 /** @} */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// Bison declarations /////////////////////////////////////////////////
 
 /// @cond DOXYGEN_IGNORE
 
@@ -1977,7 +1982,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_list_cleanup( &$$ );            } <sname_list>
 %destructor { DTRACE; FREE( $$ );                             } <str_val>
 
-///////////////////////////////////////////////////////////////////////////////
+////////// Bison grammar //////////////////////////////////////////////////////
 %%
 
 command_list

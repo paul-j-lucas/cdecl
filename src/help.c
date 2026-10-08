@@ -48,15 +48,16 @@
 
 /// @endcond
 
-// local functions
-static void print_help_name_number( void );
-static void print_help_scopes( void );
-static void print_help_where( void );
-
 /**
  * @addtogroup printing-help-group
  * @{
  */
+
+////////// local functions ////////////////////////////////////////////////////
+
+static void print_help_name_number( void );
+static void print_help_scopes( void );
+static void print_help_where( void );
 
 ////////// inline functions ///////////////////////////////////////////////////
 

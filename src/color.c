@@ -43,6 +43,8 @@
 #include <sys/stat.h>                   /* for stat() */
 #include <unistd.h>                     /* for isatty() */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 //
 // Color capabilities.  Names containing Upper-case are unique to cdecl and
 // upper-case to avoid conflict with gcc.

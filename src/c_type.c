@@ -46,6 +46,8 @@
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
 
+////////// macros /////////////////////////////////////////////////////////////
+
 #define C_TYPE_CHECK(LANG_IDS) BLOCK(       \
   c_lang_id_t const lang_ids = (LANG_IDS);  \
   if ( lang_ids != LANG_ANY )               \

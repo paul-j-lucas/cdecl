@@ -56,12 +56,12 @@
 
 /// @endcond
 
+////////// macros /////////////////////////////////////////////////////////////
+
 /**
  * Storage-class-like types that are _not_ legal with `constexpr` in C only.
  */
 #define TS_NOT_constexpr_C_ONLY   ( TS__Atomic | TS_restrict | TS_volatile )
-
-///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Prints an error: `<kind> not supported[ {in|since|unless|until} <lang>]`.
