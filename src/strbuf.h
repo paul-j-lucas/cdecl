@@ -287,7 +287,9 @@ inline void strbuf_sepc_puts( strbuf_t *sbuf, char sep, bool *sep_flag,
  * Reinitializes \a sbuf, but returns its string.
  *
  * @param sbuf A pointer to the \ref strbuf to take from.
- * @return Returns said string.  The caller is responsible for freeing it.
+ * @return Returns said string.
+ *
+ * @note The caller is responsible for freeing the returned string.
  *
  * @sa strbuf_cleanup()
  * @sa strbuf_init()
