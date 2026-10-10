@@ -1,3 +1,8 @@
+2026-10-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
+
+   * util.h: Added MIN_IMPL cases for int, long, unsigned int, unsigned long,
+     and float.
+
 2026-10-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * p_macro.c, red_black.c, red_black.h: Revert "rb_insert_rv now also
