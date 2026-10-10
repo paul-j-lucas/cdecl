@@ -565,13 +565,13 @@
  */
 #define MIN(I,J)                  \
   _Generic( (I) + (J),            \
-    int               : min_ll,   \
-    long              : min_ll,   \
+    int               : min_i,    \
+    long              : min_l,    \
     long long         : min_ll,   \
-    unsigned int      : min_ull,  \
-    unsigned long     : min_ull,  \
+    unsigned int      : min_ui,   \
+    unsigned long     : min_ul,   \
     unsigned long long: min_ull,  \
-    float             : min_d,    \
+    float             : min_f,    \
     double            : min_d,    \
     long double       : min_ld    \
   )( (I), (J) )
@@ -580,8 +580,13 @@
 #define MIN_IMPL(T,SUFFIX) \
   NODISCARD static inline T min_##SUFFIX( T i, T j ) { return i < j ? i : j; }
 
+MIN_IMPL(int, i)
+MIN_IMPL(long, l)
 MIN_IMPL(long long, ll)
+MIN_IMPL(unsigned int, ui)
+MIN_IMPL(unsigned long, ul)
 MIN_IMPL(unsigned long long, ull)
+MIN_IMPL(float, f)
 MIN_IMPL(double, d)
 MIN_IMPL(long double, ld)
 
